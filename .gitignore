@@ -6,3 +6,9 @@
 SpaceOdyssey.Debug.Win/obj/
 
 .vs/
+
+SpaceOdyssey.Debug.Win/bin/
+
+SpaceOdyssey.Cosmodynamics/bin/
+
+SpaceOdyssey.Cosmodynamics/obj/

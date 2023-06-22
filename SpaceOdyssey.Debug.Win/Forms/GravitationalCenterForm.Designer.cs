@@ -1,4 +1,4 @@
-﻿namespace SpaceOdyssey.Debug.Win.Forms
+﻿namespace SpaceOdyssey.Debug.Win
 {
     partial class GravitationalCenterForm
     {
@@ -28,35 +28,35 @@
         /// </summary>
         private void InitializeComponent ()
         {
-            this.celestialObject_ComboBox = new System.Windows.Forms.ComboBox();
+            this._celestialObjectComboBox = new System.Windows.Forms.ComboBox();
             this.label1 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.radius_TextBox = new System.Windows.Forms.TextBox();
+            this._v2TextBox = new System.Windows.Forms.TextBox();
+            this._v1TextBox = new System.Windows.Forms.TextBox();
+            this._radiusTextBox = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.gravitationalParameter_TextBox = new System.Windows.Forms.TextBox();
+            this._gravitationalParameterTextBox = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // celestialObject_ComboBox
+            // _celestialObjectComboBox
             // 
-            this.celestialObject_ComboBox.FormattingEnabled = true;
-            this.celestialObject_ComboBox.Items.AddRange(new object[] {
+            this._celestialObjectComboBox.FormattingEnabled = true;
+            this._celestialObjectComboBox.Items.AddRange(new object[] {
             "Солнце",
             "Земля",
             "Луна",
             "Венера",
             "Юпитер",
             "Сатурн"});
-            this.celestialObject_ComboBox.Location = new System.Drawing.Point(139, 6);
-            this.celestialObject_ComboBox.Name = "celestialObject_ComboBox";
-            this.celestialObject_ComboBox.Size = new System.Drawing.Size(177, 24);
-            this.celestialObject_ComboBox.TabIndex = 0;
-            this.celestialObject_ComboBox.SelectedIndexChanged += new System.EventHandler(this.CelestialObject_ComboBox_SelectedIndexChanged);
+            this._celestialObjectComboBox.Location = new System.Drawing.Point(139, 6);
+            this._celestialObjectComboBox.Name = "_celestialObjectComboBox";
+            this._celestialObjectComboBox.Size = new System.Drawing.Size(177, 24);
+            this._celestialObjectComboBox.TabIndex = 0;
+            this._celestialObjectComboBox.SelectedIndexChanged += new System.EventHandler(this.CelestialObject_ComboBox_SelectedIndexChanged);
             // 
             // label1
             // 
@@ -71,11 +71,11 @@
             // 
             this.groupBox1.Controls.Add(this.label5);
             this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.textBox2);
-            this.groupBox1.Controls.Add(this.textBox1);
-            this.groupBox1.Controls.Add(this.radius_TextBox);
+            this.groupBox1.Controls.Add(this._v2TextBox);
+            this.groupBox1.Controls.Add(this._v1TextBox);
+            this.groupBox1.Controls.Add(this._radiusTextBox);
             this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.gravitationalParameter_TextBox);
+            this.groupBox1.Controls.Add(this._gravitationalParameterTextBox);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Location = new System.Drawing.Point(12, 36);
             this.groupBox1.Name = "groupBox1";
@@ -101,35 +101,35 @@
             this.label4.TabIndex = 9;
             this.label4.Text = "Первая космическая скорость V1 на R, км/с";
             // 
-            // textBox2
+            // _v2TextBox
             // 
-            this.textBox2.BackColor = System.Drawing.SystemColors.Window;
-            this.textBox2.Location = new System.Drawing.Point(301, 135);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.ReadOnly = true;
-            this.textBox2.Size = new System.Drawing.Size(159, 22);
-            this.textBox2.TabIndex = 8;
-            this.textBox2.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this._v2TextBox.BackColor = System.Drawing.SystemColors.Window;
+            this._v2TextBox.Location = new System.Drawing.Point(301, 135);
+            this._v2TextBox.Name = "_v2TextBox";
+            this._v2TextBox.ReadOnly = true;
+            this._v2TextBox.Size = new System.Drawing.Size(159, 22);
+            this._v2TextBox.TabIndex = 8;
+            this._v2TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // textBox1
+            // _v1TextBox
             // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.Window;
-            this.textBox1.Location = new System.Drawing.Point(301, 97);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(159, 22);
-            this.textBox1.TabIndex = 7;
-            this.textBox1.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this._v1TextBox.BackColor = System.Drawing.SystemColors.Window;
+            this._v1TextBox.Location = new System.Drawing.Point(301, 97);
+            this._v1TextBox.Name = "_v1TextBox";
+            this._v1TextBox.ReadOnly = true;
+            this._v1TextBox.Size = new System.Drawing.Size(159, 22);
+            this._v1TextBox.TabIndex = 7;
+            this._v1TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
-            // radius_TextBox
+            // _radiusTextBox
             // 
-            this.radius_TextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.radius_TextBox.Location = new System.Drawing.Point(301, 59);
-            this.radius_TextBox.Name = "radius_TextBox";
-            this.radius_TextBox.ReadOnly = true;
-            this.radius_TextBox.Size = new System.Drawing.Size(159, 22);
-            this.radius_TextBox.TabIndex = 6;
-            this.radius_TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this._radiusTextBox.BackColor = System.Drawing.SystemColors.Window;
+            this._radiusTextBox.Location = new System.Drawing.Point(301, 59);
+            this._radiusTextBox.Name = "_radiusTextBox";
+            this._radiusTextBox.ReadOnly = true;
+            this._radiusTextBox.Size = new System.Drawing.Size(159, 22);
+            this._radiusTextBox.TabIndex = 6;
+            this._radiusTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label3
             // 
@@ -140,15 +140,15 @@
             this.label3.TabIndex = 5;
             this.label3.Text = "Радиус R, км";
             // 
-            // gravitationalParameter_TextBox
+            // _gravitationalParameterTextBox
             // 
-            this.gravitationalParameter_TextBox.BackColor = System.Drawing.SystemColors.Window;
-            this.gravitationalParameter_TextBox.Location = new System.Drawing.Point(301, 21);
-            this.gravitationalParameter_TextBox.Name = "gravitationalParameter_TextBox";
-            this.gravitationalParameter_TextBox.ReadOnly = true;
-            this.gravitationalParameter_TextBox.Size = new System.Drawing.Size(159, 22);
-            this.gravitationalParameter_TextBox.TabIndex = 4;
-            this.gravitationalParameter_TextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
+            this._gravitationalParameterTextBox.BackColor = System.Drawing.SystemColors.Window;
+            this._gravitationalParameterTextBox.Location = new System.Drawing.Point(301, 21);
+            this._gravitationalParameterTextBox.Name = "_gravitationalParameterTextBox";
+            this._gravitationalParameterTextBox.ReadOnly = true;
+            this._gravitationalParameterTextBox.Size = new System.Drawing.Size(159, 22);
+            this._gravitationalParameterTextBox.TabIndex = 4;
+            this._gravitationalParameterTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             // 
             // label2
             // 
@@ -166,7 +166,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.celestialObject_ComboBox);
+            this.Controls.Add(this._celestialObjectComboBox);
             this.Name = "GravitationalCenterForm";
             this.Text = "Центр притяжения";
             this.Load += new System.EventHandler(this.GravitationalCenterForm_Load);
@@ -179,16 +179,16 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox celestialObject_ComboBox;
+        private System.Windows.Forms.ComboBox _celestialObjectComboBox;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.TextBox gravitationalParameter_TextBox;
+        private System.Windows.Forms.TextBox _gravitationalParameterTextBox;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox radius_TextBox;
+        private System.Windows.Forms.TextBox _radiusTextBox;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label5;
         private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox _v2TextBox;
+        private System.Windows.Forms.TextBox _v1TextBox;
     }
 }

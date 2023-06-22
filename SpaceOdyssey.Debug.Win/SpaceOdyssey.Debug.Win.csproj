@@ -53,19 +53,20 @@
     <Compile Include="Forms\GravitationalCenterForm.Designer.cs">
       <DependentUpon>GravitationalCenterForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="MainForm.cs">
+    <Compile Include="Forms\MainForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="MainForm.Designer.cs">
+    <Compile Include="Forms\MainForm.Designer.cs">
       <DependentUpon>MainForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Models\GravitationalCenterData.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Views\IGravitationalCenterChooseView.cs" />
+    <Compile Include="Views\IChooseGravitationalCenterView.cs" />
     <EmbeddedResource Include="Forms\GravitationalCenterForm.resx">
       <DependentUpon>GravitationalCenterForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="MainForm.resx">
+    <EmbeddedResource Include="Forms\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -90,8 +91,12 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Models\" />
+    <ProjectReference Include="..\SpaceOdyssey.Cosmodynamics.NFX\SpaceOdyssey.Cosmodynamics.NFX.csproj">
+      <Project>{2d7fedea-733a-4ed2-b340-9a7fb6372ec9}</Project>
+      <Name>SpaceOdyssey.Cosmodynamics.NFX</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -5,7 +5,7 @@ namespace SpaceOdyssey.Debug.Win
 {
     public partial class MainForm : Form
     {
-        internal event Action GravitationalCenterToolStripMenuItemClickEventHandler;
+        internal event Action GravitationalCenter_ToolStripMenuItemClick_EventHandler;
 
         public MainForm ()
         {
@@ -14,7 +14,7 @@ namespace SpaceOdyssey.Debug.Win
 
         private void GravitationalCenter_ToolStripMenuItem_Click (object sender, EventArgs e)
         {
-            GravitationalCenterToolStripMenuItemClickEventHandler ();
+            GravitationalCenter_ToolStripMenuItemClick_EventHandler ();
         }
     }
 }

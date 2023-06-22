@@ -1,14 +1,15 @@
-﻿using SpaceOdyssey.Debug.Win;
-using SpaceOdyssey.Debug.Win.Forms;
-using SpaceOdyssey.Debug.Win.Views;
+﻿using SpaceOdyssey.Cosmodynamics;
 
-namespace SpaceOdyssey.Debug.Win.Controllers
+namespace SpaceOdyssey.Debug.Win
 {
     internal class ApplicationController
     {
         private MainForm _mainForm;
 
-        private IGravitationalCenterChooseView _gravitationalCenterChooseView;
+        private CelestialObject [] _gravitationalCenters = new CelestialObject [] { Sun.Instance, Earth.Instance, Moon.Instance, 
+            Venus.Instance, Jupiter.Instance, Saturn.Instance };
+
+        private IChooseGravitationalCenterView _chooseGravitationalCenterView;
 
         internal MainForm MainForm { get => _mainForm; }
 
@@ -16,21 +17,21 @@ namespace SpaceOdyssey.Debug.Win.Controllers
         {
             _mainForm = new MainForm ();
 
-            _gravitationalCenterChooseView = new GravitationalCenterForm ();
+            _chooseGravitationalCenterView = new GravitationalCenterForm ();
 
-            _mainForm.GravitationalCenterToolStripMenuItemClickEventHandler += MainForm_GravitationalCenterToolStripMenuItemClickEventHandler;
+            _mainForm.GravitationalCenter_ToolStripMenuItemClick_EventHandler += MainForm_GravitationalCenter_ToolStripMenuItemClick_EventHandler;
 
-            _gravitationalCenterChooseView.SelectGravitationalCenterEventHandler += GravitationalCenterChooseView_SelectGravitationalCenterEventHandler;
+            _chooseGravitationalCenterView.SelectGravitationalCenter_EventHandler += ChooseGravitationalCenterView_SelectGravitationalCenter_EventHandler;
         }
 
-        private void MainForm_GravitationalCenterToolStripMenuItemClickEventHandler ()
+        private void MainForm_GravitationalCenter_ToolStripMenuItemClick_EventHandler ()
         {
-            _gravitationalCenterChooseView.ShowView ();
+            _chooseGravitationalCenterView.ShowView ();
         }
 
-        private void GravitationalCenterChooseView_SelectGravitationalCenterEventHandler (int index)
+        private void ChooseGravitationalCenterView_SelectGravitationalCenter_EventHandler (int index)
         {
-            
+            _chooseGravitationalCenterView.ShowData (new GravitationalCenterData (_gravitationalCenters [index]));
         }
     }
 }

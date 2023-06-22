@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Windows.Forms;
 
-using SpaceOdyssey.Debug.Win.Controllers;
-
 namespace SpaceOdyssey.Debug.Win
 {
     internal static class Program

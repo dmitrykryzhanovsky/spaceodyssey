@@ -30,7 +30,7 @@
         {
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.центрПритяженияToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.gravitationalCenter_ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._gravitationalCenterToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,17 +48,17 @@
             // центрПритяженияToolStripMenuItem
             // 
             this.центрПритяженияToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.gravitationalCenter_ToolStripMenuItem});
+            this._gravitationalCenterToolStripMenuItem});
             this.центрПритяженияToolStripMenuItem.Name = "центрПритяженияToolStripMenuItem";
             this.центрПритяженияToolStripMenuItem.Size = new System.Drawing.Size(114, 24);
             this.центрПритяженияToolStripMenuItem.Text = "Расчёт орбит";
             // 
-            // gravitationalCenter_ToolStripMenuItem
+            // _gravitationalCenterToolStripMenuItem
             // 
-            this.gravitationalCenter_ToolStripMenuItem.Name = "gravitationalCenter_ToolStripMenuItem";
-            this.gravitationalCenter_ToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
-            this.gravitationalCenter_ToolStripMenuItem.Text = "Центр притяжения";
-            this.gravitationalCenter_ToolStripMenuItem.Click += new System.EventHandler(this.GravitationalCenter_ToolStripMenuItem_Click);
+            this._gravitationalCenterToolStripMenuItem.Name = "_gravitationalCenterToolStripMenuItem";
+            this._gravitationalCenterToolStripMenuItem.Size = new System.Drawing.Size(225, 26);
+            this._gravitationalCenterToolStripMenuItem.Text = "Центр притяжения";
+            this._gravitationalCenterToolStripMenuItem.Click += new System.EventHandler(this.GravitationalCenter_ToolStripMenuItem_Click);
             // 
             // MainForm
             // 
@@ -80,7 +80,7 @@
 
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem центрПритяженияToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem gravitationalCenter_ToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _gravitationalCenterToolStripMenuItem;
     }
 }
 

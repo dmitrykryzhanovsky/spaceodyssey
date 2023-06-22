@@ -1,13 +1,11 @@
 ﻿using System;
 using System.Windows.Forms;
 
-using SpaceOdyssey.Debug.Win.Views;
-
-namespace SpaceOdyssey.Debug.Win.Forms
+namespace SpaceOdyssey.Debug.Win
 {
-    public partial class GravitationalCenterForm : Form, IGravitationalCenterChooseView
+    public partial class GravitationalCenterForm : Form, IChooseGravitationalCenterView
     {
-        public event Action<int> SelectGravitationalCenterEventHandler;
+        public event Action<int> SelectGravitationalCenter_EventHandler;
 
         public GravitationalCenterForm ()
         {
@@ -16,7 +14,7 @@ namespace SpaceOdyssey.Debug.Win.Forms
 
         private void GravitationalCenterForm_Load (object sender, EventArgs e)
         {
-            celestialObject_ComboBox.SelectedIndex = 0;
+            _celestialObjectComboBox.SelectedIndex = 0;
         }
 
         public void ShowView ()
@@ -24,9 +22,17 @@ namespace SpaceOdyssey.Debug.Win.Forms
             ShowDialog ();
         }
 
+        public void ShowData (GravitationalCenterData data)
+        {
+            _gravitationalParameterTextBox.Text = data.K.ToString ("E");
+            _radiusTextBox.Text = data.R.ToString ();
+            _v1TextBox.Text = data.V1.ToString ("F4");
+            _v2TextBox.Text = data.V2.ToString ("F4");
+        }
+
         private void CelestialObject_ComboBox_SelectedIndexChanged (object sender, EventArgs e)
         {
-            SelectGravitationalCenterEventHandler (celestialObject_ComboBox.SelectedIndex);
+            SelectGravitationalCenter_EventHandler (_celestialObjectComboBox.SelectedIndex);
         }
     }
 }

@@ -2,3 +2,17 @@
 .githab 2023_04_16/
 
 .gitlab 2023_02_25/
+
+SpaceOdyssey.Debug.Win/obj/
+
+.vs/
+
+SpaceOdyssey.Debug.Win/bin/
+
+SpaceOdyssey.Cosmodynamics/bin/
+
+SpaceOdyssey.Cosmodynamics/obj/
+
+SpaceOdyssey.Cosmodynamics.NFX/bin/
+
+SpaceOdyssey.Cosmodynamics.NFX/obj/

@@ -20,3 +20,7 @@ SpaceOdyssey.Cosmodynamics.NFX/obj/
 SpaceOdyssey.Kernel/bin/
 
 SpaceOdyssey.Kernel/obj/
+
+SpaceOdyssey.Kernel.Tests/bin/
+
+SpaceOdyssey.Kernel.Tests/obj/

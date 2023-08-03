@@ -17,6 +17,16 @@ namespace SpaceOdyssey.Tests
 
             Polar3 eq = Polar3.CreateFineUnit (Trigonometry.DegToRad (declination), Trigonometry.HourToRad (ascension));
 
+            double epsilon = Trigonometry.DegToRad ( 23.43929111);
+
+            Polar3 ec = Space3.ReferenceRotationOX (eq, epsilon);
+
+            double x1 = Trigonometry.RadToDeg (ec.Phi);
+            double x2 = Trigonometry.RadToDeg (ec.L);
+
+            (int deg1, int min1, double sec1) = Trigonometry.GetDegMinSec (x1);
+            (int deg2, int min2, double sec2) = Trigonometry.GetDegMinSec (x2);
+
             Assert.Fail ();
         }
     }

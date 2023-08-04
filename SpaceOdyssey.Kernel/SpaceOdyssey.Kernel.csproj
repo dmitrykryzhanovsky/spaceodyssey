@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net7.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <RootNamespace>SpaceOdyssey</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="Archimedes.Kernel">
+      <HintPath>..\..\archimedes\Archimedes.Kernel\bin\Release\net7.0\Archimedes.Kernel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+</Project>

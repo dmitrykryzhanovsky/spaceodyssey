@@ -15,6 +15,11 @@ namespace SpaceOdyssey
             return Space3.ReferenceRotationOX (eq, sinEpsilon, cosEpsilon);
         }
 
+        /// <summary>
+        /// Преобразования декартовых координат из экваториальной системы в эклиптическую.
+        /// </summary>
+        /// <param name="eq">Экваториальные координаты.</param>
+        /// <param name="positiveMatrix">Матрица поворота на положительный угол (угол наклона земной оси).</param>
         public static Vector3 EqToEcTransform (Vector3 eq, Matrix3 positiveMatrix)
         {
             return Space3.ReferenceRotationOX (eq, positiveMatrix);
@@ -31,9 +36,14 @@ namespace SpaceOdyssey
             return Space3.ReferenceRotationOX (ec, -sinEpsilon, cosEpsilon);
         }
 
-        public static Vector3 EcToEqTransform (Vector3 ec, Matrix3 positiveMatrix)
+        /// <summary>
+        /// Преобразования декартовых координат из эклиптической системы в экваториальную.
+        /// </summary>
+        /// <param name="ec">Экваториальные координаты.</param>
+        /// <param name="negativeMatrix">Матрица поворота на отрицательный угол (равный по абсолютной величине углу наклона земной оси).</param>
+        public static Vector3 EcToEqTransform (Vector3 ec, Matrix3 negativeMatrix)
         {
-            return Space3.ReferenceRotationOX (ec, positiveMatrix);
+            return Space3.ReferenceRotationOX (ec, negativeMatrix);
         }
     }
 }

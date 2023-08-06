@@ -69,7 +69,7 @@ namespace SpaceOdyssey
 
         public static double EclipticPrecessionLongitude_J2000 (double dT)
         {
-            return ((Series_Ecliptic_Longitude_J2000 [5] * dT + Series_Ecliptic_Longitude_J2000 [3]) * dT + Series_Ecliptic_Longitude_J2000 [0]) * dT;
+            return ((Series_Ecliptic_Longitude_J2000 [2] * dT + Series_Ecliptic_Longitude_J2000 [1]) * dT + Series_Ecliptic_Longitude_J2000 [0]) * dT;
         }
 
         public static double EclipticPrecessionStartAngle (double T1, double dT)
@@ -81,7 +81,7 @@ namespace SpaceOdyssey
 
         public static double EclipticPrecessionStartAngle_J2000 (double dT)
         {
-            return (Series_Ecliptic_StartAngle [5] * dT + Series_Ecliptic_StartAngle [3]) * dT + Series_Ecliptic_StartAngle [0];
+            return (Series_Ecliptic_StartAngle [2] * dT + Series_Ecliptic_StartAngle [1]) * dT + Series_Ecliptic_StartAngle [0];
         }
 
         public static double EclipticPrecessionInclination (double T1, double dT)
@@ -93,7 +93,7 @@ namespace SpaceOdyssey
 
         public static double EclipticPrecessionInclination_J2000 (double dT)
         {
-            return ((Series_Ecliptic_Inclination_J2000 [5] * dT + Series_Ecliptic_Inclination_J2000 [3]) * dT + Series_Ecliptic_Inclination_J2000 [0]) * dT;
+            return ((Series_Ecliptic_Inclination_J2000 [2] * dT + Series_Ecliptic_Inclination_J2000 [1]) * dT + Series_Ecliptic_Inclination_J2000 [0]) * dT;
         }
 
         /// <summary>
@@ -134,13 +134,13 @@ namespace SpaceOdyssey
             (double sinL,  double cosL)  = Math.SinCos (L);
 
             return new Matrix3 ( cosL * cosP + sinL * sinP * cospi,
-                                 sinL * cosP - cosL * sinP * cospi,
-                                 sinP * sinpi,
                                  cosL * sinP - sinL * cosP * cospi,
-                                 sinL * sinP + cosL * cosP * cospi,
-                                -cosP * sinpi,
                                 -sinL * sinpi,
+                                 sinL * cosP - cosL * sinP * cospi,
+                                 sinL * sinP + cosL * cosP * cospi,
                                  cosL * sinpi,
+                                 sinP * sinpi,                                                                 
+                                -cosP * sinpi,
                                  cospi);
         }
     }

@@ -8,12 +8,12 @@ namespace SpaceOdyssey.Cosmodynamics
     {
         private static double EllipticEquation (double E, params double [] param)
         {
-            return E - param [0] * Math.Sin (E) - param [1];
+            return E - param [0] * Double.Sin (E) - param [1];
         }
 
         private static double EllipticDerivative (double E, params double [] param)
         {
-            return 1.0 - param [0] * Math.Cos (E);
+            return 1.0 - param [0] * Double.Cos (E);
         }
 
         public static double Elliptic (double M, double eccentricity, double epsilon)

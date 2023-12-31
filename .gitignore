@@ -32,3 +32,11 @@ src/SpaceOdyssey.Kernel.Tests/obj/
 src/SpaceOdyssey.Kernel/bin/
 
 src/SpaceOdyssey.Kernel/obj/
+
+src/SpaceOdyssey.Cosmodynamics/bin/
+
+src/SpaceOdyssey.Cosmodynamics/obj/
+
+src/SpaceOdyssey.Cosmodynamics.Tests/bin/
+
+src/SpaceOdyssey.Cosmodynamics.Tests/obj/

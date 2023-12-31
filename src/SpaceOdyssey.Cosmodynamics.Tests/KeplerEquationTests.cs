@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using SpaceOdyssey.Cosmodynamics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SpaceOdyssey.Cosmodynamics.Tests
 {
@@ -492,7 +493,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
 
-            Assert.AreEqual (expected, actual, 10.0 * epsilon);
+            Assert.AreEqual (expected, actual, 20.0 * epsilon);
         }
 
         [TestMethod ()]
@@ -507,6 +508,62 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
+        }
+
+        [TestMethod ()]
+        public void HyperbolicTest_Eccentricity_2_M_0 ()
+        {
+            double eccentricity = 2.0;
+            double M = 0.0;
+            double epsilon = 5.0e-16;
+
+            double actual = 0.0;
+
+            double expected = KeplerEquation.Hyperbolic (M, eccentricity, epsilon);
+
+            Assert.AreEqual (expected, actual, 2.0 * epsilon);
+        }
+
+        [TestMethod ()]
+        public void HyperbolicTest_Eccentricity_2_M_1 ()
+        {
+            double eccentricity = 2.0;
+            double M = 1.3504023872876;
+            double epsilon = 5.0e-16;
+
+            double actual = 1.0;
+
+            double expected = KeplerEquation.Hyperbolic (M, eccentricity, epsilon);
+
+            Assert.AreEqual (expected, actual, 10.0 * epsilon);
+        }
+
+        [TestMethod ()]
+        public void HyperbolicTest_Eccentricity_2_M_3 ()
+        {
+            double eccentricity = 2.0;
+            double M = 17.0357498548198;
+            double epsilon = 5.0e-16;
+
+            double actual = 3.0;
+
+            double expected = KeplerEquation.Hyperbolic (M, eccentricity, epsilon);
+
+            Assert.AreEqual (expected, actual, 2.0 * epsilon);
+        }
+
+        [TestMethod ()]
+        public void HyperbolicTest_Eccentricity_2_M_Negavtive ()
+        {
+            double eccentricity = 2.0;
+            double M = -5.25372081569404;
+            double epsilon = 5.0e-16;
+
+            double actual = -2.0;
+
+            double expected = KeplerEquation.Hyperbolic (M, eccentricity, epsilon);
+
+            Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
     }
 }

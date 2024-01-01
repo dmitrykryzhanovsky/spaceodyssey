@@ -42,10 +42,5 @@ namespace SpaceOdyssey.Cosmodynamics
 
             return (a, n);
         }
-
-        public static double ComputeMotionForHyperbola (double k, double a)
-        {
-            return k / (-a * Double.Sqrt (-a));
-        }
     }
 }

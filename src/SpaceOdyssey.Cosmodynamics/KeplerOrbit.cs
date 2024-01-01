@@ -4,14 +4,7 @@ namespace SpaceOdyssey.Cosmodynamics
 {
     public abstract class KeplerOrbit
     {
-        internal static readonly string [] OrbitalElementName = new string []
-        {
-            "semi-major axis",
-            "mean motion",
-            "orbital period"
-        };
-
-        private IGravityMass _gravityMass;
+        private IGravityMass _orbitalCenter;
 
         private double _p;
 
@@ -21,9 +14,9 @@ namespace SpaceOdyssey.Cosmodynamics
 
         private double _n;
 
-        protected KeplerOrbit (IGravityMass gravityMass, double p, double e, double rmin, double n)
+        protected KeplerOrbit (IGravityMass orbitalCenter, double p, double e, double rmin, double n)
         {
-            _gravityMass = gravityMass;
+            _orbitalCenter = orbitalCenter;
 
             _p    = p;
             _e    = e;

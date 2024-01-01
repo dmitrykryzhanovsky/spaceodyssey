@@ -4,8 +4,8 @@
     {
         private double _a;
 
-        protected NonParabolicOrbit (IGravityMass gravityMass, double p, double e, double a, double rmin, double n) : 
-            base (gravityMass, p, e, rmin, n)
+        protected NonParabolicOrbit (IGravityMass orbitalCenter, double p, double e, double a, double rmin, double n) : 
+            base (orbitalCenter, p, e, rmin, n)
         {
         }
     }

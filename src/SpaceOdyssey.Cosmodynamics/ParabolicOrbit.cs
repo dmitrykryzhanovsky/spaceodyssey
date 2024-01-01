@@ -2,7 +2,7 @@
 {
     public class ParabolicOrbit : KeplerOrbit
     {
-        private ParabolicOrbit (IGravityMass gravityMass, double p, double e, double rmin, double n) : base (gravityMass, p, e, rmin, n)
+        private ParabolicOrbit (IGravityMass orbitalCenter, double p, double e, double rmin, double n) : base (orbitalCenter, p, e, rmin, n)
         {
         }
     }

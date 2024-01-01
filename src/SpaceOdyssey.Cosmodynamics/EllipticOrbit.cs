@@ -6,8 +6,8 @@
 
         private double _T;
 
-        protected EllipticOrbit (IGravityMass gravityMass, double p, double e, double a, double rmin, double rmax, double n, double T) :
-            base (gravityMass, p, e, a, rmin, n)
+        protected EllipticOrbit (IGravityMass orbitalCenter, double p, double e, double a, double rmin, double rmax, double n, double T) :
+            base (orbitalCenter, p, e, a, rmin, n)
         {
         }
     }

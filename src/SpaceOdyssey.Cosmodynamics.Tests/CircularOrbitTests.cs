@@ -14,7 +14,19 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     public class CircularOrbitTests
     {
         [TestMethod ()]
-        public void CreateCircularOrbitTest ()
+        public void CreateBySemiMajorAxisTest ()
+        {
+            Assert.Fail ();
+        }
+
+        [TestMethod ()]
+        public void CreateByMeanMotionTest ()
+        {
+            Assert.Fail ();
+        }
+
+        [TestMethod ()]
+        public void CreateByOrbitalPeriodTest ()
         {
             Assert.Fail ();
         }

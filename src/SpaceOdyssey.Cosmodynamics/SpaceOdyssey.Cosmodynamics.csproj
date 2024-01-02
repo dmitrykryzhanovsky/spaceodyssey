@@ -7,6 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Reference Include="Archimedes.Kernel">
+      <HintPath>..\..\..\archimedes\src\Archimedes.Kernel\bin\Release\net7.0\Archimedes.Kernel.dll</HintPath>
+    </Reference>
     <Reference Include="Archimedes.Numerical">
       <HintPath>..\..\..\archimedes\src\Archimedes.Numerical\bin\Release\net7.0\Archimedes.Numerical.dll</HintPath>
     </Reference>

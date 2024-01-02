@@ -1,46 +1,18 @@
-﻿using System;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Формулы для вычислений для кеплеровых орбит.
     /// </summary>
     public static class KeplerOrbitFormulae
     {
-        /// <summary>
-        /// Вычисляет среднее движение n и орбитальный период T для эллиптической орбиты по большой полуоси a.
-        /// </summary>
-        /// <param name="k">Гравитационный параметр.</param>
-        public static (double n, double T) ComputeMotionAndPeriodForEllipse (double k, double a)
+        public static bool IsEccentricityValidForEllipse (double e)
         {
-            double n = k / (a * Double.Sqrt (a));
-            double T = Double.Tau / n;
-
-            return (n, T);
+            return ((0.0 <= e) && (e < 1.0));
         }
 
-        /// <summary>
-        /// Вычисляет большую полуось a и орбитальный период T для эллиптической орбиты по среднему движению n.
-        /// </summary>
-        /// <param name="k2">Квадрат гравитационного параметра.</param>
-        public static (double a, double T) ComputeSemiAxisAndPeriodForEllipse (double k2, double n)
+        public static bool IsEccentricityValidForHyperbola (double e)
         {
-            double a = Double.Cbrt (k2 / (n * n));
-            double T = Double.Tau / n;
-
-            return (a, T);
-        }
-
-        /// <summary>
-        /// Вычисляет большую полуось a и среднее движение n для эллиптической орбиты по орбитальному периоду T.
-        /// </summary>
-        /// <param name="k2">Квадрат гравитационного параметра.</param>
-        public static (double a, double n) ComputeSemiAxisAndMotionForEllipse (double k2, double T)
-        {
-            double n = Double.Tau / T;
-            double a = Double.Cbrt (k2 / (n * n));
-
-            return (a, n);
+            return (e > 1.0);
         }
     }
 }

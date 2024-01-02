@@ -1,6 +1,4 @@
-﻿using System;
-
-using Archimedes.Numerical;
+﻿using Archimedes.Numerical;
 
 namespace SpaceOdyssey.Cosmodynamics
 {
@@ -18,7 +16,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </list></param>
         private static double EllipticEquation (double E, params double [] param)
         {
-            return E - param [0] * Double.Sin (E) - param [1];
+            return E - param [0] * double.Sin (E) - param [1];
         }
 
         /// <summary>
@@ -30,7 +28,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </list></param>
         private static double EllipticDerivative (double E, params double [] param)
         {
-            return 1.0 - param [0] * Double.Cos (E);
+            return 1.0 - param [0] * double.Cos (E);
         }
 
         /// <summary>
@@ -53,7 +51,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </list></param>
         private static double HyperbolicEquation (double H, params double [] param)
         {
-            return param [0] * Double.Sinh (H) - H - param [1];
+            return param [0] * double.Sinh (H) - H - param [1];
         }
 
         /// <summary>
@@ -65,7 +63,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </list></param>
         private static double HyperbolicDerivative (double H, params double [] param)
         {
-            return param [0] * Double.Cosh (H) - 1.0;
+            return param [0] * double.Cosh (H) - 1.0;
         }
 
         /// <summary>

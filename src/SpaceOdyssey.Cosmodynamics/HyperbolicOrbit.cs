@@ -32,7 +32,7 @@
             _e    = eccentricity;
             _amin = periapsis;
 
-            _e2factor = double.Sqrt (_e * _e - 1.0);
+            _e2factor  = double.Sqrt (_e * _e - 1.0);
             _asymptote = double.Acos (-1.0 / _e);
 
             _p = _amin * (1.0 + _e);

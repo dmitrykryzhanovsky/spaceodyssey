@@ -33,7 +33,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
-        public void SetOrbitalElementsByMeanMotion (double eccentricity, double meanMotion)
+        public override void SetOrbitalElementsByMeanMotion (double eccentricity, double meanMotion)
         {
             CheckEccentricity (eccentricity);
             CheckMeanMotion (meanMotion);
@@ -71,7 +71,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _n = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (_T);
         }
 
-        public void SetOrbitalElementsByPeriapsis (double eccentricity, double periapsis)
+        public override void SetOrbitalElementsByPeriapsis (double eccentricity, double periapsis)
         {
             CheckEccentricity (eccentricity);
             CheckPeriapsis (periapsis);
@@ -90,7 +90,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
-        public void SetOrbitalElementsByPeriapsisAndMeanMotion (double periapsis, double meanMotion)
+        public override void SetOrbitalElementsByPeriapsisAndMeanMotion (double periapsis, double meanMotion)
         {
             CheckPeriapsis (periapsis);
             CheckMeanMotion (meanMotion);

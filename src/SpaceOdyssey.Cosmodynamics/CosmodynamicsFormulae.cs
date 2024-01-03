@@ -7,6 +7,11 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public static class CosmodynamicsFormulae
     {
+        public static double Radius (double p, double e, double trueAnomaly)
+        {
+            return p / (1.0 + e * double.Cos (trueAnomaly));
+        }
+
         public static bool IsEccentricityValidForEllipse (double e)
         {
             return ((0.0 <= e) && (e < 1.0));

@@ -10,7 +10,7 @@ namespace SpaceOdyssey.Cosmodynamics
         {
         }
 
-        public void SetOrbitalElementsByMeanMotion (double eccentricity, double meanMotion)
+        public override void SetOrbitalElementsByMeanMotion (double eccentricity, double meanMotion)
         {
             CheckEccentricity (eccentricity);
             CheckMeanMotion (meanMotion);
@@ -26,7 +26,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _amin = _a * (1.0 - _e);
         }
 
-        public void SetOrbitalElementsByPeriapsis (double eccentricity, double periapsis)
+        public override void SetOrbitalElementsByPeriapsis (double eccentricity, double periapsis)
         {
             CheckEccentricity (eccentricity);
             CheckPeriapsis (periapsis);
@@ -43,21 +43,20 @@ namespace SpaceOdyssey.Cosmodynamics
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForHyperbola (K, _a);
         }
 
-        public void SetOrbitalElementsByPeriapsisAndMeanMotion (double periapsis, double meanMotion)
+        public override void SetOrbitalElementsByPeriapsisAndMeanMotion (double periapsis, double meanMotion)
         {
             CheckPeriapsis (periapsis);
             CheckMeanMotion (meanMotion);
 
             _amin = periapsis;
             _n    = meanMotion;
-            // TODO: эксцентриситет, p и другие характеристики для гиперболы
-            _a = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            
+            _a = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _p = _amin * (2.0 - _amin / _a);
 
             _e         = (_a - _amin) / _a;
             _e2factor  = double.Sqrt (_amin * (_amin - 2.0 * _a)) / _a;
-            _asymptote = double.Acos (_a / (_amin - _a));
-
-            _p = _amin * (2.0 - _amin / _a);
+            _asymptote = double.Acos (_a / (_amin - _a));            
         }
 
         private static void CheckEccentricity (double eccentricity)

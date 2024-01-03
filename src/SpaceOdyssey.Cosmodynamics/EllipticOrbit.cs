@@ -90,6 +90,26 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        public void SetOrbitalElementsByPeriapsisAndMeanMotion (double periapsis, double meanMotion)
+        {
+            CheckPeriapsis (periapsis);
+            CheckMeanMotion (meanMotion);
+
+            _amin = periapsis;
+            _n    = meanMotion;
+
+            _a = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+
+            _e        = (_a - _amin) / _a;
+            _e2factor = double.Sqrt (_amin * (2.0 * _a - _amin)) / _a;
+
+            _p    = _amin * (2.0 - _amin / _a);
+            _b    = double.Sqrt (_amin * (2.0 * _a * - _amin));
+            _amax = 2.0 * _a - _amin;
+
+            _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+        }
+
         public void SetOrbitalElementsByApoapsis (double eccentricity, double apoapsis)
         {
             CheckEccentricity (eccentricity);
@@ -109,7 +129,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
-        public void SetOrbitalElementsByNearestFarthestDistances (double periapsis, double apoapsis)
+        public void SetOrbitalElementsByApsisDistances (double periapsis, double apoapsis)
         {
             CheckPeriapsis (periapsis);
             CheckApoapsis (apoapsis);

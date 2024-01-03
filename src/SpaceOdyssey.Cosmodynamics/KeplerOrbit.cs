@@ -21,14 +21,14 @@
             _orbitalCenter = orbitalCenter;
         }
 
-        protected static void CheckNearestDistance (double amin)
+        protected static void CheckPeriapsis (double periapsis)
         {
-            if (amin <= 0.0) throw new ArgumentOutOfRangeException (ExceptionMessageText.NearestDistanceRange);
+            if (periapsis <= 0.0) throw new DimensionalElementNegativeException ();
         }
 
-        protected static void CheckMeanMotion (double n)
+        protected static void CheckMeanMotion (double meanMotion)
         {
-            if (n <= 0.0) throw new ArgumentOutOfRangeException (ExceptionMessageText.MeanMotionRange);
+            if (meanMotion <= 0.0) throw new TemporalElementNegativeException ();
         }
     }
 }

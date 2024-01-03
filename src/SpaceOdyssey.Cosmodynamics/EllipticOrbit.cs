@@ -16,7 +16,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         public void SetOrbitalElementsBySemiMajorAxis (double eccentricity, double semiMajorAxis)
         {
-            CheckEccentricityForEllipse (eccentricity);
+            CheckEccentricity (eccentricity);
             CheckSemiMajorAxis (semiMajorAxis);
 
             _e = eccentricity;
@@ -29,13 +29,13 @@ namespace SpaceOdyssey.Cosmodynamics
             _amin = _a * (1.0 - _e);
             _amax = _a * (1.0 + _e);
 
-            _n = K / (_a * double.Sqrt (_a));
-            _T = double.Tau / _n;
+            _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
+            _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
         public void SetOrbitalElementsByMeanMotion (double eccentricity, double meanMotion)
         {
-            CheckEccentricityForEllipse (eccentricity);
+            CheckEccentricity (eccentricity);
             CheckMeanMotion (meanMotion);
 
             _e = eccentricity;
@@ -43,18 +43,18 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _e2factor = double.Sqrt (1.0 - _e * _e);
 
-            _a    = double.Cbrt (K2 / (_n * _n)); ;
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
             _p    = _a * (1.0 - _e * _e);
             _b    = _a * _e2factor;
             _amin = _a * (1.0 - _e);
             _amax = _a * (1.0 + _e);
 
-            _T = double.Tau / _n;
+            _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
         public void SetOrbitalElementsByOrbitalPeriod (double eccentricity, double orbitalPeriod)
         {
-            CheckEccentricityForEllipse (eccentricity);
+            CheckEccentricity (eccentricity);
             CheckOrbitalPeriod (orbitalPeriod);
 
             _e = eccentricity;
@@ -62,19 +62,19 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _e2factor = double.Sqrt (1.0 - _e * _e);
 
-            _a    = double.Cbrt (K2 * _T * _T / MathConst.M_4_PI_SQR);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (K2, _T);
             _p    = _a * (1.0 - _e * _e);
             _b    = _a * _e2factor;
             _amin = _a * (1.0 - _e);
             _amax = _a * (1.0 + _e);
 
-            _n = double.Tau / _T;
+            _n = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (_T);
         }
 
         public void SetOrbitalElementsByPeriapsis (double eccentricity, double periapsis)
         {
-            CheckEccentricityForEllipse (eccentricity);
-            CheckNearestDistance (periapsis);
+            CheckEccentricity (eccentricity);
+            CheckPeriapsis (periapsis);
 
             _e    = eccentricity;
             _amin = periapsis;
@@ -86,14 +86,14 @@ namespace SpaceOdyssey.Cosmodynamics
             _b    = _amin * double.Sqrt ((1.0 + _e) / (1.0 - _e));
             _amax = _amin * (1.0 + _e) / (1.0 - _e);
 
-            _n = K / (_a * double.Sqrt (_a));
-            _T = double.Tau / _n;
+            _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
+            _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
         public void SetOrbitalElementsByApoapsis (double eccentricity, double apoapsis)
         {
-            CheckEccentricityForEllipse (eccentricity);
-            CheckFarthestDistance (apoapsis);
+            CheckEccentricity (eccentricity);
+            CheckApoapsis (apoapsis);
 
             _e    = eccentricity;
             _amax = apoapsis;
@@ -105,14 +105,14 @@ namespace SpaceOdyssey.Cosmodynamics
             _b    = _amax * double.Sqrt ((1.0 - _e) / (1.0 + _e));
             _amin = _amax * (1.0 - _e) / (1.0 + _e);
 
-            _n = K / (_a * double.Sqrt (_a));
-            _T = double.Tau / _n;
+            _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
+            _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
         public void SetOrbitalElementsByNearestFarthestDistances (double periapsis, double apoapsis)
         {
-            CheckNearestDistance (periapsis);
-            CheckFarthestDistance (apoapsis);
+            CheckPeriapsis (periapsis);
+            CheckApoapsis (apoapsis);
             CheckApsisDistances (periapsis, apoapsis);
 
             _amin = periapsis;
@@ -127,33 +127,33 @@ namespace SpaceOdyssey.Cosmodynamics
             _a = majorAxis / 2.0;
             _b = double.Sqrt (_amax * _amin);
 
-            _n = K / (_a * double.Sqrt (_a));
-            _T = double.Tau / _n;
+            _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
+            _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
-        private static void CheckEccentricityForEllipse (double e)
+        private static void CheckEccentricity (double eccentricity)
         {
-            if (!KeplerOrbitFormulae.IsEccentricityValidForEllipse (e)) throw new ArgumentOutOfRangeException (ExceptionMessageText.EllipseEccentricityRange);
+            if (!CosmodynamicsFormulae.IsEccentricityValidForEllipse (eccentricity)) throw new EllipseEccentricityOutOfRangeException ();
         }
 
-        protected static void CheckSemiMajorAxis (double a)
+        protected static void CheckSemiMajorAxis (double semiMajorAxis)
         {
-            if (a <= 0.0) throw new ArgumentOutOfRangeException (ExceptionMessageText.EllipseSemiMajorAxisRange);
+            if (semiMajorAxis <= 0.0) throw new DimensionalElementNegativeException ();
         }
 
-        private static void CheckFarthestDistance (double amax)
+        private static void CheckApoapsis (double apoapsis)
         {
-            if (amax <= 0.0) throw new ArgumentOutOfRangeException (ExceptionMessageText.FarthestDistanceRange);
+            if (apoapsis <= 0.0) throw new DimensionalElementNegativeException ();
         }
 
-        private static void CheckApsisDistances (double amin, double amax)
+        private static void CheckApsisDistances (double periapsis, double apoapsis)
         {
-            if (amin > amax) throw new ArgumentException (ExceptionMessageText.ApsisDistancesOrder);
+            if (periapsis > apoapsis) throw new MinMaxDisorderException ("periapsis", "apoapsis");
         }        
 
-        protected static void CheckOrbitalPeriod (double T)
+        protected static void CheckOrbitalPeriod (double orbitalPeriod)
         {
-            if (T <= 0.0) throw new ArgumentOutOfRangeException (ExceptionMessageText.OrbitalPeriodRange);
+            if (orbitalPeriod <= 0.0) throw new TemporalElementNegativeException ();
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     public abstract class EccentricityOutOfRangeException : ArgumentOutOfRangeException
     {

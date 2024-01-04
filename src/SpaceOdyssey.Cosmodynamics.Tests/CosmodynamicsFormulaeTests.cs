@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using SpaceOdyssey.Cosmodynamics;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using Archimedes;
 
@@ -64,15 +65,171 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void IsEccentricityValidForEllipseTest ()
+        public void IsEccentricityValidForEllipseTest_Less0 ()
         {
-            Assert.Fail ();
+            double e = -1.0;
+
+            bool expected = false;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
         }
 
         [TestMethod ()]
-        public void IsEccentricityValidForHyperbolaTest ()
+        public void IsEccentricityValidForEllipseTest_Near0Left ()
         {
-            Assert.Fail ();
+            double e = -1.0e-15;
+
+            bool expected = false;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForEllipseTest_0 ()
+        {
+            double e = 0.0;
+
+            bool expected = true;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForEllipseTest_Near0Right ()
+        {
+            double e = 1.0e-15;
+
+            bool expected = true;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForEllipseTest_Between_0_1 ()
+        {
+            double e = 0.5;
+
+            bool expected = true;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForEllipseTest_Near1Left ()
+        {
+            double e = 1.0 - 1.0e-15;
+
+            bool expected = true;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForEllipseTest_1 ()
+        {
+            double e = 1.0;
+
+            bool expected = false;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForEllipseTest_Near1Right ()
+        {
+            double e = 1.0 + 1.0e-15;
+
+            bool expected = false;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForEllipseTest_Greater1 ()
+        {
+            double e = 2.0;
+
+            bool expected = false;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForEllipse (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForHyperbolaTest_Less1 ()
+        {
+            double e = 0.5;
+
+            bool expected = false;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForHyperbola (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForHyperbolaTest_Near1Left ()
+        {
+            double e = 1.0 - 1.0e-15;
+
+            bool expected = false;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForHyperbola (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForHyperbolaTest_1 ()
+        {
+            double e = 1.0;
+
+            bool expected = false;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForHyperbola (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForHyperbolaTest_Near1Right ()
+        {
+            double e = 1.0 + 1.0e-15;
+
+            bool expected = true;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForHyperbola (e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void IsEccentricityValidForHyperbolaTest_Greater1 ()
+        {
+            double e = 2.0;
+
+            bool expected = true;
+
+            bool actual = CosmodynamicsFormulae.IsEccentricityValidForHyperbola (e);
+
+            Assert.AreEqual (expected, actual);
         }
     }
 }

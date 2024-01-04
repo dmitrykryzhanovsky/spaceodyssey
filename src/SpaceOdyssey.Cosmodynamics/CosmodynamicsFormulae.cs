@@ -18,11 +18,18 @@ namespace SpaceOdyssey.Cosmodynamics
             return p / (1.0 + e * double.Cos (trueAnomaly));
         }
 
+        /// <summary>
+        /// Возвращает TRUE, если значение эксцентриситета e соответствует эллипсу, то есть лежит на полуинтервале [0; 1). В противном 
+        /// случае FALSE.
+        /// </summary>
         public static bool IsEccentricityValidForEllipse (double e)
         {
             return ((0.0 <= e) && (e < 1.0));
         }
 
+        /// <summary>
+        /// Возвращает TRUE, если значение эксцентриситета e соответствует гиперболе, то есть строго больше 1. В противном случае FALSE.
+        /// </summary>
         public static bool IsEccentricityValidForHyperbola (double e)
         {
             return (e > 1.0);

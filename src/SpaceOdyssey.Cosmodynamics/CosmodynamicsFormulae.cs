@@ -35,6 +35,11 @@ namespace SpaceOdyssey.Cosmodynamics
             return (e > 1.0);
         }
 
+        /// <summary>
+        /// Вычисляет большую полуось орбиты по квадрату её гравитационной постоянной K2 и среднему движению n.
+        /// </summary>
+        /// <remarks>Возвращает положительное число. Таким образом, для гиперболической орбиты вычисляется не собственно большая полуось, 
+        /// а её абсолютное значение.</remarks>
         public static double SemiMajorAxisByMeanMotion (double K2, double n)
         {
             return double.Cbrt (K2 / (n * n));

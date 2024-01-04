@@ -231,5 +231,18 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (expected, actual);
         }
+
+        [TestMethod ()]
+        public void SemiMajorAxisByMeanMotionTest ()
+        {
+            double K2 = AstroConst.GaussianGravitationalConstant2;
+            double n = Trigonometry.DegToRad (0.98560911311504671);
+
+            double expected = 0.999999022929777;
+
+            double actual = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, n);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
     }
 }

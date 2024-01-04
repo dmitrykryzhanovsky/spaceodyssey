@@ -36,40 +36,54 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         /// <summary>
-        /// Вычисляет большую полуось орбиты по квадрату её гравитационной постоянной K2 и среднему движению n.
+        /// Вычисляет большую полуось орбиты по квадрату её гравитационной постоянной k2 и среднему движению n.
         /// </summary>
         /// <remarks>Возвращает положительное число. Таким образом, для гиперболической орбиты вычисляется не собственно большая полуось, 
         /// а её абсолютное значение.</remarks>
-        public static double SemiMajorAxisByMeanMotion (double K2, double n)
+        public static double SemiMajorAxisByMeanMotion (double k2, double n)
         {
-            return double.Cbrt (K2 / (n * n));
+            return double.Cbrt (k2 / (n * n));
         }
 
         /// <summary>
-        /// Вычисляет большую полуось орбиты по квадрату её гравитационной постоянной K2 и орбитальному периоду T.
+        /// Вычисляет большую полуось орбиты по квадрату её гравитационной постоянной k2 и орбитальному периоду T.
         /// </summary>
         /// <remarks>Возвращает положительное число. Таким образом, для гиперболической орбиты вычисляется не собственно большая полуось, 
         /// а её абсолютное значение.</remarks>
-        public static double SemiMajorAxisByOrbitalPeriod (double K2, double T)
+        public static double SemiMajorAxisByOrbitalPeriod (double k2, double T)
         {
-            return double.Cbrt (K2 * T * T / MathConst.M_4_PI_SQR);
+            return double.Cbrt (k2 * T * T / MathConst.M_4_PI_SQR);
         }
 
+        /// <summary>
+        /// Вычисляет среднее движение по эллиптической орбите по её гравитационной постоянной k и большой полуоси a.
+        /// </summary>
+        /// <param name="a">Для эллипса a должно быть положительным.</param>
         public static double MeanMotionBySemiMajorAxisForEllipse (double k, double a)
         {
             return k / (a * double.Sqrt (a));
         }
 
+        /// <summary>
+        /// Вычисляет среднее движение по гиперболической орбите по её гравитационной постоянной k и большой полуоси a.
+        /// </summary>
+        /// <param name="a">Для гиперболы a должно быть отрицательным.</param>
         public static double MeanMotionBySemiMajorAxisForHyperbola (double k, double a)
         {
             return k / (-a * double.Sqrt (-a));
         }
 
+        /// <summary>
+        /// Вычисляет среднее движение по орбитальному периоду T.
+        /// </summary>
         public static double MeanMotionByOrbitalPeriod (double T)
         {
             return double.Tau / T;
         }
 
+        /// <summary>
+        /// Вычисляет орбитальный период по среднему движению n.
+        /// </summary>
         public static double OrbitalPeriodByMeanMotion (double n)
         {
             return double.Tau / n;

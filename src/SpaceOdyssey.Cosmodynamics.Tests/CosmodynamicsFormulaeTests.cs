@@ -235,12 +235,12 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void SemiMajorAxisByMeanMotionTest ()
         {
-            double K2 = AstroConst.GaussianGravitationalConstant2;
+            double k2 = AstroConst.GaussianGravitationalConstant2;
             double n = Trigonometry.DegToRad (0.98560911311504671);
 
             double expected = 0.999999022929777;
 
-            double actual = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, n);
+            double actual = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (k2, n);
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }
@@ -248,14 +248,64 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void SemiMajorAxisByOrbitalPeriodTest ()
         {
-            double K2 = AstroConst.GaussianGravitationalConstant2;
+            double k2 = AstroConst.GaussianGravitationalConstant2;
             double T = 365.256363004;
 
             double expected = 0.999999022929777;
 
-            double actual = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (K2, T);
+            double actual = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (k2, T);
 
             Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void MeanMotionBySemiMajorAxisForEllipseTest ()
+        {
+            double k = AstroConst.GaussianGravitationalConstant;
+            double a = 0.999999022929777;
+
+            double expected = 0.0172021241615188;
+
+            double actual = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (k, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-16);
+        }
+
+        [TestMethod ()]
+        public void MeanMotionBySemiMajorAxisForHyperbolaTest ()
+        {
+            double k = AstroConst.GaussianGravitationalConstant;
+            double a = -0.999999022929777;
+
+            double expected = 0.0172021241615188;
+
+            double actual = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForHyperbola (k, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-16);
+        }
+
+        [TestMethod ()]
+        public void MeanMotionByOrbitalPeriodTest ()
+        {
+            double T = 365.256363004;
+
+            double expected = 0.0172021241615188;
+
+            double actual = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (T);
+
+            Assert.AreEqual (expected, actual, 1.0e-16);
+        }
+
+        [TestMethod ()]
+        public void OrbitalPeriodByMeanMotionTest ()
+        {
+            double n = 0.0172021241615188;
+
+            double expected = 365.256363004;
+
+            double actual = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (n);
+
+            Assert.AreEqual (expected, actual, 1.0e-12);
         }
     }
 }

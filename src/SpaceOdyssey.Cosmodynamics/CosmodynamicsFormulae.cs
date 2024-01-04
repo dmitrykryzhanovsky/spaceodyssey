@@ -45,6 +45,11 @@ namespace SpaceOdyssey.Cosmodynamics
             return double.Cbrt (K2 / (n * n));
         }
 
+        /// <summary>
+        /// Вычисляет большую полуось орбиты по квадрату её гравитационной постоянной K2 и орбитальному периоду T.
+        /// </summary>
+        /// <remarks>Возвращает положительное число. Таким образом, для гиперболической орбиты вычисляется не собственно большая полуось, 
+        /// а её абсолютное значение.</remarks>
         public static double SemiMajorAxisByOrbitalPeriod (double K2, double T)
         {
             return double.Cbrt (K2 * T * T / MathConst.M_4_PI_SQR);

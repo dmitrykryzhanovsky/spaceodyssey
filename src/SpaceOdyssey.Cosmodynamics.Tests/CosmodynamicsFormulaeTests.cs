@@ -244,5 +244,18 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }
+
+        [TestMethod ()]
+        public void SemiMajorAxisByOrbitalPeriodTest ()
+        {
+            double K2 = AstroConst.GaussianGravitationalConstant2;
+            double T = 365.256363004;
+
+            double expected = 0.999999022929777;
+
+            double actual = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (K2, T);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
     }
 }

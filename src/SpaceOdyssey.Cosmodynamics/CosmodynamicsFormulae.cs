@@ -7,6 +7,12 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public static class CosmodynamicsFormulae
     {
+        /// <summary>
+        /// Вычисляет расстояние до центра (одного из фокусов ) орбиты в точке с заданной истинной аномалией.
+        /// </summary>
+        /// <param name="p">Орбитальный параметр.</param>
+        /// <param name="e">Эксцентриситет.</param>
+        /// <param name="trueAnomaly">Истинная аномалия.</param>
         public static double Radius (double p, double e, double trueAnomaly)
         {
             return p / (1.0 + e * double.Cos (trueAnomaly));

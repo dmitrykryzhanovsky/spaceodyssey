@@ -19,4 +19,10 @@
     <ProjectReference Include="..\SpaceOdyssey.Cosmodynamics\SpaceOdyssey.Cosmodynamics.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Archimedes.Kernel">
+      <HintPath>..\..\..\archimedes\src\Archimedes.Kernel\bin\Release\net7.0\Archimedes.Kernel.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

@@ -63,7 +63,7 @@
         /// Инициализация элементов орбиты через орбитальный период orbitalPeriod.
         /// </summary>
         /// <param name="orbitalPeriod">Должен быть больше 0.</param>
-        /// <exception cref="TemporalElementNegativeException">Если meanMotion <= 0.</exception>
+        /// <exception cref="TemporalElementNegativeException">Если orbitalPeriod <= 0.</exception>
         public void SetOrbitalElementsByOrbitalPeriod (double orbitalPeriod)
         {
             CheckOrbitalPeriod (orbitalPeriod);

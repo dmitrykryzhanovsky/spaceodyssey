@@ -40,10 +40,21 @@ namespace SpaceOdyssey.Cosmodynamics
             get => _T;
         }
 
+        #region Constructors
+
         public EllipticOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
         {
         }
 
+        #endregion
+
+        /// <summary>
+        /// Инициализация элементов орбиты через эксцентриситет eccentricity и большую полуось semiMajorAxis.
+        /// </summary>
+        /// <param name="eccentricity">Должен быть 0 <= eccentricity < 1.</param>
+        /// <param name="semiMajorAxis">Должна быть больше 0.</param>
+        /// <exception cref="EllipseEccentricityOutOfRangeException">Если eccentricity не соответствует эллипсу (либо < 0, либо >= 1).</exception>
+        /// <exception cref="DimensionalElementNegativeException">Если semiMajorAxis <= 0.</exception>
         public void SetOrbitalElementsBySemiMajorAxis (double eccentricity, double semiMajorAxis)
         {
             CheckEccentricity (eccentricity);
@@ -63,6 +74,13 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        /// <summary>
+        /// Инициализация элементов орбиты через эксцентриситет eccentricity и среднее движение meanMotion.
+        /// </summary>
+        /// <param name="eccentricity">Должен быть 0 <= eccentricity < 1.</param>
+        /// <param name="meanMotion">Должно быть больше 0.</param>
+        /// <exception cref="EllipseEccentricityOutOfRangeException">Если eccentricity не соответствует эллипсу (либо < 0, либо >= 1).</exception>
+        /// <exception cref="TemporalElementNegativeException">Если meanMotion <= 0.</exception>
         public override void SetOrbitalElementsByMeanMotion (double eccentricity, double meanMotion)
         {
             CheckEccentricity (eccentricity);
@@ -82,6 +100,13 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        /// <summary>
+        /// Инициализация элементов орбиты через эксцентриситет eccentricity и орбитальный период orbitalPeriod.
+        /// </summary>
+        /// <param name="eccentricity">Должен быть 0 <= eccentricity < 1.</param>
+        /// <param name="orbitalPeriod">Должен быть больше 0.</param>
+        /// <exception cref="EllipseEccentricityOutOfRangeException">Если eccentricity не соответствует эллипсу (либо < 0, либо >= 1).</exception>
+        /// <exception cref="TemporalElementNegativeException">Если orbitalPeriod <= 0.</exception>
         public void SetOrbitalElementsByOrbitalPeriod (double eccentricity, double orbitalPeriod)
         {
             CheckEccentricity (eccentricity);
@@ -101,6 +126,13 @@ namespace SpaceOdyssey.Cosmodynamics
             _n = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (_T);
         }
 
+        /// <summary>
+        /// Инициализация элементов орбиты через эксцентриситет eccentricity и расстояние в перицентре periapsis.
+        /// </summary>
+        /// <param name="eccentricity">Должен быть 0 <= eccentricity < 1.</param>
+        /// <param name="periapsis">Должно быть больше 0.</param>
+        /// <exception cref="EllipseEccentricityOutOfRangeException">Если eccentricity не соответствует эллипсу (либо < 0, либо >= 1).</exception>
+        /// <exception cref="DimensionalElementNegativeException">Если periapsis <= 0.</exception>
         public override void SetOrbitalElementsByPeriapsis (double eccentricity, double periapsis)
         {
             CheckEccentricity (eccentricity);
@@ -120,6 +152,13 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        /// <summary>
+        /// Инициализация элементов орбиты через расстояние в перицентре periapsis и среднее движение meanMotion.
+        /// </summary>
+        /// <param name="periapsis">Должно быть больше 0.</param>
+        /// <param name="meanMotion">Должно быть больше 0.</param>
+        /// <exception cref="DimensionalElementNegativeException">Если periapsis <= 0.</exception>
+        /// <exception cref="TemporalElementNegativeException">Если meanMotion <= 0.</exception>
         public override void SetOrbitalElementsByPeriapsisAndMeanMotion (double periapsis, double meanMotion)
         {
             CheckPeriapsis (periapsis);
@@ -128,18 +167,24 @@ namespace SpaceOdyssey.Cosmodynamics
             _amin = periapsis;
             _n    = meanMotion;
 
-            _a = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
-
-            _e        = (_a - _amin) / _a;
-            _e2factor = double.Sqrt (_amin * (2.0 * _a - _amin)) / _a;
-
-            _p    = _amin * (2.0 - _amin / _a);
-            _b    = double.Sqrt (_amin * (2.0 * _a * - _amin));
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
             _amax = 2.0 * _a - _amin;
+            _p    = _amin * _amax / _a;
+            _b    = double.Sqrt (_amin * _amax);
+
+            _e        = 1.0 - _amin / _a;
+            _e2factor = _b / _a;
 
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        /// <summary>
+        /// Инициализация элементов орбиты через эксцентриситет eccentricity и расстояние в апоцентре apoapsis.
+        /// </summary>
+        /// <param name="eccentricity">Должен быть 0 <= eccentricity < 1.</param>
+        /// <param name="apoapsis">Должно быть больше 0.</param>
+        /// <exception cref="EllipseEccentricityOutOfRangeException">Если eccentricity не соответствует эллипсу (либо < 0, либо >= 1).</exception>
+        /// <exception cref="DimensionalElementNegativeException">Если apoapsis <= 0.</exception>
         public void SetOrbitalElementsByApoapsis (double eccentricity, double apoapsis)
         {
             CheckEccentricity (eccentricity);
@@ -159,6 +204,13 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        /// <summary>
+        /// Инициализация элементов орбиты через расстояния в перицентре periapsis и апоцентре apoapsis.
+        /// </summary>
+        /// <param name="periapsis">Должно быть больше 0.</param>
+        /// <param name="apoapsis">Должно быть больше 0.</param>
+        /// <exception cref="DimensionalElementNegativeException">Если (periapsis <= 0) или (apoapsis <= 0).</exception>
+        /// <exception cref="MinMaxDisorderException">Если periapsis > apoapsis.</exception>
         public void SetOrbitalElementsByApsisDistances (double periapsis, double apoapsis)
         {
             CheckPeriapsis (periapsis);

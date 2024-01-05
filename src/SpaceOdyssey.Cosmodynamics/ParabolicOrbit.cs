@@ -1,5 +1,8 @@
 ﻿namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Параболическая орбита.
+    /// </summary>
     public class ParabolicOrbit : KeplerOrbit
     {
         public ParabolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)

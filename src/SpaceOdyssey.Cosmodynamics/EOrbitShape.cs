@@ -1,13 +1,28 @@
 ﻿namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Формы орбит.
+    /// </summary>
     public enum EOrbitShape
     {
-        Cicrle, 
+        /// <summary>
+        /// Круг.
+        /// </summary>
+        Cicrle,
 
-        Ellipse, 
+        /// <summary>
+        /// Эллипс.
+        /// </summary>
+        Ellipse,
 
-        Parabola, 
+        /// <summary>
+        /// Парабола.
+        /// </summary>
+        Parabola,
 
+        /// <summary>
+        /// Гипербола.
+        /// </summary>
         Hyperbola
     }
 }

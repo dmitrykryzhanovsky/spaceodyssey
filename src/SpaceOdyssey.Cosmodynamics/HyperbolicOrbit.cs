@@ -1,9 +1,12 @@
-﻿using System.Numerics;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Гиперболическая орбита.
+    /// </summary>
     public class HyperbolicOrbit : NonParabolicOrbit
     {
+        // Асимптотический угол гиперболы: такое значение истинной аномалии, при которой расстояние до орбитального центра становится
+        // равным +∞.
         private double _asymptote;
 
         public HyperbolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)

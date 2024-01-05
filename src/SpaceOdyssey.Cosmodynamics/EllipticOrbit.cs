@@ -2,12 +2,18 @@
 
 namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Эллиптическая орбита.
+    /// </summary>
     public class EllipticOrbit : NonParabolicOrbit
     {
+        // Малая полуось эллипса.
         protected double _b;
 
+        // Максимальное расстояние (расстояние в апоцентре).
         protected double _amax;
 
+        // Орбитальный период.
         protected double _T;
 
         public EllipticOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)

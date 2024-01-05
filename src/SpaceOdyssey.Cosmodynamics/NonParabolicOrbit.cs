@@ -13,6 +13,22 @@
         // Большая полуось орбиты, положительная для эллипса и отрицательная для гиперболы.
         protected double _a;
 
+        /// <summary>
+        /// Множитель, связанный с эксцентриситетом.
+        /// </summary>
+        public double E2Factor
+        {
+            get => _e2factor;
+        }
+
+        /// <summary>
+        /// Большая полуось орбиты.
+        /// </summary>
+        public double SemiMajorAxis
+        {
+            get => _a;
+        }
+
         protected NonParabolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
         {
         }

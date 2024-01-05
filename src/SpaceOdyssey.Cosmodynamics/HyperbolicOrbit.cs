@@ -9,6 +9,15 @@
         // равным +∞.
         private double _asymptote;
 
+        /// <summary>
+        /// Асимптотический угол гиперболы: такое значение истинной аномалии, при которой расстояние до орбитального центра становится 
+        /// равным +∞.
+        /// </summary>
+        public double Asymptote
+        {
+            get => _asymptote;
+        }
+
         public HyperbolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
         {
         }

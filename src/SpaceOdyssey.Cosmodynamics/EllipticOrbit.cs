@@ -16,6 +16,30 @@ namespace SpaceOdyssey.Cosmodynamics
         // Орбитальный период.
         protected double _T;
 
+        /// <summary>
+        /// Малая полуось эллипса.
+        /// </summary>
+        public double B
+        {
+            get => _b;
+        }
+
+        /// <summary>
+        /// Максимальное расстояние (расстояние в апоцентре).
+        /// </summary>
+        public double Apoapsis
+        {
+            get => _amax;
+        }
+
+        /// <summary>
+        /// Орбитальный период.
+        /// </summary>
+        public double OrbitalPeriod
+        {
+            get => _T;
+        }
+
         public EllipticOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
         {
         }

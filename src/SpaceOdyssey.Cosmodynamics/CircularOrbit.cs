@@ -5,10 +5,19 @@
     /// </summary>
     public class CircularOrbit : EllipticOrbit
     {
+        #region Constructors
+
         public CircularOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
         {
         }
 
+        #endregion
+
+        /// <summary>
+        /// Инициализация элементов орбиты через большую полуось semiMajorAxis.
+        /// </summary>
+        /// <param name="semiMajorAxis">Должна быть больше 0.</param>
+        /// <exception cref="DimensionalElementNegativeException">Если semiMajorAxis <= 0.</exception>
         public void SetOrbitalElementsBySemiMajorAxis (double semiMajorAxis)
         {
             CheckSemiMajorAxis (semiMajorAxis);
@@ -27,6 +36,11 @@
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        /// <summary>
+        /// Инициализация элементов орбиты через среднее движение meanMotion.
+        /// </summary>
+        /// <param name="meanMotion">Должно быть больше 0.</param>
+        /// <exception cref="TemporalElementNegativeException">Если meanMotion <= 0.</exception>
         public void SetOrbitalElementsByMeanMotion (double meanMotion)
         {
             CheckMeanMotion (meanMotion);
@@ -45,6 +59,11 @@
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        /// <summary>
+        /// Инициализация элементов орбиты через орбитальный период orbitalPeriod.
+        /// </summary>
+        /// <param name="orbitalPeriod">Должен быть больше 0.</param>
+        /// <exception cref="TemporalElementNegativeException">Если meanMotion <= 0.</exception>
         public void SetOrbitalElementsByOrbitalPeriod (double orbitalPeriod)
         {
             CheckOrbitalPeriod (orbitalPeriod);

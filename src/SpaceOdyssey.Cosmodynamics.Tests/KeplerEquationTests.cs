@@ -1,5 +1,6 @@
-﻿using SpaceOdyssey.Cosmodynamics;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+using SpaceOdyssey.Cosmodynamics;
 
 namespace SpaceOdyssey.Cosmodynamics.Tests
 {

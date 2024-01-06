@@ -75,10 +75,14 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        #region Constructors
+
         protected KeplerOrbit (IGravityMass orbitalCenter)
         {
             _orbitalCenter = orbitalCenter;
         }
+
+        #endregion
 
         protected static void CheckPeriapsis (double periapsis)
         {

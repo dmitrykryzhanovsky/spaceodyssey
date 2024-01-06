@@ -8,7 +8,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     public class CircularOrbitTests
     {
         [TestMethod ()]
-        public void SetOrbitalElementsBySemiMajorAxisTest_Common ()
+        public void SetOrbitalElementsBySemiMajorAxisTest ()
         {
             CircularOrbit orbit = new CircularOrbit (SolarSystem.Sun);
             double semiMajorAxis = 0.999999022929777;

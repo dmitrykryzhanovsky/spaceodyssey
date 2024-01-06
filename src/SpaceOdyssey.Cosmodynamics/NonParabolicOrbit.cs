@@ -29,14 +29,27 @@
             get => _a;
         }
 
+        #region Constructors
+
         protected NonParabolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
         {
         }
 
+        #endregion
+
+        /// <summary>
+        /// Инициализация элементов орбиты через эксцентриситет eccentricity и среднее движение meanMotion.
+        /// </summary>
         public abstract void SetOrbitalElementsByMeanMotion (double eccentricity, double meanMotion);
 
+        /// <summary>
+        /// Инициализация элементов орбиты через эксцентриситет eccentricity и расстояние в перицентре periapsis.
+        /// </summary>
         public abstract void SetOrbitalElementsByPeriapsis (double eccentricity, double periapsis);
 
+        /// <summary>
+        /// Инициализация элементов орбиты через расстояние в перицентре periapsis и среднее движение meanMotion.
+        /// </summary>
         public abstract void SetOrbitalElementsByPeriapsisAndMeanMotion (double periapsis, double meanMotion);
     }
 }

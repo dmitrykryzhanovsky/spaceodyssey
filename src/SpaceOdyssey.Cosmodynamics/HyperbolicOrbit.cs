@@ -96,9 +96,13 @@
             _asymptote = double.Acos (_a / (_amin - _a));            
         }
 
+        #region Проверка элементов орбиты на валидность
+
         private static void CheckEccentricity (double eccentricity)
         {
             if (!CosmodynamicsFormulae.IsEccentricityValidForHyperbola (eccentricity)) throw new HyperbolaEccentricityOutOfRangeException ();
         }
+
+        #endregion
     }
 }

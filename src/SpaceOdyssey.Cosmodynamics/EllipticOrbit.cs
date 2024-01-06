@@ -233,6 +233,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
         }
 
+        #region Проверка элементов орбиты на валидность
+
         private static void CheckEccentricity (double eccentricity)
         {
             if (!CosmodynamicsFormulae.IsEccentricityValidForEllipse (eccentricity)) throw new EllipseEccentricityOutOfRangeException ();
@@ -257,5 +259,7 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             if (orbitalPeriod <= 0.0) throw new TemporalElementNegativeException ();
         }
+
+        #endregion
     }
 }

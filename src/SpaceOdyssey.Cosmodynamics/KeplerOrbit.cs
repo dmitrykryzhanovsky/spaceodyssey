@@ -27,8 +27,6 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
-        #region Параметры (элементы) орбиты
-
         // Эксцентриситет орбиты.
         protected double _e;
 
@@ -73,8 +71,6 @@ namespace SpaceOdyssey.Cosmodynamics
             get => _n;
         }
 
-        #endregion
-
         #region Constructors
 
         protected KeplerOrbit (IGravityMass orbitalCenter)
@@ -83,6 +79,8 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         #endregion
+
+        #region Проверка элементов орбиты на валидность
 
         protected static void CheckPeriapsis (double periapsis)
         {
@@ -93,5 +91,7 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             if (meanMotion <= 0.0) throw new TemporalElementNegativeException ();
         }
+
+        #endregion
     }
 }

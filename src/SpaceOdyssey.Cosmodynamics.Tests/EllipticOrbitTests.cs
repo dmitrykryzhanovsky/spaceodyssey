@@ -41,7 +41,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (0.25, orbit.Eccentricity);
             Assert.AreEqual (0.96824583655185422, orbit.E2Factor);
 
-            Assert.AreEqual (0.999999022929777, orbit.SemiMajorAxis, 1.0e-15); 
+            Assert.AreEqual (0.999999022929777, orbit.SemiMajorAxis, 1.0e-15);
             Assert.AreEqual (0.937499083996666, orbit.OrbitalParameter, 1.0e-15);
             Assert.AreEqual (0.968244890507679, orbit.B, 1.0e-15);
             Assert.AreEqual (0.749999267197333, orbit.Periapsis, 1.0e-15);
@@ -159,6 +159,12 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (0.0172021241615188, orbit.MeanMotion, 1.0e-16);
             Assert.AreEqual (365.256363004, orbit.OrbitalPeriod, 1.0e-12);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarPositionTest ()
+        {
+            Assert.Fail ();
         }
     }
 }

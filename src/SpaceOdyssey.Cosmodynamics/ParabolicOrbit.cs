@@ -44,5 +44,10 @@
             _p = 2.0 * _amin;
             _n = K / (_amin * double.Sqrt (2.0 * _amin));
         }
+
+        public override PlanarPosition ComputePlanarPosition (double t)
+        {
+            throw new NotImplementedException ();
+        }
     }
 }

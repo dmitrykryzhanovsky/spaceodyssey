@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Гиперболическая орбита.
@@ -104,5 +106,15 @@
         }
 
         #endregion
+
+        public override PlanarPosition ComputePlanarPosition (double t)
+        {
+            double M = ComputeMeanAnomaly (t);
+            double H = KeplerEquation.Hyperbolic (M, _e, ComputingSettings.DoublePrecision);
+            double x = -_a * (_e - double.Cosh (H));
+            double y = _a * _e2factor * double.Sinh (H);
+
+            return new PlanarPosition (x, y);
+        }
     }
 }

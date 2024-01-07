@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Круговая орбита.
@@ -80,6 +82,11 @@
             _amax = _a;
 
             _n = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (_T);
+        }
+
+        public override PlanarPosition ComputePlanarPosition (double t)
+        {
+            return PlanarPosition.CreatePlanarPositionForCircularOrbit (ComputeMeanAnomaly (t), _a);
         }
     }
 }

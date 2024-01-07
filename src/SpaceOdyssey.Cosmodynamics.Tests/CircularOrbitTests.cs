@@ -69,5 +69,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (0.0172021241615188, orbit.MeanMotion, 1.0e-16);
             Assert.AreEqual (365.256363004, orbit.OrbitalPeriod);
         }
+
+        [TestMethod ()]
+        public void ComputePlanarPositionTest ()
+        {
+            Assert.Fail ();
+        }
     }
 }

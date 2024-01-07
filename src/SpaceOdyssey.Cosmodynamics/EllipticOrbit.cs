@@ -261,5 +261,20 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         #endregion
+
+        public override PlanarPosition ComputePlanarPosition (double t)
+        {
+            double M = ComputeMeanAnomaly (t);
+            double E = KeplerEquation.Elliptic (M, _e, ComputingSettings.DoublePrecision);
+            double x = _a * (double.Cos (E) - _e);
+            double y = _a * _e2factor * double.Sin (E);
+
+            return new PlanarPosition (x, y);
+        }
+
+        protected override double ComputeMeanAnomaly (double t)
+        {
+            return Trigonometry.Normalize (base.ComputeMeanAnomaly (t));
+        }
     }
 }

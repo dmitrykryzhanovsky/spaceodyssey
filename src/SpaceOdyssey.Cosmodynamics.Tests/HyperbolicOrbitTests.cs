@@ -20,9 +20,9 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (0.00141421391592644, orbit.E2Factor, 1.0e-13);
             Assert.AreEqual (3.14017844061667541, orbit.Asymptote, 1.0e-13);
 
-            Assert.AreEqual (-0.999999022929777, orbit.SemiMajorAxis, 1.0e-15); 
-            Assert.AreEqual ( 0.00000199999904586, orbit.OrbitalParameter, 1.0e-16);
-            Assert.AreEqual ( 0.00000099999902293, orbit.Periapsis, 1.0e-16);
+            Assert.AreEqual (-0.999999022929777, orbit.SemiMajorAxis, 1.0e-15);
+            Assert.AreEqual (0.00000199999904586, orbit.OrbitalParameter, 1.0e-16);
+            Assert.AreEqual (0.00000099999902293, orbit.Periapsis, 1.0e-16);
 
             Assert.AreEqual (0.0172021241615188, orbit.MeanMotion);
         }
@@ -41,8 +41,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (2.3005239830218630, orbit.Asymptote);
 
             Assert.AreEqual (-0.999999022929777, orbit.SemiMajorAxis);
-            Assert.AreEqual ( 1.249998778662221, orbit.OrbitalParameter, 1.0e-15);
-            Assert.AreEqual ( 0.4999995114648885, orbit.Periapsis);
+            Assert.AreEqual (1.249998778662221, orbit.OrbitalParameter, 1.0e-15);
+            Assert.AreEqual (0.4999995114648885, orbit.Periapsis);
 
             Assert.AreEqual (0.0172021241615188, orbit.MeanMotion, 1.0e-16);
         }
@@ -61,10 +61,16 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (2.2370519803988667, orbit.Asymptote);
 
             Assert.AreEqual (-0.999999022929777, orbit.SemiMajorAxis, 1.0e-15);
-            Assert.AreEqual ( 1.6179243731669324604, orbit.OrbitalParameter, 1.0e-15);
-            Assert.AreEqual ( 0.618, orbit.Periapsis);
+            Assert.AreEqual (1.6179243731669324604, orbit.OrbitalParameter, 1.0e-15);
+            Assert.AreEqual (0.618, orbit.Periapsis);
 
             Assert.AreEqual (0.0172021241615188, orbit.MeanMotion);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarPositionTest ()
+        {
+            Assert.Fail ();
         }
     }
 }

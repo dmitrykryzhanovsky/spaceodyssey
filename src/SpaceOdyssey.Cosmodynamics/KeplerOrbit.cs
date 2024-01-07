@@ -39,6 +39,12 @@ namespace SpaceOdyssey.Cosmodynamics
         // Среднее движение, рад / единица времени.
         protected double _n;
 
+        // Средняя аномалия на момент времени J2000.
+        private double _M0;
+
+        // Юлианская дата прохождения перицентра.
+        protected double _T0;
+
         /// <summary>
         /// Эксцентриситет орбиты.
         /// </summary>
@@ -80,6 +86,26 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        /// <summary>
+        /// Устанавливает среднюю аномалию на момент времени J2000.
+        /// </summary>
+        public void SetMeanAnomalyJ2000 (double meanAnomalyJ200)
+        {
+            _M0 = meanAnomalyJ200;
+            _T0 = AstroConst.J2000 - meanAnomalyJ200 / _n;
+        }
+
+        /// <summary>
+        /// Устанавливает юлианскую дату прохождения перицентра.
+        /// </summary>
+        /// <remarks>Для эллиптических (и круговых) орбит это может быть дата любого прохождения перицентра. Для параболических и 
+        /// гиперболических – единственного.</remarks>
+        public void SetPeripasisJD (double periapsisJD)
+        {
+            _T0 = periapsisJD;
+            _M0 = _n * (periapsisJD - AstroConst.J2000);
+        }
+
         #region Проверка элементов орбиты на валидность
 
         protected static void CheckPeriapsis (double periapsis)
@@ -93,5 +119,12 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         #endregion
+
+        public abstract PlanarPosition ComputePlanarPosition (double t);
+
+        protected virtual double ComputeMeanAnomaly (double t)
+        {
+            return _n * (t - _T0);
+        }
     }
 }

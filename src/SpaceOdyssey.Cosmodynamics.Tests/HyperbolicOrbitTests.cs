@@ -67,7 +67,22 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void ComputePlanarPositionTest ()
         {
-            Assert.Fail ();
+            HyperbolicOrbit orbit = new HyperbolicOrbit (SolarSystem.Sun);
+
+            orbit.SetOrbitalElementsByMeanMotion (eccentricity: 1.25, meanMotion: 0.0172021241615188);
+            orbit.SetPeripasisJD (periapsisJD: 120.0);
+
+            double t = 60.0;
+
+            PlanarPosition planarPosition = orbit.ComputePlanarPosition (t);
+
+            Assert.AreEqual (0.926161658156436, planarPosition.Radius, 1.0e-14);
+            Assert.AreEqual (1.521811525682540, planarPosition.TrueAnomaly, 1.0e-15);
+            Assert.AreEqual (0.045349703360920, planarPosition.X, 1.0e-14);
+            Assert.AreEqual (0.925050712903977, planarPosition.Y, 1.0e-14);
+            Assert.AreEqual (0.018522828806656, planarPosition.Speed, 1.0e-15);
+            Assert.AreEqual (-0.017744949176174, planarPosition.Velocity.X, 1.0e-15);
+            Assert.AreEqual (0.005311493738648, planarPosition.Velocity.Y, 1.0e-15);
         }
     }
 }

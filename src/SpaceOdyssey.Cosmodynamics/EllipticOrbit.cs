@@ -72,6 +72,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -98,6 +100,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _amax = _a * (1.0 + _e);
 
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -124,6 +128,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _amax = _a * (1.0 + _e);
 
             _n = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (_T);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -150,6 +156,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -176,6 +184,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _e2factor = _b / _a;
 
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -202,6 +212,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -231,6 +243,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         #region Проверка элементов орбиты на валидность
@@ -262,16 +276,28 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
         public override PlanarPosition ComputePlanarPosition (double t)
         {
             double M = ComputeMeanAnomaly (t);
             double E = KeplerEquation.Elliptic (M, _e, ComputingSettings.DoublePrecision);
-            double x = _a * (double.Cos (E) - _e);
-            double y = _a * _e2factor * double.Sin (E);
 
-            return new PlanarPosition (x, y);
+            (double sinE, double cosE) = double.SinCos (E);
+            double denominator = 1.0 - _e * cosE;
+
+            double x  = _a * (cosE - _e);
+            double y  = _a * _e2factor * sinE;
+            double vx = -_gmFactor * sinE / denominator;
+            double vy = _gmFactor *_e2factor * cosE / denominator;
+
+            return PlanarPosition.FindPlanarPositionForNonCircularOrbit (x, y, vx, vy);
         }
 
+        /// <summary>
+        /// Вычисляет среднюю аномалию для юлианской даты t и приводит её в диапазон [–π; +π].
+        /// </summary>
         protected override double ComputeMeanAnomaly (double t)
         {
             return Trigonometry.Normalize (base.ComputeMeanAnomaly (t));

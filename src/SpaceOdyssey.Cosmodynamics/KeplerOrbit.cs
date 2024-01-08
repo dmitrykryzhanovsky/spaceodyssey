@@ -92,7 +92,7 @@ namespace SpaceOdyssey.Cosmodynamics
         public void SetMeanAnomalyJ2000 (double meanAnomalyJ200)
         {
             _M0 = meanAnomalyJ200;
-            _T0 = AstroConst.J2000 - meanAnomalyJ200 / _n;
+            _T0 = AstroConst.J2000 - _M0 / _n;
         }
 
         /// <summary>
@@ -103,7 +103,7 @@ namespace SpaceOdyssey.Cosmodynamics
         public void SetPeripasisJD (double periapsisJD)
         {
             _T0 = periapsisJD;
-            _M0 = _n * (periapsisJD - AstroConst.J2000);
+            _M0 = _n * (_T0 - AstroConst.J2000);
         }
 
         #region Проверка элементов орбиты на валидность

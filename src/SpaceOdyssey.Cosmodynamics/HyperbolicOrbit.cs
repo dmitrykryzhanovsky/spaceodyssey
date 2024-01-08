@@ -49,6 +49,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _a    = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
             _p    = _a * (1.0 - _e * _e);
             _amin = _a * (1.0 - _e);
+
+            _gmFactor = K / Math.Sqrt (-_a);
         }
 
         /// <summary>

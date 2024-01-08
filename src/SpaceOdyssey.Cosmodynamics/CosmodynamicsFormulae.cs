@@ -88,5 +88,21 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             return double.Tau / n;
         }
+
+        /// <summary>
+        /// Вычисляет множитель, связанный с гравитационным параметром и большой полуосью, для эллипса: k / sqrt (a).
+        /// </summary>
+        public static double GMFactorForEllipse (double k, double a)
+        {
+            return k / double.Sqrt (a);
+        }
+
+        /// <summary>
+        /// Вычисляет множитель, связанный с гравитационным параметром и большой полуосью, для гиперболы: k / sqrt (-a).
+        /// </summary>
+        public static double GMFactorForHyperbola (double k, double a)
+        {
+            return k / double.Sqrt (-a);
+        }
     }
 }

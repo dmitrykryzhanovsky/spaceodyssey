@@ -10,6 +10,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
         private Polar2 _polar;
 
+        private Vector2 _velocity;
+
         public double Radius
         {
             get => _polar.R;

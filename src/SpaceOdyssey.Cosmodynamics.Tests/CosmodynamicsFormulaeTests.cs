@@ -308,5 +308,31 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (expected, actual, 1.0e-12);
         }
+
+        [TestMethod ()]
+        public void GMFactorForEllipseTest ()
+        {
+            double k = AstroConst.GaussianGravitationalConstant;
+            double a = 0.999999022929777;
+
+            double expected = 0.017202107354254;
+
+            double actual = CosmodynamicsFormulae.GMFactorForEllipse (k, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-12);
+        }
+
+        [TestMethod ()]
+        public void GMFactorForHyperbolaTest ()
+        {
+            double k = AstroConst.GaussianGravitationalConstant;
+            double a = -0.999999022929777;
+
+            double expected = 0.017202107354254;
+
+            double actual = CosmodynamicsFormulae.GMFactorForHyperbola (k, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-12);
+        }
     }
 }

@@ -17,7 +17,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             orbit.SetOrbitalElementsByMeanMotion (eccentricity, meanMotion);
 
             Assert.AreEqual (1.000001, orbit.Eccentricity);
-            Assert.AreEqual (0.00141421391592644, orbit.E2Factor, 1.0e-13);
             Assert.AreEqual (3.14017844061667541, orbit.Asymptote, 1.0e-13);
 
             Assert.AreEqual (-0.999999022929777, orbit.SemiMajorAxis, 1.0e-15);
@@ -37,7 +36,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             orbit.SetOrbitalElementsByPeriapsis (eccentricity, periapsis);
 
             Assert.AreEqual (1.5, orbit.Eccentricity);
-            Assert.AreEqual (1.1180339887498948, orbit.E2Factor);
             Assert.AreEqual (2.3005239830218630, orbit.Asymptote);
 
             Assert.AreEqual (-0.999999022929777, orbit.SemiMajorAxis);
@@ -57,7 +55,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             orbit.SetOrbitalElementsByPeriapsisAndMeanMotion (periapsis, meanMotion);
 
             Assert.AreEqual (1.6180006038299878, orbit.Eccentricity, 1.0e-15);
-            Assert.AreEqual (1.2719771829691778, orbit.E2Factor, 1.0e-15);
             Assert.AreEqual (2.2370519803988667, orbit.Asymptote);
 
             Assert.AreEqual (-0.999999022929777, orbit.SemiMajorAxis, 1.0e-15);

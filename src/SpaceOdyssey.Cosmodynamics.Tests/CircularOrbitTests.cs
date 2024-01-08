@@ -70,7 +70,22 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void ComputePlanarPositionTest ()
         {
-            Assert.Fail ();
+            CircularOrbit orbit = new CircularOrbit (SolarSystem.Sun);
+
+            orbit.SetOrbitalElementsBySemiMajorAxis (semiMajorAxis: 0.999999022929777);
+            orbit.SetPeripasisJD (periapsisJD: 0.0);
+
+            double t = 60.0;
+
+            PlanarPosition planarPosition = orbit.ComputePlanarPosition (t);
+
+            Assert.AreEqual ( 0.999999022929777, planarPosition.Radius);
+            Assert.AreEqual ( 1.032127449691127, planarPosition.TrueAnomaly, 1.0e-15);
+            Assert.AreEqual ( 0.512993319599560, planarPosition.X, 1.0e-15);
+            Assert.AreEqual ( 0.858391460760609, planarPosition.Y, 1.0e-15);
+            Assert.AreEqual ( 0.017202107353835, planarPosition.Speed, 1.0e-15);
+            Assert.AreEqual (-0.008824574777781, planarPosition.Velocity.X, 1.0e-15);
+            Assert.AreEqual ( 0.014766156487191, planarPosition.Velocity.Y, 1.0e-15);
         }
     }
 }

@@ -36,6 +36,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -59,6 +61,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _amax = _a;
 
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -82,11 +86,16 @@ namespace SpaceOdyssey.Cosmodynamics
             _amax = _a;
 
             _n = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (_T);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
         public override PlanarPosition ComputePlanarPosition (double t)
         {
-            return PlanarPosition.CreatePlanarPositionForCircularOrbit (ComputeMeanAnomaly (t), _a);
+            return PlanarPosition.FindPlanarPositionForCircularOrbit (ComputeMeanAnomaly (t), _a, _gmFactor);
         }
     }
 }

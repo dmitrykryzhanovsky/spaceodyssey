@@ -1,7 +1,5 @@
 ﻿using Archimedes;
 
-using System.Net.Http.Headers;
-
 namespace SpaceOdyssey.Cosmodynamics
 {
     public class PlanarPosition
@@ -22,17 +20,42 @@ namespace SpaceOdyssey.Cosmodynamics
             get => _polar.Heading;
         }
 
+        public double X
+        {
+            get => _cartesian.X;
+        }
+
+        public double Y
+        {
+            get => _cartesian.Y;
+        }
+
+        public double Speed
+        {
+            get => _velocity.GetLength ();
+        }
+
+        public Vector2 Velocity
+        {
+            get => _velocity;
+        }
+
         private PlanarPosition ()
         {
         }
 
-        internal PlanarPosition (double x, double y)
+        internal static PlanarPosition FindPlanarPositionForNonCircularOrbit (double x, double y, double vx, double vy)
         {
-            _cartesian = new Vector2 (x, y);
-            _polar     = _cartesian.CartesianToPolar ();
+            PlanarPosition result = new PlanarPosition ();
+
+            result._cartesian = new Vector2 (x, y);
+            result._polar     = result._cartesian.CartesianToPolar ();
+            result._velocity  = new Vector2 (vx, vy);
+
+            return result;
         }
 
-        internal static PlanarPosition CreatePlanarPositionForCircularOrbit (double meanAnomaly, double radius)
+        internal static PlanarPosition FindPlanarPositionForCircularOrbit (double meanAnomaly, double radius, double gmFactor)
         {
             PlanarPosition result = new PlanarPosition ();
 
@@ -40,6 +63,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
             result._cartesian = new Vector2 (radius * cos, radius * sin);
             result._polar     = new Polar2 (radius, meanAnomaly);
+            result._velocity  = new Vector2 (-gmFactor * cos, gmFactor * sin);
 
             return result;
         }

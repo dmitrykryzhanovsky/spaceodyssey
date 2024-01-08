@@ -1,5 +1,7 @@
 ﻿using Archimedes;
 
+using System.Drawing;
+
 namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
@@ -50,7 +52,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _p    = _a * (1.0 - _e * _e);
             _amin = _a * (1.0 - _e);
 
-            _gmFactor = K / Math.Sqrt (-_a);
+            _gmFactor = CosmodynamicsFormulae.GMFactorForHyperbola (K, _a);
         }
 
         /// <summary>
@@ -75,6 +77,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _a = _amin / (1.0 - _e);
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForHyperbola (K, _a);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForHyperbola (K, _a);
         }
 
         /// <summary>
@@ -97,7 +101,9 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _e         = (_a - _amin) / _a;
             _e2factor  = double.Sqrt (_amin * (_amin - 2.0 * _a)) / -_a;
-            _asymptote = double.Acos (_a / (_amin - _a));            
+            _asymptote = double.Acos (_a / (_amin - _a));
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForHyperbola (K, _a);
         }
 
         #region Проверка элементов орбиты на валидность
@@ -109,14 +115,24 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
         public override PlanarPosition ComputePlanarPosition (double t)
         {
             double M = ComputeMeanAnomaly (t);
             double H = KeplerEquation.Hyperbolic (M, _e, ComputingSettings.DoublePrecision);
-            double x = -_a * (_e - double.Cosh (H));
-            double y = _a * _e2factor * double.Sinh (H);
 
-            return new PlanarPosition (x, y);
+            double shH = double.Sinh (H);
+            double chH = double.Cosh (H);
+            double denominator = _e * chH - 1.0;
+
+            double x  = -_a * (_e - chH);
+            double y  = _a * _e2factor * shH;
+            double vx = -_gmFactor * shH / denominator;
+            double vy = _gmFactor * _e2factor * chH / denominator;
+
+            return PlanarPosition.FindPlanarPositionForNonCircularOrbit (x, y, vx, vy);
         }
     }
 }

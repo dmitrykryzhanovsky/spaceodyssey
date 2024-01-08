@@ -1,6 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Базовый класс для кеплеровых орбит.
@@ -120,8 +118,14 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
         public abstract PlanarPosition ComputePlanarPosition (double t);
 
+        /// <summary>
+        /// Вычисляет среднюю аномалию для юлианской даты t.
+        /// </summary>
         protected virtual double ComputeMeanAnomaly (double t)
         {
             return _n * (t - _T0);

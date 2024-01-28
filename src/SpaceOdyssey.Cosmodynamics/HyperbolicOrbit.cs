@@ -1,4 +1,6 @@
-﻿using Archimedes;
+using Archimedes;
+
+using System.Drawing;
 
 namespace SpaceOdyssey.Cosmodynamics
 {

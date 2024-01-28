@@ -1,4 +1,4 @@
-﻿using Archimedes;
+using Archimedes;
 
 namespace SpaceOdyssey.Cosmodynamics
 {

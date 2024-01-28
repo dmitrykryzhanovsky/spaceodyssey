@@ -30,6 +30,6 @@
         /// <summary>
         /// Квадрат гауссовой гравитационной постоянной.
         /// </summary>
-        public const double GaussianGravitationalConstant2 = GaussianGravitationalConstant * GaussianGravitationalConstant;
+        public const double GaussianGravitationalParameter = GaussianGravitationalConstant * GaussianGravitationalConstant;
     }
 }

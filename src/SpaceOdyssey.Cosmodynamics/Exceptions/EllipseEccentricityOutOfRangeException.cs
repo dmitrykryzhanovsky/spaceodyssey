@@ -1,10 +1,12 @@
 ﻿namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Эксцентриситету передано значение, не соответствующее эллипсу.
+    /// </summary>
+    /// <remarks>Эксцентриситет эллипса должен находить на интервале 0 <= e < 1.</remarks>
     public class EllipseEccentricityOutOfRangeException : EccentricityOutOfRangeException
     {
-        private const string MessageText = "Ellipse eccentricity must be grater or equal to 0 and less than 1.";
-
-        public EllipseEccentricityOutOfRangeException () : base (MessageText)
+        public EllipseEccentricityOutOfRangeException () : base ()
         {
         }
     }

@@ -5,22 +5,22 @@
     /// </summary>
     public abstract class KeplerOrbit
     {
-        #region Свойства внешнего гравитационного поля
+        #region Свойства гравитационного поля орбитальной системы
 
-        // Гравитирующая масса, относительно которой проложена орбита.
-        private readonly IGravityMass _orbitalCenter;
+        // Центральное тело данной орбиты.
+        protected readonly ICentralBody _centralBody;
 
-        // Гравитационный параметр – квадратный корень из произведения гравитационной постоянной Ньютона G и массы центрального тела M:
+        // Гравитационная постоянная – квадратный корень из произведения гравитационной постоянной Ньютона G и массы центрального тела M:
         // sqrt (GM).
         protected double K
         {
-            get => _orbitalCenter.GravitationalParameter;
+            get => _centralBody.GravitationalConstant;
         }
 
-        // Квадрат гравитационного параметра – произведение гравитационной постоянной Ньютона G и массы центрального тела M: GM.
-        protected double K2
+        // Гравитационный параметр – произведение гравитационной постоянной Ньютона G и массы центрального тела M: GM.
+        protected double Mu
         {
-            get => _orbitalCenter.GravitationalConstant;
+            get => _centralBody.GravitationalParameter;
         }
 
         #endregion
@@ -77,9 +77,9 @@
 
         #region Constructors
 
-        protected KeplerOrbit (IGravityMass orbitalCenter)
+        protected KeplerOrbit (ICentralBody centralBody)
         {
-            _orbitalCenter = orbitalCenter;
+            _centralBody = centralBody;
         }
 
         #endregion

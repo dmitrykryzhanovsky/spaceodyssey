@@ -37,7 +37,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <param name="M">Средняя аномалия, для которой нужно найти решение.</param>
         /// <param name="eccentricity">Эксцентриситет орбиты.</param>
         /// <param name="epsilon">Полуточность решения.</param>
-        public static double Elliptic (double M, double eccentricity, double epsilon)
+        public static double SolveElliptic (double M, double eccentricity, double epsilon)
         {
             return NonLinearEquation.Newton (EllipticEquation, EllipticDerivative, epsilon, M, eccentricity, M);
         }
@@ -72,7 +72,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <param name="M">Средняя аномалия, для которой нужно найти решение.</param>
         /// <param name="eccentricity">Эксцентриситет орбиты.</param>
         /// <param name="epsilon">Полуточность решения.</param>
-        public static double Hyperbolic (double M, double eccentricity, double epsilon)
+        public static double SolveHyperbolic (double M, double eccentricity, double epsilon)
         {
             return NonLinearEquation.Newton (HyperbolicEquation, HyperbolicDerivative, epsilon, M, eccentricity, M);
         }

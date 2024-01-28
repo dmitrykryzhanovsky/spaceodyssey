@@ -42,7 +42,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Constructors
 
-        public EllipticOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
+        public EllipticOrbit (ICentralBody centralBody) : base (centralBody)
         {
         }
 
@@ -93,7 +93,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _e2factor = double.Sqrt (1.0 - _e * _e);
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _p    = _a * (1.0 - _e * _e);
             _b    = _a * _e2factor;
             _amin = _a * (1.0 - _e);
@@ -121,7 +121,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _e2factor = double.Sqrt (1.0 - _e * _e);
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (K2, _T);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (Mu, _T);
             _p    = _a * (1.0 - _e * _e);
             _b    = _a * _e2factor;
             _amin = _a * (1.0 - _e);
@@ -175,7 +175,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _amin = periapsis;
             _n    = meanMotion;
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _amax = 2.0 * _a - _amin;
             _p    = _amin * _amax / _a;
             _b    = double.Sqrt (_amin * _amax);
@@ -282,7 +282,7 @@ namespace SpaceOdyssey.Cosmodynamics
         public override PlanarPosition ComputePlanarPosition (double t)
         {
             double M = ComputeMeanAnomaly (t);
-            double E = KeplerEquation.Elliptic (M, _e, ComputingSettings.DoublePrecision);
+            double E = KeplerEquation.SolveElliptic (M, _e, ComputingSettings.DoublePrecision);
 
             (double sinE, double cosE) = double.SinCos (E);
             double denominator = 1.0 - _e * cosE;

@@ -236,7 +236,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void SemiMajorAxisByMeanMotionTest ()
         {
-            double k2 = AstroConst.GaussianGravitationalConstant2;
+            double k2 = AstroConst.GaussianGravitationalParameter;
             double n = Trigonometry.DegToRad (0.98560911311504671);
 
             double expected = 0.999999022929777;
@@ -249,7 +249,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void SemiMajorAxisByOrbitalPeriodTest ()
         {
-            double k2 = AstroConst.GaussianGravitationalConstant2;
+            double k2 = AstroConst.GaussianGravitationalParameter;
             double T = 365.256363004;
 
             double expected = 0.999999022929777;

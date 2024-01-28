@@ -9,7 +9,7 @@ namespace SpaceOdyssey.Cosmodynamics
     {
         #region Constructors
 
-        public ParabolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
+        public ParabolicOrbit (ICentralBody centralBody) : base (centralBody)
         {
         }
 
@@ -27,7 +27,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _n = meanMotion;
 
             _e    = 1.0;
-            _amin = double.Cbrt (K2 / (2.0 * _n * _n));
+            _amin = double.Cbrt (Mu / (2.0 * _n * _n));
             _p    = 2.0 * _amin;
         }
 
@@ -59,7 +59,11 @@ namespace SpaceOdyssey.Cosmodynamics
             double y = _amin * 2.0 * tanV2;
             double r = CosmodynamicsFormulae.Radius (_p, _e, trueAnomaly);
 
-            return PlanarPosition.BuildPlanarPositionForParabolicOrbit (x, y, r, trueAnomaly);
+            double cos        = double.Cos (trueAnomaly);
+            double derivative = double.Tan (trueAnomaly) - (1.0 - cos) / (cos * (1.0 + cos));
+            double alpha      = double.Atan (derivative);
+
+            return PlanarPosition.BuildPlanarPositionForParabolicOrbit (x, y, r, trueAnomaly, _centralBody.EscapeVelocity (r), alpha);
         }
     }
 }

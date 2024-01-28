@@ -9,7 +9,7 @@ namespace SpaceOdyssey.Cosmodynamics
     {
         #region Constructors
 
-        public CircularOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
+        public CircularOrbit (ICentralBody centralBody) : base (centralBody)
         {
         }
 
@@ -54,7 +54,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _e        = 0.0;
             _e2factor = 1.0;
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _p    = _a;
             _b    = _a;
             _amin = _a;
@@ -79,7 +79,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _e        = 0.0;
             _e2factor = 1.0;
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (K2, _T);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (Mu, _T);
             _p    = _a;
             _b    = _a;
             _amin = _a;

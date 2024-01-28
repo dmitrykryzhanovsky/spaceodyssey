@@ -16,7 +16,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 0.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -30,7 +30,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 1.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -44,7 +44,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 3.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -58,7 +58,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = Double.Pi;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -72,7 +72,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 5.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -86,7 +86,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = -2.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -100,7 +100,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 0.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -114,7 +114,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 1.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -128,7 +128,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 3.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -142,7 +142,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = Double.Pi;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -156,7 +156,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 5.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -170,7 +170,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = -2.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -184,7 +184,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 0.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -198,7 +198,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 1.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -212,7 +212,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 3.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -226,7 +226,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = Double.Pi;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -240,7 +240,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 5.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -254,7 +254,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = -2.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -268,7 +268,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 0.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -282,7 +282,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 1.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -296,7 +296,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 3.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -310,7 +310,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = Double.Pi;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -324,7 +324,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 5.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -338,7 +338,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = -2.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -352,7 +352,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 0.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -366,7 +366,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 1.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -380,7 +380,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 3.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -394,7 +394,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = Double.Pi;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -408,7 +408,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 5.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -422,7 +422,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = -2.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -436,7 +436,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 0.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -450,7 +450,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 1.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -464,7 +464,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 3.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -478,7 +478,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = Double.Pi;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -492,7 +492,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 5.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 20.0 * epsilon);
         }
@@ -506,7 +506,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = -2.0;
 
-            double expected = KeplerEquation.Elliptic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveElliptic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -520,7 +520,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 0.0;
 
-            double expected = KeplerEquation.Hyperbolic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveHyperbolic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -534,7 +534,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 1.0;
 
-            double expected = KeplerEquation.Hyperbolic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveHyperbolic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 10.0 * epsilon);
         }
@@ -548,7 +548,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = 3.0;
 
-            double expected = KeplerEquation.Hyperbolic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveHyperbolic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }
@@ -562,7 +562,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = -2.0;
 
-            double expected = KeplerEquation.Hyperbolic (M, eccentricity, epsilon);
+            double expected = KeplerEquation.SolveHyperbolic (M, eccentricity, epsilon);
 
             Assert.AreEqual (expected, actual, 2.0 * epsilon);
         }

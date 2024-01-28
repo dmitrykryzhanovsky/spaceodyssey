@@ -1,7 +1,5 @@
 using Archimedes;
 
-using System.Drawing;
-
 namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
@@ -24,7 +22,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Constructors
 
-        public HyperbolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
+        public HyperbolicOrbit (ICentralBody centralBody) : base (centralBody)
         {
         }
 
@@ -48,7 +46,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _e2factor  = double.Sqrt (_e * _e - 1.0);
             _asymptote = double.Acos (-1.0 / _e);
 
-            _a    = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a    = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _p    = _a * (1.0 - _e * _e);
             _amin = _a * (1.0 - _e);
 
@@ -96,7 +94,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _amin = periapsis;
             _n    = meanMotion;
             
-            _a = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _p = _amin * (2.0 - _amin / _a);
 
             _e         = (_a - _amin) / _a;
@@ -121,7 +119,7 @@ namespace SpaceOdyssey.Cosmodynamics
         public override PlanarPosition ComputePlanarPosition (double t)
         {
             double M = ComputeMeanAnomaly (t);
-            double H = KeplerEquation.Hyperbolic (M, _e, ComputingSettings.DoublePrecision);
+            double H = KeplerEquation.SolveHyperbolic (M, _e, ComputingSettings.DoublePrecision);
 
             double shH = double.Sinh (H);
             double chH = double.Cosh (H);

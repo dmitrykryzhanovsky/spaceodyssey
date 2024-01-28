@@ -10,6 +10,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
         private Vector2 _velocity;
 
+        private double _speed;
+
         public double Radius
         {
             get => _polar.R;
@@ -32,7 +34,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         public double Speed
         {
-            get => _velocity.GetLength ();
+            get => _speed;
         }
 
         public Vector2 Velocity
@@ -51,6 +53,7 @@ namespace SpaceOdyssey.Cosmodynamics
             result._cartesian = new Vector2 (x, y);
             result._polar     = result._cartesian.CartesianToPolar ();
             result._velocity  = new Vector2 (vx, vy);
+            result._speed     = result._velocity.GetLength ();
 
             return result;
         }
@@ -64,16 +67,22 @@ namespace SpaceOdyssey.Cosmodynamics
             result._cartesian = new Vector2 (radius * cos, radius * sin);
             result._polar     = new Polar2 (radius, meanAnomaly);
             result._velocity  = new Vector2 (-gmFactor * cos, gmFactor * sin);
+            result._speed     = gmFactor;
 
             return result;
         }
 
-        internal static PlanarPosition BuildPlanarPositionForParabolicOrbit (double x, double y, double radius, double trueAnomaly)
+        internal static PlanarPosition BuildPlanarPositionForParabolicOrbit (double x, double y, double radius, double trueAnomaly, 
+            double speed, double alpha)
         {
             PlanarPosition result = new PlanarPosition ();
 
+            (double sin, double cos) = double.SinCos (alpha);
+
             result._cartesian = new Vector2 (x, y);
             result._polar     = new Polar2 (radius, trueAnomaly);
+            result._velocity  = new Vector2 (speed * cos, speed * sin);
+            result._speed     = speed;
 
             return result;
         }

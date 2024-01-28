@@ -13,7 +13,7 @@
         // Большая полуось орбиты, положительная для эллипса и отрицательная для гиперболы.
         protected double _a;
 
-        // Множитель, связанный с гравитационным параметром и большой полуосью: sqrt (GM/|a|).
+        // Множитель, связанный с гравитационным параметром и большой полуосью: sqrt (GM/|a|) – средняя скорость движения по орбите.
         protected double _gmFactor;
 
         /// <summary>
@@ -26,7 +26,7 @@
 
         #region Constructors
 
-        protected NonParabolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
+        protected NonParabolicOrbit (ICentralBody centralBody) : base (centralBody)
         {
         }
 

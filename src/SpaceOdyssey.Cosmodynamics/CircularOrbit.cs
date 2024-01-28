@@ -95,7 +95,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </summary>
         public override PlanarPosition ComputePlanarPosition (double t)
         {
-            return PlanarPosition.FindPlanarPositionForCircularOrbit (ComputeMeanAnomaly (t), _a, _gmFactor);
+            return PlanarPosition.BuildPlanarPositionForCircularOrbit (ComputeMeanAnomaly (t), _a, _gmFactor);
         }
     }
 }

@@ -44,7 +44,7 @@ namespace SpaceOdyssey.Cosmodynamics
         {
         }
 
-        internal static PlanarPosition FindPlanarPositionForNonCircularOrbit (double x, double y, double vx, double vy)
+        internal static PlanarPosition BuildPlanarPositionForEllipticAndHyperbolicOrbit (double x, double y, double vx, double vy)
         {
             PlanarPosition result = new PlanarPosition ();
 
@@ -55,7 +55,7 @@ namespace SpaceOdyssey.Cosmodynamics
             return result;
         }
 
-        internal static PlanarPosition FindPlanarPositionForCircularOrbit (double meanAnomaly, double radius, double gmFactor)
+        internal static PlanarPosition BuildPlanarPositionForCircularOrbit (double meanAnomaly, double radius, double gmFactor)
         {
             PlanarPosition result = new PlanarPosition ();
 
@@ -64,6 +64,16 @@ namespace SpaceOdyssey.Cosmodynamics
             result._cartesian = new Vector2 (radius * cos, radius * sin);
             result._polar     = new Polar2 (radius, meanAnomaly);
             result._velocity  = new Vector2 (-gmFactor * cos, gmFactor * sin);
+
+            return result;
+        }
+
+        internal static PlanarPosition BuildPlanarPositionForParabolicOrbit (double x, double y, double radius, double trueAnomaly)
+        {
+            PlanarPosition result = new PlanarPosition ();
+
+            result._cartesian = new Vector2 (x, y);
+            result._polar     = new Polar2 (radius, trueAnomaly);
 
             return result;
         }

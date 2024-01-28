@@ -292,7 +292,7 @@ namespace SpaceOdyssey.Cosmodynamics
             double vx = -_gmFactor * sinE / denominator;
             double vy = _gmFactor *_e2factor * cosE / denominator;
 
-            return PlanarPosition.FindPlanarPositionForNonCircularOrbit (x, y, vx, vy);
+            return PlanarPosition.BuildPlanarPositionForEllipticAndHyperbolicOrbit (x, y, vx, vy);
         }
 
         /// <summary>

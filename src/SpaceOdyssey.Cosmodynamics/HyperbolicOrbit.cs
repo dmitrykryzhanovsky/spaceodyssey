@@ -1,7 +1,5 @@
 ﻿using Archimedes;
 
-using System.Drawing;
-
 namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
@@ -132,7 +130,7 @@ namespace SpaceOdyssey.Cosmodynamics
             double vx = -_gmFactor * shH / denominator;
             double vy = _gmFactor * _e2factor * chH / denominator;
 
-            return PlanarPosition.FindPlanarPositionForNonCircularOrbit (x, y, vx, vy);
+            return PlanarPosition.BuildPlanarPositionForEllipticAndHyperbolicOrbit (x, y, vx, vy);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Параболическая орбита.
@@ -47,7 +49,17 @@
 
         public override PlanarPosition ComputePlanarPosition (double t)
         {
-            throw new NotImplementedException ();
+            double A = 1.5 * ComputeMeanAnomaly (t);
+            double B = double.Cbrt (A + double.Sqrt (A * A + 1.0));
+
+            double tanV2       = B - 1.0 / B;
+            double trueAnomaly = 2.0 * double.Atan (tanV2);
+
+            double x = _amin * (1.0 - tanV2 * tanV2);
+            double y = _amin * 2.0 * tanV2;
+            double r = CosmodynamicsFormulae.Radius (_p, _e, trueAnomaly);
+
+            return PlanarPosition.BuildPlanarPositionForParabolicOrbit (x, y, r, trueAnomaly);
         }
     }
 }

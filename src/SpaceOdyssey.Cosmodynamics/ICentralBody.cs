@@ -21,7 +21,7 @@
         /// </summary>
         double EscapeVelocity (double r)
         {
-            return GravitationalConstant * double.Sqrt (2.0 / r);
+            return CosmodynamicsFormulae.EscapeVelocity (GravitationalConstant, r);
         }
     }
 }

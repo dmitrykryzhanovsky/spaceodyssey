@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using System.Reflection.Metadata.Ecma335;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Базовый класс для кеплеровых орбит.
@@ -83,6 +85,15 @@
         }
 
         #endregion
+
+        /// <summary>
+        /// Вычисляет расстояние до центра орбиты в точке с заданной истинной аномалией.
+        /// </summary>
+        /// <param name="trueAnomaly">Истинная аномалия.</param>
+        public double Radius (double trueAnomaly)
+        {
+            return CosmodynamicsFormulae.Radius (_p, _e, trueAnomaly);
+        }
 
         /// <summary>
         /// Устанавливает среднюю аномалию на момент времени J2000.

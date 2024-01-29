@@ -334,5 +334,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (expected, actual, 1.0e-12);
         }
+
+        [TestMethod ()]
+        public void EscapeVelocityTest ()
+        {
+            Assert.Fail ();
+        }
     }
 }

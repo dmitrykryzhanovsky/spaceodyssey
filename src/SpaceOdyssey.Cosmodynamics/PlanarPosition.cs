@@ -73,11 +73,11 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         internal static PlanarPosition BuildPlanarPositionForParabolicOrbit (double x, double y, double radius, double trueAnomaly, 
-            double speed, double alpha)
+            double speed, double beta)
         {
             PlanarPosition result = new PlanarPosition ();
 
-            (double sin, double cos) = double.SinCos (alpha);
+            (double sin, double cos) = double.SinCos (beta);
 
             result._cartesian = new Vector2 (x, y);
             result._polar     = new Polar2 (radius, trueAnomaly);

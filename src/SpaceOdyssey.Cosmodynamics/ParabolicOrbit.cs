@@ -47,6 +47,9 @@ namespace SpaceOdyssey.Cosmodynamics
             _n = K / (_amin * double.Sqrt (2.0 * _amin));
         }
 
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
         public override PlanarPosition ComputePlanarPosition (double t)
         {
             double A = 1.5 * ComputeMeanAnomaly (t);
@@ -59,11 +62,10 @@ namespace SpaceOdyssey.Cosmodynamics
             double y = _amin * 2.0 * tanV2;
             double r = CosmodynamicsFormulae.Radius (_p, _e, trueAnomaly);
 
-            double cos        = double.Cos (trueAnomaly);
-            double derivative = double.Tan (trueAnomaly) - (1.0 - cos) / (cos * (1.0 + cos));
-            double alpha      = double.Atan (derivative);
+            double beta = double.Atan (-_p / y);
+            if (beta < 0.0) beta += double.Pi;
 
-            return PlanarPosition.BuildPlanarPositionForParabolicOrbit (x, y, r, trueAnomaly, _centralBody.EscapeVelocity (r), alpha);
+            return PlanarPosition.BuildPlanarPositionForParabolicOrbit (x, y, r, trueAnomaly, _centralBody.EscapeVelocity (r), beta);
         }
     }
 }

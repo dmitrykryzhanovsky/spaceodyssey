@@ -24,7 +24,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void RadiusTest_E_Ellipse ()
+        public void RadiusTest_Ellipse ()
         {
             double p = 1.42;
             double e = 0.5;
@@ -38,7 +38,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void RadiusTest_E_1 ()
+        public void RadiusTest_E1 ()
         {
             double p = 1.42;
             double e = 1.0;
@@ -52,7 +52,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void RadiusTest_E_Hyperbola ()
+        public void RadiusTest_Hyperbola ()
         {
             double p = 1.42;
             double e = 1.5;
@@ -338,7 +338,14 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void EscapeVelocityTest ()
         {
-            Assert.Fail ();
+            double k = 631.34811435530557;
+            double r = 6371.0;
+
+            double expected = 11.186135687179547;
+
+            double actual = CosmodynamicsFormulae.EscapeVelocity (k, r);
+
+            Assert.AreEqual (expected, actual);
         }
     }
 }

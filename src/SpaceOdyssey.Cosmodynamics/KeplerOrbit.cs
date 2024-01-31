@@ -7,22 +7,22 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public abstract class KeplerOrbit
     {
-        #region Свойства внешнего гравитационного поля
+        #region Свойства гравитационного поля орбитальной системы
 
-        // Гравитирующая масса, относительно которой проложена орбита.
-        private IGravityMass _orbitalCenter;
+        // Центральное тело данной орбиты.
+        protected readonly ICentralBody _centralBody;
 
-        // Гравитационный параметр – квадратный корень из произведения гравитационной постоянной Ньютона G и массы центрального тела M:
+        // Гравитационная постоянная – квадратный корень из произведения гравитационной постоянной Ньютона G и массы центрального тела M:
         // sqrt (GM).
         protected double K
         {
-            get => _orbitalCenter.GravitationalParameter;
+            get => _centralBody.GravitationalConstant;
         }
 
-        // Квадрат гравитационного параметра – произведение гравитационной постоянной Ньютона G и массы центрального тела M: GM.
-        protected double K2
+        // Гравитационный параметр – произведение гравитационной постоянной Ньютона G и массы центрального тела M: GM.
+        protected double Mu
         {
-            get => _orbitalCenter.GravitationalConstant;
+            get => _centralBody.GravitationalParameter;
         }
 
         #endregion
@@ -38,6 +38,12 @@ namespace SpaceOdyssey.Cosmodynamics
 
         // Среднее движение, рад / единица времени.
         protected double _n;
+
+        // Средняя аномалия на момент времени J2000.
+        private double _M0;
+
+        // Юлианская дата прохождения перицентра.
+        protected double _T0;
 
         /// <summary>
         /// Эксцентриситет орбиты.
@@ -73,12 +79,41 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Constructors
 
-        protected KeplerOrbit (IGravityMass orbitalCenter)
+        protected KeplerOrbit (ICentralBody centralBody)
         {
-            _orbitalCenter = orbitalCenter;
+            _centralBody = centralBody;
         }
 
         #endregion
+
+        /// <summary>
+        /// Вычисляет расстояние до центра орбиты в точке с заданной истинной аномалией.
+        /// </summary>
+        /// <param name="trueAnomaly">Истинная аномалия.</param>
+        public double Radius (double trueAnomaly)
+        {
+            return CosmodynamicsFormulae.Radius (_p, _e, trueAnomaly);
+        }
+
+        /// <summary>
+        /// Устанавливает среднюю аномалию на момент времени J2000.
+        /// </summary>
+        public void SetMeanAnomalyJ2000 (double meanAnomalyJ200)
+        {
+            _M0 = meanAnomalyJ200;
+            _T0 = AstroConst.J2000 - _M0 / _n;
+        }
+
+        /// <summary>
+        /// Устанавливает юлианскую дату прохождения перицентра.
+        /// </summary>
+        /// <remarks>Для эллиптических (и круговых) орбит это может быть дата любого прохождения перицентра. Для параболических и 
+        /// гиперболических – единственного.</remarks>
+        public void SetPeripasisJD (double periapsisJD)
+        {
+            _T0 = periapsisJD;
+            _M0 = _n * (_T0 - AstroConst.J2000);
+        }
 
         #region Проверка элементов орбиты на валидность
 
@@ -93,5 +128,18 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         #endregion
+
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
+        public abstract PlanarPosition ComputePlanarPosition (double t);
+
+        /// <summary>
+        /// Вычисляет среднюю аномалию для юлианской даты t.
+        /// </summary>
+        protected virtual double ComputeMeanAnomaly (double t)
+        {
+            return _n * (t - _T0);
+        }
     }
 }

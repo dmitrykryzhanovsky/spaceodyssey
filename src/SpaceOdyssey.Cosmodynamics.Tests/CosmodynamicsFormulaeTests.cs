@@ -24,7 +24,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void RadiusTest_E_Ellipse ()
+        public void RadiusTest_Ellipse ()
         {
             double p = 1.42;
             double e = 0.5;
@@ -38,7 +38,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void RadiusTest_E_1 ()
+        public void RadiusTest_E1 ()
         {
             double p = 1.42;
             double e = 1.0;
@@ -52,7 +52,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void RadiusTest_E_Hyperbola ()
+        public void RadiusTest_Hyperbola ()
         {
             double p = 1.42;
             double e = 1.5;
@@ -236,7 +236,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void SemiMajorAxisByMeanMotionTest ()
         {
-            double k2 = AstroConst.GaussianGravitationalConstant2;
+            double k2 = AstroConst.GaussianGravitationalParameter;
             double n = Trigonometry.DegToRad (0.98560911311504671);
 
             double expected = 0.999999022929777;
@@ -249,7 +249,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void SemiMajorAxisByOrbitalPeriodTest ()
         {
-            double k2 = AstroConst.GaussianGravitationalConstant2;
+            double k2 = AstroConst.GaussianGravitationalParameter;
             double T = 365.256363004;
 
             double expected = 0.999999022929777;
@@ -307,6 +307,45 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double actual = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (n);
 
             Assert.AreEqual (expected, actual, 1.0e-12);
+        }
+
+        [TestMethod ()]
+        public void GMFactorForEllipseTest ()
+        {
+            double k = AstroConst.GaussianGravitationalConstant;
+            double a = 0.999999022929777;
+
+            double expected = 0.017202107354254;
+
+            double actual = CosmodynamicsFormulae.GMFactorForEllipse (k, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-12);
+        }
+
+        [TestMethod ()]
+        public void GMFactorForHyperbolaTest ()
+        {
+            double k = AstroConst.GaussianGravitationalConstant;
+            double a = -0.999999022929777;
+
+            double expected = 0.017202107354254;
+
+            double actual = CosmodynamicsFormulae.GMFactorForHyperbola (k, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-12);
+        }
+
+        [TestMethod ()]
+        public void EscapeVelocityTest ()
+        {
+            double k = 631.34811435530557;
+            double r = 6371.0;
+
+            double expected = 11.186135687179547;
+
+            double actual = CosmodynamicsFormulae.EscapeVelocity (k, r);
+
+            Assert.AreEqual (expected, actual);
         }
     }
 }

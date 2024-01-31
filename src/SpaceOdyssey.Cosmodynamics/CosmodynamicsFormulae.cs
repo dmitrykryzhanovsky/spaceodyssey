@@ -36,23 +36,23 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         /// <summary>
-        /// Вычисляет большую полуось орбиты по квадрату её гравитационной постоянной k2 и среднему движению n.
+        /// Вычисляет большую полуось орбиты по квадрату её гравитационному параметру mu и среднему движению n.
         /// </summary>
         /// <remarks>Возвращает положительное число. Таким образом, для гиперболической орбиты вычисляется не собственно большая полуось, 
         /// а её абсолютное значение.</remarks>
-        public static double SemiMajorAxisByMeanMotion (double k2, double n)
+        public static double SemiMajorAxisByMeanMotion (double mu, double n)
         {
-            return double.Cbrt (k2 / (n * n));
+            return double.Cbrt (mu / (n * n));
         }
 
         /// <summary>
-        /// Вычисляет большую полуось орбиты по квадрату её гравитационной постоянной k2 и орбитальному периоду T.
+        /// Вычисляет большую полуось орбиты по квадрату её гравитационному параметру mu и орбитальному периоду T.
         /// </summary>
         /// <remarks>Возвращает положительное число. Таким образом, для гиперболической орбиты вычисляется не собственно большая полуось, 
         /// а её абсолютное значение.</remarks>
-        public static double SemiMajorAxisByOrbitalPeriod (double k2, double T)
+        public static double SemiMajorAxisByOrbitalPeriod (double mu, double T)
         {
-            return double.Cbrt (k2 * T * T / MathConst.M_4_PI_SQR);
+            return double.Cbrt (mu * T * T / MathConst.M_4_PI_SQR);
         }
 
         /// <summary>
@@ -87,6 +87,31 @@ namespace SpaceOdyssey.Cosmodynamics
         public static double OrbitalPeriodByMeanMotion (double n)
         {
             return double.Tau / n;
+        }
+
+        /// <summary>
+        /// Вычисляет множитель, связанный с гравитационной постоянной и большой полуосью, для эллипса: k / sqrt (a).
+        /// </summary>
+        public static double GMFactorForEllipse (double k, double a)
+        {
+            return k / double.Sqrt (a);
+        }
+
+        /// <summary>
+        /// Вычисляет множитель, связанный с гравитационной постоянной и большой полуосью, для гиперболы: k / sqrt (-a).
+        /// </summary>
+        public static double GMFactorForHyperbola (double k, double a)
+        {
+            return k / double.Sqrt (-a);
+        }
+
+        /// <summary>
+        /// Вторая космическая скорость (параболическая скорость, скорость убегания) для тела с гравитационной постоянной k на 
+        /// расстоянии r от него.
+        /// </summary>
+        public static double EscapeVelocity (double k, double r)
+        {
+            return k * double.Sqrt (2.0 / r);
         }
     }
 }

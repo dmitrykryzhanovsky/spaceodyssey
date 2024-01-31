@@ -6,9 +6,7 @@
     /// <remarks>К характеристикам во времени относятся среднее движение и период обращения.</remarks>
     public class TemporalElementNegativeException : ArgumentOutOfRangeException
     {
-        private const string MessageText = "An orbital element related to the temporal durations must be positive (greater than 0).";
-
-        public TemporalElementNegativeException () : base (MessageText)
+        public TemporalElementNegativeException () : base ()
         {
         }
     }

@@ -1,10 +1,12 @@
 ﻿namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Эксцентриситету передано значение, не соответствующее гиперболе.
+    /// </summary>
+    /// <remarks>Эксцентриситет гиперболы должен быть e > 1.</remarks>
     public class HyperbolaEccentricityOutOfRangeException : EccentricityOutOfRangeException
     {
-        private const string MessageText = "Hyperbola eccentricity must be grater than 1.";
-
-        public HyperbolaEccentricityOutOfRangeException () : base (MessageText)
+        public HyperbolaEccentricityOutOfRangeException () : base ()
         {
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Гиперболическая орбита.
@@ -20,7 +22,7 @@
 
         #region Constructors
 
-        public HyperbolicOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
+        public HyperbolicOrbit (ICentralBody centralBody) : base (centralBody)
         {
         }
 
@@ -44,9 +46,11 @@
             _e2factor  = double.Sqrt (_e * _e - 1.0);
             _asymptote = double.Acos (-1.0 / _e);
 
-            _a    = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a    = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _p    = _a * (1.0 - _e * _e);
             _amin = _a * (1.0 - _e);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForHyperbola (K, _a);
         }
 
         /// <summary>
@@ -71,6 +75,8 @@
             _a = _amin / (1.0 - _e);
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForHyperbola (K, _a);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForHyperbola (K, _a);
         }
 
         /// <summary>
@@ -88,12 +94,14 @@
             _amin = periapsis;
             _n    = meanMotion;
             
-            _a = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a = -CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _p = _amin * (2.0 - _amin / _a);
 
             _e         = (_a - _amin) / _a;
             _e2factor  = double.Sqrt (_amin * (_amin - 2.0 * _a)) / -_a;
-            _asymptote = double.Acos (_a / (_amin - _a));            
+            _asymptote = double.Acos (_a / (_amin - _a));
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForHyperbola (K, _a);
         }
 
         #region Проверка элементов орбиты на валидность
@@ -104,5 +112,25 @@
         }
 
         #endregion
+
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
+        public override PlanarPosition ComputePlanarPosition (double t)
+        {
+            double M = ComputeMeanAnomaly (t);
+            double H = KeplerEquation.SolveHyperbolic (M, _e, ComputingSettings.DoublePrecision);
+
+            double shH = double.Sinh (H);
+            double chH = double.Cosh (H);
+            double denominator = _e * chH - 1.0;
+
+            double x  = -_a * (_e - chH);
+            double y  = _a * _e2factor * shH;
+            double vx = -_gmFactor * shH / denominator;
+            double vy = _gmFactor * _e2factor * chH / denominator;
+
+            return PlanarPosition.BuildPlanarPositionForEllipticAndHyperbolicOrbit (x, y, vx, vy);
+        }
     }
 }

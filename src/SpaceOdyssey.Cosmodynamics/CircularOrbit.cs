@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Круговая орбита.
@@ -7,7 +9,7 @@
     {
         #region Constructors
 
-        public CircularOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
+        public CircularOrbit (ICentralBody centralBody) : base (centralBody)
         {
         }
 
@@ -34,6 +36,8 @@
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -50,13 +54,15 @@
             _e        = 0.0;
             _e2factor = 1.0;
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _p    = _a;
             _b    = _a;
             _amin = _a;
             _amax = _a;
 
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -73,13 +79,23 @@
             _e        = 0.0;
             _e2factor = 1.0;
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (K2, _T);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (Mu, _T);
             _p    = _a;
             _b    = _a;
             _amin = _a;
             _amax = _a;
 
             _n = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (_T);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
+        }
+
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
+        public override PlanarPosition ComputePlanarPosition (double t)
+        {
+            return PlanarPosition.BuildPlanarPositionForCircularOrbit (ComputeMeanAnomaly (t), _a, _gmFactor);
         }
     }
 }

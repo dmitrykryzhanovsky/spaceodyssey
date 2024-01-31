@@ -1,4 +1,4 @@
-﻿using Archimedes;
+using Archimedes;
 
 namespace SpaceOdyssey.Cosmodynamics
 {
@@ -42,7 +42,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Constructors
 
-        public EllipticOrbit (IGravityMass orbitalCenter) : base (orbitalCenter)
+        public EllipticOrbit (ICentralBody centralBody) : base (centralBody)
         {
         }
 
@@ -72,6 +72,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -91,13 +93,15 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _e2factor = double.Sqrt (1.0 - _e * _e);
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _p    = _a * (1.0 - _e * _e);
             _b    = _a * _e2factor;
             _amin = _a * (1.0 - _e);
             _amax = _a * (1.0 + _e);
 
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -117,13 +121,15 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _e2factor = double.Sqrt (1.0 - _e * _e);
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (K2, _T);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByOrbitalPeriod (Mu, _T);
             _p    = _a * (1.0 - _e * _e);
             _b    = _a * _e2factor;
             _amin = _a * (1.0 - _e);
             _amax = _a * (1.0 + _e);
 
             _n = CosmodynamicsFormulae.MeanMotionByOrbitalPeriod (_T);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -150,6 +156,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -167,7 +175,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _amin = periapsis;
             _n    = meanMotion;
 
-            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (K2, _n);
+            _a    = CosmodynamicsFormulae.SemiMajorAxisByMeanMotion (Mu, _n);
             _amax = 2.0 * _a - _amin;
             _p    = _amin * _amax / _a;
             _b    = double.Sqrt (_amin * _amax);
@@ -176,6 +184,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _e2factor = _b / _a;
 
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -202,6 +212,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         /// <summary>
@@ -231,6 +243,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n = CosmodynamicsFormulae.MeanMotionBySemiMajorAxisForEllipse (K, _a);
             _T = CosmodynamicsFormulae.OrbitalPeriodByMeanMotion (_n);
+
+            _gmFactor = CosmodynamicsFormulae.GMFactorForEllipse (K, _a);
         }
 
         #region Проверка элементов орбиты на валидность
@@ -261,5 +275,32 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         #endregion
+
+        /// <summary>
+        /// Вычисляет планарную позицию – положение в плоскости орбиты – для юлианской даты t.
+        /// </summary>
+        public override PlanarPosition ComputePlanarPosition (double t)
+        {
+            double M = ComputeMeanAnomaly (t);
+            double E = KeplerEquation.SolveElliptic (M, _e, ComputingSettings.DoublePrecision);
+
+            (double sinE, double cosE) = double.SinCos (E);
+            double denominator = 1.0 - _e * cosE;
+
+            double x  = _a * (cosE - _e);
+            double y  = _a * _e2factor * sinE;
+            double vx = -_gmFactor * sinE / denominator;
+            double vy = _gmFactor *_e2factor * cosE / denominator;
+
+            return PlanarPosition.BuildPlanarPositionForEllipticAndHyperbolicOrbit (x, y, vx, vy);
+        }
+
+        /// <summary>
+        /// Вычисляет среднюю аномалию для юлианской даты t и приводит её в диапазон [–π; +π].
+        /// </summary>
+        protected override double ComputeMeanAnomaly (double t)
+        {
+            return Trigonometry.Normalize (base.ComputeMeanAnomaly (t));
+        }
     }
 }

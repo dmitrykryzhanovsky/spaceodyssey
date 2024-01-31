@@ -1,15 +1,15 @@
 ﻿namespace SpaceOdyssey.Cosmodynamics
 {
-    public class Sun : IGravityMass
+    public class Sun : ICentralBody
     {
-        public double GravitationalParameter
+        public double GravitationalConstant
         {
             get => AstroConst.GaussianGravitationalConstant;
         }
 
-        public double GravitationalConstant
+        public double GravitationalParameter
         {
-            get => AstroConst.GaussianGravitationalConstant2;
+            get => AstroConst.GaussianGravitationalParameter;
         }
 
         internal Sun ()

@@ -66,7 +66,7 @@
             int month = m + 3 - 12 * (m / 10);
             int year  = yTerm + d - 4800 + (m / 10);
 
-            return (day, month, year);
+            return (year, month, day);
         }
 
         public static double GetJulianDate (int year, int month, int day, int hour, int min, int sec, int millisec, 

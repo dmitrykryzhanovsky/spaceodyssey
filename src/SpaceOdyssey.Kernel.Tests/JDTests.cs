@@ -1,4 +1,5 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using SpaceOdyssey;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SpaceOdyssey.Tests
 {
@@ -617,6 +618,18 @@ namespace SpaceOdyssey.Tests
             int expected = 0;
 
             int actual = JD.GetWeekDay (jdn);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJulianCenturiesTest ()
+        {
+            double jd = 2415020.0;
+
+            double expected = -1.0;
+
+            double actual = JD.GetJulianCenturies (jd);
 
             Assert.AreEqual (expected, actual);
         }

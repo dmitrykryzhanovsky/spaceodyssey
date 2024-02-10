@@ -22,6 +22,9 @@
 
         private const int LilianJDN = 2299161;
 
+        // Количество дней в юлианском столетии.
+        private const double DaysPerJulianCentury = 36525.0;
+
         /// <summary>
         /// Определяет стиль календаря для заданной календарной даты.
         /// </summary>
@@ -126,6 +129,17 @@
         public static int GetWeekDay (int jdn)
         {
             return (jdn + 1) % AstroConst.Time.DaysPerWeek;
+        }
+
+        /// <summary>
+        /// Возвращает количество юлианских столетий, прошедших от момента времени с юлианской датой <paramref name="epoch"/> до 
+        /// момента времени с юлианской датой <paramref name="jd"/>.
+        /// </summary>
+        /// <param name="epoch">В качестве значения по-умолчанию используется эпоха J2000.</param>
+        /// <returns>Если момент <paramref name="jd"/> был раньше момента <paramref name="epoch"/>, возвращается отрицательное значение.</returns>
+        public static double GetJulianCenturies (double jd, double epoch = AstroConst.Epoch.J2000)
+        {
+            return (jd - epoch) / DaysPerJulianCentury;
         }
     }
 }

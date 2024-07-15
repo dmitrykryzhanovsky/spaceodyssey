@@ -56,3 +56,9 @@ _1/SpaceOdyssey.Kernel/obj/
 _1/SpaceOdyssey.Kernel.Tests/bin/
 
 _1/SpaceOdyssey.Kernel.Tests/obj/
+
+src/SpaceOdyssey.WinDebug/bin/
+
+src/Archimedes.Geometry/bin/
+
+src/Archimedes.Geometry/obj/

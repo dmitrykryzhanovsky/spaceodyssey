@@ -8,9 +8,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetCalebdarStyleTest_FirstJulianDay ()
         {
-            int year = -4712;
+            int year  = -4712;
             int month = 1;
-            int day = 1;
+            int day   = 1;
 
             ECalendarStyle expected = ECalendarStyle.Julian;
 
@@ -22,9 +22,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetCalebdarStyleTest_LastDayBC ()
         {
-            int year = 0;
+            int year  = 0;
             int month = 12;
-            int day = 31;
+            int day   = 31;
 
             ECalendarStyle expected = ECalendarStyle.Julian;
 
@@ -36,9 +36,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetCalebdarStyleTest_FirstDayAD ()
         {
-            int year = 1;
+            int year  = 1;
             int month = 1;
-            int day = 1;
+            int day   = 1;
 
             ECalendarStyle expected = ECalendarStyle.Julian;
 
@@ -50,9 +50,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetCalebdarStyleTest_PreLilianDay ()
         {
-            int year = 1582;
+            int year  = 1582;
             int month = 10;
-            int day = 4;
+            int day   = 4;
 
             ECalendarStyle expected = ECalendarStyle.Julian;
 
@@ -64,9 +64,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetCalebdarStyleTest_LilianDay ()
         {
-            int year = 1582;
+            int year  = 1582;
             int month = 10;
-            int day = 15;
+            int day   = 15;
 
             ECalendarStyle expected = ECalendarStyle.Gregorian;
 
@@ -78,9 +78,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetCalebdarStyleTest_1582OctoberAfterLilianDay ()
         {
-            int year = 1582;
+            int year  = 1582;
             int month = 10;
-            int day = 16;
+            int day   = 16;
 
             ECalendarStyle expected = ECalendarStyle.Gregorian;
 
@@ -92,9 +92,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetCalebdarStyleTest_1582AfterOctober ()
         {
-            int year = 1582;
+            int year  = 1582;
             int month = 11;
-            int day = 1;
+            int day   = 1;
 
             ECalendarStyle expected = ECalendarStyle.Gregorian;
 
@@ -106,9 +106,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetCalebdarStyleTest_ThirdMillenium ()
         {
-            int year = 2023;
+            int year  = 2023;
             int month = 7;
-            int day = 12;
+            int day   = 12;
 
             ECalendarStyle expected = ECalendarStyle.Gregorian;
 
@@ -156,9 +156,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNTest_FirstJulianDay ()
         {
-            int year = -4712;
+            int year  = -4712;
             int month = 1;
-            int day = 1;
+            int day   = 1;
 
             int expected = 0;
 
@@ -170,9 +170,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNTest_SecondJulianDay ()
         {
-            int year = -4712;
+            int year  = -4712;
             int month = 1;
-            int day = 2;
+            int day   = 2;
 
             int expected = 1;
 
@@ -184,9 +184,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNTest_LastDayBC ()
         {
-            int year = 0;
+            int year  = 0;
             int month = 12;
-            int day = 31;
+            int day   = 31;
 
             int expected = 1721423;
 
@@ -198,9 +198,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNTest_FirstDayAD ()
         {
-            int year = 1;
+            int year  = 1;
             int month = 1;
-            int day = 1;
+            int day   = 1;
 
             int expected = 1721424;
 
@@ -212,9 +212,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNTest_PreLilianDay ()
         {
-            int year = 1582;
+            int year  = 1582;
             int month = 10;
-            int day = 4;
+            int day   = 4;
 
             int expected = 2299160;
 
@@ -226,9 +226,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNTest_LilianDay ()
         {
-            int year = 1582;
+            int year  = 1582;
             int month = 10;
-            int day = 15;
+            int day   = 15;
 
             int expected = 2299161;
 
@@ -240,9 +240,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNTest_1582OctoberAfterLilianDay ()
         {
-            int year = 1582;
+            int year  = 1582;
             int month = 10;
-            int day = 16;
+            int day   = 16;
 
             int expected = 2299162;
 
@@ -254,9 +254,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNest_1582AfterOctober ()
         {
-            int year = 1582;
+            int year  = 1582;
             int month = 11;
-            int day = 1;
+            int day   = 1;
 
             int expected = 2299178;
 
@@ -268,9 +268,9 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJDNTest_ThirdMillenium ()
         {
-            int year = 2023;
+            int year  = 2023;
             int month = 7;
-            int day = 12;
+            int day   = 12;
 
             int expected = 2460138;
 
@@ -390,12 +390,12 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJulianDateTest_Midnight ()
         {
-            int year = 2023;
-            int month = 7;
-            int day = 12;
-            int hour = 0;
-            int min = 0;
-            int sec = 0;
+            int year     = 2023;
+            int month    = 7;
+            int day      = 12;
+            int hour     = 0;
+            int min      = 0;
+            int sec      = 0;
             int millisec = 0;
 
             double expected = 2460137.5;
@@ -408,12 +408,12 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJulianDateTest_OneMillisecondBeforeNoon ()
         {
-            int year = 2023;
-            int month = 7;
-            int day = 12;
-            int hour = 11;
-            int min = 59;
-            int sec = 59;
+            int year     = 2023;
+            int month    = 7;
+            int day      = 12;
+            int hour     = 11;
+            int min      = 59;
+            int sec      = 59;
             int millisec = 999;
 
             double expected = 2460137.99999998843;
@@ -426,12 +426,12 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJulianDateTest_Noon ()
         {
-            int year = 2023;
-            int month = 7;
-            int day = 12;
-            int hour = 12;
-            int min = 0;
-            int sec = 0;
+            int year     = 2023;
+            int month    = 7;
+            int day      = 12;
+            int hour     = 12;
+            int min      = 0;
+            int sec      = 0;
             int millisec = 0;
 
             double expected = 2460138.0;
@@ -444,12 +444,12 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJulianDateTest_OneMillisecondAfterNoon ()
         {
-            int year = 2023;
-            int month = 7;
-            int day = 12;
-            int hour = 12;
-            int min = 0;
-            int sec = 0;
+            int year     = 2023;
+            int month    = 7;
+            int day      = 12;
+            int hour     = 12;
+            int min      = 0;
+            int sec      = 0;
             int millisec = 1;
 
             double expected = 2460138.0000000116;
@@ -462,12 +462,12 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetJulianDateTest_OneMillisecondBeforeMidnight ()
         {
-            int year = 2023;
-            int month = 7;
-            int day = 12;
-            int hour = 23;
-            int min = 59;
-            int sec = 59;
+            int year     = 2023;
+            int month    = 7;
+            int day      = 12;
+            int hour     = 23;
+            int min      = 59;
+            int sec      = 59;
             int millisec = 999;
 
             double expected = 2460138.49999998843;

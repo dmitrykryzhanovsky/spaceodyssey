@@ -13,14 +13,10 @@
     public static class JD
     {
         // Первый день по григорианскому календарю (новому стилю).
-
-        private const int LilianYear = 1582;
-
+        private const int LilianYear  = 1582;
         private const int LilianMonth = 10;
-
-        private const int LilianDay = 15;
-
-        private const int LilianJDN = 2299161;
+        private const int LilianDay   = 15;
+        private const int LilianJDN   = 2299161;
 
         /// <summary>
         /// Определяет стиль календаря для заданной календарной даты.
@@ -126,6 +122,16 @@
         public static int GetWeekDay (int jdn)
         {
             return (jdn + 1) % AstroConst.Time.DaysPerWeek;
+        }
+
+        /// <summary>
+        /// возвращает количество юлианских столетий между датой <paramref name="jd"/> и датой <paramref name="referenceEpoch"/>.
+        /// </summary>
+        /// <remarks>Если дата <paramref name="jd"/> была раньше даты <paramref name="referenceEpoch"/>, будет возвращено отрицательное 
+        /// значение.</remarks>
+        public static double GetJulianCenturies (double jd, double referenceEpoch = AstroConst.Epoch.J2000)
+        {
+            return (jd - referenceEpoch) / AstroConst.Time.JulianCentury;
         }
     }
 }

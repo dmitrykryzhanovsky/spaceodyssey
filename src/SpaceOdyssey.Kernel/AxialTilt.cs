@@ -7,10 +7,8 @@ namespace SpaceOdyssey
     /// </summary>
     public static class AxialTilt
     {
-        /// <summary>
-        /// Вычисление наклона земной оси к плоскости эклиптики происходит по формуле ε = Series [0] + Series [1] * T + Series [2] * T^2 + 
-        /// Series [3] * T^3.
-        /// </summary>
+        // Вычисление наклона земной оси к плоскости эклиптики происходит по формуле ε = Series [0] + Series [1] * T + Series [2] * T^2 + 
+        // Series [3] * T^3.
         private static readonly double [] Series = new double []
         {
             Trigonometry.DegToRad ( 23.43929111), 

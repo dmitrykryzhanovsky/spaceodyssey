@@ -17,7 +17,7 @@
             /// <summary>
             /// Количество суток в юлианском столетии.
             /// </summary>
-            public const int JulianCentury = 36525;
+            public const double JulianCentury = 36525.0;
         }
 
         public static class Epoch

@@ -282,10 +282,5 @@ namespace SpaceOdyssey
         {
             return jdn + julianDayFraction;
         }
-
-        public static double GetJulianCenturies (double jd, double referenceEpoch = AstroConst.J2000)
-        {
-            return (jd - referenceEpoch) / (double)AstroConst.JulianCentury;
-        }
     }
 }

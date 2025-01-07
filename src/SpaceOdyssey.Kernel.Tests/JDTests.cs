@@ -2,6 +2,9 @@
 
 namespace SpaceOdyssey.Tests
 {
+    // https://apps.aavso.org/v2/tools/julian-date-converter/
+    // https://ssd.jpl.nasa.gov/tools/jdc/#/cd 
+
     [TestClass ()]
     public class JDTests
     {

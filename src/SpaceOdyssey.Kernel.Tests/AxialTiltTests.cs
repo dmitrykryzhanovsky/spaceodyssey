@@ -12,7 +12,7 @@ namespace SpaceOdyssey.Tests
 
             double expected = 0.40909280420293639;
 
-            double actual = AxialTilt.GetTilt (T);
+            double actual = AxialTilt.GetTiltForJulianCenturies (T);
 
             Assert.AreEqual (expected, actual);
         }
@@ -24,7 +24,7 @@ namespace SpaceOdyssey.Tests
 
             double expected = 0.40886584460739628;
 
-            double actual = AxialTilt.GetTilt (T);
+            double actual = AxialTilt.GetTiltForJulianCenturies (T);
 
             Assert.AreEqual (expected, actual);
         }
@@ -36,7 +36,7 @@ namespace SpaceOdyssey.Tests
 
             double expected = 0.40863893202908697;
 
-            double actual = AxialTilt.GetTilt (T);
+            double actual = AxialTilt.GetTiltForJulianCenturies (T);
 
             Assert.AreEqual (expected, actual);
         }
@@ -48,7 +48,7 @@ namespace SpaceOdyssey.Tests
 
             double expected = 0.40931975807767506;
 
-            double actual = AxialTilt.GetTilt (T);
+            double actual = AxialTilt.GetTiltForJulianCenturies (T);
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }

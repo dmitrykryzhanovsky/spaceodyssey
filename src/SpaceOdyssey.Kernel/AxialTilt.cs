@@ -22,7 +22,7 @@ namespace SpaceOdyssey
         /// </summary>
         /// <param name="T">Количество юлианских столетий, прошедших после эпохи J2000. Отрицательное значение параметра соответствует 
         /// времени до эпохи J2000.</param>
-        public static double GetTilt (double T)
+        public static double GetTiltForJulianCenturies (double T)
         {
             return T * (T * (T * Series [3] + Series [2]) + Series [1]) + Series [0];
         }
@@ -34,7 +34,7 @@ namespace SpaceOdyssey
         {
             double T = JD.GetJulianCenturies (jd);
 
-            return GetTilt (T);
+            return GetTiltForJulianCenturies (T);
         }
     }
 }

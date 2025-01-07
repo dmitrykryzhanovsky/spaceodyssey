@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Coordinates.cs" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Reference Include="Archimedes.Kernel">
       <HintPath>..\..\..\archimedes\src\Archimedes.Kernel\bin\Release\net7.0\Archimedes.Kernel.dll</HintPath>
     </Reference>

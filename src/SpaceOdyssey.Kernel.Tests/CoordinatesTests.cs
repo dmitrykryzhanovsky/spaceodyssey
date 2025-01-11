@@ -6,7 +6,7 @@ namespace SpaceOdyssey.Tests
 {
     [TestClass ()]
     public class CoordinatesTests
-    {
+    {//0.070623797473839081 2.0959976871211907
         private const double _testJD              =  2460680.7465777778;
         private const double _testJulianCenturies =  0.25012310959008350;
         private const double _testTilt            =  0.40903603483869127;
@@ -19,7 +19,9 @@ namespace SpaceOdyssey.Tests
         private const double _testEquatorialY     =  1.52185539624631247;
         private const double _testEquatorialZ     =  0.81380367575370056;
         private const double _testEclipticLat     =  0.07075332030887535;
+                                                    // 0.070623797473839081
         private const double _testEclipticLong    =  2.1021009126301449;
+                                                    // 2.0959976871211907
         private const double _testEclipticX       = -1.01078174214107436;
         private const double _testEclipticY       =  1.71997951497497141;
         private const double _testEclipticZ       =  0.14138860569620438;

@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using Archimedes;
+
 namespace SpaceOdyssey.Tests
 {
     [TestClass ()]
@@ -47,13 +49,23 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void GetEulerAnglesForPrecessionTest ()
         {
-            double T0 = 0.00;
+            double T0 = 0.0;
             double dT = 0.25012310959008350;
 
             (double alpha, double beta, double gamma) actual = Precession.GetEulerAnglesForPrecession (T0, dT);
-            Archimedes.UnitPolar3 x = Archimedes.Rotation3.RotateSpaceByEulerAngles (new Archimedes.UnitPolar3 (0.070670320667974843, 2.10209879178602602), actual.Item1, actual.Item2, actual.Item3);
+            //(double alpha, double beta, double gamma) actual = (1, 0.5, -1.1);
+            Archimedes.UnitPolar3 x = Archimedes.Rotation3.RotateSpaceByEulerAngles (new Archimedes.UnitPolar3 (0.070670320667974843, 2.10209879178602602), actual.Item1, 0, actual.Item3);
 
             Assert.AreEqual (1, 1);
         }
     }
-}//0.070623797473839081 2.0959976871211907
+}
+/// Перепроверить перевод в радианы для 2000 и нынешней эпохи
+/// Что-то не так с углами Эйлера: проверить при нутации = 0
+//0.070670320667974843 2.10209879178602602
+
+//0.070623797473839081 2.0959976871211907
+
+//0.070716843785437536 2.0960023465405158
+
+//0.07075332030887535  2.1021009126301449

@@ -72,3 +72,11 @@ _2/SpaceOdyssey.Kernel/obj/
 _2/SpaceOdyssey.Kernel.Tests/bin/
 
 _2/SpaceOdyssey.Kernel.Tests/obj/
+
+src/SpaceOdyssey.Core/bin/
+
+src/SpaceOdyssey.Core/obj/
+
+src/SpaceOdyssey.Core.Tests/bin/
+
+src/SpaceOdyssey.Core.Tests/obj/

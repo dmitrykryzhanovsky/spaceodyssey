@@ -80,3 +80,7 @@ src/SpaceOdyssey.Core/obj/
 src/SpaceOdyssey.Core.Tests/bin/
 
 src/SpaceOdyssey.Core.Tests/obj/
+
+src/SpaceOdyssey.DebugConsole/bin/
+
+src/SpaceOdyssey.DebugConsole/obj/

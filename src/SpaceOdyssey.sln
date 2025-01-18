@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceOdyssey.Core", "SpaceOdyssey.Core\SpaceOdyssey.Core.csproj", "{219F2F53-0FFD-42B7-85F7-D304D2363081}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceOdyssey.Core", "SpaceOdyssey.Core\SpaceOdyssey.Core.csproj", "{219F2F53-0FFD-42B7-85F7-D304D2363081}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceOdyssey.Core.Tests", "SpaceOdyssey.Core.Tests\SpaceOdyssey.Core.Tests.csproj", "{35276D55-7630-41BC-8499-B1359298B69A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceOdyssey.Core.Tests", "SpaceOdyssey.Core.Tests\SpaceOdyssey.Core.Tests.csproj", "{35276D55-7630-41BC-8499-B1359298B69A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpaceOdyssey.DebugConsole", "SpaceOdyssey.DebugConsole\SpaceOdyssey.DebugConsole.csproj", "{474B6B29-3FE7-44D2-BC24-F81C6D7F99F7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{35276D55-7630-41BC-8499-B1359298B69A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35276D55-7630-41BC-8499-B1359298B69A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35276D55-7630-41BC-8499-B1359298B69A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{474B6B29-3FE7-44D2-BC24-F81C6D7F99F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{474B6B29-3FE7-44D2-BC24-F81C6D7F99F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{474B6B29-3FE7-44D2-BC24-F81C6D7F99F7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{474B6B29-3FE7-44D2-BC24-F81C6D7F99F7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

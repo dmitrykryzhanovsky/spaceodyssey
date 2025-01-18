@@ -2,8 +2,30 @@
 
 namespace SpaceOdyssey
 {
+    /// <summary>
+    /// Вычисление наклона земной оси.
+    /// </summary>
+    /// <remarks><para>
+    ///     Формулы для вычислений взяты из https://en.wikipedia.org/wiki/Axial_tilt#Short_term. Они релевантны на интервале 
+    ///     нескольких десятков тысяч лет до и после эпохи J2000.0. Более точно моменты, в которые формулы начинают расходиться, можно 
+    ///     определить, как экстремумы полиномов (по которым происходят вычисления в методах), после которых значения полиномов уходят 
+    ///     на бесконечность.
+    /// </para>
+    /// <para>
+    ///     Момент времени T, для которого происходит вычисление наклона земной оси, во всех методах задаётся количеством 
+    ///     юлианских столетий, прошедших от эпохи J2000.0 до интересующего нас момента времени. Если интересующий нас момент времени 
+    ///     предшествовал эпохе J2000.0, значение T будет отрицательным.
+    /// </para>
+    /// <para>
+    ///     Все методы в этом классе возвращают наклон земной оси в секундах.
+    /// </para>
+    /// </remarks>
     public static class EarthAxialTilt
     {
+        /// <summary>
+        /// 23°23′ в секундах – это наклон земной оси с точностью до минуты для эпохи J2000.0. Все вычисления в данном классе нужны 
+        /// для определения наклона земной оси с точностью до секунды и её долей.
+        /// </summary>
         private const double ApproximationArcmin = 84360;
 
         private static readonly double [] ArcsecondSeries_DE200  = new double [] {   21.448, 
@@ -30,16 +52,25 @@ namespace SpaceOdyssey
                                                                                       5.79, 
                                                                                       2.45 };
 
+        /// <summary>
+        /// Вычисление наклона земной оси по эфемеридам JPL 1983 г.
+        /// </summary>
         public static double ComputeDE200 (double T)
         {
             return ApproximationArcmin + PolynomialAlgorithm.ComputeCube (T, ArcsecondSeries_DE200);
         }
 
+        /// <summary>
+        /// Вычисление наклона земной оси по модели P03 от IAU (МАС) 2006 г.
+        /// </summary>
         public static double ComputeP03 (double T)
         {
             return ApproximationArcmin + PolynomialAlgorithm.Compute (T, ArcsecondSeries_P03);
         }
 
+        /// <summary>
+        /// Вычисление наклона земной оси по модели Жака Ласкара.
+        /// </summary>
         public static double ComputeLaskar (double T)
         {
             return ApproximationArcmin + PolynomialAlgorithm.Compute (T / 100.0, ArcsecondSeries_Laskar);

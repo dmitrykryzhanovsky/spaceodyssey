@@ -28,29 +28,29 @@ namespace SpaceOdyssey
         /// </summary>
         private const double ApproximationArcmin = 84360;
 
-        private static readonly double [] ArcsecondSeries_DE200  = new double [] {   21.448, 
-                                                                                    -46.8150, 
-                                                                                     -0.00059, 
-                                                                                      0.001813 };
+        private static readonly double [] ArcsecondSeries_DE200  = new double [] {    21.448, 
+                                                                                     -46.8150, 
+                                                                                      -0.00059, 
+                                                                                       0.001813 };
 
-        private static readonly double [] ArcsecondSeries_P03    = new double [] {   21.406, 
-                                                                                    -46.836769, 
-                                                                                     -0.0001831, 
-                                                                                      0.00200340, 
-                                                                                     -0.000000576, 
-                                                                                     -0.0000000434 };
+        private static readonly double [] ArcsecondSeries_P03    = new double [] {    21.406, 
+                                                                                     -46.836769, 
+                                                                                      -0.0001831, 
+                                                                                       0.00200340, 
+                                                                                      -0.000000576, 
+                                                                                      -0.0000000434 };
 
-        private static readonly double [] ArcsecondSeries_Laskar = new double [] {   21.448, 
-                                                                                  -4680.93, 
-                                                                                     -1.55, 
-                                                                                   1999.25, 
-                                                                                    -51.38, 
-                                                                                   -249.67, 
-                                                                                    -39.05, 
-                                                                                      7.12, 
-                                                                                     27.87, 
-                                                                                      5.79, 
-                                                                                      2.45 };
+        private static readonly double [] ArcsecondSeries_Laskar = new double [] {    21.448, 
+                                                                                   -4680.93, 
+                                                                                      -1.55, 
+                                                                                    1999.25, 
+                                                                                     -51.38, 
+                                                                                    -249.67, 
+                                                                                     -39.05, 
+                                                                                       7.12, 
+                                                                                      27.87, 
+                                                                                       5.79, 
+                                                                                       2.45 };
 
         /// <summary>
         /// Вычисление наклона земной оси по эфемеридам JPL 1983 г.

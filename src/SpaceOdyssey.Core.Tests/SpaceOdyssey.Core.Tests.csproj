@@ -19,4 +19,10 @@
     <ProjectReference Include="..\SpaceOdyssey.Core\SpaceOdyssey.Core.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="Archimedes.Core">
+      <HintPath>..\..\..\archimedes\src\Archimedes.Core\bin\Release\net7.0\Archimedes.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

@@ -26,7 +26,7 @@ namespace SpaceOdyssey
         /// 23°23′ в секундах – это наклон земной оси с точностью до минуты для эпохи J2000.0. Все вычисления в данном классе нужны 
         /// для определения наклона земной оси с точностью до секунды и её долей.
         /// </summary>
-        private const double ApproximationArcmin = 84360;
+        private const double InitialApproximation = 84360;
 
         private static readonly double [] ArcsecondSeries_DE200  = new double [] {    21.448, 
                                                                                      -46.8150, 
@@ -53,27 +53,27 @@ namespace SpaceOdyssey
                                                                                        2.45 };
 
         /// <summary>
-        /// Вычисление наклона земной оси по эфемеридам JPL 1983 г.
+        /// Вычисление наклона земной оси в секундах по эфемеридам JPL 1983 г.
         /// </summary>
-        public static double ComputeDE200 (double T)
+        public static double ComputeDE200InArcsec (double T)
         {
-            return ApproximationArcmin + PolynomialAlgorithm.ComputeCube (T, ArcsecondSeries_DE200);
+            return InitialApproximation + PolynomialAlgorithm.ComputeCube (T, ArcsecondSeries_DE200);
         }
 
         /// <summary>
-        /// Вычисление наклона земной оси по модели P03 от IAU (МАС) 2006 г.
+        /// Вычисление наклона земной оси в секундах по модели P03 от IAU (МАС) 2006 г.
         /// </summary>
-        public static double ComputeP03 (double T)
+        public static double ComputeP03InArcsec (double T)
         {
-            return ApproximationArcmin + PolynomialAlgorithm.Compute (T, ArcsecondSeries_P03);
+            return InitialApproximation + PolynomialAlgorithm.Compute (T, ArcsecondSeries_P03);
         }
 
         /// <summary>
-        /// Вычисление наклона земной оси по модели Жака Ласкара.
+        /// Вычисление наклона земной оси в секундах по модели Жака Ласкара.
         /// </summary>
-        public static double ComputeLaskar (double T)
+        public static double ComputeLaskarInArcsec (double T)
         {
-            return ApproximationArcmin + PolynomialAlgorithm.Compute (T / 100.0, ArcsecondSeries_Laskar);
+            return InitialApproximation + PolynomialAlgorithm.Compute (T / 100.0, ArcsecondSeries_Laskar);
         }
     }
 }

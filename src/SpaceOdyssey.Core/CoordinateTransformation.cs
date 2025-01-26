@@ -5,6 +5,15 @@ namespace SpaceOdyssey
 {
     public static class CoordinateTransformation
     {
+        /// <summary>
+        /// Преобразование экваториальных координат в эклиптические.
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        ///     <item>tilt – наклон оси вращения к эклиптике в радианах;</item>
+        ///     <item>sinTilt, cosTilt – sin и cos наклона оси вращения к эклиптике.</item>
+        /// </list>
+        /// </remarks>
         public static class EquatorialToEcliptic
         {
             public static Vector3 Transform (Vector3 v, double tilt)
@@ -38,6 +47,15 @@ namespace SpaceOdyssey
             }
         }
 
+        /// <summary>
+        /// Преобразование эклиптических координат в экваториальные.
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        ///     <item>tilt – наклон оси вращения к эклиптике в радианах;</item>
+        ///     <item>sinTilt, cosTilt – sin и cos наклона оси вращения к эклиптике.</item>
+        /// </list>
+        /// </remarks>
         public static class EclipticToEquatorial
         {
             public static Vector3 Transform (Vector3 v, double tilt)

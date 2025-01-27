@@ -18,7 +18,7 @@
         public const double B1950 = 2433282.4235;
 
         /// <summary>
-        /// Определить стиль календаря (юлианский или грегорианский) для заданной даты (year, month, day).
+        /// Определить стиль календаря (юлианский или григорианский) для заданной даты (year, month, day).
         /// </summary>
         public static ECalendarStyle GetCalendarStyle (int year, int month, int day)
         {
@@ -32,6 +32,10 @@
             else return ECalendarStyle.Julian;
         }
 
+        /// <summary>
+        /// Возвращает номер юлианского дня для полудня указанной даты.
+        /// </summary>
+        /// <param name="calendarStyle">Стиль календаря (юлианский / григорианский), по которому указана дата.</param>
         public static int GetJDN (int year, int month, int day, ECalendarStyle calendarStyle)
         {
             int a = (14 - month) / 12;
@@ -45,6 +49,9 @@
             else return commonTerm - 32083;
         }
 
+        /// <summary>
+        /// Возвращает номер юлианского дня для полудня указанной даты по григорианскому календарю.
+        /// </summary>
         public static int GetJDN (int year, int month, int day)
         {
             int a = (14 - month) / 12;

@@ -1,5 +1,4 @@
-﻿using SpaceOdyssey;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace SpaceOdyssey.Tests
 {
@@ -77,9 +76,103 @@ namespace SpaceOdyssey.Tests
         }
 
         [TestMethod ()]
-        public void GetJDNTest ()
+        public void GetJDNTest_General_JulianPeriodBeginInJulian ()
         {
-            Assert.Fail ();
+            int expected = 0;
+
+            int actual = Time.GetJDN (year: -4712, month: 1, day: 1, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_JulianPeriodBeginInGregorian ()
+        {
+            int expected = 0;
+
+            int actual = Time.GetJDN (year: -4713, month: 11, day: 24, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_LastPregregorianDayInJulian ()
+        {
+            int expected = 2299160;
+
+            int actual = Time.GetJDN (year: 1582, month: 10, day: 4, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_LastPregregorianDayInGregorian ()
+        {
+            int expected = 2299160;
+
+            int actual = Time.GetJDN (year: 1582, month: 10, day: 14, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_FirstGregorianDayInJulian ()
+        {
+            int expected = 2299161;
+
+            int actual = Time.GetJDN (year: 1582, month: 10, day: 5, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_FirstGregorianDayInGregorian ()
+        {
+            int expected = 2299161;
+
+            int actual = Time.GetJDN (year: 1582, month: 10, day: 15, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_J2000InJulian ()
+        {
+            int expected = 2451558;
+
+            int actual = Time.GetJDN (year: 2000, month: 1, day: 1, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_J2000InGregorian ()
+        {
+            int expected = 2451545;
+
+            int actual = Time.GetJDN (year: 2000, month: 1, day: 1, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_T60InJulian ()
+        {
+            int expected = 2460684;
+
+            int actual = Time.GetJDN (year: 2024, month: 12, day: 26, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDNTest_General_T60InGregorian ()
+        {
+            int expected = 2460671;
+
+            int actual = Time.GetJDN (year: 2024, month: 12, day: 26, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
         }
 
         [TestMethod ()]

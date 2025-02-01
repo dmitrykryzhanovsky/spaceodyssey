@@ -134,5 +134,23 @@
 
             return (year, month, day);
         }
+
+        /// <summary>
+        /// Возвращает долю суток (от 0 до 1), прошедшую от начала суток до заданного момента времени.
+        /// </summary>
+        public static double DayFraction (int hour, int min, double sec)
+        {
+            return (sec + AstroConst.Time.SEC_IN_MIN * (min + AstroConst.Time.MIN_IN_HOUR * hour)) / AstroConst.Time.SEC_IN_DAY;
+        }
+
+        /// <summary>
+        /// Возвращает долю суток (от 0 до 1), прошедшую от начала суток до заданного момента времени.
+        /// </summary>
+        public static double DayFraction (int hour, int min, int sec, int millisec)
+        {
+            return (double)(millisec + AstroConst.Time.MILLISEC_IN_SEC * 
+                                (sec + AstroConst.Time.SEC_IN_MIN * 
+                                (min + AstroConst.Time.MIN_IN_HOUR * hour))) / AstroConst.Time.MILLISEC_IN_DAY;
+        }
     }
 }

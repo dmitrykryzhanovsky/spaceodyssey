@@ -410,5 +410,115 @@ namespace SpaceOdyssey.Tests
             Assert.AreEqual (expected.month, actual.month);
             Assert.AreEqual (expected.day, actual.day);
         }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMS_Midnight ()
+        {
+            double expected = 0.0;
+
+            double actual = Time.DayFraction (hour: 0, min: 0, sec: 0.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMS_AlmostMidnight ()
+        {
+            double expected = 0.999999999988426;
+
+            double actual = Time.DayFraction (hour: 23, min: 59, sec: 59.999999);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMS_DDD ()
+        {
+            double expected = 0.57109953703703704;
+
+            double actual = Time.DayFraction (hour: 13, min: 42, sec: 23.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMS_DD0 ()
+        {
+            double expected = 0.5708333333333333;
+
+            double actual = Time.DayFraction (hour: 13, min: 42, sec: 0.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMS_D00 ()
+        {
+            double expected = 0.5416666666666666;
+
+            double actual = Time.DayFraction (hour: 13, min: 0, sec: 0.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMSM_Midnight ()
+        {
+            double expected = 0.0;
+
+            double actual = Time.DayFraction (hour: 0, min: 0, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMSM_AlmostMidnight ()
+        {
+            double expected = 0.99999998842592593;
+
+            double actual = Time.DayFraction (hour: 23, min: 59, sec: 59, millisec: 999);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMSM_DDDD ()
+        {
+            double expected = 0.57109982638888889;
+
+            double actual = Time.DayFraction (hour: 13, min: 42, sec: 23, millisec: 25);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMSM_DDD0 ()
+        {
+            double expected = 0.57109953703703704;
+
+            double actual = Time.DayFraction (hour: 13, min: 42, sec: 23, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMSM_DD00 ()
+        {
+            double expected = 0.5708333333333333;
+
+            double actual = Time.DayFraction (hour: 13, min: 42, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void DayFractionTest_HMSM_D000 ()
+        {
+            double expected = 0.5416666666666666;
+
+            double actual = Time.DayFraction (hour: 13, min: 0, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
     }
 }

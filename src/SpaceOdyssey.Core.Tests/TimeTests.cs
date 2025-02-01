@@ -412,113 +412,207 @@ namespace SpaceOdyssey.Tests
         }
 
         [TestMethod ()]
-        public void DayFractionTest_HMS_Midnight ()
+        public void GetDayFractionTest_HMS_Midnight ()
         {
             double expected = 0.0;
 
-            double actual = Time.DayFraction (hour: 0, min: 0, sec: 0.0);
+            double actual = Time.GetDayFraction (hour: 0, min: 0, sec: 0.0);
 
             Assert.AreEqual (expected, actual);
         }
 
         [TestMethod ()]
-        public void DayFractionTest_HMS_AlmostMidnight ()
+        public void GetDayFractionTest_HMS_AlmostMidnight ()
         {
             double expected = 0.999999999988426;
 
-            double actual = Time.DayFraction (hour: 23, min: 59, sec: 59.999999);
+            double actual = Time.GetDayFraction (hour: 23, min: 59, sec: 59.999999);
 
             Assert.AreEqual (expected, actual);
         }
 
         [TestMethod ()]
-        public void DayFractionTest_HMS_DDD ()
-        {
-            double expected = 0.57109953703703704;
-
-            double actual = Time.DayFraction (hour: 13, min: 42, sec: 23.0);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void DayFractionTest_HMS_DD0 ()
-        {
-            double expected = 0.5708333333333333;
-
-            double actual = Time.DayFraction (hour: 13, min: 42, sec: 0.0);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void DayFractionTest_HMS_D00 ()
-        {
-            double expected = 0.5416666666666666;
-
-            double actual = Time.DayFraction (hour: 13, min: 0, sec: 0.0);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void DayFractionTest_HMSM_Midnight ()
-        {
-            double expected = 0.0;
-
-            double actual = Time.DayFraction (hour: 0, min: 0, sec: 0, millisec: 0);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void DayFractionTest_HMSM_AlmostMidnight ()
-        {
-            double expected = 0.99999998842592593;
-
-            double actual = Time.DayFraction (hour: 23, min: 59, sec: 59, millisec: 999);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void DayFractionTest_HMSM_DDDD ()
+        public void GetDayFractionTest_HMS_DDDD ()
         {
             double expected = 0.57109982638888889;
 
-            double actual = Time.DayFraction (hour: 13, min: 42, sec: 23, millisec: 25);
+            double actual = Time.GetDayFraction (hour: 13, min: 42, sec: 23.025);
 
             Assert.AreEqual (expected, actual);
         }
 
         [TestMethod ()]
-        public void DayFractionTest_HMSM_DDD0 ()
+        public void GetDayFractionTest_HMS_DDD0 ()
         {
             double expected = 0.57109953703703704;
 
-            double actual = Time.DayFraction (hour: 13, min: 42, sec: 23, millisec: 0);
+            double actual = Time.GetDayFraction (hour: 13, min: 42, sec: 23.0);
 
             Assert.AreEqual (expected, actual);
         }
 
         [TestMethod ()]
-        public void DayFractionTest_HMSM_DD00 ()
+        public void GetDayFractionTest_HMS_DD00 ()
         {
             double expected = 0.5708333333333333;
 
-            double actual = Time.DayFraction (hour: 13, min: 42, sec: 0, millisec: 0);
+            double actual = Time.GetDayFraction (hour: 13, min: 42, sec: 0.0);
 
             Assert.AreEqual (expected, actual);
         }
 
         [TestMethod ()]
-        public void DayFractionTest_HMSM_D000 ()
+        public void GetDayFractionTest_HMS_D000 ()
         {
             double expected = 0.5416666666666666;
 
-            double actual = Time.DayFraction (hour: 13, min: 0, sec: 0, millisec: 0);
+            double actual = Time.GetDayFraction (hour: 13, min: 0, sec: 0.0);
 
             Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetDayFractionTest_HMSM_Midnight ()
+        {
+            double expected = 0.0;
+
+            double actual = Time.GetDayFraction (hour: 0, min: 0, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetDayFractionTest_HMSM_AlmostMidnight ()
+        {
+            double expected = 0.99999998842592593;
+
+            double actual = Time.GetDayFraction (hour: 23, min: 59, sec: 59, millisec: 999);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetDayFractionTest_HMSM_DDDD ()
+        {
+            double expected = 0.57109982638888889;
+
+            double actual = Time.GetDayFraction (hour: 13, min: 42, sec: 23, millisec: 25);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetDayFractionTest_HMSM_DDD0 ()
+        {
+            double expected = 0.57109953703703704;
+
+            double actual = Time.GetDayFraction (hour: 13, min: 42, sec: 23, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetDayFractionTest_HMSM_DD00 ()
+        {
+            double expected = 0.5708333333333333;
+
+            double actual = Time.GetDayFraction (hour: 13, min: 42, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetDayFractionTest_HMSM_D000 ()
+        {
+            double expected = 0.5416666666666666;
+
+            double actual = Time.GetDayFraction (hour: 13, min: 0, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetTimeComponentsTest_Midnight ()
+        {
+            double dayFraction = 0.0;
+
+            (int hour, int min, double sec) expected = (0, 0, 0.0);
+
+            (int hour, int min, double sec) actual = Time.GetTimeComponents (dayFraction);
+
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec);
+        }
+
+        [TestMethod ()]
+        public void GetTimeComponentsTest_AlmostMidnight ()
+        {
+            double dayFraction = 0.99999998842592592;
+
+            (int hour, int min, double sec) expected = (23, 59, 59.999);
+
+            (int hour, int min, double sec) actual = Time.GetTimeComponents (dayFraction);
+
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec, 1.0e-4);
+        }
+
+        [TestMethod ()]
+        public void GetTimeComponentsTest_DDDD ()
+        {
+            double dayFraction = 0.57109982638888889;
+
+            (int hour, int min, double sec) expected = (13, 42, 23.025);
+
+            (int hour, int min, double sec) actual = Time.GetTimeComponents (dayFraction);
+
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec, 1.0e-4);
+        }
+
+        [TestMethod ()]
+        public void GetTimeComponentsTest_DDD0 ()
+        {
+            double dayFraction = 0.57109953703703704;
+
+            (int hour, int min, double sec) expected = (13, 42, 23.0);
+
+            (int hour, int min, double sec) actual = Time.GetTimeComponents (dayFraction);
+
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec, 1.0e-4);
+        }
+
+        [TestMethod ()]
+        public void GetTimeComponentsTest_DD00 ()
+        {
+            double dayFraction = 0.5708333333333333;
+
+            (int hour, int min, double sec) expected = (13, 42, 0.0);
+
+            (int hour, int min, double sec) actual = Time.GetTimeComponents (dayFraction);
+
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec);
+        }
+
+        [TestMethod ()]
+        public void GetTimeComponentsTest_D000 ()
+        {
+            double dayFraction = 0.5416666666666666;
+
+            (int hour, int min, double sec) expected = (13, 0, 0.0);
+
+            (int hour, int min, double sec) actual = Time.GetTimeComponents (dayFraction);
+
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec);
         }
     }
 }

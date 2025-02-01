@@ -138,7 +138,7 @@
         /// <summary>
         /// Возвращает долю суток (от 0 до 1), прошедшую от начала суток до заданного момента времени.
         /// </summary>
-        public static double DayFraction (int hour, int min, double sec)
+        public static double GetDayFraction (int hour, int min, double sec)
         {
             return (sec + AstroConst.Time.SEC_IN_MIN * (min + AstroConst.Time.MIN_IN_HOUR * hour)) / AstroConst.Time.SEC_IN_DAY;
         }
@@ -146,11 +146,28 @@
         /// <summary>
         /// Возвращает долю суток (от 0 до 1), прошедшую от начала суток до заданного момента времени.
         /// </summary>
-        public static double DayFraction (int hour, int min, int sec, int millisec)
+        public static double GetDayFraction (int hour, int min, int sec, int millisec)
         {
             return (double)(millisec + AstroConst.Time.MILLISEC_IN_SEC * 
                                 (sec + AstroConst.Time.SEC_IN_MIN * 
                                 (min + AstroConst.Time.MIN_IN_HOUR * hour))) / AstroConst.Time.MILLISEC_IN_DAY;
+        }
+
+        /// <summary>
+        /// Восстанавливает компоненты времени (часы, минуты, секунды) для момента времени, заданного долей суток dayFraction (от 0 до 
+        /// 1), прошедшей после полуночи.
+        /// </summary>
+        public static (int hour, int min, double sec) GetTimeComponents (double dayFraction)
+        {
+            double totalSecF   = dayFraction * AstroConst.Time.SEC_IN_DAY;
+            int    totalSecInt = (int)totalSecF;
+
+            (int totalMin, int secInt) = int.DivRem (totalSecInt, AstroConst.Time.SEC_IN_MIN);
+            (int hour, int min) = int.DivRem (totalMin, AstroConst.Time.MIN_IN_HOUR);
+
+            double sec = secInt + (totalSecF - totalSecInt);
+
+            return (hour, min, sec);
         }
     }
 }

@@ -214,5 +214,201 @@ namespace SpaceOdyssey.Tests
 
             Assert.AreEqual (expected, actual);
         }
+
+        [TestMethod ()]
+        public void GetDateTest_General_JulianPeriodBeginInJulian ()
+        {
+            int jdn = 0;
+
+            (int year, int month, int day) expected = (-4712, 1, 1);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_JulianPeriodBeginInGregorian ()
+        {
+            int jdn = 0;
+
+            (int year, int month, int day) expected = (-4713, 11, 24);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_LastPregregorianDayInJulian ()
+        {
+            int jdn = 2299160;
+
+            (int year, int month, int day) expected = (1582, 10, 4);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_LastPregregorianDayInGregorian ()
+        {
+            int jdn = 2299160;
+
+            (int year, int month, int day) expected = (1582, 10, 14);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_FirstGregorianDayInJulian ()
+        {
+            int jdn = 2299161;
+
+            (int year, int month, int day) expected = (1582, 10, 5);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_FirstGregorianDayInGregorian ()
+        {
+            int jdn = 2299161;
+
+            (int year, int month, int day) expected = (1582, 10, 15);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_J2000InJulian ()
+        {
+            int jdn = 2451558;
+
+            (int year, int month, int day) expected = (2000, 1, 1);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_J2000InGregorian ()
+        {
+            int jdn = 2451545;
+
+            (int year, int month, int day) expected = (2000, 1, 1);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_T60InJulian ()
+        {
+            int jdn = 2460684;
+
+            (int year, int month, int day) expected = (2024, 12, 26);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_General_T60InGregorian ()
+        {
+            int jdn = 2460671;
+
+            (int year, int month, int day) expected = (2024, 12, 26);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_Gregorian_JulianPeriodBegin ()
+        {
+            int jdn = 0;
+
+            (int year, int month, int day) expected = (-4713, 11, 24);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_Gregorian_FirstGregorianDay ()
+        {
+            int jdn = 2299161;
+
+            (int year, int month, int day) expected = (1582, 10, 15);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_Gregorian_J2000 ()
+        {
+            int jdn = 2451545;
+
+            (int year, int month, int day) expected = (2000, 1, 1);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
+
+        [TestMethod ()]
+        public void GetDateTest_Gregorian_T60 ()
+        {
+            int jdn = 2460671;
+
+            (int year, int month, int day) expected = (2024, 12, 26);
+
+            (int year, int month, int day) actual = Time.GetCalendarDate (jdn);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+        }
     }
 }

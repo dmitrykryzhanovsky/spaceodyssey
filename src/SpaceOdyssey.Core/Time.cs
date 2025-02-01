@@ -169,5 +169,51 @@
 
             return (hour, min, sec);
         }
+
+        /// <summary>
+        /// Возвращает юлианскую дату для заданного момента времени.
+        /// </summary>
+        /// <param name="calendarStyle">Стиль календаря (юлианский / григорианский), по которому указана календарная дата.</param>
+        public static double GetJD (int year, int month, int day, int hour, int min, double sec, ECalendarStyle calendarStyle)
+        {
+            int    jdn         = GetJDN (year, month, day, calendarStyle);
+            double dayFraction = GetDayFraction (hour, min, sec);
+
+            return jdn + dayFraction - 0.5;
+        }
+
+        /// <summary>
+        /// Возвращает юлианскую дату для заданного момента времени по григорианскому календарю.
+        /// </summary>
+        public static double GetJD (int year, int month, int day, int hour, int min, double sec)
+        {
+            int    jdn         = GetJDN (year, month, day);
+            double dayFraction = GetDayFraction (hour, min, sec);
+
+            return jdn + dayFraction - 0.5;
+        }
+
+        /// <summary>
+        /// Возвращает юлианскую дату для заданного момента времени.
+        /// </summary>
+        /// <param name="calendarStyle">Стиль календаря (юлианский / григорианский), по которому указана календарная дата.</param>
+        public static double GetJD (int year, int month, int day, int hour, int min, int sec, int millisec, ECalendarStyle calendarStyle)
+        {
+            int    jdn         = GetJDN (year, month, day, calendarStyle);
+            double dayFraction = GetDayFraction (hour, min, sec, millisec);
+
+            return jdn + dayFraction - 0.5;
+        }
+
+        /// <summary>
+        /// Возвращает юлианскую дату для заданного момента времени по григорианскому календарю.
+        /// </summary>
+        public static double GetJD (int year, int month, int day, int hour, int min, int sec, int millisec)
+        {
+            int    jdn         = GetJDN (year, month, day);
+            double dayFraction = GetDayFraction (hour, min, sec, millisec);
+
+            return jdn + dayFraction - 0.5;
+        }
     }
 }

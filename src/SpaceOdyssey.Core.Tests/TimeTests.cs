@@ -614,5 +614,305 @@ namespace SpaceOdyssey.Tests
             Assert.AreEqual (expected.min, actual.min);
             Assert.AreEqual (expected.sec, actual.sec);
         }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InJuian_Midnight ()
+        {
+            double expected = 2299159.5;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 0, min: 0, sec: 0.0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InJulian_Morning ()
+        {
+            double expected = 2299159.9;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 9, min: 36, sec: 0.0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InJulian_Noon ()
+        {
+            double expected = 2299160.0;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 12, min: 0, sec: 0.0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InJulian_Afternoon ()
+        {
+            double expected = 2299160.1;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 14, min: 24, sec: 0.0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InJulian_ApproachingToMidnight ()
+        {
+            double expected = 2299160.49;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 23, min: 45, sec: 36.0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InGregorian_Midnight ()
+        {
+            double expected = 2451544.5;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 0, min: 0, sec: 0.0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InGregorian_Morning ()
+        {
+            double expected = 2451544.9;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 9, min: 36, sec: 0.0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InGregorian_Noon ()
+        {
+            double expected = 2451545.0;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 12, min: 0, sec: 0.0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InGregorian_Afternoon ()
+        {
+            double expected = 2451545.1;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 14, min: 24, sec: 0.0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_General_InGregorian_ApproachingToMidnight ()
+        {
+            double expected = 2451545.49;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 23, min: 45, sec: 36.0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_Gregorian_Midnight ()
+        {
+            double expected = 2451544.5;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 0, min: 0, sec: 0.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_Gregorian_Morning ()
+        {
+            double expected = 2451544.9;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 9, min: 36, sec: 0.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_Gregorian_Noon ()
+        {
+            double expected = 2451545.0;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 12, min: 0, sec: 0.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_Gregorian_Afternoon ()
+        {
+            double expected = 2451545.1;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 14, min: 24, sec: 0.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Sec_Gregorian_ApproachingToMidnight ()
+        {
+            double expected = 2451545.49;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 23, min: 45, sec: 36.0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InJuian_Midnight ()
+        {
+            double expected = 2299159.5;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 0, min: 0, sec: 0, millisec: 0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InJulian_Morning ()
+        {
+            double expected = 2299159.9;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 9, min: 36, sec: 0, millisec: 0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InJulian_Noon ()
+        {
+            double expected = 2299160.0;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 12, min: 0, sec: 0, millisec: 0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InJulian_Afternoon ()
+        {
+            double expected = 2299160.1;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 14, min: 24, sec: 0, millisec: 0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InJulian_ApproachingToMidnight ()
+        {
+            double expected = 2299160.49;
+
+            double actual = Time.GetJD (year: 1582, month: 10, day: 4, hour: 23, min: 45, sec: 36, millisec: 0, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InGregorian_Midnight ()
+        {
+            double expected = 2451544.5;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 0, min: 0, sec: 0, millisec: 0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InGregorian_Morning ()
+        {
+            double expected = 2451544.9;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 9, min: 36, sec: 0, millisec: 0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InGregorian_Noon ()
+        {
+            double expected = 2451545.0;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 12, min: 0, sec: 0, millisec: 0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InGregorian_Afternoon ()
+        {
+            double expected = 2451545.1;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 14, min: 24, sec: 0, millisec: 0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_General_InGregorian_ApproachingToMidnight ()
+        {
+            double expected = 2451545.49;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 23, min: 45, sec: 36, millisec: 0, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_Gregorian_Midnight ()
+        {
+            double expected = 2451544.5;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 0, min: 0, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_Gregorian_Morning ()
+        {
+            double expected = 2451544.9;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 9, min: 36, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_Gregorian_Noon ()
+        {
+            double expected = 2451545.0;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 12, min: 0, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_Gregorian_Afternoon ()
+        {
+            double expected = 2451545.1;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 14, min: 24, sec: 0, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJDTest_Milisec_Gregorian_ApproachingToMidnight ()
+        {
+            double expected = 2451545.49;
+
+            double actual = Time.GetJD (year: 2000, month: 1, day: 1, hour: 23, min: 45, sec: 36, millisec: 0);
+
+            Assert.AreEqual (expected, actual);
+        }
     }
 }

@@ -914,5 +914,232 @@ namespace SpaceOdyssey.Tests
 
             Assert.AreEqual (expected, actual);
         }
+
+        [TestMethod ()]
+        public void GetDateComponentsTest_General_LastPregregorianDayInJulian_Midnight ()
+        {
+            double jd = 2299159.5;
+
+            (int year, int month, int day, int hour, int min, double sec) expected = (1582, 10, 4, 0, 0, 0.0);
+
+            (int year, int month, int day, int hour, int min, double sec) actual = Time.GetDateComponents (jd, ECalendarStyle.Julian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec);
+        }
+
+        [TestMethod ()]
+        public void GetDateComponentsTest_General_FirstGreagorianDayInGregorian_Midnight ()
+        {
+            double jd = 2299160.5;
+
+            (int year, int month, int day, int hour, int min, double sec) expected = (1582, 10, 15, 0, 0, 0.0);
+
+            (int year, int month, int day, int hour, int min, double sec) actual = Time.GetDateComponents (jd, ECalendarStyle.Gregorian);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec);
+        }
+
+        [TestMethod ()]
+        public void GetDateComponentsTest_Gregorian_Midnight ()
+        {
+            double jd = 2451544.5;
+
+            (int year, int month, int day, int hour, int min, double sec) expected = (2000, 1, 1, 0, 0, 0.0);
+
+            (int year, int month, int day, int hour, int min, double sec) actual = Time.GetDateComponents (jd);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec);
+        }
+
+        [TestMethod ()]
+        public void GetDateComponentsTest_Gregorian_Morning ()
+        {
+            double jd = 2451544.9;
+
+            (int year, int month, int day, int hour, int min, double sec) expected = (2000, 1, 1, 9, 35, 59.999999);
+
+            (int year, int month, int day, int hour, int min, double sec) actual = Time.GetDateComponents (jd);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec, 1.0e-4);
+        }
+
+        [TestMethod ()]
+        public void GetDateComponentsTest_Gregorian_Noon ()
+        {
+            double jd = 2451545.0;
+
+            (int year, int month, int day, int hour, int min, double sec) expected = (2000, 1, 1, 12, 0, 0.0);
+
+            (int year, int month, int day, int hour, int min, double sec) actual = Time.GetDateComponents (jd);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec);
+        }
+
+        [TestMethod ()]
+        public void GetDateComponentsTest_Gregorian_Afternoon ()
+        {
+            double jd = 2451545.1;
+
+            (int year, int month, int day, int hour, int min, double sec) expected = (2000, 1, 1, 14, 24, 0.0);
+
+            (int year, int month, int day, int hour, int min, double sec) actual = Time.GetDateComponents (jd);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec, 1.0e-4);
+        }
+
+        [TestMethod ()]
+        public void GetDateComponentsTest_Gregorian_ApproachingToMidnight ()
+        {
+            double jd = 2451545.49;
+
+            (int year, int month, int day, int hour, int min, double sec) expected = (2000, 1, 1, 23, 45, 36.0);
+
+            (int year, int month, int day, int hour, int min, double sec) actual = Time.GetDateComponents (jd);
+
+            Assert.AreEqual (expected.year, actual.year);
+            Assert.AreEqual (expected.month, actual.month);
+            Assert.AreEqual (expected.day, actual.day);
+            Assert.AreEqual (expected.hour, actual.hour);
+            Assert.AreEqual (expected.min, actual.min);
+            Assert.AreEqual (expected.sec, actual.sec, 1.0e-4);
+        }
+
+        [TestMethod ()]
+        public void GetWeekDayTest_Sunday ()
+        {
+            int jdn = 2460667;
+
+            int expected = 0;
+
+            int actual = Time.GetWeekDay (jdn);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetWeekDayTest_Monday ()
+        {
+            int jdn = 2460668;
+
+            int expected = 1;
+
+            int actual = Time.GetWeekDay (jdn);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetWeekDayTest_Friday ()
+        {
+            int jdn = 2460672;
+
+            int expected = 5;
+
+            int actual = Time.GetWeekDay (jdn);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetWeekDayTest_Saturday ()
+        {
+            int jdn = 2460673;
+
+            int expected = 6;
+
+            int actual = Time.GetWeekDay (jdn);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GeJDNumberTest_Midnight ()
+        {
+            double jd = 2460670.5;
+
+            int expected = 2460671;
+
+            int actual = Time.GetJDNumber (jd);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GeJDNumberTest_BeforeNoon ()
+        {
+            double jd = 2460670.99;
+
+            int expected = 2460671;
+
+            int actual = Time.GetJDNumber (jd);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GeJDNumberTest_Noon ()
+        {
+            double jd = 2460671.0;
+
+            int expected = 2460671;
+
+            int actual = Time.GetJDNumber (jd);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GeJDNumberTest_Afternoon ()
+        {
+            double jd = 2460671.01;
+
+            int expected = 2460671;
+
+            int actual = Time.GetJDNumber (jd);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GeJDNumberTest_ApproachingMidnight ()
+        {
+            double jd = 2460671.499999999;
+
+            int expected = 2460671;
+
+            int actual = Time.GetJDNumber (jd);
+
+            Assert.AreEqual (expected, actual);
+        }
     }
 }

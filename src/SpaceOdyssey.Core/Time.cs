@@ -215,5 +215,60 @@
 
             return jdn + dayFraction - 0.5;
         }
+
+        /// <summary>
+        /// Возвращает компоненты календарной даты и времени для заданной юлианской даты jd.
+        /// </summary>
+        /// <param name="calendarStyle">Стиль календаря (юлианский / григорианский), по которому указывается календарная дата.</param>
+        public static (int year, int month, int day, int hour, int min, double sec) GetDateComponents (double jd, ECalendarStyle calendarStyle)
+        {
+            double shifted = jd + 0.5;
+
+            int    jdn         = (int)shifted;
+            double dayFraction = shifted - jdn;
+
+            (int year, int month, int day)  = GetCalendarDate (jdn, calendarStyle);
+            (int hour, int min, double sec) = GetTimeComponents (dayFraction);
+
+            return (year, month, day, hour, min, sec);
+        }
+
+        /// <summary>
+        /// Возвращает компоненты календарной даты и времени для заданной юлианской даты jd по григорианскому календарю.
+        /// </summary>
+        public static (int year, int month, int day, int hour, int min, double sec) GetDateComponents (double jd)
+        {
+            double shifted = jd + 0.5;
+
+            int    jdn         = (int)shifted;
+            double dayFraction = shifted - jdn;
+
+            (int year, int month, int day)  = GetCalendarDate (jdn);
+            (int hour, int min, double sec) = GetTimeComponents (dayFraction);
+
+            return (year, month, day, hour, min, sec);
+        }
+
+        /// <summary>
+        /// Возвращает день недели для заданного номера юлианского дня: 0 – воскресенье, 1 – понедельник ... 6 – суббота.
+        /// </summary>
+        public static int GetWeekDay (int jdn)
+        {
+            int remainder = jdn % 7;
+
+            if (remainder < 6) return ++remainder;
+
+            else return 0;
+        }
+
+        /// <summary>
+        /// Возвращает номер юлианского дня для заданной юлианской даты jd (т.е. какому номеру юлианского дня соответствует полдень 
+        /// заданной даты, вне зависимости от того, соответствует ли jd полуночи, первой половине суток, полудню или второй половине 
+        /// суток).
+        /// </summary>
+        public static int GetJDNumber (double jd)
+        {
+            return (int)double.Round (jd, MidpointRounding.AwayFromZero);
+        }
     }
 }

@@ -28,7 +28,7 @@ namespace SpaceOdyssey.Tests
         private static readonly double EclipticZ   = double.Sin (EclipticLatitude);
 
         [TestClass ()]
-        public class EquatorialToEcliptic
+        public class EquatorialToEclipticTests
         {
             [TestMethod ()]
             public void TransformTest_Vector3_Tilt ()
@@ -102,7 +102,7 @@ namespace SpaceOdyssey.Tests
         }
 
         [TestClass ()]
-        public class EclipticToEquatorial
+        public class EclipticToEquatorialTests
         {
             [TestMethod ()]
             public void TransformTest_Vector3_Tilt ()

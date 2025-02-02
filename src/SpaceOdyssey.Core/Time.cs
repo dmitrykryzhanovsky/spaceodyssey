@@ -270,5 +270,20 @@
         {
             return (int)double.Round (jd, MidpointRounding.AwayFromZero);
         }
+
+        /// <summary>
+        /// Возвращает разницу в юлианских столетиях между моментом времени t и моментом времени t0.
+        /// </summary>
+        /// <remarks><para>
+        ///     Моменты времени t и t0 задаются их юлианскими датами.
+        /// </para>
+        ///     По умолчанию t0 = J2000, так как подавляющее большинство астрономических расчётов в настоящее время связаны с этой 
+        ///     эпохой.
+        /// <para>
+        /// </para></remarks>
+        public static double GetJulianCentirues (double t, double t0 = Time.J2000)
+        {
+            return (t - t0) / AstroConst.Time.JULIAN_CENTURIES;
+        }
     }
 }

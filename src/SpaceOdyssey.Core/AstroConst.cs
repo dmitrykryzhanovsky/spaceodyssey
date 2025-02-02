@@ -1,5 +1,8 @@
 ﻿namespace SpaceOdyssey
 {
+    /// <summary>
+    /// Астрономические константы.
+    /// </summary>
     public static class AstroConst
     {
         public static class Time
@@ -13,6 +16,11 @@
             public const double SEC_IN_DAY = 86400.0;
 
             public const double MILLISEC_IN_DAY = 86400000.0;
+
+            /// <summary>
+            /// Количество суток в юлианском столетии.
+            /// </summary>
+            public const double JULIAN_CENTURIES = 36525.0;
         }
     }
 }

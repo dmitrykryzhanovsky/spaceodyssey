@@ -1141,5 +1141,41 @@ namespace SpaceOdyssey.Tests
 
             Assert.AreEqual (expected, actual);
         }
+
+        [TestMethod ()]
+        public void GetJulianCentiruesTest_J2000 ()
+        {
+            double t = 2451545.0;
+
+            double expected = 0.0;
+
+            double actual = Time.GetJulianCentirues (t);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJulianCentiruesTest_OneCenturyAhead ()
+        {
+            double t = Time.GetJD (2100, 1, 1, 12, 0, 0, 0);
+
+            double expected = 1.0;
+
+            double actual = Time.GetJulianCentirues (t);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetJulianCentiruesTest_OneCenturyBefore ()
+        {
+            double t = Time.GetJD (1899, 12, 31, 12, 0, 0, 0);
+
+            double expected = -1.0;
+
+            double actual = Time.GetJulianCentirues (t);
+
+            Assert.AreEqual (expected, actual);
+        }
     }
 }

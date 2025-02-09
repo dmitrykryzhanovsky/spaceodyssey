@@ -5,6 +5,50 @@ namespace SpaceOdyssey
     /// <summary>
     /// Вычисление изменений координат между двумя моментами времени вследствие прецессии земной оси.
     /// </summary>
+    /// <remarks>
+    /// <para>
+    ///     Данный класс содержит два вложенных класса: <see cref="Equatorial"/> для вычисления прецессии в экваториальных и 
+    ///     <see cref="Ecliptic"/> для вычисления прецессии в эклиптических координатах.
+    /// </para>
+    /// <para>
+    ///     Каждый из вложенных классов содержит методы для вычисления углов прецессии и методы для вычисления координат, изменившихся 
+    ///     в результате прецессии.
+    /// </para>
+    /// <para>
+    ///     Методы <see cref="VernalEquinoxPrecessionInArcsec"/>, <see cref="PrecessionNutationInArcsec"/> и <see cref="LongitudePrecessionInArcsec"/> 
+    ///     вычисляют углы, на которые сместилась система небесных координат в результате прецессии с момента времени T0 до момента времени 
+    ///     T0 + dT.
+    ///     <see cref="VernalEquinoxPrecessionJ2000InArcsec"/>, <see cref="PrecessionNutationJ2000InArcsec"/> и <see cref="LongitudePrecessionJ2000InArcsec"/> 
+    ///     – это их аналоги для случая, когда T0 = 0, то есть соответствует моменту времени J2000.
+    ///     T0 задаётся в юлианских столетиях от момента времени J2000, dT – тоже в юлианских столетиях от момента времени T0.
+    ///     Все эти шесть методов возвращают углы, выраженные в секундах.
+    /// </para>
+    /// <para>
+    ///     В случае эклиптической системы координат (класс <see cref="Ecliptic"/>) 
+    ///     <list type="bullet">
+    ///         <item>угол, возвращаемый методом <see cref="VernalEquinoxPrecessionInArcsec"/>, показывает угол, на который линия узлов 
+    ///             отстоит от точки весеннего равноденствия;</item> 
+    ///         <item>угол, возвращаемый методом <see cref="PrecessionNutationInArcsec"/>, показывает угол, на который плоскость 
+    ///             эклиптики поворачивается за время dT;</item> 
+    ///         <item>угол, возвращаемый методом <see cref="LongitudePrecessionInArcsec"/>, показывать угол, на который точка 
+    ///             весеннего равноденствия смещается за время dT.</item> 
+    ///     </list>    
+    ///     Для экваториальной системы координат (класс <see cref="Equatorial"/>) смысл схожий, но есть отличия, поэтому напрямую эти 
+    ///     углы применять нельзя.
+    /// </para>
+    /// <para>
+    ///     Методы <see cref="EulerAnglesForPrecession"/> и <see cref="EulerAnglesForPrecessionJ2000"/> возвращают углы, вычисляемые 
+    ///     на основе смещений системы координат, которые уже непосредственно используются для определения новых координат. В случае 
+    ///     эклиптических координат (класс <see cref="Ecliptic"/>) это углы Эйлера, задающие поворот системы координат. 
+    ///     Данные методы возвращают углы в радианах.
+    /// </para>
+    /// <para>
+    ///     Для вычисления новых координат нужно воспользоваться методом <see cref="TransformCoordinates"/>. Вместо вычислений через 
+    ///     углы Эйлера здесь используются прямые формулы, взятые из [Jean Meeuse. Astronomical algorithms. 2nd ed. Chapter 21]. 
+    ///     Триплет eulerAngles – это углы, возвращаемые методом <see cref="EulerAnglesForPrecession"/>. И входные параметры, и выходные 
+    ///     результаты метода <see cref="TransformCoordinates"/> выражены в радианах.
+    /// </para>
+    /// </remarks>
     public static class EarthPrecession
     {
         /// <summary>
@@ -82,19 +126,19 @@ namespace SpaceOdyssey
                         gamma: Trigonometry.SecToRad (vernalEquinox + LongitudePrecessionJ2000InArcsec (dT)));
             }
 
-            public static (double newLatitude, double newLongitude) TransformCoordinates (double oldLatitude, double oldLongitude,
-                (double alpha, double beta, double gamma) eulerAngles)
+            public static (double newDeclination, double newRightAscension) TransformCoordinates (double oldDeclination, 
+                double oldRightAscension, (double alpha, double beta, double gamma) eulerAngles)
             {
-                (double sinAlpha, double cosAlpha) = double.SinCos (oldLongitude + eulerAngles.alpha);
+                (double sinAlpha, double cosAlpha) = double.SinCos (oldRightAscension + eulerAngles.alpha);
                 (double sinBeta, double cosBeta) = double.SinCos (eulerAngles.beta);
-                (double sinLat, double cosLat) = double.SinCos (oldLatitude);
+                (double sinLat, double cosLat) = double.SinCos (oldDeclination);
 
                 double A = cosLat * sinAlpha;
                 double B = cosBeta * cosLat * cosAlpha - sinBeta * sinLat;
                 double C = sinBeta * cosLat * cosAlpha + cosBeta * sinLat;
 
-                return (newLatitude:  Trigonometry.AsinSmall (C),
-                        newLongitude: Trigonometry.Atan2Small (A, B) + eulerAngles.gamma);
+                return (newDeclination:    Trigonometry.AsinSmall (C),
+                        newRightAscension: Trigonometry.Atan2Small (A, B) + eulerAngles.gamma);
             }
         }
 
@@ -186,7 +230,7 @@ namespace SpaceOdyssey
                 double B = cosLat * cosAlpha;
                 double C = sinBeta * cosLat * sinAlpha + cosBeta * sinLat;
 
-                return (newLatitude:  Trigonometry.AsinSmall (C),
+                return (newLatitude:   Trigonometry.AsinSmall (C),
                         newLongitude: -eulerAngles.gamma - Trigonometry.Atan2Small (A, B));
             }
         }

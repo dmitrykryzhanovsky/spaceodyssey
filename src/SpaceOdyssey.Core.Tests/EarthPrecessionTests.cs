@@ -1,8 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Archimedes;
-using Archimedes.Space3;
-
 namespace SpaceOdyssey.Tests
 {
     public class EarthPrecessionTests

@@ -15,7 +15,7 @@ namespace SpaceOdyssey.Tests
 
                 double expected = 576.234954477912;
 
-                double actual = EarthPrecession.Equatorial.VernalEquinoxPrecessionInArcsec (T0, dT);
+                double actual = EarthPrecession.Equatorial.VernalEquinoxInArcsec (T0, dT);
 
                 Assert.AreEqual (expected, actual, 1.0e-11);
             }
@@ -27,7 +27,7 @@ namespace SpaceOdyssey.Tests
 
                 double expected = 576.20006560145;
 
-                double actual = EarthPrecession.Equatorial.VernalEquinoxPrecessionJ2000InArcsec (dT);
+                double actual = EarthPrecession.Equatorial.VernalEquinoxJ2000InArcsec (dT);
 
                 Assert.AreEqual (expected, actual, 1.0e-11);
             }
@@ -40,7 +40,7 @@ namespace SpaceOdyssey.Tests
 
                 double expected = 500.704443644915;
 
-                double actual = EarthPrecession.Equatorial.PrecessionNutationInArcsec (T0, dT);
+                double actual = EarthPrecession.Equatorial.NutationInArcsec (T0, dT);
 
                 Assert.AreEqual (expected, actual, 1.0e-11);
             }
@@ -52,7 +52,7 @@ namespace SpaceOdyssey.Tests
 
                 double expected = 500.725764218992;
 
-                double actual = EarthPrecession.Equatorial.PrecessionNutationJ2000InArcsec (dT);
+                double actual = EarthPrecession.Equatorial.NutationJ2000InArcsec (dT);
 
                 Assert.AreEqual (expected, actual, 1.0e-11);
             }
@@ -65,7 +65,7 @@ namespace SpaceOdyssey.Tests
 
                 double expected = 0.0494915704885585;
 
-                double actual = EarthPrecession.Equatorial.LongitudePrecessionInArcsec (T0, dT);
+                double actual = EarthPrecession.Equatorial.InLongitudeInArcsec (T0, dT);
 
                 Assert.AreEqual (expected, actual, 1.0e-15);
             }
@@ -77,7 +77,7 @@ namespace SpaceOdyssey.Tests
 
                 double expected = 0.0494890050663643;
 
-                double actual = EarthPrecession.Equatorial.LongitudePrecessionJ2000InArcsec (dT);
+                double actual = EarthPrecession.Equatorial.InLongitudeJ2000InArcsec (dT);
 
                 Assert.AreEqual (expected, actual, 1.0e-15);
             }
@@ -122,7 +122,7 @@ namespace SpaceOdyssey.Tests
 
                 (double latitude, double longitude) expected = (0.861293515032213, 0.725135653150745);
 
-                (double latitude, double longitude) actual = EarthPrecession.Equatorial.TransformCoordinates (thetaPerseiAt2462088.latitude, thetaPerseiAt2462088.longitude, eulerAngles); ;
+                (double latitude, double longitude) actual = EarthPrecession.Equatorial.UpdateCoordinates (thetaPerseiAt2462088.latitude, thetaPerseiAt2462088.longitude, eulerAngles); ;
 
                 Assert.AreEqual (0.2886705, dT, 1.0e-7);
                 Assert.AreEqual (0.00322770865332424, eulerAngles.alpha, 1.0e-10);

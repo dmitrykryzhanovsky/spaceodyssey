@@ -28,7 +28,7 @@ namespace SpaceOdyssey
             {
                 (double declination, double hourAngle) = ComputeNewAngles (p, sinLatitude, cosLatitude);
 
-                return UnitPolar3.InitDirect (declination, hourAngle);
+                return null;// UnitPolar3.InitDirect (declination, hourAngle);
             }
 
             public static UnitPolar3 Transform (UnitPolar3 p, double latitude)
@@ -42,7 +42,7 @@ namespace SpaceOdyssey
             {
                 (double declination, double hourAngle) = ComputeNewAngles (p, sinLatitude, cosLatitude);
 
-                return UnitPolar3.InitDirect (declination, hourAngle);
+                return null;// UnitPolar3.InitDirect (declination, hourAngle);
             }
 
             private static (double declination, double hourAngle) ComputeNewAngles (Polar3 p, double sinLatitude, double cosLatitude)

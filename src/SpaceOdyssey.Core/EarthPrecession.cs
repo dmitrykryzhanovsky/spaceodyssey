@@ -7,6 +7,9 @@ namespace SpaceOdyssey
     /// </summary>
     /// <remarks>
     /// <para>
+    ///     Общие замечания по вычислению прецессии см. в https://github.com/dmitrykryzhanovsky/spaceodyssey/wiki/Вычисление-прецессии.
+    /// </para>
+    /// <para>
     ///     Данный класс содержит два вложенных класса: <see cref="Equatorial"/> для вычисления прецессии в экваториальных и 
     ///     <see cref="Ecliptic"/> для вычисления прецессии в эклиптических координатах.
     /// </para>

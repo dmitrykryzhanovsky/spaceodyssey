@@ -163,91 +163,110 @@ namespace SpaceOdyssey
         /// </summary>
         public static class Ecliptic
         {
-            private static readonly double [] ArcsecondSeries_VernalEquinoxPrecession = new double [] { 629554.982000,
-                                                                                                          3289.4789,
-                                                                                                             0.60622,
-                                                                                                          -869.8089,
-                                                                                                            -0.50491,
-                                                                                                             0.03536 };
+            private static readonly double [] ArcsecondSeriesForPrecession_VernalEquinox = new double [] { 629554.982000,
+                                                                                                             3289.4789,
+                                                                                                                0.60622,
+                                                                                                             -869.8089,
+                                                                                                               -0.50491,
+                                                                                                                0.03536 };
 
-            private static readonly double [] ArcsecondSeries_PrecessionNutation      = new double [] {     47.0029,
-                                                                                                            -0.06603,
-                                                                                                             0.000598,
-                                                                                                            -0.03302,
-                                                                                                             0.000598,
-                                                                                                             0.00006 };
+            private static readonly double [] ArcsecondSeriesForPrecession_Nutation      = new double [] {     47.0029,
+                                                                                                               -0.06603,
+                                                                                                                0.000598,
+                                                                                                               -0.03302,
+                                                                                                                0.000598,
+                                                                                                                0.00006 };
 
-            private static readonly double [] ArcsecondSeries_LongitudePrecession     = new double [] {   5029.0966,
-                                                                                                             2.22226,
-                                                                                                            -0.000042,
-                                                                                                             1.11113,
-                                                                                                            -0.000042,
-                                                                                                            -0.000006 };
+            private static readonly double [] ArcsecondSeriesForPrecession_InLongitude   = new double [] {   5029.0966,
+                                                                                                                2.22226,
+                                                                                                               -0.000042,
+                                                                                                                1.11113,
+                                                                                                               -0.000042,
+                                                                                                               -0.000006 };
 
-            public static double VernalEquinoxPrecessionInArcsec (double T0, double dT)
+            public static class ReferenceAnglesInArcsec
             {
-                return Function.Series_02 (T0, dT, ArcsecondSeries_VernalEquinoxPrecession);
+                public static double VernalEquinox (double T0, double dT)
+                {
+                    return Function.Series_02 (T0, dT, ArcsecondSeriesForPrecession_VernalEquinox);
+                }
+
+                public static double Nutation (double T0, double dT)
+                {
+                    return Function.Series_13 (T0, dT, ArcsecondSeriesForPrecession_Nutation);
+                }
+
+                public static double InLongitude (double T0, double dT)
+                {
+                    return Function.Series_13 (T0, dT, ArcsecondSeriesForPrecession_InLongitude);
+                }
             }
 
-            public static double VernalEquinoxPrecessionJ2000InArcsec (double dT)
+            public static class ReferenceAnglesJ2000InArcsec
             {
-                return dT * (dT * ArcsecondSeries_VernalEquinoxPrecession [5] + ArcsecondSeries_VernalEquinoxPrecession [3]) +
-                       ArcsecondSeries_VernalEquinoxPrecession [0];
+                public static double VernalEquinox (double dT)
+                {
+                    return dT * (dT * ArcsecondSeriesForPrecession_VernalEquinox [5] + ArcsecondSeriesForPrecession_VernalEquinox [3]) +
+                                 ArcsecondSeriesForPrecession_VernalEquinox [0];
+                }
+
+                public static double Nutation (double dT)
+                {
+                    return dT * (dT * (dT * ArcsecondSeriesForPrecession_Nutation [5] + ArcsecondSeriesForPrecession_Nutation [3]) +
+                                 ArcsecondSeriesForPrecession_Nutation [0]);
+                }
+
+                public static double InLongitude (double dT)
+                {
+                    return dT * (dT * (dT * ArcsecondSeriesForPrecession_InLongitude [5] + ArcsecondSeriesForPrecession_InLongitude [3]) +
+                                 ArcsecondSeriesForPrecession_InLongitude [0]);
+                }
             }
 
-            public static double PrecessionNutationInArcsec (double T0, double dT)
+            public static EulerAngles EulerAnglesForPrecession (double T0, double dT)
             {
-                return Function.Series_13 (T0, dT, ArcsecondSeries_PrecessionNutation);
+                double vernalEquinox = ReferenceAnglesInArcsec.VernalEquinox (T0, dT);
+
+                return new EulerAngles (alpha: Trigonometry.SecToRad (vernalEquinox),
+                                        beta:  Trigonometry.SecToRad (ReferenceAnglesInArcsec.Nutation (T0, dT)),
+                                        gamma: Trigonometry.SecToRad (-vernalEquinox - ReferenceAnglesInArcsec.InLongitude (T0, dT)));
             }
 
-            public static double PrecessionNutationJ2000InArcsec (double dT)
+            public static EulerAngles EulerAnglesForPrecessionJ2000 (double dT)
             {
-                return dT * (dT * (dT * ArcsecondSeries_PrecessionNutation [5] + ArcsecondSeries_PrecessionNutation [3]) +
-                             ArcsecondSeries_PrecessionNutation [0]);
+                double vernalEquinox = ReferenceAnglesJ2000InArcsec.VernalEquinox (dT);
+
+                return new EulerAngles (alpha: Trigonometry.SecToRad (vernalEquinox),
+                                        beta:  Trigonometry.SecToRad (ReferenceAnglesJ2000InArcsec.Nutation (dT)),
+                                        gamma: Trigonometry.SecToRad (-vernalEquinox - ReferenceAnglesJ2000InArcsec.InLongitude (dT)));
             }
 
-            public static double LongitudePrecessionInArcsec (double T0, double dT)
+            public static Polar3 UpdateCoordinates (Polar3 p, EulerAngles eulerAngles)
             {
-                return Function.Series_13 (T0, dT, ArcsecondSeries_LongitudePrecession);
+                (double declination, double rightAscension) = ComputeNewAngles (p, eulerAngles);
+
+                return Polar3.InitDirect (p.R, declination, rightAscension);
             }
 
-            public static double LongitudePrecessionJ2000InArcsec (double dT)
+            public static UnitPolar3 UpdateCoordinates (UnitPolar3 p, EulerAngles eulerAngles)
             {
-                return dT * (dT * (dT * ArcsecondSeries_LongitudePrecession [5] + ArcsecondSeries_LongitudePrecession [3]) +
-                             ArcsecondSeries_LongitudePrecession [0]);
+                (double declination, double rightAscension) = ComputeNewAngles (p, eulerAngles);
+
+                return UnitPolar3.InitDirect (declination, rightAscension);
             }
 
-            public static (double alpha, double beta, double gamma) EulerAnglesForPrecession (double T0, double dT)
+            public static (double latitude, double longitude) ComputeNewAngles (Polar3 p, EulerAngles eulerAngles)
             {
-                double vernalEquinox = VernalEquinoxPrecessionInArcsec (T0, dT);
-
-                return (alpha: Trigonometry.SecToRad (vernalEquinox),
-                        beta:  Trigonometry.SecToRad (PrecessionNutationInArcsec (T0, dT)),
-                        gamma: Trigonometry.SecToRad (-vernalEquinox - LongitudePrecessionInArcsec (T0, dT)));
-            }
-
-            public static (double alpha, double beta, double gamma) EulerAnglesForPrecessionJ2000 (double dT)
-            {
-                double vernalEquinox = VernalEquinoxPrecessionJ2000InArcsec (dT);
-
-                return (alpha: Trigonometry.SecToRad (vernalEquinox),
-                        beta:  Trigonometry.SecToRad (PrecessionNutationJ2000InArcsec (dT)),
-                        gamma: Trigonometry.SecToRad (-vernalEquinox - LongitudePrecessionJ2000InArcsec (dT)));
-            }
-
-            public static (double newLatitude, double newLongitude) TransformCoordinates (double oldLatitude, double oldLongitude,
-                (double alpha, double beta, double gamma) eulerAngles)
-            {
-                (double sinAlpha, double cosAlpha) = double.SinCos (eulerAngles.alpha - oldLongitude);
-                (double sinBeta,  double cosBeta)  = double.SinCos (eulerAngles.beta);
-                (double sinLat,   double cosLat)   = double.SinCos (oldLatitude);
+                (double sinAlpha, double cosAlpha) = double.SinCos (eulerAngles.Alpha - p.Longitude);
+                (double sinBeta,  double cosBeta)  = double.SinCos (eulerAngles.Beta);
+                (double sinLat,   double cosLat)   = double.SinCos (p.Latitude);
 
                 double A = cosBeta * cosLat * sinAlpha - sinBeta * sinLat;                
-                double B = cosLat * cosAlpha;
+                double B = cosLat  * cosAlpha;
                 double C = sinBeta * cosLat * sinAlpha + cosBeta * sinLat;
 
-                return (newLatitude:   Trigonometry.AsinSmall (C),
-                        newLongitude: -eulerAngles.gamma - Trigonometry.Atan2Small (A, B));
+                return (latitude:   Trigonometry.AsinSmall (C),
+                        longitude: -eulerAngles.Gamma - Trigonometry.Atan2Small (A, B));
             }
         }
     }

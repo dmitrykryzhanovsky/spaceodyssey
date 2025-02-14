@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey
+﻿using Archimedes;
+
+namespace SpaceOdyssey
 {
     /// <summary>
     /// Структура для хранения небесных координат в первой горизонтальной системе (склонение – часовой угол).
@@ -21,6 +23,16 @@
         {
             Dec = declination;
             HA  = hourAngle;
+        }
+        public EqHAPosition (Polar3 p)
+        {
+            Dec =  p.Latitude;
+            HA  = -p.Longitude;
+        }
+
+        public UnitPolar3 ToPolar3 ()
+        {
+            return new UnitPolar3 (Dec, -HA);
         }
     }
 }

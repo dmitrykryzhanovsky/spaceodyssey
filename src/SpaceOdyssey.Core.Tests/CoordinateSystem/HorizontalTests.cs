@@ -94,5 +94,20 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
             Assert.AreEqual (expected.Dec, actual.Dec, 1.0e-15);
             Assert.AreEqual (expected.HA,  actual.HA);
         }
+
+        [TestMethod ()]
+        public void ToEqHATest_PolarPosition_Latitude_Sirius ()
+        {
+            //double phi = 1.0;
+
+            //HorizontalPosition p = new HorizontalPosition (altitude: MathConst.M_PI_2, azimuth: 0.0);
+
+            //EqHAPosition expected = new EqHAPosition (declination: phi, hourAngle: 0.0);
+
+            //EqHAPosition actual = Horizontal.ToEqHA (p, phi);
+
+            //Assert.AreEqual (expected.Dec, actual.Dec);
+            //Assert.AreEqual (expected.HA, actual.HA);
+        }
     }
 }

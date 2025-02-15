@@ -12,9 +12,9 @@ namespace SpaceOdyssey.Tests
         {
             UnitPolar3 p = new UnitPolar3 (1.0, 2.0);
 
-            EqHAPosition expected = new EqHAPosition (1.0, -2.0);
+            EqHALocalPosition expected = new EqHALocalPosition (1.0, -2.0);
 
-            EqHAPosition actual = new EqHAPosition (p);
+            EqHALocalPosition actual = new EqHALocalPosition (p);
 
             Assert.AreEqual (expected.Dec, actual.Dec);
             Assert.AreEqual (expected.HA,  actual.HA);
@@ -25,9 +25,9 @@ namespace SpaceOdyssey.Tests
         {
             UnitPolar3 p = new UnitPolar3 (1.0, 1.0);
 
-            EqHAPosition expected = new EqHAPosition (1.0, -1.0);
+            EqHALocalPosition expected = new EqHALocalPosition (1.0, -1.0);
 
-            EqHAPosition actual = new EqHAPosition (p);
+            EqHALocalPosition actual = new EqHALocalPosition (p);
 
             Assert.AreEqual (expected.Dec, actual.Dec);
             Assert.AreEqual (expected.HA,  actual.HA);
@@ -38,9 +38,9 @@ namespace SpaceOdyssey.Tests
         {
             UnitPolar3 p = new UnitPolar3 (1.0, -1.0);
 
-            EqHAPosition expected = new EqHAPosition (1.0, 1.0);
+            EqHALocalPosition expected = new EqHALocalPosition (1.0, 1.0);
 
-            EqHAPosition actual = new EqHAPosition (p);
+            EqHALocalPosition actual = new EqHALocalPosition (p);
 
             Assert.AreEqual (expected.Dec, actual.Dec);
             Assert.AreEqual (expected.HA,  actual.HA);
@@ -51,9 +51,9 @@ namespace SpaceOdyssey.Tests
         {
             UnitPolar3 p = new UnitPolar3 (1.0, -2.0);
 
-            EqHAPosition expected = new EqHAPosition (1.0, 2.0);
+            EqHALocalPosition expected = new EqHALocalPosition (1.0, 2.0);
 
-            EqHAPosition actual = new EqHAPosition (p);
+            EqHALocalPosition actual = new EqHALocalPosition (p);
 
             Assert.AreEqual (expected.Dec, actual.Dec);
             Assert.AreEqual (expected.HA,  actual.HA);
@@ -62,7 +62,7 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void ToPolar3Test_NEQuadrant ()
         {
-            EqHAPosition u = new EqHAPosition (1.0, double.Pi - 2.0);
+            EqHALocalPosition u = new EqHALocalPosition (1.0, double.Pi - 2.0);
 
             UnitPolar3 expected = new UnitPolar3 (1.0, 2.0 - double.Pi);
 
@@ -75,7 +75,7 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void ToPolar3Test_SEQuadrant ()
         {
-            EqHAPosition u = new EqHAPosition (1.0, double.Pi - 1.0);
+            EqHALocalPosition u = new EqHALocalPosition (1.0, double.Pi - 1.0);
 
             UnitPolar3 expected = new UnitPolar3 (1.0, 1.0 - double.Pi);
 
@@ -88,7 +88,7 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void ToPolar3Test_SWQuadrant ()
         {
-            EqHAPosition u = new EqHAPosition (1.0, double.Pi + 1.0);
+            EqHALocalPosition u = new EqHALocalPosition (1.0, double.Pi + 1.0);
 
             UnitPolar3 expected = new UnitPolar3 (1.0, -double.Pi - 1.0);
 
@@ -101,7 +101,7 @@ namespace SpaceOdyssey.Tests
         [TestMethod ()]
         public void ToPolar3Test_NWQuadrant ()
         {
-            EqHAPosition u = new EqHAPosition (1.0, double.Pi + 2.0);
+            EqHALocalPosition u = new EqHALocalPosition (1.0, double.Pi + 2.0);
 
             UnitPolar3 expected = new UnitPolar3 (1.0, -double.Pi - 2.0);
 

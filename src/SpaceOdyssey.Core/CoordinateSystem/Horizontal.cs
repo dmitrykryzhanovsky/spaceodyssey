@@ -14,29 +14,29 @@ namespace SpaceOdyssey.CoordinateSystem
     /// </remarks>
     public static class Horizontal
     {        
-        public static Vector3 ToEqHA (Vector3 v, double latitude)
+        public static Vector3 ToEqHALocal (Vector3 v, double latitude)
         {
             return Rotation.Apply.Passive.AroundOY.RotateSpace (v, MathConst.M_PI_2 - latitude);
         }
 
-        public static Vector3 ToEqHA (Vector3 v, double sinLatitude, double cosLatitude)
+        public static Vector3 ToEqHALocal (Vector3 v, double sinLatitude, double cosLatitude)
         {
             return Rotation.Apply.Passive.AroundOY.RotateSpace (v, cosLatitude, sinLatitude);
         }
 
-        public static EqHAPosition ToEqHA (HorizontalPosition p, double latitude)
+        public static EqHALocalPosition ToEqHALocal (HorizontalPosition p, double latitude)
         {
             (double sinLatitude, double cosLatitude) = double.SinCos (latitude);
 
-            return ToEqHA (p, sinLatitude, cosLatitude);
+            return ToEqHALocal (p, sinLatitude, cosLatitude);
         }
 
-        public static EqHAPosition ToEqHA (HorizontalPosition p, double sinLatitude, double cosLatitude)
+        public static EqHALocalPosition ToEqHALocal (HorizontalPosition p, double sinLatitude, double cosLatitude)
         {
             return ComputeNewAngles (p, sinLatitude, cosLatitude);
         }
 
-        private static EqHAPosition ComputeNewAngles (HorizontalPosition p, double sinLatitude, double cosLatitude)
+        private static EqHALocalPosition ComputeNewAngles (HorizontalPosition p, double sinLatitude, double cosLatitude)
         {
             (double sinH, double cosH) = double.SinCos(p.H);
             (double sinA, double cosA) = double.SinCos(p.A);
@@ -45,7 +45,7 @@ namespace SpaceOdyssey.CoordinateSystem
             double dy   = -cosH * sinA;
             double sinD =  cosH * cosA * cosLatitude + sinH * sinLatitude;
 
-            return new EqHAPosition (declination: Trigonometry.AsinSmall (sinD),
+            return new EqHALocalPosition (declination: Trigonometry.AsinSmall (sinD),
                                      hourAngle:   Trigonometry.Atan2Small (dy, dx));
         }
     }

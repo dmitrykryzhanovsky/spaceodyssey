@@ -7,7 +7,7 @@ namespace SpaceOdyssey
     /// </summary>
     /// <remarks>Проверка на корректность значений при инициализации не производится. Зачем нужна эта структура и про особенности 
     /// преобразования в сферические координаты см. https://github.com/dmitrykryzhanovsky/spaceodyssey/wiki/Чтобы-не-запутаться-в-координатах</remarks>
-    public struct EqHAPosition
+    public struct EqHALocalPosition
     {
         /// <summary>
         /// Склонение.
@@ -20,16 +20,16 @@ namespace SpaceOdyssey
         /// <remarks>Отсчитывается от точки юга S по часовой стрелке.</remarks>
         public double HA;
 
-        public EqHAPosition (double declination, double hourAngle)
+        public EqHALocalPosition (double declination, double hourAngle)
         {
             Dec = declination;
             HA  = hourAngle;
         }
 
         /// <summary>
-        /// Преобразование сферических координат типа <see cref="Polar3"/> в структуру <see cref="EqHAPosition"/>.
+        /// Преобразование сферических координат типа <see cref="Polar3"/> в структуру <see cref="EqHALocalPosition"/>.
         /// </summary>
-        public EqHAPosition (Polar3 p)
+        public EqHALocalPosition (Polar3 p)
         {
             Dec =  p.Latitude;
             HA  = -p.Longitude;

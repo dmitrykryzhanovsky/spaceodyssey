@@ -98,16 +98,16 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
         [TestMethod ()]
         public void ToEqHATest_PolarPosition_Latitude_Sirius ()
         {
-            //double phi = 1.0;
+            double phi = 0.85031379415202107;
 
-            //HorizontalPosition p = new HorizontalPosition (altitude: MathConst.M_PI_2, azimuth: 0.0);
+            HorizontalPosition p = new HorizontalPosition (altitude: 0.42413634003659091, azimuth: 3.25380762821940644);
 
-            //EqHAPosition expected = new EqHAPosition (declination: phi, hourAngle: 0.0);
+            EqHAPosition expected = new EqHAPosition (declination: -0.29239452477292892, hourAngle: 0.10678433418066473);
 
-            //EqHAPosition actual = Horizontal.ToEqHA (p, phi);
+            EqHAPosition actual = Horizontal.ToEqHA (p, phi);
 
-            //Assert.AreEqual (expected.Dec, actual.Dec);
-            //Assert.AreEqual (expected.HA, actual.HA);
+            Assert.AreEqual (expected.Dec, actual.Dec, 1.0e-6);
+            Assert.AreEqual (expected.HA,  actual.HA, 1.0e-6);
         }
     }
 }

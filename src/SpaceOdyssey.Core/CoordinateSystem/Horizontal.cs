@@ -3,6 +3,15 @@ using Archimedes.Space3;
 
 namespace SpaceOdyssey.CoordinateSystem
 {
+    /// <summary>
+    /// Преобразование горизонтальных координат в экваториальные-1.
+    /// </summary>
+    /// <remarks>
+    /// <list type="bullet">
+    ///     <item>latitude – широта места наблюдения в радианах;</item>
+    ///     <item>sinLatitude, cosLatitude – sin и cos широты места наблюдения.</item>
+    /// </list>
+    /// </remarks>
     public static class Horizontal
     {        
         public static Vector3 ToEqHA (Vector3 v, double latitude)

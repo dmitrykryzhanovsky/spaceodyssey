@@ -1,6 +1,7 @@
 ﻿using Archimedes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using SpaceOdyssey.Structures;
 
 namespace SpaceOdyssey.CoordinateSystem.Tests
 {

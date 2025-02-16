@@ -1,5 +1,6 @@
 ﻿using Archimedes;
 using Archimedes.Space3;
+using SpaceOdyssey.Structures;
 
 namespace SpaceOdyssey.CoordinateSystem
 {

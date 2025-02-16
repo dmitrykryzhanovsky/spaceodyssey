@@ -20,7 +20,7 @@ namespace SpaceOdyssey
         /// <remarks>Отсчитывается от точки юга S по часовой стрелке.</remarks>
         public double HA;
 
-        public EqHALocalPosition (double declination, double hourAngle)
+        public EqHALocalPosition(double declination, double hourAngle)
         {
             Dec = declination;
             HA  = hourAngle;
@@ -29,7 +29,7 @@ namespace SpaceOdyssey
         /// <summary>
         /// Преобразование сферических координат типа <see cref="Polar3"/> в структуру <see cref="EqHALocalPosition"/>.
         /// </summary>
-        public EqHALocalPosition (Polar3 p)
+        public EqHALocalPosition(Polar3 p)
         {
             Dec =  p.Latitude;
             HA  = -p.Longitude;
@@ -38,9 +38,9 @@ namespace SpaceOdyssey
         /// <summary>
         /// Преобразование экваториальных-1 координат в сферические типа <see cref="Polar3"/>.
         /// </summary>
-        public UnitPolar3 ToPolar3 ()
+        public UnitPolar3 ToPolar3()
         {
-            return new UnitPolar3 (Dec, -HA);
+            return new UnitPolar3(Dec, -HA);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using Archimedes;
 using Archimedes.Space3;
+using SpaceOdyssey.Structures;
 
 namespace SpaceOdyssey.CoordinateSystem
 {
@@ -46,7 +47,7 @@ namespace SpaceOdyssey.CoordinateSystem
             double sinD =  cosH * cosA * cosLatitude + sinH * sinLatitude;
 
             return new EqHALocalPosition (declination: Trigonometry.AsinSmall (sinD),
-                                     hourAngle:   Trigonometry.Atan2Small (dy, dx));
+                                          hourAngle:   Trigonometry.Atan2Small (dy, dx));
         }
     }
 }

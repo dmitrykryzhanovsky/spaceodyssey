@@ -1,7 +1,6 @@
-﻿using Archimedes;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using SpaceOdyssey.Structures;
+using Archimedes;
 
 namespace SpaceOdyssey.CoordinateSystem.Tests
 {
@@ -43,7 +42,7 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
 
             HorizontalPosition p = new HorizontalPosition (altitude: phi, azimuth: 0.0);
 
-            EqHALocalPosition expected = new EqHALocalPosition (declination: MathConst.M_PI_2, hourAngle: 0.0);
+            EqHALocalPosition expected = new EqHALocalPosition (declination: MathConst.PI_DIV_2, hourAngle: 0.0);
 
             EqHALocalPosition actual = Horizontal.ToEqHALocal (p, phi);
 
@@ -56,7 +55,7 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
         {
             double phi = 1.0;
 
-            HorizontalPosition p = new HorizontalPosition (altitude: MathConst.M_PI_2, azimuth: 0.0);
+            HorizontalPosition p = new HorizontalPosition (altitude: MathConst.PI_DIV_2, azimuth: 0.0);
 
             EqHALocalPosition expected = new EqHALocalPosition (declination: phi, hourAngle: 0.0);
 
@@ -71,7 +70,7 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
         {
             double phi = 1.0;
 
-            HorizontalPosition p = new HorizontalPosition (altitude: MathConst.M_PI_2 - phi, azimuth: double.Pi);
+            HorizontalPosition p = new HorizontalPosition (altitude: MathConst.PI_DIV_2 - phi, azimuth: double.Pi);
 
             EqHALocalPosition expected = new EqHALocalPosition (declination: 0.0, hourAngle: 0.0);
 
@@ -88,7 +87,7 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
 
             HorizontalPosition p = new HorizontalPosition (altitude: 0.0, azimuth: double.Pi);
 
-            EqHALocalPosition expected = new EqHALocalPosition (declination: phi - MathConst.M_PI_2, hourAngle: 0.0);
+            EqHALocalPosition expected = new EqHALocalPosition (declination: phi - MathConst.PI_DIV_2, hourAngle: 0.0);
 
             EqHALocalPosition actual = Horizontal.ToEqHALocal (p, double.Sin (phi), double.Cos (phi));
 

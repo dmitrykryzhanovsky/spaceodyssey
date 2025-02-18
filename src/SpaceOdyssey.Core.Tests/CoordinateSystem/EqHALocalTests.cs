@@ -40,7 +40,7 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
         {
             double phi = 1.0;
 
-            EqHALocalPosition p = new EqHALocalPosition (declination: MathConst.PI_DIV_2, hourAngle: 0.0);
+            EqHALocalPosition p = new EqHALocalPosition (declination: MathConst.PI_2, hourAngle: 0.0);
 
             HorizontalPosition expected = new HorizontalPosition (altitude: phi, azimuth: 0.0);
 
@@ -57,7 +57,7 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
 
             EqHALocalPosition p = new EqHALocalPosition (declination: phi, hourAngle: 0.0);
 
-            HorizontalPosition expected = new HorizontalPosition (altitude: MathConst.PI_DIV_2, azimuth: 0.0);
+            HorizontalPosition expected = new HorizontalPosition (altitude: MathConst.PI_2, azimuth: 0.0);
 
             HorizontalPosition actual = EqHALocal.ToHorizontal (p, phi);
 
@@ -72,7 +72,7 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
 
             EqHALocalPosition p = new EqHALocalPosition (declination: 0.0, hourAngle: 0.0);
 
-            HorizontalPosition expected = new HorizontalPosition (altitude: MathConst.PI_DIV_2 - phi, azimuth: double.Pi);
+            HorizontalPosition expected = new HorizontalPosition (altitude: MathConst.PI_2 - phi, azimuth: double.Pi);
 
             HorizontalPosition actual = EqHALocal.ToHorizontal (p, phi);
 
@@ -85,7 +85,7 @@ namespace SpaceOdyssey.CoordinateSystem.Tests
         {
             double phi = 1.0;
 
-            EqHALocalPosition p = new EqHALocalPosition (declination: phi - MathConst.PI_DIV_2, hourAngle: 0.0);
+            EqHALocalPosition p = new EqHALocalPosition (declination: phi - MathConst.PI_2, hourAngle: 0.0);
 
             HorizontalPosition expected = new HorizontalPosition (altitude: 0.0, azimuth: double.Pi);
 

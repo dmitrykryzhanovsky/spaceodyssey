@@ -20,7 +20,7 @@ namespace SpaceOdyssey
         /// <remarks>Отсчитывается от точки севера N по часовой стрелке.</remarks>
         public double A;
 
-        public HorizontalPosition (double altitude, double azimuth)
+        public HorizontalPosition(double altitude, double azimuth)
         {
             H = altitude;
             A = azimuth;
@@ -29,7 +29,7 @@ namespace SpaceOdyssey
         /// <summary>
         /// Преобразование сферических координат типа <see cref="Polar3"/> в структуру <see cref="HorizontalPosition"/>.
         /// </summary>
-        public HorizontalPosition (Polar3 p)
+        public HorizontalPosition(Polar3 p)
         {
             H = p.Latitude;
             A = double.Pi - p.Longitude;
@@ -38,9 +38,9 @@ namespace SpaceOdyssey
         /// <summary>
         /// Преобразование горизонтальных координат в сферические типа <see cref="Polar3"/>.
         /// </summary>
-        public UnitPolar3 ToPolar3 ()
+        public UnitPolar3 ToPolar3()
         {
-            return UnitPolar3.InitDirect (H, double.Pi - A);
+            return UnitPolar3.InitDirect(H, double.Pi - A);
         }
     }
 }

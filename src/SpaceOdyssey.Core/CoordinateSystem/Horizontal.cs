@@ -16,7 +16,7 @@ namespace SpaceOdyssey.CoordinateSystem
     {        
         public static Vector3 ToEqHALocal (Vector3 v, double latitude)
         {
-            return Rotation.Apply.Passive.AroundOY.RotateSpace (v, MathConst.M_PI_2 - latitude);
+            return Rotation.Apply.Passive.AroundOY.RotateSpace (v, MathConst.PI_2 - latitude);
         }
 
         public static Vector3 ToEqHALocal (Vector3 v, double sinLatitude, double cosLatitude)
@@ -46,7 +46,7 @@ namespace SpaceOdyssey.CoordinateSystem
             double sinD =  cosH * cosA * cosLatitude + sinH * sinLatitude;
 
             return new EqHALocalPosition (declination: Trigonometry.AsinSmall (sinD),
-                                     hourAngle:   Trigonometry.Atan2Small (dy, dx));
+                                          hourAngle:   Trigonometry.Atan2Small (dy, dx));
         }
     }
 }

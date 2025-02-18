@@ -16,7 +16,7 @@ namespace SpaceOdyssey.CoordinateSystem
     {        
         public static Vector3 ToHorizontal (Vector3 v, double latitude)
         {
-            return Rotation.Apply.Passive.AroundOY.RotateSpace (v, latitude - MathConst.M_PI_2);
+            return Rotation.Apply.Passive.AroundOY.RotateSpace (v, latitude - MathConst.PI_2);
         }
 
         public static Vector3 ToHorizontal (Vector3 v, double sinLatitude, double cosLatitude)

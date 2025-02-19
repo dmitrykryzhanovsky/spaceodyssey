@@ -1,6 +1,6 @@
-﻿using Archimedes;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Archimedes;
 
 namespace SpaceOdyssey.CelestialSphere.Tests
 {

@@ -28,6 +28,11 @@
             public const double SEC_IN_DAY = 86400.0;
 
             /// <summary>
+            /// Количество секунд в звёздных сутках.
+            /// </summary>
+            public const double SEC_IN_SIDERALDAY = 86164.091;
+
+            /// <summary>
             /// Количество миллисекунд в сутках.
             /// </summary>
             public const double MILLISEC_IN_DAY = 86400000.0;

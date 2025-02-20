@@ -8,11 +8,11 @@ namespace SpaceOdyssey.CelestialSphere
         /// Приближённое вычисление положения Луны в эклиптической системе координат для момента времени T.
         /// </summary>
         /// <param name="T">Момент времени в юлианских столетиях от эпохи J2000.</param>
-        /// <remarks>Положение Луны определяется в системе координат для эпохи J2000 с погрешностью около **.</remarks>
+        /// <remarks>Положение Луны определяется в системе координат для эпохи J2000 с погрешностью около 20′.</remarks>
         public static UnitPolar3 ComputeApproximateInEcliptic (double T)
         {
             // 1. Вычисление вспомогательных величин.
-
+            
             // Средняя аномалия Луны в радианах.
             double moonMA = Trigonometry.RotationFraction (0.374897 + 1325.552410 * T);
 

@@ -2,6 +2,9 @@
 
 namespace SpaceOdyssey
 {
+    /// <summary>
+    /// Местоположение (точка наблюдения) на поверхности небесного тела.
+    /// </summary>
     public class Location
     {
         private double _latitude;
@@ -12,21 +15,33 @@ namespace SpaceOdyssey
 
         private double _cosLatitude;
 
+        /// <summary>
+        /// Широта в радианах.
+        /// </summary>
         public double Latitide
         {
             get => _latitude;
         }
 
+        /// <summary>
+        /// Долгота в радианах.
+        /// </summary>
         public double Longitude
         {
             get => _longitude;
         }
 
+        /// <summary>
+        /// Синус широты.
+        /// </summary>
         public double SinLatitude
         {
             get => _sinLatitude;
         }
 
+        /// <summary>
+        /// Косинус широты.
+        /// </summary>
         public double CosLatitude
         {
             get => _sinLatitude;

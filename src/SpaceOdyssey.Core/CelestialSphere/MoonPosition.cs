@@ -44,13 +44,13 @@ namespace SpaceOdyssey.CelestialSphere
                              -   55.0 * double.Sin (2.0 * (F - D));
 
             // Средняя долгота Луны в полных оборотах.
-            double L0Rotation = (0.606433 + 1336.855225 * T).Fraction ();
+            double L0Orbit = (0.606433 + 1336.855225 * T).Fraction ();
 
             // Вычисляем долготу Луны в оборотах.
-            double longRotation = L0Rotation + dLArсsec / MathConst.SEC_PER_ROTATION;
+            double longOrbit = L0Orbit + dLArсsec / MathConst.SEC_PER_ROTATION;
 
             // Преобразуем её в радианы.
-            double l = Trigonometry.RotationFraction (longRotation);
+            double l = Trigonometry.RotationFraction (longOrbit);
 
             // 3. Вычисление широты.
 

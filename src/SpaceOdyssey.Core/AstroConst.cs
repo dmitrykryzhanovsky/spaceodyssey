@@ -28,6 +28,16 @@
             public const double SEC_IN_DAY = 86400.0;
 
             /// <summary>
+            /// Количество секунд в 1 периоде вращения Земли вокруг своей оси = 23 ч 56 мин 4,091 с.
+            /// </summary>
+            public const double SEC_IN_EARTHROTATION = 86164.091;
+
+            /// <summary>
+            /// Количество оборотов Земли вокруг своей оси в 1 сутках.
+            /// </summary>
+            public const double EARTHROTATION_IN_DAY = SEC_IN_DAY / SEC_IN_EARTHROTATION;
+
+            /// <summary>
             /// Количество миллисекунд в сутках.
             /// </summary>
             public const double MILLISEC_IN_DAY = 86400000.0;

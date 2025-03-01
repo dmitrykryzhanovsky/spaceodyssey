@@ -19,6 +19,11 @@ namespace SpaceOdyssey.CoordinateSystem
             return Rotation.Apply.Passive.AroundOY.RotateSpace (v, latitude - MathConst.PI_2);
         }
 
+        public static Vector3 ToHorizontal (Vector3 v, Location location)
+        {
+            return Rotation.Apply.Passive.AroundOY.RotateSpace (v, location.SinLatitude, location.CosLatitude);
+        }
+
         public static Vector3 ToHorizontal (Vector3 v, double sinLatitude, double cosLatitude)
         {
             return Rotation.Apply.Passive.AroundOY.RotateSpace (v, cosLatitude, sinLatitude);
@@ -29,6 +34,11 @@ namespace SpaceOdyssey.CoordinateSystem
             (double sinLatitude, double cosLatitude) = double.SinCos (latitude);
 
             return ToHorizontal (p, sinLatitude, cosLatitude);
+        }
+
+        public static HorizontalPosition ToHorizontal (EqHALocalPosition p, Location location)
+        {
+            return ToHorizontal (p, location.SinLatitude, location.CosLatitude);
         }
 
         public static HorizontalPosition ToHorizontal (EqHALocalPosition p, double sinLatitude, double cosLatitude)

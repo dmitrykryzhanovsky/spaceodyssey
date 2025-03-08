@@ -3,7 +3,8 @@
     public class EllipticOrbit : KeplerOrbit
     {
         protected double _a;
-        private   double _amax;
+
+        private double _amax;
 
         public double A
         {

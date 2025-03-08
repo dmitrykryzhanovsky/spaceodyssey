@@ -51,10 +51,15 @@
         /// <summary>
         /// Истинная аномалия при расстоянии до центра тяготения r.
         /// </summary>
+        /// <param name="r">Должно быть больше или равно расстояния в перицентре.</param>
         /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
         /// неотрицательное значение из двух корректных.</returns>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="r"/> меньше расстояния в перицентре (то 
+        /// есть не может иметь места для данной орбиты).</exception>
         public override double TrueAnomaly (double r)
         {
+            if (r < _amin) throw new ArgumentOutOfRangeException ();
+
             return double.Acos (_p / r - 1.0);
         }
     }

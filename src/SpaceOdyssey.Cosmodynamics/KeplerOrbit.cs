@@ -6,7 +6,7 @@
 
         private double _e;
 
-        private double _amin;
+        protected double _amin;
 
         public double P
         {

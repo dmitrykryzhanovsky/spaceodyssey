@@ -10,12 +10,12 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         {
             double amin = 2.0;
 
-            ParabolicOrbit target = ParabolicOrbit.Create (amin);
+            ParabolicOrbit orbit = ParabolicOrbit.Create (amin);
 
-            Assert.AreEqual (4.0, target.P);
-            Assert.AreEqual (1.0, target.E);
-            Assert.AreEqual (2.0, target.Amin);
-            Assert.AreEqual (double.Pi, target.Asymptote);
+            Assert.AreEqual (4.0, orbit.P);
+            Assert.AreEqual (1.0, orbit.E);
+            Assert.AreEqual (2.0, orbit.Amin);
+            Assert.AreEqual (double.Pi, orbit.Asymptote);
         }
 
         [TestMethod ()]
@@ -27,7 +27,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                ParabolicOrbit target = ParabolicOrbit.Create (amin);
+                ParabolicOrbit orbit = ParabolicOrbit.Create (amin);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -47,7 +47,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                ParabolicOrbit target = ParabolicOrbit.Create (amin);
+                ParabolicOrbit orbit = ParabolicOrbit.Create (amin);
             }
 
             catch (ArgumentOutOfRangeException)

@@ -37,7 +37,14 @@
 
         public virtual double TrueAnomaly (double r)
         {
+            CheckParametersForTrueAnomaly (r);
+
             return double.Acos ((_p / r - 1.0) / _e);
+        }
+
+        protected virtual void CheckParametersForTrueAnomaly (double r)
+        {
+            if (r < _amin) throw new ArgumentOutOfRangeException ();
         }
     }
 }

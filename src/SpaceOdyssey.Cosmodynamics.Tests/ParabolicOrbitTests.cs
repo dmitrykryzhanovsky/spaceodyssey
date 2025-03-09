@@ -205,5 +205,27 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (expected, actual);
         }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_RadiusLessThanAmin ()
+        {
+            double amin = 2.0;
+
+            ParabolicOrbit orbit = ParabolicOrbit.Create (amin);
+
+            bool wasException = false;
+
+            try
+            {
+                orbit.TrueAnomaly (1.999999999999999);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                wasException = true;
+            }
+
+            Assert.AreEqual (true, wasException);
+        }
     }
 }

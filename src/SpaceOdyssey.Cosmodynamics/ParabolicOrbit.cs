@@ -18,7 +18,7 @@
             get => ParabolicAsymptote;
         }
 
-        private ParabolicOrbit (double amin) : base (FocalParameter (amin), ParabolicEccentricity, amin)
+        private ParabolicOrbit (double amin) : base (ParabolicFocalParameter (amin), ParabolicEccentricity, amin)
         {
         }
 
@@ -34,7 +34,7 @@
             return new ParabolicOrbit (amin);
         }
 
-        private static double FocalParameter (double amin)
+        private static double ParabolicFocalParameter (double amin)
         {
             return 2.0 * amin;
         }
@@ -58,7 +58,7 @@
         /// есть не может иметь места для данной орбиты).</exception>
         public override double TrueAnomaly (double r)
         {
-            if (r < _amin) throw new ArgumentOutOfRangeException ();
+            CheckParametersForTrueAnomaly (r);
 
             return double.Acos (_p / r - 1.0);
         }

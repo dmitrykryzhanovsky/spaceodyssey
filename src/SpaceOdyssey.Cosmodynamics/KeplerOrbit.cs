@@ -11,6 +11,8 @@
 
         protected double _amin;
 
+        private double _n;
+
         /// <summary>
         /// Фокальный (орбитальный) параметр.
         /// </summary>
@@ -34,6 +36,15 @@
         public double Amin
         {
             get => _amin;
+        }
+
+        /// <summary>
+        /// Среднее суточное движение.
+        /// </summary>
+        /// <remarks>Выражается в радианах / сутки.</remarks>
+        public double N
+        {
+            get => _n;
         }
 
         protected KeplerOrbit (double p, double e, double amin)

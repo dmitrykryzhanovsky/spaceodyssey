@@ -9,6 +9,8 @@
 
         private double _amax;
 
+        private double _T;
+
         /// <summary>
         /// Большая полуось.
         /// </summary>
@@ -23,6 +25,15 @@
         public double Amax
         {
             get => _amax;
+        }
+
+        /// <summary>
+        /// Период обращения.
+        /// </summary>
+        /// <remarks>Задаётся в сутках.</remarks>
+        public double T
+        {
+            get => _T;
         }
 
         protected EllipticOrbit (double p, double e, double a, double amin, double amax) : base (p, e, amin)

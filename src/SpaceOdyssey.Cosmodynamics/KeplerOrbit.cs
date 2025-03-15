@@ -5,13 +5,33 @@
     /// </summary>
     public abstract class KeplerOrbit
     {
+        private CentralBody _centralBody;
+
         protected double _p;
 
-        private double _e;
+        protected double _e;
 
         protected double _amin;
 
-        private double _n;
+        protected double _n;
+
+        /// <summary>
+        /// Центральное тело, создающее гравитационное поле орбиты.
+        /// </summary>
+        public CentralBody CentralBody
+        {
+            get => _centralBody;
+        }
+
+        protected double Mu
+        {
+            get => _centralBody.GParameter;
+        }
+
+        protected double K
+        {
+            get => _centralBody.GConstant;
+        }
 
         /// <summary>
         /// Фокальный (орбитальный) параметр.
@@ -41,18 +61,35 @@
         /// <summary>
         /// Среднее суточное движение.
         /// </summary>
-        /// <remarks>Выражается в радианах / сутки.</remarks>
+        /// <remarks>Выражается в радианах / единицу времени.</remarks>
         public double N
         {
             get => _n;
         }
 
-        protected KeplerOrbit (double p, double e, double amin)
+        protected KeplerOrbit (CentralBody centralBody)
         {
-            _p    = p;
-            _e    = e;
-            _amin = amin;
+            _centralBody = centralBody;
         }
+
+        protected KeplerOrbit (CentralBody centralBody, double e) : this (centralBody)
+        {
+            _e = e;
+        }
+
+        protected abstract void CheckE (double e);
+
+        protected void CheckAmin (double amin)
+        {
+            if (amin <= 0.0) throw new ArgumentOutOfRangeException (nameof (amin));
+        }
+
+        protected void CheckN (double n)
+        {
+            if (n <= 0.0) throw new ArgumentOutOfRangeException (nameof (n));
+        }
+
+
 
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
@@ -69,17 +106,17 @@
         /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
         /// неотрицательное значение из двух корректных.</returns>
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если значение <paramref name="r"/> не проходит проверку на 
-        /// корректность. Условие корректности задаётся в методе <see cref="CheckParametersForTrueAnomaly"/>.</exception>
+        /// корректность. Условие корректности задаётся в методе <see cref="CheckR"/>.</exception>
         public virtual double TrueAnomaly (double r)
         {
-            CheckParametersForTrueAnomaly (r);
+            CheckR (r);
 
             return double.Acos ((_p / r - 1.0) / _e);
         }
 
-        protected virtual void CheckParametersForTrueAnomaly (double r)
+        protected virtual void CheckR (double r)
         {
-            if (r < _amin) throw new ArgumentOutOfRangeException ();
+            if (r < _amin) throw new ArgumentOutOfRangeException (nameof (r));
         }
     }
 }

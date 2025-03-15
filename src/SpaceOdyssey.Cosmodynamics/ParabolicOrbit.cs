@@ -18,26 +18,49 @@
             get => ParabolicAsymptote;
         }
 
-        private ParabolicOrbit (double amin) : base (ParabolicFocalParameter (amin), ParabolicEccentricity, amin)
+        public ParabolicOrbit (CentralBody centralBody) : base (centralBody, ParabolicEccentricity)
         {
         }
+
+        public void SetAmin (double amin)
+        {
+            CheckAmin (amin);
+
+            _amin = amin;
+            _p    = ParabolicFocalParameter ();
+
+            ComputeN ();
+        }
+
+        protected override void CheckE (double e)
+        {            
+        }
+
+        private double ParabolicFocalParameter ()
+        {
+            return 2.0 * _amin;
+        }
+
+        private void ComputeN ()
+        {
+            double asqrta = _amin * double.Sqrt (2.0 * _amin);
+
+            _n = K / asqrta;
+        }
+
+
+
+
 
         /// <summary>
         /// Создаёт параболическую орбиту по расстоянию в перицентре.
         /// </summary>
+        /// <param name="centralBody">Центральное тело, создающее гравитационное поле орбиты.</param>
         /// <param name="amin">Расстояние в перицентре – должно быть строго положительным.</param>
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="amin"/> меньше или равно 0.</exception>
-        public static ParabolicOrbit Create (double amin)
-        {
-            if (amin <= 0.0) throw new ArgumentOutOfRangeException ();
 
-            return new ParabolicOrbit (amin);
-        }
 
-        private static double ParabolicFocalParameter (double amin)
-        {
-            return 2.0 * amin;
-        }
+        
 
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
@@ -58,7 +81,7 @@
         /// есть не может иметь места для данной орбиты).</exception>
         public override double TrueAnomaly (double r)
         {
-            CheckParametersForTrueAnomaly (r);
+            CheckR (r);
 
             return double.Acos (_p / r - 1.0);
         }

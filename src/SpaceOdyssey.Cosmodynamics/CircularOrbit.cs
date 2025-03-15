@@ -7,22 +7,63 @@
     {
         private const double CircularEccentricity = 0.0;
 
-        private CircularOrbit (double a) : base (a, CircularEccentricity, a, a, a)
+        public CircularOrbit (CentralBody centralBody) : base (centralBody, CircularEccentricity)
         {
         }
 
         /// <summary>
-        /// Создаёт круговую орбиту по её радиусу a.
+        /// Устанавливает параметры круговой орбиты через её радиус.
         /// </summary>
-        /// <param name="a">Радиус круговой орбиты – должен быть строго положительным.</param>
+        /// <param name="a">Радиус круговой орбиты – должен быть положительным.</param>
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="a"/> меньше или равно 0.</exception>
-        public static CircularOrbit Create (double a)
+        public void SetA (double a)
         {
-            if (a <= 0.0) throw new ArgumentOutOfRangeException ();
+            CheckA (a);
 
-            return new CircularOrbit (a);
+            _p    = a;
+            _amin = a;
+            _a    = a;
+            _amax = a;
+
+            ComputeNT ();
         }
 
+        /// <summary>
+        /// Устанавливает параметры круговой орбиты через среднее суточное движение.
+        /// </summary>
+        /// <param name="n">Среднее суточное движение – должно быть положительным.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="n"/> меньше или равно 0.</exception>
+        public void SetMeanMotion (double n)
+        {
+            CheckN (n);
+
+            _n = n;
+
+            ComputeAT ();
+
+            _p    = _a;
+            _amin = _a;
+            _amax = _a;
+        }
+
+        /// <summary>
+        /// Устанавливает параметры круговой орбиты через период орбитального обращения.
+        /// </summary>
+        /// <param name="T">Период обращения – должен быть положительным.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="T"/> меньше или равно 0.</exception>
+        public void SetT (double T)
+        {
+            CheckT (T);
+
+            _T = T;
+
+            ComputeAN ();
+
+            _p    = _a;
+            _amin = _a;
+            _amax = _a;
+        }
+        
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
         /// </summary>
@@ -46,7 +87,7 @@
         {
             if (r == _a) return double.NaN;
 
-            else throw new ArgumentOutOfRangeException ();
+            else throw new ArgumentOutOfRangeException (nameof (r));
         }
     }
 }

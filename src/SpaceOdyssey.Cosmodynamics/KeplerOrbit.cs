@@ -8,12 +8,12 @@
         private CentralBody _centralBody;
 
         protected double _p;
-
         protected double _e;
-
         protected double _amin;
 
         protected double _n;
+
+        private double _t0;
 
         /// <summary>
         /// Центральное тело, создающее гравитационное поле орбиты.
@@ -61,10 +61,20 @@
         /// <summary>
         /// Среднее суточное движение.
         /// </summary>
-        /// <remarks>Выражается в радианах / единицу времени.</remarks>
+        /// <remarks>Выражается в радианах / сутки.</remarks>
         public double N
         {
             get => _n;
+        }
+
+        /// <summary>
+        /// Момент прохождения перицентра в юлианских датах.
+        /// </summary>
+        public double T0
+        {
+            get => _t0;
+
+            set => _t0 = value;
         }
 
         protected KeplerOrbit (CentralBody centralBody)
@@ -88,8 +98,6 @@
         {
             if (n <= 0.0) throw new ArgumentOutOfRangeException (nameof (n));
         }
-
-
 
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
@@ -118,5 +126,14 @@
         {
             if (r < _amin) throw new ArgumentOutOfRangeException (nameof (r));
         }
+
+        public abstract OrbitalPosition ComputePosition (double t);
+
+        public double MeanAnomaly (double t)
+        {
+            return _n * (t - _t0);
+        }
+
+        public abstract double SolveKeplerEquation (double M);
     }
 }

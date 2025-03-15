@@ -6,8 +6,11 @@
     public class HyperbolicOrbit : KeplerOrbit
     {
         private double _a;
-
         private double _asymptote;
+
+        private double _sqrt1e;
+        private double _sqrta;
+        private double _gu;
 
         /// <summary>
         /// Большая полуось.
@@ -77,6 +80,8 @@
 
             _asymptote = HyperbolicAsymptote ();
 
+            ComputeAuxiliaries ();
+
             ComputeN ();
         }
 
@@ -97,9 +102,45 @@
 
         private void ComputeN ()
         {
-            double asqrta = -_a * double.Sqrt (-_a);
+            double asqrta = -_a * _sqrta;
 
             _n = K / asqrta;
+        }
+
+        protected void ComputeAuxiliaries ()
+        {
+            _sqrt1e = double.Sqrt (_e * _e - 1.0);
+            _sqrta  = double.Sqrt (-_a);
+            _gu     = K / _sqrta;
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M = MeanAnomaly (t);
+            double H = SolveKeplerEquation (M);
+
+            double shH = double.Sinh (H);
+            double chH = double.Cosh (H);
+
+            double x = -_a * (_e - chH);
+            double y = -_a * _sqrt1e * shH;
+            double V = double.Atan2 (y, x);
+
+            double denominator = _e * chH - 1.0;
+
+            return new OrbitalPosition (x: x,
+                                        y: y,
+                                        r: Radius (V),
+                                        trueAnomaly: V,
+                                        vx: -_gu * shH / denominator,
+                                        vy:  _gu * _sqrt1e * chH / denominator,
+                                        M: M,
+                                        E: H);
+        }
+
+        public override double SolveKeplerEquation (double M)
+        {
+            throw new NotImplementedException ();
         }
     }
 }

@@ -3,14 +3,19 @@
     public class CentralBody
     {
         private double _gParameter;
-
         private double _gConstant;
 
+        /// <summary>
+        /// Гравитационный параметр (квадрат гравитационной постоянной).
+        /// </summary>
         public double GParameter
         {
             get => _gParameter;
         }
 
+        /// <summary>
+        /// Гравитационная постоянная (квадратный корень из гравитационного параметра).
+        /// </summary>
         public double GConstant
         {
             get => _gConstant;

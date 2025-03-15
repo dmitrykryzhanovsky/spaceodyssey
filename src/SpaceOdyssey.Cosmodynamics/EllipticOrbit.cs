@@ -8,10 +8,13 @@ namespace SpaceOdyssey.Cosmodynamics
     public class EllipticOrbit : KeplerOrbit
     {
         protected double _a;
-
         protected double _amax;
 
         protected double _T;
+
+        private   double _sqrt1e;
+        private   double _sqrta;
+        protected double _gu;
 
         /// <summary>
         /// Большая полуось.
@@ -67,6 +70,8 @@ namespace SpaceOdyssey.Cosmodynamics
             _amax = a * ep1;
             _p    = _amin * ep1;
 
+            ComputeAuxiliaries ();
+
             ComputeNT ();
         }
 
@@ -91,8 +96,10 @@ namespace SpaceOdyssey.Cosmodynamics
             _amin = amin;
             _a    = major / 2.0;
             _amax = amax;
+            
+            ComputeAuxiliaries ();
 
-            ComputeNT ();
+            ComputeNT ();            
         }
 
         protected override void CheckE (double e)
@@ -117,7 +124,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         protected void ComputeNT ()
         {
-            double asqrta = _a * double.Sqrt (_a);
+            double asqrta = _a * _sqrta;
 
             _n = K / asqrta;
             _T = double.Tau * asqrta / K;
@@ -135,9 +142,44 @@ namespace SpaceOdyssey.Cosmodynamics
             _n = double.Tau / _T;
         }
 
+        protected void ComputeAuxiliaries ()
+        {
+            _sqrt1e = double.Sqrt (1.0 - _e * _e);
+            _sqrta  = double.Sqrt (_a);
+            _gu     = K / _sqrta;
+        }
+
         protected override void CheckR (double r)
         {
             if ((r < _amin) || (r > _amax)) throw new ArgumentOutOfRangeException (nameof (r));
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M = MeanAnomaly (t);
+            double E = SolveKeplerEquation (M);
+
+            (double sinE, double cosE) = double.SinCos (E);
+
+            double x = _a * (cosE - _e);
+            double y = _a * _sqrt1e * sinE;
+            double V = double.Atan2 (y, x);
+
+            double denominator = 1.0 - _e * cosE;
+
+            return new OrbitalPosition (x: x, 
+                                        y: y, 
+                                        r: Radius (V), 
+                                        trueAnomaly: V, 
+                                        vx: -_gu * sinE / denominator, 
+                                        vy:  _gu * _sqrt1e * cosE / denominator, 
+                                        M: M, 
+                                        E: E);
+        }
+
+        public override double SolveKeplerEquation (double M)
+        {
+            throw new NotImplementedException ();
         }
     }
 }

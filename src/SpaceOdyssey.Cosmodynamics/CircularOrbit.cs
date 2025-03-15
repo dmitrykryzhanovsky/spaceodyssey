@@ -24,6 +24,8 @@
             _amin = a;
             _a    = a;
             _amax = a;
+            
+            ComputeAuxiliaries ();
 
             ComputeNT ();
         }
@@ -44,6 +46,8 @@
             _p    = _a;
             _amin = _a;
             _amax = _a;
+
+            ComputeAuxiliaries ();
         }
 
         /// <summary>
@@ -62,6 +66,8 @@
             _p    = _a;
             _amin = _a;
             _amax = _a;
+
+            ComputeAuxiliaries ();
         }
         
         /// <summary>
@@ -88,6 +94,22 @@
             if (r == _a) return double.NaN;
 
             else throw new ArgumentOutOfRangeException (nameof (r));
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M = MeanAnomaly (t);
+
+            (double sinV, double cosV) = double.SinCos (M);
+
+            return new OrbitalPosition (x: _a * cosV, 
+                                        y: _a * sinV, 
+                                        r: _a, 
+                                        trueAnomaly: M, 
+                                        vx: -_gu * sinV, 
+                                        vy:  _gu * cosV, 
+                                        M: M, 
+                                        E: M);
         }
     }
 }

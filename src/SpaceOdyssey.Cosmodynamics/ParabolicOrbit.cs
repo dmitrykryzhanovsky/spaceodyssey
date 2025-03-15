@@ -22,6 +22,11 @@
         {
         }
 
+        /// <summary>
+        /// Устанавливает параметры параболической орбиты по расстоянию в перицентре.
+        /// </summary>
+        /// <param name="amin">Расстояние в перицентре – должно быть строго положительным.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="amin"/> меньше или равно 0.</exception>
         public void SetAmin (double amin)
         {
             CheckAmin (amin);
@@ -32,6 +37,7 @@
             ComputeN ();
         }
 
+        // Пустой метод, нужен только для поддержки иерархии классов.
         protected override void CheckE (double e)
         {            
         }
@@ -47,20 +53,6 @@
 
             _n = K / asqrta;
         }
-
-
-
-
-
-        /// <summary>
-        /// Создаёт параболическую орбиту по расстоянию в перицентре.
-        /// </summary>
-        /// <param name="centralBody">Центральное тело, создающее гравитационное поле орбиты.</param>
-        /// <param name="amin">Расстояние в перицентре – должно быть строго положительным.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="amin"/> меньше или равно 0.</exception>
-
-
-        
 
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
@@ -84,6 +76,19 @@
             CheckR (r);
 
             return double.Acos (_p / r - 1.0);
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M = MeanAnomaly (t);
+            double E = SolveKeplerEquation (M);
+
+            throw new NotImplementedException ();
+        }
+
+        public override double SolveKeplerEquation (double M)
+        {
+            throw new NotImplementedException ();
         }
     }
 }

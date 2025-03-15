@@ -45,6 +45,15 @@ namespace SpaceOdyssey.Cosmodynamics
         {
         }
 
+        /// <summary>
+        /// Устанавливает параметры эллиптической орбиты по её большой полуоси и эксцентриситету.
+        /// </summary>
+        /// <param name="a">Большая полуось – должна быть положительной.</param>
+        /// <param name="e">Эксцентриситет – для эллипса должен быть на полуинтервале [0; 1).</param>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если имеет место хотя бы одно из условий:
+        /// – большая полуось <paramref name="a"/> задана неположительной
+        /// – эксцентриситет <paramref name="e"/> меньше 0 или больше либо равен 1
+        /// </exception>
         public void SetAE (double a, double e)
         {
             CheckA (a);
@@ -61,6 +70,15 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeNT ();
         }
 
+        /// <summary>
+        /// Устанавливает параметры эллиптической орбиты по её расстояниям в перицентре и апоцентре.
+        /// </summary>
+        /// <param name="amin">Расстояние в перицентре – должно быть строго положительным.</param>
+        /// <param name="amax">Расстояние в апоцентре – должно быть больше либо равным расстоянию в перицентре <paramref name="amin"/>.</param>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если имеет место хотя бы одно из условий:
+        /// – расстояние в перицентре <paramref name="amin"/> меньше либо равно 0
+        /// – расстояние в апоцентре <paramref name="amax"/> меньше расстояния в перицентре <paramref name="amin"/>
+        /// </exception>
         public void SetAminAmax (double amin, double amax)
         {
             CheckAmin (amin);
@@ -116,33 +134,6 @@ namespace SpaceOdyssey.Cosmodynamics
             _a = double.Cbrt (_T * _T * Mu / MathConst._4_PI_SQR);
             _n = double.Tau / _T;
         }
-
-        
-
-
-
-
-        /// <summary>
-        /// Создаёт эллиптическую орбиту по её большой полуоси и эксцентриситету.
-        /// </summary>
-        /// <param name="centralBody">Центральное тело, создающее гравитационное поле орбиты.</param>
-        /// <param name="a">Большая полуось.</param>
-        /// <param name="e">Эксцентриситет – для эллипса должен быть на полуинтервале [0; 1).</param>
-        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если имеет место хотя бы одно из условий:
-        /// – большая полуось <paramref name="a"/> задана неположительной
-        /// – эксцентриситет <paramref name="e"/> меньше 0 или больше либо равен 1
-        /// </exception>
-
-        /// <summary>
-        /// Создаёт эллиптическую орбиту по её расстояниям в перицентре и апоцентре.
-        /// </summary>
-        /// <param name="centralBody">Центральное тело, создающее гравитационное поле орбиты.</param>
-        /// <param name="amin">Расстояние в перицентре – должно быть строго положительным.</param>
-        /// <param name="amax">Расстояние в апоцентре – должно быть больше либо равным расстоянию в перицентре <paramref name="amin"/>.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если имеет место хотя бы одно из условий:
-        /// – расстояние в перицентре <paramref name="amin"/> меньше либо равно 0
-        /// – расстояние в апоцентре <paramref name="amax"/> меньше расстояния в перицентре <paramref name="amin"/>
-        /// </exception>
 
         protected override void CheckR (double r)
         {

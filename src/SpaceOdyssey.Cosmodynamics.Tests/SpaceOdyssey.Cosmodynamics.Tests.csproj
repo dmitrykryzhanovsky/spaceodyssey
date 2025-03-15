@@ -9,7 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="EllipticOrbitTests.cs" />
     <Compile Remove="HyperbolicOrbitTests.cs" />
     <Compile Remove="ParabolicOrbitTests.cs" />
   </ItemGroup>

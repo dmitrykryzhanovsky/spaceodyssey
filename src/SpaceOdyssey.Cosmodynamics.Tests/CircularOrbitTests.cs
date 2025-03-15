@@ -8,7 +8,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         private static readonly CentralBody CentralBodyForTests = CentralBody.CreateGParameter (4.0); 
 
         [TestMethod ()]
-        public void SetATest_Common ()
+        public void SetATest ()
         {
             CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
 
@@ -24,7 +24,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void SetMeanMotionTest_Common ()
+        public void SetMeanMotionTest ()
         {
             CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
 
@@ -40,7 +40,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void SetTTest_Common ()
+        public void SetTTest ()
         {
             CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
 

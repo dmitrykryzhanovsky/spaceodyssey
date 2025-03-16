@@ -1,4 +1,5 @@
 ﻿using Archimedes;
+using Archimedes.Numerical;
 
 namespace SpaceOdyssey.Cosmodynamics
 {
@@ -14,9 +15,9 @@ namespace SpaceOdyssey.Cosmodynamics
 
         protected double _T;
 
-        private   double _sqrt1e;
-        private   double _sqrta;
-        protected double _v1;
+        private   double _sqrt1e; // Квадратный корень из (1 – e^2).
+        private   double _sqrta;  // Квадратный корень из большой полуоси a.
+        protected double _u;      // Квадратный корень из (GM / a).
 
         /// <summary>
         /// Большая полуось.
@@ -109,17 +110,17 @@ namespace SpaceOdyssey.Cosmodynamics
             if ((e < 0.0) || (e >= 1.0)) throw new ArgumentOutOfRangeException (nameof (e));
         }
 
-        protected void CheckA (double a)
+        protected static void CheckA (double a)
         {
             if (a <= 0.0) throw new ArgumentOutOfRangeException (nameof (a));
         }
 
-        private void CheckAmax (double amin, double amax)
+        private static void CheckAmax (double amin, double amax)
         {
             if (amax < amin) throw new ArgumentOutOfRangeException (nameof (amax));
         }
 
-        protected void CheckT (double T)
+        protected static void CheckT (double T)
         {
             if (T <= 0.0) throw new ArgumentOutOfRangeException (nameof (T));
         }
@@ -140,7 +141,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         protected void ComputeAN ()
         {
-            _a = double.Cbrt (_T * _T * Mu / MathConst._4_PI_SQR);
+            _a = double.Cbrt (_T * _T * Mu / MathConst.M4_PiSqr);
             _n = double.Tau / _T;
         }
 
@@ -148,7 +149,7 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             _sqrt1e = double.Sqrt (1.0 - _e * _e);
             _sqrta  = double.Sqrt (_a);
-            _v1     = K / _sqrta;
+            _u      = K / _sqrta;
         }
 
         protected override void CheckR (double r)
@@ -162,42 +163,60 @@ namespace SpaceOdyssey.Cosmodynamics
             double E = SolveKeplerEquation (M);
 
             (double sinE, double cosE) = double.SinCos (E);
+            (double x,    double y)    = EllipticPlanarCartesianCoordinates (_e, _a, _sqrt1e, sinE, cosE);
+            (double r,    double V)    = Space2D.PolarCoordinates (x, y);
+            (double vx,   double vy)   = EllipticPlanarVelocityComponents (_e, _sqrt1e, _u, sinE, cosE);
 
-            double x = _a * (cosE - _e);
-            double y = _a * _sqrt1e * sinE;
-            double V = double.Atan2 (y, x);
-
-            double denominator = 1.0 - _e * cosE;
-
-            return new OrbitalPosition (x: x, 
-                                        y: y, 
-                                        r: Radius (V), 
-                                        trueAnomaly: V, 
-                                        vx: -_v1 * sinE / denominator, 
-                                        vy:  _v1 * _sqrt1e * cosE / denominator, 
-                                        M: M, 
-                                        E: E);
+            return new OrbitalPosition (x, y, r, V, vx, vy, M, E);
         }
 
+        /// <summary>
+        /// Решает уравнение Кеплера относительно заданного значения средней аномалии M.
+        /// </summary>
         public override double SolveKeplerEquation (double M)
         {
-            double x0, x1, dx;
+            double MModulo = double.Ieee754Remainder (M, double.Tau);
 
-            if (_e < KeplerEquationInitialSolutionEccentricity) x0 = M;
-            else x0 = double.Pi;
+            double [] a  = new double [] { _e, MModulo };
+            double    x0 = (_e < KeplerEquationInitialSolutionEccentricity) ? MModulo : double.Pi;            
 
-            do
-            {
-                (double sinE, double cosE) = double.SinCos (x0);
+            return Equation.Newton (EllipticKeplerEquation, EllipticKeplerDerivative, a, ComputingSettings.KeplerEquationEpsilon, x0);
+        }
 
-                x1 = x0 - (x0 - _e * sinE - M) / (1.0 - _e * cosE);
+        private static double EllipticKeplerEquation (double E, params double [] a)
+        {
+            return E - a [0] * double.Sin (E) - a [1];
+        }
 
-                dx = x1 - x0;
-                x0 = x1;
+        private static double EllipticKeplerDerivative (double E, params double [] a)
+        {
+            return 1.0 - a [0] * double.Cos (E);
+        }
 
-            } while (double.Abs (dx) >= ComputingSettings.KeplerEquationEpsilon);
+        /// <summary>
+        /// Вычисляет координаты небесного тела x и y в плоскости орбиты.
+        /// </summary>
+        private static (double x, double y) EllipticPlanarCartesianCoordinates (double e, double a, double sqrt1e, 
+            double sinE, double cosE)
+        {
+            double x = a * (cosE - e);
+            double y = a * sqrt1e * sinE;
 
-            return x1;
+            return (x, y);
+        }
+
+        /// <summary>
+        /// Вычисляет компоненты скорости vx и vy в плоскости орбиты.
+        /// </summary>
+        private static (double vx, double vy) EllipticPlanarVelocityComponents (double e, double sqrt1e, double u, 
+            double sinE, double cosE)
+        {
+            double denominator = 1.0 - e * cosE;
+
+            double vx = -u * sinE / denominator;
+            double vy =  u * sqrt1e * cosE / denominator;
+
+            return (vx, vy);
         }
     }
 }

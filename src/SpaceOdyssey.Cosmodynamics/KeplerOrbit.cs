@@ -5,7 +5,7 @@
     /// </summary>
     public abstract class KeplerOrbit
     {
-        private CentralBody _centralBody;
+        private readonly CentralBody _centralBody;
 
         protected double _p;
         protected double _e;
@@ -23,11 +23,17 @@
             get => _centralBody;
         }
 
+        /// <summary>
+        /// Гравитационный параметр.
+        /// </summary>
         protected double Mu
         {
             get => _centralBody.GParameter;
         }
 
+        /// <summary>
+        /// Гравитационная постоянная (квадратный корень из гравитационного параметра).
+        /// </summary>
         protected double K
         {
             get => _centralBody.GConstant;
@@ -89,12 +95,12 @@
 
         protected abstract void CheckE (double e);
 
-        protected void CheckAmin (double amin)
+        protected static void CheckAmin (double amin)
         {
             if (amin <= 0.0) throw new ArgumentOutOfRangeException (nameof (amin));
         }
 
-        protected void CheckN (double n)
+        protected static void CheckN (double n)
         {
             if (n <= 0.0) throw new ArgumentOutOfRangeException (nameof (n));
         }
@@ -127,13 +133,22 @@
             if (r < _amin) throw new ArgumentOutOfRangeException (nameof (r));
         }
 
+        /// <summary>
+        /// Возвращает положение на орбите для момента времени t, заданного в юлианских датах.
+        /// </summary>
         public abstract OrbitalPosition ComputePosition (double t);
 
+        /// <summary>
+        /// Возвращает среднюю аномалию для момента времени t, заданного в юлианских датах.
+        /// </summary>
         public double MeanAnomaly (double t)
         {
             return _n * (t - _t0);
         }
 
+        /// <summary>
+        /// Решает уравнение Кеплера относительно заданного значения средней аномалии M.
+        /// </summary>
         public abstract double SolveKeplerEquation (double M);
     }
 }

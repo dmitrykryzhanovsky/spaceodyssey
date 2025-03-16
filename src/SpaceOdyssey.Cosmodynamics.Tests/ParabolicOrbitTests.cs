@@ -8,7 +8,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         private static readonly CentralBody CentralBodyForTests = CentralBody.CreateGParameter (4.0);
 
         [TestMethod ()]
-        public void SetAminTest_Common ()
+        public void SetAminTest ()
         {
             ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
 
@@ -199,6 +199,23 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             }
 
             Assert.IsTrue (wasException);
+        }
+
+        [TestMethod ()]
+        public void MeanAnomalyTest ()
+        {
+            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
+
+            orbit.SetAmin (2.0);
+
+            orbit.T0  = 100.0;
+            double t1 = 108.0;
+
+            double expected = 4.0;
+
+            double actual = orbit.MeanAnomaly (t1);
+
+            Assert.AreEqual (expected, actual);
         }
     }
 }

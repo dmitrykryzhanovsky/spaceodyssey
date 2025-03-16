@@ -19,6 +19,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (-4.0, orbit.A);
             Assert.AreEqual ( 2.0, orbit.Amin);
             Assert.AreEqual ( 2.3005239830218629826861183514531, orbit.Asymptote);
+            Assert.AreEqual ( 0.25, orbit.N);
         }
 
         [TestMethod ()]
@@ -33,6 +34,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (-4.0, orbit.A);
             Assert.AreEqual ( 2.0, orbit.Amin);
             Assert.AreEqual ( 2.3005239830218629826861183514531, orbit.Asymptote);
+            Assert.AreEqual ( 0.25, orbit.N);
         }
 
         [TestMethod ()]
@@ -181,6 +183,23 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             }
 
             Assert.IsTrue (wasException);
+        }
+
+        [TestMethod ()]
+        public void MeanAnomalyTest ()
+        {
+            HyperbolicOrbit orbit = new HyperbolicOrbit (CentralBodyForTests);
+
+            orbit.SetAminP (amin: 2.0, p: 5.0);
+
+            orbit.T0  = 100.0;
+            double t1 = 108.0;
+
+            double expected = 2.0;
+
+            double actual = orbit.MeanAnomaly (t1);
+
+            Assert.AreEqual (expected, actual);
         }
     }
 }

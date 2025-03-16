@@ -1,5 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
+using System.Reflection;
+
 namespace SpaceOdyssey.Cosmodynamics.Tests
 {
     [TestClass ()]
@@ -225,6 +227,142 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             }
 
             Assert.IsTrue (wasException);
+        }
+
+        [TestMethod ()]
+        public void MeanAnomalyTest ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.5);
+
+            orbit.T0  = 100.0;
+            double t1 = 108.0;
+
+            double expected = 5.65685424949238;
+
+            double actual = orbit.MeanAnomaly (t1);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        // TODO: написать тесты для e = 0.5 и e = 0.99 для 4 ключевых точек, для произвольных точек в 4 квадрантых и для 2 больших M -
+        // положительного и отрицательного - за пределами основного периода, чтобы посмотреть, как отрабатыавет IEEE754Remainder.
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E05_M0 ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.5);
+
+            double M = 0.0;
+
+            double expected = 0.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E099_M0 ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.99);
+
+            double M = 0.0;
+
+            double expected = 0.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual, 1.0e-12);
+        }
+
+        [TestMethod ()]
+        public void EllipticKeplerEquationTest ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.5);
+
+            object [] parameters = { double.Pi / 6.0, new double [] { 0.5, double.Pi / 4.0 } };
+
+            double expected = -0.51179938779914944;
+
+            object result = (typeof (EllipticOrbit)).GetMethod ("EllipticKeplerEquation",
+                             BindingFlags.NonPublic | BindingFlags.Static).Invoke (orbit, parameters);
+            double actual = (double)result;
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void EllipticKeplerDerivativeTest ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.5);
+
+            object [] parameters = { double.Pi / 6.0, new double [] { 0.5 } };
+
+            double expected = 0.56698729810778068;
+
+            object result = (typeof (EllipticOrbit)).GetMethod ("EllipticKeplerDerivative",
+                             BindingFlags.NonPublic | BindingFlags.Static).Invoke (orbit, parameters);
+            double actual = (double)result;
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void EllipticPlanarCartesianCoordinatesTest ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.5);
+
+            object [] parameters = { 0.5, 2.0, 0.86602540378443865, 0.5, 0.86602540378443865 };
+
+            double expectedX = 0.73205080756887729;
+            double expectedY = 0.86602540378443865;
+
+            object result = (typeof (EllipticOrbit)).GetMethod ("EllipticPlanarCartesianCoordinates",
+                             BindingFlags.NonPublic | BindingFlags.Static).Invoke (orbit, parameters);
+            string output = result.ToString ();
+
+            string [] actual = output.Split (", ");
+            actual [0] = actual [0].Remove (0, 1);
+            actual [1] = actual [1].Remove (actual [1].Length - 1);
+
+            Assert.AreEqual (expectedX, double.Parse (actual [0]), 1.0e-15);
+            Assert.AreEqual (expectedY, double.Parse (actual [1]), 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void EllipticPlanarVelocityComponentsTest ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.5);
+
+            object [] parameters = { 0.5, 0.86602540378443865, 1.41421356237309505, 0.5, 0.86602540378443865 };
+
+            double expectedVx = -1.24712984496547051;
+            double expectedVy =  1.87069476744820576;
+
+            object result = (typeof (EllipticOrbit)).GetMethod ("EllipticPlanarVelocityComponents",
+                             BindingFlags.NonPublic | BindingFlags.Static).Invoke (orbit, parameters);
+            string output = result.ToString ();
+
+            string [] actual = output.Split (", ");
+            actual [0] = actual [0].Remove (0, 1);
+            actual [1] = actual [1].Remove (actual [1].Length - 1); 
+
+            Assert.AreEqual (expectedVx, double.Parse (actual [0]), 1.0e-15);
+            Assert.AreEqual (expectedVy, double.Parse (actual [1]), 1.0e-15);
         }
     }
 }

@@ -102,5 +102,22 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.IsTrue (wasException);
         }
+
+        [TestMethod ()]
+        public void MeanAnomalyTest ()
+        {
+            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+
+            orbit.SetT (8.88576587631673249);
+
+            orbit.T0  = 100.0;
+            double t1 = 108.0;
+
+            double expected = 5.65685424949238;
+
+            double actual = orbit.MeanAnomaly (t1);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
     }
 }

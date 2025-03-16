@@ -1,4 +1,7 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+using System.Drawing;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Круговая орбита.
@@ -99,17 +102,29 @@
         public override OrbitalPosition ComputePosition (double t)
         {
             double M = MeanAnomaly (t);
+            double MModulo = double.Ieee754Remainder (M, double.Tau);
 
-            (double sinV, double cosV) = double.SinCos (M);
+            (double sinV, double cosV) = double.SinCos (MModulo);
+            (double x,    double y)    = CircularPlanarCartesianCoordinates (_a, sinV, cosV);
+            (double vx,   double vy)   = CircularPlanarVelocityComponents (_u, sinV, cosV);
 
-            return new OrbitalPosition (x: _a * cosV, 
-                                        y: _a * sinV, 
-                                        r: _a, 
-                                        trueAnomaly: M, 
-                                        vx: -_v1 * sinV, 
-                                        vy:  _v1 * cosV, 
-                                        M: M, 
-                                        E: M);
+            return new OrbitalPosition (x, y, _a, MModulo, vx, vy, M, MModulo);
+        }
+
+        private static (double x, double y) CircularPlanarCartesianCoordinates (double a, double sinV, double cosV)
+        {
+            double x = a * cosV;
+            double y = a * sinV;
+
+            return (x, y);
+        }
+
+        private static (double vx, double vy) CircularPlanarVelocityComponents (double u, double sinV, double cosV)
+        {
+            double vx = -u * sinV;
+            double vy =  u * cosV;
+
+            return (vx, vy);
         }
     }
 }

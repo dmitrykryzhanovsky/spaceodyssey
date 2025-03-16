@@ -1,4 +1,7 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+using Archimedes.Numerical;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Гиперболическая орбита.
@@ -10,7 +13,7 @@
 
         private double _sqrt1e;
         private double _sqrta;
-        private double _v1;
+        private double _u;
 
         /// <summary>
         /// Большая полуось.
@@ -55,7 +58,9 @@
             _a    = p / (Q * (2.0 - Q));
 
             _asymptote = HyperbolicAsymptote ();
-            
+
+            ComputeAuxiliaries ();
+
             ComputeN ();
         }
 
@@ -85,7 +90,7 @@
             ComputeN ();
         }
 
-        private void CheckP (double amin, double p)
+        private static void CheckP (double amin, double p)
         {
             if (p <= amin) throw new ArgumentOutOfRangeException (nameof (p));
         }
@@ -111,50 +116,61 @@
         {
             _sqrt1e = double.Sqrt (_e * _e - 1.0);
             _sqrta  = double.Sqrt (-_a);
-            _v1     = K / _sqrta;
+            _u      = K / _sqrta;
         }
 
         public override OrbitalPosition ComputePosition (double t)
         {
-            double M = MeanAnomaly (t);
-            double H = SolveKeplerEquation (M);
+            double M   = MeanAnomaly (t);
+            double H   = SolveKeplerEquation (M);
 
             double shH = double.Sinh (H);
             double chH = double.Cosh (H);
 
-            double x = -_a * (_e - chH);
-            double y = -_a * _sqrt1e * shH;
-            double V = double.Atan2 (y, x);
+            (double x,  double y)  = HyperbolicPlanarCartesianCoordinates (_e, _a, _sqrt1e, shH, chH);
+            (double r,  double V)  = Space2D.PolarCoordinates (x, y);
+            (double vx, double vy) = HyperbolicPlanarVelocityComponents (_e, _sqrt1e, _u, shH, chH);
 
-            double denominator = _e * chH - 1.0;
-
-            return new OrbitalPosition (x: x,
-                                        y: y,
-                                        r: Radius (V),
-                                        trueAnomaly: V,
-                                        vx: -_v1 * shH / denominator,
-                                        vy:  _v1 * _sqrt1e * chH / denominator,
-                                        M: M,
-                                        E: H);
+            return new OrbitalPosition (x, y, r, V, vx, vy, M, H);
         }
 
         public override double SolveKeplerEquation (double M)
         {
-            double x0, x1, dx;
+            double [] a  = new double [] { _e, M };
+            double    x0 = (M >= 0.0) ?  double.Log (1.8 + 2.0 * M / _e) : 
+                                        -double.Log (1.8 - 2.0 * M / _e);
+            
+            return Equation.Newton (HyperbolicKeplerEquation, HyperbolicKeplerDerivative, a, ComputingSettings.KeplerEquationEpsilon, x0);
+        }
 
-            if (M >= 0.0) x0 = double.Log (1.8 + 2.0 * M / _e);
-            else x0 = -double.Log (1.8 - 2.0 * M / _e);
+        private static double HyperbolicKeplerEquation (double H, params double [] a)
+        {
+            return a [0] * double.Sinh (H) - H - a [1];
+        }
 
-            do
-            {
-                x1 = x0 - (_e * double.Sinh (x0) - x0 - M) / (_e * double.Cosh (x0) - 1.0);
+        private static double HyperbolicKeplerDerivative (double H, params double [] a)
+        {
+            return a [0] * double.Cosh (H) - 1.0;
+        }
 
-                dx = x1 - x0;
-                x0 = x1;
+        private static (double x, double y) HyperbolicPlanarCartesianCoordinates (double e, double a, double sqrt1e,
+            double shH, double chH)
+        {
+            double x = -a * (e - chH);
+            double y = -a * sqrt1e * shH;
 
-            } while (double.Abs (dx) >= ComputingSettings.KeplerEquationEpsilon);
+            return (x, y);
+        }
 
-            return x1;
+        private static (double vx, double vy) HyperbolicPlanarVelocityComponents (double e, double sqrt1e, double u,
+            double shH, double chH)
+        {
+            double denominator = e * chH - 1.0;
+
+            double vx = -u * shH / denominator;
+            double vy =  u * sqrt1e * chH / denominator;
+
+            return (vx, vy);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Параболическая орбита.
@@ -80,28 +82,43 @@
 
         public override OrbitalPosition ComputePosition (double t)
         {
-            throw new NotImplementedException ();
-            //double M = MeanAnomaly (t);
+            double M     = MeanAnomaly (t);
+            double tanV2 = SolveKeplerEquation (M);
 
-            //double A     = 1.5 * M;
-            //double B     = double.Cbrt (A + double.Sqrt (A * A + 1.0));
-            //double tanV2 = B - 1.0 / B;
+            (double x,  double y)  = ParabolicPlanarCartesianCoordinates (_amin, tanV2);
+            (double r,  double V)  = Space2D.PolarCoordinates (x, y);
+            (double vx, double vy) = ParabolicPlanarVelocityComponents (_p, K, y, r);
 
-            //double V = 2.0 * double.Atan (tanV2);
-
-            //return new OrbitalPosition (x: _amin * (1.0 - tanV2 * tanV2),
-            //                            y: 2.0 * _amin *tanV2,
-            //                            r: Radius (V),
-            //                            trueAnomaly: V,
-            //                            vx: -_gu * shH / denominator,
-            //                            vy: _gu * _sqrt1e * chH / denominator,
-            //                            M: M,
-            //                            E: M);
+            return new OrbitalPosition (x, y, r, V, vx, vy, M, tanV2);
         }
 
         public override double SolveKeplerEquation (double M)
         {
-            return 0.0;
+            double A = 1.5 * M;
+            double B = double.Cbrt (A + double.Sqrt (A * A + 1.0));
+
+            return B - 1.0 / B;
+        }
+
+        private static (double x, double y) ParabolicPlanarCartesianCoordinates (double amin, double tanV2)
+        {
+            double x = amin * (1.0 - tanV2 * tanV2);
+            double y = 2.0 * amin * tanV2;
+
+            return (x, y);
+        }
+
+        private static (double vx, double vy) ParabolicPlanarVelocityComponents (double p, double k, double y, double r)
+        {
+            double v    = k * MathConst.Sqrt_2 / double.Sqrt (r);
+            double beta = double.Atan (-p / y);
+
+            (double sinB, double cosB) = double.SinCos (beta);
+
+            double vx = v * cosB;
+            double vy = v * sinB;
+
+            return (vx, vy);
         }
     }
 }

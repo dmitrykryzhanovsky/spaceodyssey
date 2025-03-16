@@ -7,6 +7,8 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public class EllipticOrbit : KeplerOrbit
     {
+        private const double KeplerEquationInitialSolutionEccentricity = 0.8;
+
         protected double _a;
         protected double _amax;
 
@@ -14,7 +16,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         private   double _sqrt1e;
         private   double _sqrta;
-        protected double _gu;
+        protected double _v1;
 
         /// <summary>
         /// Большая полуось.
@@ -146,7 +148,7 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             _sqrt1e = double.Sqrt (1.0 - _e * _e);
             _sqrta  = double.Sqrt (_a);
-            _gu     = K / _sqrta;
+            _v1     = K / _sqrta;
         }
 
         protected override void CheckR (double r)
@@ -171,15 +173,31 @@ namespace SpaceOdyssey.Cosmodynamics
                                         y: y, 
                                         r: Radius (V), 
                                         trueAnomaly: V, 
-                                        vx: -_gu * sinE / denominator, 
-                                        vy:  _gu * _sqrt1e * cosE / denominator, 
+                                        vx: -_v1 * sinE / denominator, 
+                                        vy:  _v1 * _sqrt1e * cosE / denominator, 
                                         M: M, 
                                         E: E);
         }
 
         public override double SolveKeplerEquation (double M)
         {
-            throw new NotImplementedException ();
+            double x0, x1, dx;
+
+            if (_e < KeplerEquationInitialSolutionEccentricity) x0 = M;
+            else x0 = double.Pi;
+
+            do
+            {
+                (double sinE, double cosE) = double.SinCos (x0);
+
+                x1 = x0 - (x0 - _e * sinE - M) / (1.0 - _e * cosE);
+
+                dx = x1 - x0;
+                x0 = x1;
+
+            } while (double.Abs (dx) >= ComputingSettings.KeplerEquationEpsilon);
+
+            return x1;
         }
     }
 }

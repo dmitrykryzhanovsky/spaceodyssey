@@ -10,7 +10,7 @@
 
         private double _sqrt1e;
         private double _sqrta;
-        private double _gu;
+        private double _v1;
 
         /// <summary>
         /// Большая полуось.
@@ -111,7 +111,7 @@
         {
             _sqrt1e = double.Sqrt (_e * _e - 1.0);
             _sqrta  = double.Sqrt (-_a);
-            _gu     = K / _sqrta;
+            _v1     = K / _sqrta;
         }
 
         public override OrbitalPosition ComputePosition (double t)
@@ -132,15 +132,29 @@
                                         y: y,
                                         r: Radius (V),
                                         trueAnomaly: V,
-                                        vx: -_gu * shH / denominator,
-                                        vy:  _gu * _sqrt1e * chH / denominator,
+                                        vx: -_v1 * shH / denominator,
+                                        vy:  _v1 * _sqrt1e * chH / denominator,
                                         M: M,
                                         E: H);
         }
 
         public override double SolveKeplerEquation (double M)
         {
-            throw new NotImplementedException ();
+            double x0, x1, dx;
+
+            if (M >= 0.0) x0 = double.Log (1.8 + 2.0 * M / _e);
+            else x0 = -double.Log (1.8 - 2.0 * M / _e);
+
+            do
+            {
+                x1 = x0 - (_e * double.Sinh (x0) - x0 - M) / (_e * double.Cosh (x0) - 1.0);
+
+                dx = x1 - x0;
+                x0 = x1;
+
+            } while (double.Abs (dx) >= ComputingSettings.KeplerEquationEpsilon);
+
+            return x1;
         }
     }
 }

@@ -80,15 +80,28 @@
 
         public override OrbitalPosition ComputePosition (double t)
         {
-            double M = MeanAnomaly (t);
-            double E = SolveKeplerEquation (M);
-
             throw new NotImplementedException ();
+            //double M = MeanAnomaly (t);
+
+            //double A     = 1.5 * M;
+            //double B     = double.Cbrt (A + double.Sqrt (A * A + 1.0));
+            //double tanV2 = B - 1.0 / B;
+
+            //double V = 2.0 * double.Atan (tanV2);
+
+            //return new OrbitalPosition (x: _amin * (1.0 - tanV2 * tanV2),
+            //                            y: 2.0 * _amin *tanV2,
+            //                            r: Radius (V),
+            //                            trueAnomaly: V,
+            //                            vx: -_gu * shH / denominator,
+            //                            vy: _gu * _sqrt1e * chH / denominator,
+            //                            M: M,
+            //                            E: M);
         }
 
         public override double SolveKeplerEquation (double M)
         {
-            throw new NotImplementedException ();
+            return 0.0;
         }
     }
 }

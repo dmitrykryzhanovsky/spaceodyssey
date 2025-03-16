@@ -106,8 +106,8 @@
                                         y: _a * sinV, 
                                         r: _a, 
                                         trueAnomaly: M, 
-                                        vx: -_gu * sinV, 
-                                        vy:  _gu * cosV, 
+                                        vx: -_v1 * sinV, 
+                                        vy:  _v1 * cosV, 
                                         M: M, 
                                         E: M);
         }

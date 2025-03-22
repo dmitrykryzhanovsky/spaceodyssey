@@ -141,7 +141,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         protected void ComputeAN ()
         {
-            _a = double.Cbrt (_T * _T * Mu / MathConst.M4_PiSqr);
+            _a = double.Cbrt (_T * _T * Mu / MathConst.M_4PiSqr);
             _n = double.Tau / _T;
         }
 
@@ -173,6 +173,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Решает уравнение Кеплера относительно заданного значения средней аномалии M.
         /// </summary>
+        /// <remarks>Решение возвращается на интервале [-π; +π].</remarks>
         public override double SolveKeplerEquation (double M)
         {
             double MModulo = double.Ieee754Remainder (M, double.Tau);

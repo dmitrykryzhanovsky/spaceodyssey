@@ -246,15 +246,15 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (expected, actual);
         }
 
-        // TODO: написать тесты для e = 0.5 и e = 0.99 для 4 ключевых точек, для произвольных точек в 4 квадрантых и для 2 больших M -
+        // TODO: написать тесты для e = 0.0, e = 0.5 и e = 0.99 для 4 ключевых точек, для произвольных точек в 4 квадрантых и для 2 больших M -
         // положительного и отрицательного - за пределами основного периода, чтобы посмотреть, как отрабатыавет IEEE754Remainder.
 
         [TestMethod ()]
-        public void SolveKeplerEquationTest_E05_M0 ()
+        public void SolveKeplerEquationTest_E00_M0 ()
         {
             EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
 
-            orbit.SetAE (a: 2.0, e: 0.5);
+            orbit.SetAE (a: 2.0, e: 0.0);
 
             double M = 0.0;
 
@@ -266,20 +266,151 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void SolveKeplerEquationTest_E099_M0 ()
+        public void SolveKeplerEquationTest_E00_MQ1 ()
         {
             EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
 
-            orbit.SetAE (a: 2.0, e: 0.99);
+            orbit.SetAE (a: 2.0, e: 0.0);
 
-            double M = 0.0;
+            double M = double.Pi / 6.0;
 
-            double expected = 0.0;
+            double expected = double.Pi / 6.0;
 
             double actual = orbit.SolveKeplerEquation (M);
 
-            Assert.AreEqual (expected, actual, 1.0e-12);
+            Assert.AreEqual (expected, actual);
         }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E00_M90 ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.0);
+
+            double M = double.Pi / 2.0;
+
+            double expected = double.Pi / 2.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E00_MQ2 ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.0);
+
+            double M = 2.0 * double.Pi / 3.0;
+
+            double expected = 2.0 * double.Pi / 3.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E00_M180 ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.0);
+
+            double M = double.Pi;
+
+            double expected = double.Pi;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E00_MQ3 ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.0);
+
+            double M = 7.0 * double.Pi / 6.0;
+
+            double expected = -5.0 * double.Pi / 6.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E00_M270 ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.0);
+
+            double M = 3.0 * double.Pi / 2.0;
+
+            double expected = -double.Pi / 2.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E00_MQ4 ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.0);
+
+            double M = 5.0 * double.Pi / 3.0;
+
+            double expected = -double.Pi / 3.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E00_MBigPositive ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.0);
+
+            double M = 25.0 * double.Pi / 6.0;
+
+            double expected = double.Pi / 6.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual, 1.0e-13);
+        }
+
+        [TestMethod ()]
+        public void SolveKeplerEquationTest_E00_MBigNegative ()
+        {
+            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+
+            orbit.SetAE (a: 2.0, e: 0.0);
+
+            double M = -29.0 * double.Pi / 6.0;
+
+            double expected = -5.0 * double.Pi / 6.0;
+
+            double actual = orbit.SolveKeplerEquation (M);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+
+
 
         [TestMethod ()]
         public void EllipticKeplerEquationTest ()

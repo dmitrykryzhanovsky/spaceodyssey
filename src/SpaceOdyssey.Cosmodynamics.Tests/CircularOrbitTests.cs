@@ -5,66 +5,62 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     [TestClass ()]
     public class CircularOrbitTests
     {
-        [TestMethod ()]
-        public void CreateTest_Common ()
-        {
-            double a = 2.0;
+        private static readonly CentralBody CentralBodyForTests = CentralBody.CreateGParameter (4.0); 
 
-            CircularOrbit orbit = CircularOrbit.Create (a);
+        [TestMethod ()]
+        public void SetATest ()
+        {
+            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+
+            orbit.SetA (2.0);
 
             Assert.AreEqual (2.0, orbit.P);
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (2.0, orbit.A);
             Assert.AreEqual (2.0, orbit.Amin);
             Assert.AreEqual (2.0, orbit.Amax);
+            Assert.AreEqual (0.707106781186547524, orbit.N, 1.0e-15);
+            Assert.AreEqual (8.88576587631673249, orbit.T);
         }
 
         [TestMethod ()]
-        public void CreateTest_AZero ()
+        public void SetMeanMotionTest ()
         {
-            double a = 0.0;
+            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
 
-            bool wasException = false;
+            orbit.SetMeanMotion (0.707106781186547524);
 
-            try
-            {
-                CircularOrbit orbit = CircularOrbit.Create (a);
-            }
-
-            catch (ArgumentOutOfRangeException)
-            {
-                wasException = true;
-            }
-
-            Assert.AreEqual (true, wasException);
+            Assert.AreEqual (2.0, orbit.P, 1.0e-15);
+            Assert.AreEqual (0.0, orbit.E);
+            Assert.AreEqual (2.0, orbit.A, 1.0e-15);
+            Assert.AreEqual (2.0, orbit.Amin, 1.0e-15);
+            Assert.AreEqual (2.0, orbit.Amax, 1.0e-15);
+            Assert.AreEqual (0.707106781186547524, orbit.N);
+            Assert.AreEqual (8.88576587631673249, orbit.T);
         }
 
         [TestMethod ()]
-        public void CreateTest_ANegative ()
+        public void SetTTest ()
         {
-            double a = -2.0;
+            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
 
-            bool wasException = false;
+            orbit.SetT (8.88576587631673249);
 
-            try
-            {
-                CircularOrbit orbit = CircularOrbit.Create (a);
-            }
-
-            catch (ArgumentOutOfRangeException)
-            {
-                wasException = true;
-            }
-
-            Assert.AreEqual (true, wasException);
+            Assert.AreEqual (2.0, orbit.P);
+            Assert.AreEqual (0.0, orbit.E);
+            Assert.AreEqual (2.0, orbit.A);
+            Assert.AreEqual (2.0, orbit.Amin);
+            Assert.AreEqual (2.0, orbit.Amax);
+            Assert.AreEqual (0.707106781186547524, orbit.N);
+            Assert.AreEqual (8.88576587631673249, orbit.T);
         }
 
         [TestMethod ()]
         public void RadiusTest ()
         {
-            double a = 2.0;
+            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
 
-            CircularOrbit orbit = CircularOrbit.Create (a);
+            orbit.SetA (2.0);
 
             double expected = 2.0;
 
@@ -76,21 +72,21 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_EqualToSemiMajor ()
         {
-            double a = 2.0;
+            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
 
-            CircularOrbit orbit = CircularOrbit.Create (a);
+            orbit.SetA (2.0);
 
             double actual = orbit.TrueAnomaly (2.0);
 
-            Assert.AreEqual (true, double.IsNaN (actual));
+            Assert.IsTrue (double.IsNaN (actual));
         }
 
         [TestMethod ()]
         public void TrueAnomalyTest_NotEqualToSemiMajor ()
         {
-            double a = 2.0;
+            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
 
-            CircularOrbit orbit = CircularOrbit.Create (a);
+            orbit.SetA (2.0);
 
             bool wasException = false;
 
@@ -104,7 +100,24 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
                 wasException = true;
             }
 
-            Assert.AreEqual (true, wasException);
+            Assert.IsTrue (wasException);
+        }
+
+        [TestMethod ()]
+        public void MeanAnomalyTest ()
+        {
+            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+
+            orbit.SetT (8.88576587631673249);
+
+            orbit.T0  = 100.0;
+            double t1 = 108.0;
+
+            double expected = 5.65685424949238;
+
+            double actual = orbit.MeanAnomaly (t1);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
         }
     }
 }

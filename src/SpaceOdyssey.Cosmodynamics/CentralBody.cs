@@ -29,16 +29,21 @@
 
         public static CentralBody CreateGParameter (double gParameter)
         {
-            if (gParameter <= 0.0) throw new ArgumentOutOfRangeException (nameof (gParameter));
+            CheckGValue (gParameter);
 
             return new CentralBody (gParameter, double.Sqrt (gParameter));
         }
 
         public static CentralBody CreateGConstant (double gConstant)
         {
-            if (gConstant <= 0.0) throw new ArgumentOutOfRangeException (nameof (gConstant));
+            CheckGValue (gConstant);
 
             return new CentralBody (gConstant * gConstant, gConstant);
+        }
+
+        private static void CheckGValue (double gValue)
+        {
+            if (gValue <= 0.0) throw new ArgumentOutOfRangeException (nameof (gValue));
         }
     }
 }

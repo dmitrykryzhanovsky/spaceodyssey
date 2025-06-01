@@ -14,11 +14,17 @@ namespace SpaceOdyssey.Cosmodynamics
         private readonly double  _meanAnomaly;
         private readonly double  _eccentricAnomaly;
 
+        /// <summary>
+        /// X-координата в плоскости орбиты.
+        /// </summary>
         public double X
         {
             get => _planarCartesianPosition.X;
         }
 
+        /// <summary>
+        /// Y-координата в плоскости орбиты.
+        /// </summary>
         public double Y
         {
             get => _planarCartesianPosition.Y;
@@ -41,21 +47,35 @@ namespace SpaceOdyssey.Cosmodynamics
             get => _planarPolarPosition.Heading;
         }
 
+        /// <summary>
+        /// Вектор скорости в плоскости орбиты.
+        /// </summary>
         public Vector2 PlanarVelocity
         {
             get => _planarVelocity;
         }
 
+        /// <summary>
+        /// Величина скорости в плоскости орбиты.
+        /// </summary>
         public double Velocity
         {
             get => _planarVelocity.GetLength ();
         }
 
+        /// <summary>
+        /// Средняя аномалия.
+        /// </summary>
+        /// <remarks>Задаётся в радианах.</remarks>
         public double MeanAnomaly
         {
             get => _meanAnomaly;
         }
 
+        /// <summary>
+        /// Эксцентрическая аномалия.
+        /// </summary>
+        /// <remarks>Задаётся в радианах.</remarks>
         public double EccentricAnomaly
         {
             get => _eccentricAnomaly;

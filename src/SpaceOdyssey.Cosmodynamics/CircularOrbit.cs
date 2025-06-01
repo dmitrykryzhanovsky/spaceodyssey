@@ -1,7 +1,4 @@
-﻿using Archimedes;
-using System.Drawing;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Круговая орбита.

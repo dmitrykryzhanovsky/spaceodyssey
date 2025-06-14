@@ -9,7 +9,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void CreateBySemiMajorAxisTest_E0 ()
         {
             Mass   central = Data.SunSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   probe   = Data.EarthSI;
             double a       = 149598261000.0;
             double e       = 0.0;
 
@@ -25,20 +25,44 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (1.0, actual.RangeRaA);
             Assert.AreEqual (1.0, actual.RangeRaRp);
 
-            Assert.AreEqual (1.99097588291661e-7, actual.N);
-            Assert.AreEqual (3.15583195210545e+7, actual.T);
-            Assert.AreEqual (29784.6529777264, actual.VMean);
-            Assert.AreEqual (29784.6529777264, actual.VPeri);            
-            Assert.AreEqual (29784.6529777264, actual.VApo);
+            Assert.AreEqual (1.99097887285211e-7, actual.N, 1.0e-21);
+            Assert.AreEqual (3.15582721286180e+7, actual.T, 1.0e-8);
+            Assert.AreEqual (29784.6977066415, actual.VMean, 1.0e-10);
+            Assert.AreEqual (29784.6977066415, actual.VPeri, 1.0e-10);            
+            Assert.AreEqual (29784.6977066415, actual.VApo, 1.0e-10);
 
-            Assert.AreEqual (-8.87125553003587e+8, actual.EnergyIntegral);
-            Assert.AreEqual ( 4.45573228995634e+15, actual.ArealVelocity);
+            Assert.AreEqual (-8.87128217476016e+8, actual.EnergyIntegral);
+            Assert.AreEqual ( 4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
         }
 
         [TestMethod ()]
         public void CreateBySemiMajorAxisTest_EEarth ()
         {
-            Assert.Fail ();
+            Mass   central = Data.SunSI;
+            Mass   probe   = Data.EarthSI;
+            double a       = 149598261000.0;
+            double e       = 0.01671123;
+
+            EllipticOrbit actual = EllipticOrbit.CreateBySemiMajorAxis (central, probe, a, e);
+
+            Assert.AreEqual (149598261000.0, actual.A);
+            Assert.AreEqual (149556483410.509, actual.P, 1.0e-3);
+            Assert.AreEqual (0.01671123, actual.E);
+            Assert.AreEqual (147098290052.829, actual.RPeri, 1.0e-3);
+            Assert.AreEqual (152098231947.171, actual.RApo, 1.0e-3);
+
+            Assert.AreEqual (1.01699524138774, actual.RangeARp, 1.0e-14);
+            Assert.AreEqual (1.01671123, actual.RangeRaA);
+            Assert.AreEqual (1.03399048277547, actual.RangeRaRp, 1.0e-14);
+
+            Assert.AreEqual (1.99097887285211e-7, actual.N, 1.0e-21);
+            Assert.AreEqual (3.15582721286180e+7, actual.T, 1.0e-8);
+            Assert.AreEqual (29784.6977066415, actual.VMean, 1.0e-10);
+            Assert.AreEqual (30286.6659418261, actual.VPeri, 1.0e-10);
+            Assert.AreEqual (29291.0490438264, actual.VApo, 1.0e-10);
+
+            Assert.AreEqual (-8.87128217476016e+8, actual.EnergyIntegral);
+            Assert.AreEqual ( 4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
         }
     }
 }

@@ -1,8 +1,8 @@
 ﻿namespace SpaceOdyssey.Cosmodynamics
 {
-    public class ParabolicOrbit : NonClosedOrbit
+    public class ParabolicOrbit : KeplerOrbit
     {
-        public override double Asymptote
+        public double Asymptote
         {
             get => double.Pi;
         }

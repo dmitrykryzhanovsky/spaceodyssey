@@ -114,5 +114,28 @@
                 return double.Sqrt (mu * a);
             }
         }
+
+        protected static class Checkers
+        {
+            public static void CheckA (double a)
+            {
+                if (a <= 0.0) throw new ArgumentOutOfRangeException ();
+            }
+
+            public static void CheckPeriapsis (double rp)
+            {
+                if (rp <= 0.0) throw new ArgumentOutOfRangeException ();
+            }
+
+            public static void CheckEccentricityForEllipse (double e)
+            {
+                if ((e < 0.0) || (e >= 1.0)) throw new ArgumentOutOfRangeException ();
+            }
+
+            public static void CheckEccentricityForHyperbola (double e)
+            {
+                if (e <= 1.0) throw new ArgumentOutOfRangeException ();
+            }
+        }
     }
 }

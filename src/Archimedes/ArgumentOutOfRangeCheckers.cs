@@ -23,6 +23,11 @@ namespace Archimedes
             if (x.CompareTo (T.Zero) < 0) throw new ArgumentOutOfRangeException ();
         }
 
+        public static void CheckGreater<T> (T x, T a) where T : INumber<T>
+        {
+            if (x.CompareTo (a) <= 0) throw new ArgumentOutOfRangeException ();
+        }
+
         /// <summary>
         /// Проверяет, лежит ли число x на полуинтервале [a; b), и если нет, то генерирует исключение.
         /// </summary>

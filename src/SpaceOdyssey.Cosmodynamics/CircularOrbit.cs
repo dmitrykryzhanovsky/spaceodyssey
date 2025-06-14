@@ -1,6 +1,4 @@
-﻿using Archimedes;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Круговая орбита.
@@ -41,23 +39,21 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <param name="a">Должно быть положительным, иначе сгенерируется исключение.</param>
         public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a)
         {
-            ArgumentOutOfRangeCheckers.CheckPositive (a);
+            Checkers.CheckA (a);
 
             CircularOrbit orbit = new CircularOrbit (center, probe);
 
             orbit._a = a;
 
-            orbit.ComputeShape ();
-            orbit.ComputeMotion ();
-            orbit.ComputeIntegrals ();
+            orbit.ComputeOrbit ();
 
             return orbit;
         }
 
-        private void ComputeShape ()
+        protected override void ComputeShape ()
         {
-            _p  = _a;
             _e  = 0.0;
+            _p  = _a;
             _rp = _a;
             _ra = _a;
         }

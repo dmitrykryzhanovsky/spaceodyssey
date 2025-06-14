@@ -50,7 +50,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <param name="m">Должно быть положительным, иначе сгенерируется исключение.</param>
         public static Mass CreateByMass (double m)
         {
-            ArgumentOutOfRangeCheckers.CheckPositive (m);
+            ArgumentOutOfRangeCheckers.CheckNotNegative (m);
 
             double gm = m * PhysConst.G;
 
@@ -63,7 +63,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <param name="gm">Должно быть положительным, иначе сгенерируется исключение.</param>
         public static Mass CreateByGM (double gm)
         {
-            ArgumentOutOfRangeCheckers.CheckPositive (gm);
+            ArgumentOutOfRangeCheckers.CheckNotNegative (gm);
 
             return new Mass (gm / PhysConst.G, gm, double.Sqrt (gm));
         }
@@ -74,7 +74,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <param name="gmsqrt">Должно быть положительным, иначе сгенерируется исключение.</param>
         public static Mass CreateByGMSqrt (double gmsqrt)
         {
-            ArgumentOutOfRangeCheckers.CheckPositive (gmsqrt);
+            ArgumentOutOfRangeCheckers.CheckNotNegative (gmsqrt);
 
             double gm = gmsqrt * gmsqrt;
 

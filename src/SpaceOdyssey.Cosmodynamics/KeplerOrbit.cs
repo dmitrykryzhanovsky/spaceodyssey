@@ -1,109 +1,118 @@
-﻿using Archimedes;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     public abstract class KeplerOrbit
     {
-        private double _centralMu;
-
-        private double _satteliteMass;
-
-        private double _satteliteMu;
+        private Mass _center;
+        private Mass _probe;
 
         protected double _mu;
 
-        protected double _k;
-
         protected double _p;
-
         protected double _e;
-
         protected double _rp;
 
         protected double _n;
-
         protected double _vp;
 
-        protected double _energyIntegral;
+        protected double _mua;
+        protected double _muasqrt;
 
+        protected double _energyIntegral;
         protected double _arealVelocity;
 
-        //private Vector3 _angularMomentum;
-
-        protected KeplerOrbit ()
+        public double P
         {
-            NotInitializedGravity ();
-            NotInitializedShape ();
-            NotInitializedMotion ();
-            NotInitializedIntegrals ();
+            get => _p;
         }
 
-        private void NotInitializedGravity ()
+        public double E
         {
-            _centralMu     = double.NaN;
-            _satteliteMass = double.NaN;
-            _satteliteMu   = double.NaN;
-            _mu            = double.NaN;
-            _k             = double.NaN;
+            get => _e;
         }
 
-        private void NotInitializedShape ()
+        public double RPeri
         {
-            _p  = double.NaN;
-            _e  = double.NaN;
-            _rp = double.NaN;
+            get => _rp;
         }
 
-        private void NotInitializedMotion ()
+        public double N
         {
-            _n  = double.NaN;
-            _vp = double.NaN;
+            get => _n;
         }
 
-        private void NotInitializedIntegrals ()
+        public double VPeri
         {
-            _energyIntegral  = double.NaN;
-            _arealVelocity   = double.NaN;
-            //_angularMomentum = null;
+            get => _vp;
         }
 
-        public void SetGravity_OnlyCentralMass (double centralMu)
+        public double EnergyIntegral
         {
-            _centralMu     = centralMu;
-            _satteliteMass = 0.0;
-            _satteliteMu   = 0.0;
-
-            ComputeMuK ();
+            get => _energyIntegral;
         }
 
-        public void SetGravity_SatteliteMass (double centralMu, double satteliteMass)
+        public double ArealVelocity
         {
-            _centralMu     = centralMu;
-            _satteliteMass = satteliteMass;
-            _satteliteMu   = satteliteMass * PhysConst.G;
-
-            ComputeMuK ();
+            get => _arealVelocity;
         }
 
-        public void SetGravity_SatteliteMu (double centralMu, double satteliteMu)
+        protected KeplerOrbit (Mass center, Mass probe)
         {
-            _centralMu     = centralMu;            
-            _satteliteMass = satteliteMu / PhysConst.G;
-            _satteliteMu   = satteliteMu;
-
-            ComputeMuK ();
+            InitMasses (center, probe);
         }
 
-        private void ComputeMuK ()
+        private void InitMasses (Mass center, Mass probe)
         {
-            _mu = _centralMu + _satteliteMu;
-            _k  = double.Sqrt (_mu);
+            _center = center;
+            _probe  = probe;
+            _mu     = center.GM + probe.GM;
         }
 
-        protected double ArealVelocity ()
+        protected static class Formulae
         {
-            // TODO
-            return double.NaN;
+            public static double Asymptote (double e)
+            {
+                return double.Acos (-1.0 / e);
+            }
+
+            public static double RangeARp (double x1me)
+            {
+                return 1.0 / x1me;
+            }
+
+            public static double RangeRaA (double x1pe)
+            {
+                return x1pe;
+            }
+
+            public static double RangeRaRp (double x1me, double x1pe)
+            {
+                return x1pe / x1me;
+            }
+
+            public static double GMA (double mu, double a)
+            {
+                return mu / a;
+            }
+
+            public static double GMASqrt (double mua)
+            {
+                return double.Sqrt (mua);
+            }
+
+            public static double MeanMotion (double a, double muasqrt)
+            {
+                return muasqrt / a;
+            }
+
+            public static double OrbitalPeriod (double a, double muasqrt)
+            {
+                return double.Tau * a / muasqrt;
+            }
+
+            public static double ArealVelocity (double mu, double a)
+            {
+                return double.Sqrt (mu * a);
+            }
         }
     }
 }

@@ -4,7 +4,7 @@
     {
         public abstract double Asymptote { get; }
 
-        protected NonClosedOrbit () : base ()
+        protected NonClosedOrbit (Mass center, Mass probe) : base (center, probe)
         {
         }
     }

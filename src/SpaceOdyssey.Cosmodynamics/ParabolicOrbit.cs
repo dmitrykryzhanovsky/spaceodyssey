@@ -7,7 +7,7 @@
             get => double.Pi;
         }
 
-        private ParabolicOrbit () : base ()
+        private ParabolicOrbit (Mass center, Mass probe) : base (center, probe)
         {
         }
     }

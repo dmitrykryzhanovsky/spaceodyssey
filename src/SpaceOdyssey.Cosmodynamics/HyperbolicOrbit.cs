@@ -2,17 +2,14 @@
 {
     public class HyperbolicOrbit : NonClosedOrbit
     {
+        private double _a;
+
         public override double Asymptote
         {
-            get => double.Acos (-1.0 / _e);
+            get => Formulae.Asymptote (_e);
         }
 
-        public double RangeARp
-        {
-            get => 1.0 / (1.0 - _e);
-        }
-
-        private HyperbolicOrbit () : base ()
+        private HyperbolicOrbit (Mass center, Mass probe) : base (center, probe)
         {
         }
     }

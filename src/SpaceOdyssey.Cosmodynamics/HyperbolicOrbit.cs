@@ -58,7 +58,14 @@
 
         protected override void ComputeArealVelocity ()
         {
-            _arealVelocity = Formulae.ArealVelocity (_mu, -_a);
+            _arealVelocity = Formulae.ArealVelocityNonParabola (_mu, -_a);
+        }
+
+        public override double TrueAnomaly (double r)
+        {
+            Checkers.CheckRNonClosed (r, _rp);
+
+            return Formulae.ConicSectionInverse (r, _p, _e);
         }
     }
 }

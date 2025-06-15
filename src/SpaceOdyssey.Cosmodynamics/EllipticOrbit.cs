@@ -1,6 +1,4 @@
-﻿using Archimedes;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Эллиптическая орбита.
@@ -14,14 +12,6 @@ namespace SpaceOdyssey.Cosmodynamics
         protected double _T;
         protected double _vmean;
         protected double _va;
-
-        /// <summary>
-        /// Большая полуось орбиты.
-        /// </summary>
-        public double A
-        {
-            get => _a;
-        }
 
         /// <summary>
         /// Расстояние в апоцентре.
@@ -77,11 +67,15 @@ namespace SpaceOdyssey.Cosmodynamics
         public double VApo
         {
             get => _va;
-        }        
+        }
+
+        #region Constructors
 
         protected EllipticOrbit (Mass center, Mass probe) : base (center, probe)
         {
         }
+
+        #endregion
 
         /// <summary>
         /// Инициализация эллиптической орбиты по большой полуоси a и эксцентриситету e.

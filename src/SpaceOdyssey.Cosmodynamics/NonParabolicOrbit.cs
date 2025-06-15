@@ -1,15 +1,32 @@
 ﻿namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Базовый класс для непараболических орбит (гиперболических и эллиптических, включая круговые).
+    /// </summary>
+    /// <remarks>Главной особенностью непараболических орбит является то, что для них определена большая полуось a – положительная для 
+    /// эллипсов и отрицательная для гипербол. Все базовые формулы записываются через большую полуось.</remarks>
     public abstract class NonParabolicOrbit : KeplerOrbit
     {
         protected double _a;
 
         protected double _1me; // Вспомогательная величина 1 – e.
-        protected double _1pe; // Вспомогательная величина 1 + e.        
+        protected double _1pe; // Вспомогательная величина 1 + e.
+
+        /// <summary>
+        /// Большая полуось орбиты.
+        /// </summary>
+        public double A
+        {
+            get => _a;
+        }
+
+        #region Constructors
 
         protected NonParabolicOrbit (Mass center, Mass probe) : base (center, probe)
         {
         }
+
+        #endregion
 
         protected void ComputeOrbit ()
         {

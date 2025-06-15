@@ -29,9 +29,13 @@
             get => 1.0;
         }
 
+        #region Constructors
+
         private CircularOrbit (Mass center, Mass probe) : base (center, probe)
         {
         }
+
+        #endregion
 
         /// <summary>
         /// Инициализация круговой орбиты по большой полуоси (радиусу) a.
@@ -50,6 +54,9 @@
             return orbit;
         }
 
+        /// <summary>
+        /// Для круговой орбиты все геометрические параметры численно равны большой полуоси (радиусу), а эксцентриситет = 0.
+        /// </summary>
         protected override void ComputeShape ()
         {
             _e  = 0.0;
@@ -58,6 +65,9 @@
             _ra = _a;
         }
 
+        /// <summary>
+        /// На круговой орбите скорость не изменяется.
+        /// </summary>
         protected override void ComputeVelocityPA ()
         {
             _vp = _muasqrt;

@@ -126,6 +126,69 @@ namespace Archimedes.Tests
         }
 
         [TestMethod ()]
+        public void CheckGreaterTest_Greater ()
+        {
+            int x = 73;
+            int a = 42;
+
+            bool flag = true;
+
+            try
+            {
+                ArgumentOutOfRangeCheckers.CheckGreater (x, a);
+            }
+
+            catch
+            {
+                flag = false;
+            }
+
+            Assert.IsTrue (flag);
+        }
+
+        [TestMethod ()]
+        public void CheckGreaterTest_Equal ()
+        {
+            int x = 42;
+            int a = 42;
+
+            bool flag = false;
+
+            try
+            {
+                ArgumentOutOfRangeCheckers.CheckGreater (x, a);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                flag = true;
+            }
+
+            Assert.IsTrue (flag);
+        }
+
+        [TestMethod ()]
+        public void CheckGreaterTest_Less ()
+        {
+            int x = -42;
+            int a =  42;
+
+            bool flag = false;
+
+            try
+            {
+                ArgumentOutOfRangeCheckers.CheckGreater (x, a);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                flag = true;
+            }
+
+            Assert.IsTrue (flag);
+        }
+
+        [TestMethod ()]
         public void CheckInLeftSemiInterval_Less ()
         {
             double x = -1.0;

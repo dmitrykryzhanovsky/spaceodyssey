@@ -1,18 +1,32 @@
-﻿using Archimedes;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Гиперболическая орбита.
+    /// </summary>
     public class HyperbolicOrbit : NonParabolicOrbit
     {
+        /// <summary>
+        /// Асимптота орбиты.
+        /// </summary>
+        /// <remarks>Истинная аномалия, к которой будет стремиться тело при удалении на бесконечность. Возвращается в радианах.</remarks>
         public double Asymptote
         {
             get => Formulae.Asymptote (_e);
         }
 
+        #region Constructors
+
         private HyperbolicOrbit (Mass center, Mass probe) : base (center, probe)
         {
         }
 
+        #endregion
+
+        /// <summary>
+        /// Инициализация гиперболической орбиты по расстоянию в периапсисе rp и эксцентриситету e.
+        /// </summary>
+        /// <param name="rp">Должно быть положительным, иначе сгенерируется исключение.</param>
+        /// <param name="e">Должно быть больше 1, иначе сгенерируется исключение.</param>
         public static HyperbolicOrbit CreateByPeriapsis (Mass center, Mass probe, double rp, double e)
         {
             Checkers.CheckPeriapsis (rp);

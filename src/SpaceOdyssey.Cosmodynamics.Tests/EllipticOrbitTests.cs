@@ -64,5 +64,20 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (-8.87128217476016e+8, actual.EnergyIntegral);
             Assert.AreEqual ( 4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
         }
+
+        [TestMethod ()]
+        public void RadiusTest ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI, 
+                                                                       probe:  Data.ProbeZeroMass, 
+                                                                       a: 2.0, 
+                                                                       e: 0.6);
+
+            double trueAnomaly = double.Pi * (2.0 / 3.0);
+
+            double actual = orbit.Radius (trueAnomaly);
+
+            Assert.AreEqual (1.8285714285714286, actual);
+        }
     }
 }

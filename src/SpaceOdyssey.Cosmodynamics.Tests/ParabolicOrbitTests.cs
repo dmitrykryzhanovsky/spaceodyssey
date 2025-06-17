@@ -25,5 +25,19 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (0.0, actual.EnergyIntegral);
             Assert.AreEqual (4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
         }
+
+        [TestMethod ()]
+        public void RadiusTest ()
+        {
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
+
+            double trueAnomaly = double.Pi * (2.0 / 3.0);
+
+            double actual = orbit.Radius (trueAnomaly);
+
+            Assert.AreEqual (8.0, actual, 1.0e-14);
+        }
     }
 }

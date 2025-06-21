@@ -128,6 +128,12 @@
             _arealVelocity = Formulae.ArealVelocityNonParabola (_mu, _a);
         }
 
+        /// <summary>
+        /// Истинная аномалия при расстоянии до центра тяготения r.
+        /// </summary>
+        /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
+        /// неотрицательное значение из двух корректных.</returns>
+        /// <param name="r">Должно быть заключено на отрезке [rp; ra], где rp – расстояние в перицентре, а ra – расстояние в апоцентре.</param>
         public override double TrueAnomaly (double r)
         {
             Checkers.CheckRClosed (r, _rp, _ra);

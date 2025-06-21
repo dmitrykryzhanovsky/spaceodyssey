@@ -43,5 +43,90 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (26, actual, 1.0e-13);
         }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_0 ()
+        {
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       rp:     2.0,
+                                                                       e:      2.0);
+
+            double r = 2.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (0.0, actual);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_60 ()
+        {
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       rp:     2.0,
+                                                                       e:      2.0);
+
+            double r = 3.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi / 3.0, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_90 ()
+        {
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       rp:     2.0,
+                                                                       e:      2.0);
+
+            double r = 6.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi / 2.0, actual);
+        }               
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_Asymptote ()
+        {
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       rp:     2.0,
+                                                                       e:      2.0);
+
+            double r = double.PositiveInfinity;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi * 2.0 / 3.0, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_IncorrectDistanceLess ()
+        {
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       rp:     2.0,
+                                                                       e:      2.0);
+
+            double r = 1.999999999999;
+
+            bool flag = false;
+
+            try
+            {
+                orbit.TrueAnomaly (r);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                flag = true;
+            }
+
+            Assert.IsTrue (flag);
+        }
     }
 }

@@ -60,6 +60,12 @@
             return Formulae.ConicSectionParabola (trueAnomaly, _p);
         }
 
+        /// <summary>
+        /// Истинная аномалия при расстоянии до центра тяготения r.
+        /// </summary>
+        /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
+        /// неотрицательное значение из двух корректных.</returns>
+        /// <param name="r">Должно быть больше либо равно расстоянию в перицентре rp.</param>
         public override double TrueAnomaly (double r)
         {
             Checkers.CheckRNonClosed (r, _rp);

@@ -79,5 +79,130 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (1.8285714285714286, actual);
         }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_0 ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
+
+            double r = 1.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (0.0, actual);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_60 ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
+
+            double r = 1.2;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi / 3.0, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_90 ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
+
+            double r = 1.5;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi / 2.0, actual);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_120 ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
+
+            double r = 2.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi * 2.0 / 3.0, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_180 ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
+
+            double r = 3.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi, actual);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_IncorrectDistanceLess ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
+
+            double r = 0.999999999999;
+
+            bool flag = false;
+
+            try
+            {
+                orbit.TrueAnomaly (r);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                flag = true;
+            }
+
+            Assert.IsTrue (flag);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_IncorrectDistanceGteater ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
+
+            double r = 3.000000000001;
+
+            bool flag = false;
+
+            try
+            {
+                orbit.TrueAnomaly (r);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                flag = true;
+            }
+
+            Assert.IsTrue (flag);
+        }
     }
 }

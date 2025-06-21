@@ -39,5 +39,99 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (8.0, actual, 1.0e-14);
         }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_0 ()
+        {
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
+
+            double r = 2.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (0.0, actual);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_60 ()
+        {
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
+
+            double r = 8.0 / 3.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi / 3.0, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_90 ()
+        {
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
+
+            double r = 4.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi / 2.0, actual);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_120 ()
+        {
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
+
+            double r = 8.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi * 2.0 / 3.0, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_Asymptote ()
+        {
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
+
+            double r = double.PositiveInfinity;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi, actual);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_IncorrectDistanceLess ()
+        {
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
+
+            double r = 1.999999999999;
+
+            bool flag = false;
+
+            try
+            {
+                orbit.TrueAnomaly (r);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                flag = true;
+            }
+
+            Assert.IsTrue (flag);
+        }
     }
 }

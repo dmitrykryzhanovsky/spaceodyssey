@@ -5,44 +5,23 @@
     /// </summary>
     public abstract class KeplerOrbit
     {
-        private readonly CentralBody _centralBody;
+        private Mass _center; // Центральное тело.
+        private Mass _probe;  // Обращающееся тело.
+
+        protected double _mu; // Локальная гравитационная постоянная (по сумме масс _center и _probe).
 
         protected double _p;
         protected double _e;
-        protected double _amin;
+        protected double _rp;
 
-        protected double _n;
+        protected double _vp;
 
-        private double _t0;
-
-        /// <summary>
-        /// Центральное тело, создающее гравитационное поле орбиты.
-        /// </summary>
-        public CentralBody CentralBody
-        {
-            get => _centralBody;
-        }
+        protected double _energyIntegral;
+        protected double _arealVelocity;
 
         /// <summary>
-        /// Гравитационный параметр.
+        /// Фокальный параметр орбиты (расстояние при истинной аномалии равной 90°).
         /// </summary>
-        protected double Mu
-        {
-            get => _centralBody.GParameter;
-        }
-
-        /// <summary>
-        /// Гравитационная постоянная (квадратный корень из гравитационного параметра).
-        /// </summary>
-        protected double K
-        {
-            get => _centralBody.GConstant;
-        }
-
-        /// <summary>
-        /// Фокальный (орбитальный) параметр.
-        /// </summary>
-        /// <remarks>Расстояние от центра тяготения, расположенного в фокусе, при истинной аномалии = 90°.</remarks>
         public double P
         {
             get => _p;
@@ -59,98 +38,111 @@
         /// <summary>
         /// Расстояние в перицентре.
         /// </summary>
-        public double Amin
+        public double RPeri
         {
-            get => _amin;
+            get => _rp;
         }
 
         /// <summary>
-        /// Среднее суточное движение.
+        /// Орбитальная скорость в перицентре.
         /// </summary>
-        /// <remarks>Выражается в радианах / сутки.</remarks>
-        public double N
+        public double VPeri
         {
-            get => _n;
+            get => _vp;
         }
 
         /// <summary>
-        /// Момент прохождения перицентра в юлианских датах.
+        /// Интеграл энергии.
         /// </summary>
-        public double T0
+        public double EnergyIntegral
         {
-            get => _t0;
-
-            set => _t0 = value;
+            get => _energyIntegral;
         }
 
-        protected KeplerOrbit (CentralBody centralBody)
+        /// <summary>
+        /// Секторальная скорость.
+        /// </summary>
+        public double ArealVelocity
         {
-            _centralBody = centralBody;
+            get => _arealVelocity;
         }
 
-        protected KeplerOrbit (CentralBody centralBody, double e) : this (centralBody)
+        #region Constructors
+
+        protected KeplerOrbit (Mass center, Mass probe)
         {
-            _e = e;
+            InitMasses (center, probe);
         }
 
-        protected abstract void CheckE (double e);
-
-        protected static void CheckAmin (double amin)
+        private void InitMasses (Mass center, Mass probe)
         {
-            if (amin <= 0.0) throw new ArgumentOutOfRangeException (nameof (amin));
+            _center = center;
+            _probe  = probe;
+            _mu     = center.GM + probe.GM;
         }
 
-        protected static void CheckN (double n)
+        #endregion
+
+        protected void ComputeOrbit ()
         {
-            if (n <= 0.0) throw new ArgumentOutOfRangeException (nameof (n));
+            ComputeShape ();
+            ComputeMotion ();
+            ComputeIntegrals ();
         }
+
+        protected abstract void ComputeShape ();
+
+        protected abstract void ComputeMotion ();
+
+        protected abstract void ComputeIntegrals ();
 
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
         /// </summary>
-        /// <param name="trueAnomaly">Задаётся в радианах.</param>
-        public virtual double Radius (double trueAnomaly)
-        {
-            return _p / (1.0 + _e * double.Cos (trueAnomaly));
-        }
+        public abstract double Radius (double trueAnomaly);
 
         /// <summary>
         /// Истинная аномалия при расстоянии до центра тяготения r.
         /// </summary>
         /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
         /// неотрицательное значение из двух корректных.</returns>
-        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если значение <paramref name="r"/> не проходит проверку на 
-        /// корректность. Условие корректности задаётся в методе <see cref="CheckR"/>.</exception>
-        public virtual double TrueAnomaly (double r)
-        {
-            CheckR (r);
-
-            return double.Acos ((_p / r - 1.0) / _e);
-        }
-
-        protected virtual void CheckR (double r)
-        {
-            if (r < _amin) throw new ArgumentOutOfRangeException (nameof (r));
-        }
+        /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
+        public abstract double TrueAnomaly (double r);
 
         /// <summary>
-        /// Возвращает положение на орбите для момента времени t, заданного в юлианских датах.
+        /// Чекеры для проверки значений входных параметров орбит на корректность.
         /// </summary>
-        public abstract OrbitalPosition ComputePosition (double t);
-
-        /// <summary>
-        /// Возвращает среднюю аномалию для момента времени t, заданного в юлианских датах.
-        /// </summary>
-        public double MeanAnomaly (double t)
+        protected static class Checkers
         {
-            return _n * (t - _t0);
-        }
+            public static void CheckRNonClosed (double r, double rp)
+            {
+                if (r < rp) throw new ArgumentOutOfRangeException ();
+            }
 
-        /// <summary>
-        /// Решает уравнение Кеплера относительно заданного значения средней аномалии M.
-        /// </summary>
-        /// <remarks>Решение возвращается на интервале [-π; +π], как для замкнутых (эллиптических и круговых), так и для незамкнутых 
-        /// (параболических и гиперболических) орбит.</remarks>
-        public abstract double SolveKeplerEquation (double M);
+            public static void CheckRClosed (double r, double rp, double ra)
+            {
+                if ((r < rp) || (r > ra)) throw new ArgumentOutOfRangeException ();
+            }
+
+            public static void CheckA (double a)
+            {
+                if (a <= 0.0) throw new ArgumentOutOfRangeException ();
+            }
+
+            public static void CheckPeriapsis (double rp)
+            {
+                if (rp <= 0.0) throw new ArgumentOutOfRangeException ();
+            }
+
+            public static void CheckEccentricityForEllipse (double e)
+            {
+                if ((e < 0.0) || (e >= 1.0)) throw new ArgumentOutOfRangeException ();
+            }
+
+            public static void CheckEccentricityForHyperbola (double e)
+            {
+                if (e <= 1.0) throw new ArgumentOutOfRangeException ();
+            }
+        }
     }
 }

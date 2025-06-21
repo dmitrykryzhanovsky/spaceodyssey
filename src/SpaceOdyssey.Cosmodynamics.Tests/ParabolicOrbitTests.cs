@@ -5,217 +5,133 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     [TestClass ()]
     public class ParabolicOrbitTests
     {
-        private static readonly CentralBody CentralBodyForTests = CentralBody.CreateGParameter (4.0);
-
         [TestMethod ()]
-        public void SetAminTest ()
+        public void CreateByPeriapsisTest ()
         {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
+            Mass   central = Data.SunSI;
+            Mass   probe   = Data.EarthSI;
+            double rp      = 74799130500.0;
 
-            orbit.SetAmin (2.0);
+            ParabolicOrbit actual = ParabolicOrbit.CreateByPeriapsis (central, probe, rp);
 
-            Assert.AreEqual (4.0, orbit.P);
-            Assert.AreEqual (1.0, orbit.E);
-            Assert.AreEqual (2.0, orbit.Amin);
-            Assert.AreEqual (double.Pi, orbit.Asymptote);
-            Assert.AreEqual (0.5, orbit.N);
+            Assert.AreEqual (149598261000.0, actual.P);
+            Assert.AreEqual (1.0, actual.E);
+            Assert.AreEqual (74799130500.0, actual.RPeri);
+
+            Assert.AreEqual (double.Pi, actual.Asymptote);
+
+            Assert.AreEqual (59569.395413283, actual.VPeri, 1.0e-9);
+
+            Assert.AreEqual (0.0, actual.EnergyIntegral);
+            Assert.AreEqual (4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
         }
 
         [TestMethod ()]
-        public void RadiusTest_Anomaly_0 ()
+        public void RadiusTest ()
         {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
 
-            orbit.SetAmin (2.0);
-
-            double trueAnomaly = 0.0;
-
-            double expected = 2.0;
+            double trueAnomaly = double.Pi * (2.0 / 3.0);
 
             double actual = orbit.Radius (trueAnomaly);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (8.0, actual, 1.0e-14);
         }
 
         [TestMethod ()]
-        public void RadiusTest_Anomaly_60 ()
+        public void TrueAnomalyTest_CorrectDistance_0 ()
         {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
-
-            double trueAnomaly = double.Pi / 3.0;
-
-            double expected = 8.0 / 3.0;
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void RadiusTest_Anomaly_90 ()
-        {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
-
-            double trueAnomaly = double.Pi / 2.0;
-
-            double expected = 4.0;
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void RadiusTest_Anomaly_120 ()
-        {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
-
-            double trueAnomaly = 2.0 * double.Pi / 3.0;
-
-            double expected = 8.0;
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (expected, actual, 1.0e-14);
-        }
-
-        [TestMethod ()]
-        public void RadiusTest_Anomaly_180 ()
-        {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
-
-            double trueAnomaly = double.Pi;
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.IsTrue (double.IsPositiveInfinity (actual));
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_0 ()
-        {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
 
             double r = 2.0;
 
-            double expected = 0.0;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (0.0, actual);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_60 ()
+        public void TrueAnomalyTest_CorrectDistance_60 ()
         {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
 
             double r = 8.0 / 3.0;
 
-            double expected = double.Pi / 3.0;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual, 1.0e-15);
+            Assert.AreEqual (double.Pi / 3.0, actual, 1.0e-15);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_90 ()
+        public void TrueAnomalyTest_CorrectDistance_90 ()
         {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
 
             double r = 4.0;
 
-            double expected = double.Pi / 2.0;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (double.Pi / 2.0, actual);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_120 ()
+        public void TrueAnomalyTest_CorrectDistance_120 ()
         {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
 
             double r = 8.0;
 
-            double expected = 2.0 * double.Pi / 3.0;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual, 1.0e-15);
+            Assert.AreEqual (double.Pi * 2.0 / 3.0, actual, 1.0e-15);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_180 ()
+        public void TrueAnomalyTest_CorrectDistance_Asymptote ()
         {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
 
             double r = double.PositiveInfinity;
 
-            double expected = double.Pi;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (double.Pi, actual);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_RadiusLessThanAmin ()
+        public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+                                                                     probe:  Data.ProbeZeroMass,
+                                                                     rp:     2.0);
 
-            orbit.SetAmin (2.0);
+            double r = 1.999999999999;
 
-            bool wasException = false;
+            bool flag = false;
 
             try
             {
-                orbit.TrueAnomaly (1.999999999999999);
+                orbit.TrueAnomaly (r);
             }
 
             catch (ArgumentOutOfRangeException)
             {
-                wasException = true;
+                flag = true;
             }
 
-            Assert.IsTrue (wasException);
-        }
-
-        [TestMethod ()]
-        public void MeanAnomalyTest ()
-        {
-            ParabolicOrbit orbit = new ParabolicOrbit (CentralBodyForTests);
-
-            orbit.SetAmin (2.0);
-
-            orbit.T0  = 100.0;
-            double t1 = 108.0;
-
-            double expected = 4.0;
-
-            double actual = orbit.MeanAnomaly (t1);
-
-            Assert.AreEqual (expected, actual);
+            Assert.IsTrue (flag);
         }
     }
 }

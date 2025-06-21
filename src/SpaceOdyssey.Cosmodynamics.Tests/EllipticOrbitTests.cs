@@ -1,499 +1,208 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using System.Reflection;
-
 namespace SpaceOdyssey.Cosmodynamics.Tests
 {
     [TestClass ()]
     public class EllipticOrbitTests
     {
-        private static readonly CentralBody CentralBodyForTests = CentralBody.CreateGParameter (4.0);
-
         [TestMethod ()]
-        public void SetAETest ()
+        public void CreateBySemiMajorAxisTest_E0 ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+            Mass   central = Data.SunSI;
+            Mass   probe   = Data.EarthSI;
+            double a       = 149598261000.0;
+            double e       = 0.0;
 
-            orbit.SetAE (a: 2.0, e: 0.5);
+            EllipticOrbit actual = EllipticOrbit.CreateBySemiMajorAxis (central, probe, a, e);
 
-            Assert.AreEqual (1.5, orbit.P);
-            Assert.AreEqual (0.5, orbit.E);
-            Assert.AreEqual (2.0, orbit.A);
-            Assert.AreEqual (1.0, orbit.Amin);
-            Assert.AreEqual (3.0, orbit.Amax);
-            Assert.AreEqual (0.707106781186547524, orbit.N, 1.0e-15);
-            Assert.AreEqual (8.88576587631673249, orbit.T);
+            Assert.AreEqual (149598261000.0, actual.A);
+            Assert.AreEqual (149598261000.0, actual.P);
+            Assert.AreEqual (0.0, actual.E);
+            Assert.AreEqual (149598261000.0, actual.RPeri);
+            Assert.AreEqual (149598261000.0, actual.RApo);
+
+            Assert.AreEqual (1.0, actual.RangeARp);
+            Assert.AreEqual (1.0, actual.RangeRaA);
+            Assert.AreEqual (1.0, actual.RangeRaRp);
+
+            Assert.AreEqual (1.99097887285211e-7, actual.N, 1.0e-21);
+            Assert.AreEqual (3.15582721286180e+7, actual.T, 1.0e-8);
+            Assert.AreEqual (29784.6977066415, actual.VMean, 1.0e-10);
+            Assert.AreEqual (29784.6977066415, actual.VPeri, 1.0e-10);            
+            Assert.AreEqual (29784.6977066415, actual.VApo, 1.0e-10);
+
+            Assert.AreEqual (-8.87128217476016e+8, actual.EnergyIntegral);
+            Assert.AreEqual ( 4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
         }
 
         [TestMethod ()]
-        public void SetAminAmaxTest ()
+        public void CreateBySemiMajorAxisTest_EEarth ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+            Mass   central = Data.SunSI;
+            Mass   probe   = Data.EarthSI;
+            double a       = 149598261000.0;
+            double e       = 0.01671123;
 
-            orbit.SetAminAmax (amin: 1.0, amax: 3.0);
+            EllipticOrbit actual = EllipticOrbit.CreateBySemiMajorAxis (central, probe, a, e);
 
-            Assert.AreEqual (1.5, orbit.P);
-            Assert.AreEqual (0.5, orbit.E);
-            Assert.AreEqual (2.0, orbit.A);
-            Assert.AreEqual (1.0, orbit.Amin);
-            Assert.AreEqual (3.0, orbit.Amax);
-            Assert.AreEqual (0.707106781186547524, orbit.N, 1.0e-15);
-            Assert.AreEqual (8.88576587631673249, orbit.T);
+            Assert.AreEqual (149598261000.0, actual.A);
+            Assert.AreEqual (149556483410.509, actual.P, 1.0e-3);
+            Assert.AreEqual (0.01671123, actual.E);
+            Assert.AreEqual (147098290052.829, actual.RPeri, 1.0e-3);
+            Assert.AreEqual (152098231947.171, actual.RApo, 1.0e-3);
+
+            Assert.AreEqual (1.01699524138774, actual.RangeARp, 1.0e-14);
+            Assert.AreEqual (1.01671123, actual.RangeRaA);
+            Assert.AreEqual (1.03399048277547, actual.RangeRaRp, 1.0e-14);
+
+            Assert.AreEqual (1.99097887285211e-7, actual.N, 1.0e-21);
+            Assert.AreEqual (3.15582721286180e+7, actual.T, 1.0e-8);
+            Assert.AreEqual (29784.6977066415, actual.VMean, 1.0e-10);
+            Assert.AreEqual (30286.6659418261, actual.VPeri, 1.0e-10);
+            Assert.AreEqual (29291.0490438264, actual.VApo, 1.0e-10);
+
+            Assert.AreEqual (-8.87128217476016e+8, actual.EnergyIntegral);
+            Assert.AreEqual ( 4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
         }
 
         [TestMethod ()]
-        public void RadiusTest_Anomaly_0 ()
+        public void RadiusTest ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI, 
+                                                                       probe:  Data.ProbeZeroMass, 
+                                                                       a: 2.0, 
+                                                                       e: 0.6);
 
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            double trueAnomaly = 0.0;
-
-            double expected = 1.0;
+            double trueAnomaly = double.Pi * (2.0 / 3.0);
 
             double actual = orbit.Radius (trueAnomaly);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (1.8285714285714286, actual);
         }
 
         [TestMethod ()]
-        public void RadiusTest_Anomaly_60 ()
+        public void TrueAnomalyTest_CorrectDistance_0 ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            double trueAnomaly = double.Pi / 3.0;
-
-            double expected = 1.2;
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void RadiusTest_Anomaly_90 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            double trueAnomaly = double.Pi / 2.0;
-
-            double expected = 1.5;
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void RadiusTest_Anomaly_180 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            double trueAnomaly = double.Pi;
-
-            double expected = 3.0;
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void RadiusTest_Anomaly_270 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            double trueAnomaly = 3.0 * double.Pi / 2.0;
-
-            double expected = 1.5;
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (expected, actual, 1.0e-15);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_0 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
 
             double r = 1.0;
 
-            double expected = 0.0;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (0.0, actual);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_60 ()
+        public void TrueAnomalyTest_CorrectDistance_60 ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
 
             double r = 1.2;
 
-            double expected = double.Pi / 3.0;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual, 1.0e-15);
+            Assert.AreEqual (double.Pi / 3.0, actual, 1.0e-15);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_90 ()
+        public void TrueAnomalyTest_CorrectDistance_90 ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
 
             double r = 1.5;
 
-            double expected = double.Pi / 2.0;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (double.Pi / 2.0, actual);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_Anomaly_180 ()
+        public void TrueAnomalyTest_CorrectDistance_120 ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
 
-            orbit.SetAE (a: 2.0, e: 0.5);
+            double r = 2.0;
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (double.Pi * 2.0 / 3.0, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_CorrectDistance_180 ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
 
             double r = 3.0;
 
-            double expected = double.Pi;
-
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (double.Pi, actual);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_RadiusLessThanAmin ()
+        public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
 
-            orbit.SetAE (a: 2.0, e: 0.5);
+            double r = 0.999999999999;
 
-            bool wasException = false;
+            bool flag = false;
 
             try
             {
-                orbit.TrueAnomaly (0.999999999999999);
+                orbit.TrueAnomaly (r);
             }
 
             catch (ArgumentOutOfRangeException)
             {
-                wasException = true;
+                flag = true;
             }
 
-            Assert.IsTrue (wasException);
+            Assert.IsTrue (flag);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_RadiusGreaterThanAmax ()
+        public void TrueAnomalyTest_IncorrectDistanceGteater ()
         {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.EarthSI,
+                                                                       probe:  Data.ProbeZeroMass,
+                                                                       a: 2.0,
+                                                                       e: 0.5);
 
-            orbit.SetAE (a: 2.0, e: 0.5);
+            double r = 3.000000000001;
 
-            bool wasException = false;
+            bool flag = false;
 
             try
             {
-                orbit.TrueAnomaly (3.000000000000001);
+                orbit.TrueAnomaly (r);
             }
 
             catch (ArgumentOutOfRangeException)
             {
-                wasException = true;
+                flag = true;
             }
 
-            Assert.IsTrue (wasException);
-        }
-
-        [TestMethod ()]
-        public void MeanAnomalyTest ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            orbit.T0  = 100.0;
-            double t1 = 108.0;
-
-            double expected = 5.65685424949238;
-
-            double actual = orbit.MeanAnomaly (t1);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        // TODO: написать тесты для e = 0.0, e = 0.5 и e = 0.99 для 4 ключевых точек, для произвольных точек в 4 квадрантых и для 2 больших M -
-        // положительного и отрицательного - за пределами основного периода, чтобы посмотреть, как отрабатыавет IEEE754Remainder.
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_M0 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = 0.0;
-
-            double expected = 0.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_MQ1 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = double.Pi / 6.0;
-
-            double expected = double.Pi / 6.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_M90 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = double.Pi / 2.0;
-
-            double expected = double.Pi / 2.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_MQ2 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = 2.0 * double.Pi / 3.0;
-
-            double expected = 2.0 * double.Pi / 3.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_M180 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = double.Pi;
-
-            double expected = double.Pi;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_MQ3 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = 7.0 * double.Pi / 6.0;
-
-            double expected = -5.0 * double.Pi / 6.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_M270 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = 3.0 * double.Pi / 2.0;
-
-            double expected = -double.Pi / 2.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_MQ4 ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = 5.0 * double.Pi / 3.0;
-
-            double expected = -double.Pi / 3.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual, 1.0e-15);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_MBigPositive ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = 25.0 * double.Pi / 6.0;
-
-            double expected = double.Pi / 6.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual, 1.0e-13);
-        }
-
-        [TestMethod ()]
-        public void SolveKeplerEquationTest_E00_MBigNegative ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.0);
-
-            double M = -29.0 * double.Pi / 6.0;
-
-            double expected = -5.0 * double.Pi / 6.0;
-
-            double actual = orbit.SolveKeplerEquation (M);
-
-            Assert.AreEqual (expected, actual, 1.0e-15);
-        }
-
-
-
-
-        [TestMethod ()]
-        public void EllipticKeplerEquationTest ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            object [] parameters = { double.Pi / 6.0, new double [] { 0.5, double.Pi / 4.0 } };
-
-            double expected = -0.51179938779914944;
-
-            object result = (typeof (EllipticOrbit)).GetMethod ("EllipticKeplerEquation",
-                             BindingFlags.NonPublic | BindingFlags.Static).Invoke (orbit, parameters);
-            double actual = (double)result;
-
-            Assert.AreEqual (expected, actual);
-        }
-
-        [TestMethod ()]
-        public void EllipticKeplerDerivativeTest ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            object [] parameters = { double.Pi / 6.0, new double [] { 0.5 } };
-
-            double expected = 0.56698729810778068;
-
-            object result = (typeof (EllipticOrbit)).GetMethod ("EllipticKeplerDerivative",
-                             BindingFlags.NonPublic | BindingFlags.Static).Invoke (orbit, parameters);
-            double actual = (double)result;
-
-            Assert.AreEqual (expected, actual, 1.0e-15);
-        }
-
-        [TestMethod ()]
-        public void EllipticPlanarCartesianCoordinatesTest ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            object [] parameters = { 0.5, 2.0, 0.86602540378443865, 0.5, 0.86602540378443865 };
-
-            double expectedX = 0.73205080756887729;
-            double expectedY = 0.86602540378443865;
-
-            object result = (typeof (EllipticOrbit)).GetMethod ("EllipticPlanarCartesianCoordinates",
-                             BindingFlags.NonPublic | BindingFlags.Static).Invoke (orbit, parameters);
-            string output = result.ToString ();
-
-            string [] actual = output.Split (", ");
-            actual [0] = actual [0].Remove (0, 1);
-            actual [1] = actual [1].Remove (actual [1].Length - 1);
-
-            Assert.AreEqual (expectedX, double.Parse (actual [0]), 1.0e-15);
-            Assert.AreEqual (expectedY, double.Parse (actual [1]), 1.0e-15);
-        }
-
-        [TestMethod ()]
-        public void EllipticPlanarVelocityComponentsTest ()
-        {
-            EllipticOrbit orbit = new EllipticOrbit (CentralBodyForTests);
-
-            orbit.SetAE (a: 2.0, e: 0.5);
-
-            object [] parameters = { 0.5, 0.86602540378443865, 1.41421356237309505, 0.5, 0.86602540378443865 };
-
-            double expectedVx = -1.24712984496547051;
-            double expectedVy =  1.87069476744820576;
-
-            object result = (typeof (EllipticOrbit)).GetMethod ("EllipticPlanarVelocityComponents",
-                             BindingFlags.NonPublic | BindingFlags.Static).Invoke (orbit, parameters);
-            string output = result.ToString ();
-
-            string [] actual = output.Split (", ");
-            actual [0] = actual [0].Remove (0, 1);
-            actual [1] = actual [1].Remove (actual [1].Length - 1); 
-
-            Assert.AreEqual (expectedVx, double.Parse (actual [0]), 1.0e-15);
-            Assert.AreEqual (expectedVy, double.Parse (actual [1]), 1.0e-15);
+            Assert.IsTrue (flag);
         }
     }
 }

@@ -6,9 +6,4 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Archimedes\Archimedes.csproj" />
-    <ProjectReference Include="..\SpaceOdyssey.Core\SpaceOdyssey.Core.csproj" />
-  </ItemGroup>
-
 </Project>

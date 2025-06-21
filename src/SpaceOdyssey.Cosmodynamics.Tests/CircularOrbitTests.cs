@@ -5,119 +5,149 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     [TestClass ()]
     public class CircularOrbitTests
     {
-        private static readonly CentralBody CentralBodyForTests = CentralBody.CreateGParameter (4.0); 
-
         [TestMethod ()]
-        public void SetATest ()
+        public void RangeARpTest ()
         {
-            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+            Mass   central = Data.EarthSI;
+            Mass   probe   = Data.ProbeZeroMass;
+            double a       = 6471000.0;
 
-            orbit.SetA (2.0);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
 
-            Assert.AreEqual (2.0, orbit.P);
-            Assert.AreEqual (0.0, orbit.E);
-            Assert.AreEqual (2.0, orbit.A);
-            Assert.AreEqual (2.0, orbit.Amin);
-            Assert.AreEqual (2.0, orbit.Amax);
-            Assert.AreEqual (0.707106781186547524, orbit.N, 1.0e-15);
-            Assert.AreEqual (8.88576587631673249, orbit.T);
+            Assert.AreEqual (1.0, actual.RangeARp);
         }
 
         [TestMethod ()]
-        public void SetMeanMotionTest ()
+        public void RangeRaATest ()
         {
-            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+            Mass   central = Data.EarthSI;
+            Mass   probe   = Data.ProbeZeroMass;
+            double a       = 6471000.0;
 
-            orbit.SetMeanMotion (0.707106781186547524);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
 
-            Assert.AreEqual (2.0, orbit.P, 1.0e-15);
-            Assert.AreEqual (0.0, orbit.E);
-            Assert.AreEqual (2.0, orbit.A, 1.0e-15);
-            Assert.AreEqual (2.0, orbit.Amin, 1.0e-15);
-            Assert.AreEqual (2.0, orbit.Amax, 1.0e-15);
-            Assert.AreEqual (0.707106781186547524, orbit.N);
-            Assert.AreEqual (8.88576587631673249, orbit.T);
+            Assert.AreEqual (1.0, actual.RangeRaA);
         }
 
         [TestMethod ()]
-        public void SetTTest ()
+        public void RangeRaRpTest ()
         {
-            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+            Mass   central = Data.EarthSI;
+            Mass   probe   = Data.ProbeZeroMass;
+            double a       = 6471000.0;
 
-            orbit.SetT (8.88576587631673249);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
 
-            Assert.AreEqual (2.0, orbit.P);
-            Assert.AreEqual (0.0, orbit.E);
-            Assert.AreEqual (2.0, orbit.A);
-            Assert.AreEqual (2.0, orbit.Amin);
-            Assert.AreEqual (2.0, orbit.Amax);
-            Assert.AreEqual (0.707106781186547524, orbit.N);
-            Assert.AreEqual (8.88576587631673249, orbit.T);
+            Assert.AreEqual (1.0, actual.RangeRaRp);
+        }
+
+        [TestMethod ()]
+        public void CreateBySemiMajorAxisTest ()
+        {
+            Mass   central = Data.EarthSI;
+            Mass   probe   = Data.ProbeZeroMass;
+            double a       = 6471000.0;
+
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+
+            Assert.AreEqual (6471000.0, actual.A);
+            Assert.AreEqual (6471000.0, actual.P);
+            Assert.AreEqual (0.0, actual.E);
+            Assert.AreEqual (6471000.0, actual.RPeri);
+            Assert.AreEqual (6471000.0, actual.RApo);
+
+            Assert.AreEqual (1.21286311340135e-3, actual.N, 1.0e-17);
+            Assert.AreEqual (5180.45708353602, actual.T, 1.0e-11);
+            Assert.AreEqual (7848.43720682015, actual.VMean, 1.0e-11);
+            Assert.AreEqual (7848.43720682015, actual.VPeri, 1.0e-11);
+            Assert.AreEqual (7848.43720682015, actual.VApo, 1.0e-11);
+
+            Assert.AreEqual (-6.15979665893989e+7, actual.EnergyIntegral, 1.0e-7);
+            Assert.AreEqual ( 5.07872371653332e+10, actual.ArealVelocity, 1.0e-4);
         }
 
         [TestMethod ()]
         public void RadiusTest ()
         {
-            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+            Mass   central = Data.EarthSI;
+            Mass   probe   = Data.ProbeZeroMass;
+            double a       = 6471000.0;
 
-            orbit.SetA (2.0);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
 
-            double expected = 2.0;
+            double trueAnomaly = 1.42;
 
-            double actual = orbit.Radius (DateTime.Now.Ticks);
+            double actual = orbit.Radius (trueAnomaly);
 
-            Assert.AreEqual (expected, actual);
+            Assert.AreEqual (6471000.0, actual);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_EqualToSemiMajor ()
+        public void TrueAnomalyTest_CorrectDistance ()
         {
-            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+            Mass   central = Data.EarthSI;
+            Mass   probe   = Data.ProbeZeroMass;
+            double a       = 6471000.0;
 
-            orbit.SetA (2.0);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
 
-            double actual = orbit.TrueAnomaly (2.0);
+            double r = 6471000.0;
+
+            double actual = orbit.TrueAnomaly (r);
 
             Assert.IsTrue (double.IsNaN (actual));
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_NotEqualToSemiMajor ()
+        public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
-            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+            Mass   central = Data.EarthSI;
+            Mass   probe   = Data.ProbeZeroMass;
+            double a       = 6471000.0;
 
-            orbit.SetA (2.0);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
 
-            bool wasException = false;
+            double r = 6470999.999;
+
+            bool flag = false;
 
             try
             {
-                orbit.TrueAnomaly (2.000000000000001);
+                orbit.TrueAnomaly (r);
             }
 
             catch (ArgumentOutOfRangeException)
             {
-                wasException = true;
+                flag = true;
             }
 
-            Assert.IsTrue (wasException);
+            Assert.IsTrue (flag);
         }
 
         [TestMethod ()]
-        public void MeanAnomalyTest ()
+        public void TrueAnomalyTest_IncorrectDistanceGreater ()
         {
-            CircularOrbit orbit = new CircularOrbit (CentralBodyForTests);
+            Mass   central = Data.EarthSI;
+            Mass   probe   = Data.ProbeZeroMass;
+            double a       = 6471000.0;
 
-            orbit.SetT (8.88576587631673249);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
 
-            orbit.T0  = 100.0;
-            double t1 = 108.0;
+            double r = 6471000.001;
 
-            double expected = 5.65685424949238;
+            bool flag = false;
 
-            double actual = orbit.MeanAnomaly (t1);
+            try
+            {
+                orbit.TrueAnomaly (r);
+            }
 
-            Assert.AreEqual (expected, actual, 1.0e-15);
+            catch (ArgumentOutOfRangeException)
+            {
+                flag = true;
+            }
+
+            Assert.IsTrue (flag);
         }
     }
 }

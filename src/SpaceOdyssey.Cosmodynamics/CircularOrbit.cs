@@ -5,75 +5,80 @@
     /// </summary>
     public class CircularOrbit : EllipticOrbit
     {
-        private const double CircularEccentricity = 0.0;
-
-        public CircularOrbit (CentralBody centralBody) : base (centralBody, CircularEccentricity)
+        /// <summary>
+        /// Отношение A / Rp (для круговой орбиты равно 1).
+        /// </summary>
+        public override double RangeARp
         {
+            get => 1.0;
         }
 
         /// <summary>
-        /// Устанавливает параметры круговой орбиты через её радиус.
+        /// Отношение Ra / A (для круговой орбиты равно 1).
         /// </summary>
-        /// <param name="a">Радиус круговой орбиты – должен быть положительным.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="a"/> меньше или равно 0.</exception>
-        public void SetA (double a)
+        public override double RangeRaA
         {
-            CheckA (a);
-
-            _p    = a;
-            _amin = a;
-            _a    = a;
-            _amax = a;
-            
-            ComputeAuxiliaries ();
-
-            ComputeNT ();
+            get => 1.0;
         }
 
         /// <summary>
-        /// Устанавливает параметры круговой орбиты через среднее суточное движение.
+        /// Отношение Ra / Rp (для круговой орбиты равно 1).
         /// </summary>
-        /// <param name="n">Среднее суточное движение – должно быть положительным.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="n"/> меньше или равно 0.</exception>
-        public void SetMeanMotion (double n)
+        public override double RangeRaRp
         {
-            CheckN (n);
+            get => 1.0;
+        }
 
-            _n = n;
+        #region Constructors
 
-            ComputeAT ();
+        private CircularOrbit (Mass center, Mass probe) : base (center, probe)
+        {
+        }
 
-            _p    = _a;
-            _amin = _a;
-            _amax = _a;
+        #endregion
 
-            ComputeAuxiliaries ();
+        /// <summary>
+        /// Инициализация круговой орбиты по большой полуоси (радиусу) a.
+        /// </summary>
+        /// <param name="a">Должно быть положительным, иначе сгенерируется исключение.</param>
+        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a)
+        {
+            Checkers.CheckA (a);
+
+            CircularOrbit orbit = new CircularOrbit (center, probe);
+
+            orbit._a = a;
+
+            orbit.ComputeOrbit ();
+
+            return orbit;
         }
 
         /// <summary>
-        /// Устанавливает параметры круговой орбиты через период орбитального обращения.
+        /// Для круговой орбиты все геометрические параметры численно равны большой полуоси (радиусу), а эксцентриситет = 0.
         /// </summary>
-        /// <param name="T">Период обращения – должен быть положительным.</param>
-        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="T"/> меньше или равно 0.</exception>
-        public void SetT (double T)
+        protected override void ComputeShape ()
         {
-            CheckT (T);
-
-            _T = T;
-
-            ComputeAN ();
-
-            _p    = _a;
-            _amin = _a;
-            _amax = _a;
-
-            ComputeAuxiliaries ();
+            _e  = 0.0;
+            _p  = _a;
+            _rp = _a;
+            _ra = _a;
         }
-        
+
+        /// <summary>
+        /// На круговой орбите скорость не изменяется.
+        /// </summary>
+        protected override void ComputeVelocityPA ()
+        {
+            _vp = _muasqrt;
+            _va = _muasqrt;
+        }
+
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
         /// </summary>
-        /// <remarks>В случае круговой орбиты расстояние для всех значений истинной аномалии постоянно и равно радиусу орбиты.</remarks>
+        /// <remarks>В случае круговой орбиты одно и то же для всех значений истинной аномалии и равно большой полуоси (радиусу) 
+        /// орбиты.</remarks>
         public override double Radius (double trueAnomaly)
         {
             return _a;
@@ -82,46 +87,14 @@
         /// <summary>
         /// Истинная аномалия при расстоянии до центра тяготения r.
         /// </summary>
-        /// <param name="r">Должно быть строго равно радиусу данной орбиты.</param>
-        /// <returns>Так как в случае круговой орбиты расстояние одинаково для всех значений истинной аномалии, определить по 
-        /// расстоянию истинную аномалию нельзя. Поэтому данный метод работает следующим образом:
-        /// – если r = _a (радиусу орбиты), возвращается NaN
-        /// – если r ≠ _a, генерируется исключение, так как такого значения для данной орбиты быть не может
-        /// </returns>
-        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <paramref name="r"/> неравно радиусу данной орбиты.</exception>
+        /// <param name="r">Так как для круговой орбиты расстояние до центра остаётся неизменным при изменении истинной аномалии, по её 
+        /// значение определить расстояние нельзя. Поэтому в том случае, если r = a (большой полуоси орбиты), метод возвращает NaN. 
+        /// Если же r ≠ a, генерируется исключение, так как для данной круговой орбиты такое расстояние некорректно.</param>
         public override double TrueAnomaly (double r)
         {
             if (r == _a) return double.NaN;
 
-            else throw new ArgumentOutOfRangeException (nameof (r));
-        }
-
-        public override OrbitalPosition ComputePosition (double t)
-        {
-            double M = MeanAnomaly (t);
-            double MModulo = double.Ieee754Remainder (M, double.Tau);
-
-            (double sinV, double cosV) = double.SinCos (MModulo);
-            (double x,    double y)    = CircularPlanarCartesianCoordinates (_a, sinV, cosV);
-            (double vx,   double vy)   = CircularPlanarVelocityComponents (_u, sinV, cosV);
-
-            return new OrbitalPosition (x, y, _a, MModulo, vx, vy, M, MModulo);
-        }
-
-        private static (double x, double y) CircularPlanarCartesianCoordinates (double a, double sinV, double cosV)
-        {
-            double x = a * cosV;
-            double y = a * sinV;
-
-            return (x, y);
-        }
-
-        private static (double vx, double vy) CircularPlanarVelocityComponents (double u, double sinV, double cosV)
-        {
-            double vx = -u * sinV;
-            double vy =  u * cosV;
-
-            return (vx, vy);
+            else throw new ArgumentOutOfRangeException ();
         }
     }
 }

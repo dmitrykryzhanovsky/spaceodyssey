@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Основные формулы для вычислений.
@@ -88,6 +90,47 @@
         public static double ArealVelocityParabola (double mu, double rp)
         {
             return double.Sqrt (2.0 * mu * rp);
+        }
+
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForCircle (double anomaly, params double [] param)
+        {
+            (double sin, double cos) = double.SinCos (anomaly);
+
+            double x = param [0] * cos;
+            double y = param [0] * sin;
+            double r = param [0];
+            double trueAnomaly = anomaly;
+
+            return (x, y, r, trueAnomaly);
+        }
+
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForEllipse (double anomaly, params double [] param)
+        {
+            (double sin, double cos) = double.SinCos (anomaly);
+
+            double x = param [0] * (cos - param [1]);
+            double y = param [0] * param [2] * sin;
+            (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
+
+            return (x, y, r, trueAnomaly);
+        }
+
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double anomaly, params double [] param)
+        {
+            double x = param [0] * (param [1] - double.Cosh (anomaly));
+            double y = param [0] * param [2] * double.Sinh (anomaly);
+            (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
+
+            return (x, y, r, trueAnomaly);
+        }
+
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForParabola (double anomaly, params double [] param)
+        {
+            double x = param [0] * (1 - anomaly * anomaly);
+            double y = 2.0 * param [0] * anomaly;
+            (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
+
+            return (x, y, r, trueAnomaly);
         }
     }
 }

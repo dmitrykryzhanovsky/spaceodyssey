@@ -109,6 +109,15 @@
         /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
         public abstract double TrueAnomaly (double r);
 
+        public void ComputePosition (double t)
+        {
+            // Находим M
+            // Находим E
+            // Определяем position
+            // Определяем velocity
+            // Добавляем M, E, t
+        }
+
         /// <summary>
         /// Чекеры для проверки значений входных параметров орбит на корректность.
         /// </summary>

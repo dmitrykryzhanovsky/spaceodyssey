@@ -114,7 +114,7 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double sin, double cos,
-            params double [] param)
+            double anomaly, params double [] param)
         {
             double x = param [0] * (param [1] - cos);
             double y = param [0] * param [2] * sin;
@@ -133,8 +133,7 @@ namespace SpaceOdyssey.Cosmodynamics
             return (x, y, r, trueAnomaly);
         }
 
-        public static (double vx, double vy) ComputePlanarVelocityForCircle (double sin, double cos,
-            double anomaly, params double [] param)
+        public static (double vx, double vy) ComputePlanarVelocityForCircle (double sin, double cos, params double [] param)
         {
             double vx = -param [0] * sin;
             double vy =  param [0] * cos;
@@ -142,8 +141,7 @@ namespace SpaceOdyssey.Cosmodynamics
             return (vx, vy);
         }
 
-        public static (double vx, double vy) ComputePlanarVelocityForEllipse (double sin, double cos,
-            double anomaly, params double [] param)
+        public static (double vx, double vy) ComputePlanarVelocityForEllipse (double sin, double cos, params double [] param)
         {
             double denominator = 1.0 - param [1] * cos;
 
@@ -153,13 +151,25 @@ namespace SpaceOdyssey.Cosmodynamics
             return (vx, vy);
         }
 
-        public static (double vx, double vy) ComputePlanarVelocityForHyperbola (double sin, double cos,
-            double anomaly, params double [] param)
+        public static (double vx, double vy) ComputePlanarVelocityForHyperbola (double sin, double cos, params double [] param)
         {
             double denominator = param [1] * cos - 1.0;
 
             double vx = -param [0] * sin / denominator;
             double vy =  param [0] * param [2] * cos / denominator;
+
+            return (vx, vy);
+        }
+
+        public static (double vx, double vy) ComputePlanarVelocityForParabola (double r, double y, params double [] param)
+        {
+            double beta = double.Atan2 (-y, param [1]);
+            double v    = V2Escape (param [0], r);
+
+            (double sin, double cos) = double.SinCos (beta);
+
+            double vx = v * cos;
+            double vy = v * sin;
 
             return (vx, vy);
         }

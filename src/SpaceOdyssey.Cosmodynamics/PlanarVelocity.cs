@@ -31,10 +31,10 @@ namespace SpaceOdyssey.Cosmodynamics
             _v = new Vector2 (vx, vy);
         }
 
-        public static PlanarVelocity ComputePlanarVelocity (ComputePlanarVelocityDelegate method, double sin, double cos,
-            double anomaly, params double [] param)
+        public static PlanarVelocity ComputePlanarVelocity (ComputePlanarVelocityDelegate method, double sin, double cos, 
+            params double [] param)
         {
-            (double vx, double vy) = method (sin, cos, anomaly, param);
+            (double vx, double vy) = method (sin, cos, param);
 
             return new PlanarVelocity (vx, vy);
         }

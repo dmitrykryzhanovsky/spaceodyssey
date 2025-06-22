@@ -25,5 +25,10 @@
             _x [0] = x;
             _x [1] = y;
         }
+
+        public double GetLength ()
+        {
+            return double.Hypot (_x [0], _x [1]);
+        }
     }
 }

@@ -92,10 +92,9 @@ namespace SpaceOdyssey.Cosmodynamics
             return double.Sqrt (2.0 * mu * rp);
         }
 
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForCircle (double anomaly, params double [] param)
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForCircle (double sin, double cos, 
+            double anomaly, params double [] param)
         {
-            (double sin, double cos) = double.SinCos (anomaly);
-
             double x = param [0] * cos;
             double y = param [0] * sin;
             double r = param [0];
@@ -104,10 +103,9 @@ namespace SpaceOdyssey.Cosmodynamics
             return (x, y, r, trueAnomaly);
         }
 
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForEllipse (double anomaly, params double [] param)
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForEllipse (double sin, double cos,
+            double anomaly, params double [] param)
         {
-            (double sin, double cos) = double.SinCos (anomaly);
-
             double x = param [0] * (cos - param [1]);
             double y = param [0] * param [2] * sin;
             (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
@@ -115,22 +113,55 @@ namespace SpaceOdyssey.Cosmodynamics
             return (x, y, r, trueAnomaly);
         }
 
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double anomaly, params double [] param)
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double sin, double cos,
+            params double [] param)
         {
-            double x = param [0] * (param [1] - double.Cosh (anomaly));
-            double y = param [0] * param [2] * double.Sinh (anomaly);
+            double x = param [0] * (param [1] - cos);
+            double y = param [0] * param [2] * sin;
             (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
 
             return (x, y, r, trueAnomaly);
         }
 
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForParabola (double anomaly, params double [] param)
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForParabola (double sin, double cos,
+            double anomaly, params double [] param)
         {
             double x = param [0] * (1 - anomaly * anomaly);
             double y = 2.0 * param [0] * anomaly;
             (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
 
             return (x, y, r, trueAnomaly);
+        }
+
+        public static (double vx, double vy) ComputePlanarVelocityForCircle (double sin, double cos,
+            double anomaly, params double [] param)
+        {
+            double vx = -param [0] * sin;
+            double vy =  param [0] * cos;
+
+            return (vx, vy);
+        }
+
+        public static (double vx, double vy) ComputePlanarVelocityForEllipse (double sin, double cos,
+            double anomaly, params double [] param)
+        {
+            double denominator = 1.0 - param [1] * cos;
+
+            double vx = -param [0] * sin / denominator;
+            double vy =  param [0] * param [2] * cos / denominator;
+
+            return (vx, vy);
+        }
+
+        public static (double vx, double vy) ComputePlanarVelocityForHyperbola (double sin, double cos,
+            double anomaly, params double [] param)
+        {
+            double denominator = param [1] * cos - 1.0;
+
+            double vx = -param [0] * sin / denominator;
+            double vy =  param [0] * param [2] * cos / denominator;
+
+            return (vx, vy);
         }
     }
 }

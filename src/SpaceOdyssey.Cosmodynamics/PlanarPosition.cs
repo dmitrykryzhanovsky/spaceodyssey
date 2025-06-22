@@ -43,9 +43,10 @@ namespace SpaceOdyssey.Cosmodynamics
             _p = new Polar2 (r, trueAnomaly);
         }
 
-        public static PlanarPosition ComputePlanarPosition (ComputePlanarPositionDelegate method, double anomaly, params double [] param)
+        public static PlanarPosition ComputePlanarPosition (ComputePlanarPositionDelegate method, double sin, double cos, 
+            double anomaly, params double [] param)
         {
-            (double x, double y, double r, double trueAnomaly) = method (anomaly, param);
+            (double x, double y, double r, double trueAnomaly) = method (sin, cos, anomaly, param);
 
             return new PlanarPosition (x, y, r, trueAnomaly);
         }

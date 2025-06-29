@@ -92,6 +92,15 @@ namespace SpaceOdyssey.Cosmodynamics
             return double.Sqrt (2.0 * mu * rp);
         }
 
+        /// <summary>
+        /// Вычисление положения на круговой орбите.
+        /// </summary>
+        /// <param name="sin">Синус средней / истинной аномалии.</param>
+        /// <param name="cos">Косинус средней / истинной аномалии.</param>
+        /// <param name="anomaly">Средняя / истинная аномалия.</param>
+        /// <param name="param"><list type="number">
+        /// – [0] – радиус круговой орбиты
+        /// </list></param>
         public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForCircle (double sin, double cos, 
             double anomaly, params double [] param)
         {
@@ -103,6 +112,17 @@ namespace SpaceOdyssey.Cosmodynamics
             return (x, y, r, trueAnomaly);
         }
 
+        /// <summary>
+        /// Вычисление положения на эллиптической орбите.
+        /// </summary>
+        /// <param name="sin">Синус эксцентрической аномалии E.</param>
+        /// <param name="cos">Косинус эксцентрической аномалии E.</param>
+        /// <param name="anomaly">В данном методе в вычислениях не участвует.</param>
+        /// <param name="param"><list type="number">
+        /// – [0] – большая полуось орбиты a
+        /// – [1] – эксцентриситет орбиты e
+        /// – [2] – корень из 1 – e^2
+        /// </list></param>
         public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForEllipse (double sin, double cos,
             double anomaly, params double [] param)
         {
@@ -113,16 +133,36 @@ namespace SpaceOdyssey.Cosmodynamics
             return (x, y, r, trueAnomaly);
         }
 
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double sin, double cos,
+        /// <summary>
+        /// Вычисление положения на гиперболической орбите.
+        /// </summary>
+        /// <param name="sh">Гиперболический синус эксцентрической аномалии H.</param>
+        /// <param name="ch">Гиперболический косинус эксцентрической аномалии H.</param>
+        /// <param name="anomaly">В данном методе в вычислениях не участвует.</param>
+        /// <param name="param"><list type="number">
+        /// – [0] – модуль большой полуоси орбиты |a|
+        /// – [1] – эксцентриситет орбиты e
+        /// – [2] – корень из e^2 – 1
+        /// </list></param>
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double sh, double ch,
             double anomaly, params double [] param)
         {
-            double x = param [0] * (param [1] - cos);
-            double y = param [0] * param [2] * sin;
+            double x = param [0] * (param [1] - ch);
+            double y = param [0] * param [2] * sh;
             (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
 
             return (x, y, r, trueAnomaly);
         }
 
+        /// <summary>
+        /// Вычисление положения на параболической орбите.
+        /// </summary>
+        /// <param name="sin">В данном методе в вычислениях не участвует.</param>
+        /// <param name="cos">В данном методе в вычислениях не участвует.</param>
+        /// <param name="anomaly">tan (ν/2), где ν – истинная аномалия.</param>
+        /// <param name="param"><list type="number">
+        /// – [0] – расстояние в перицентре rp
+        /// </list></param>
         public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForParabola (double sin, double cos,
             double anomaly, params double [] param)
         {

@@ -222,5 +222,77 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             Assert.AreEqual (expected, actual);
         }
+
+        [TestMethod ()]
+        public void ComputePlanarPositionForCircleTest ()
+        {
+            double    sin     = 0.5;
+            double    cos     = 0.5 * double.Sqrt (3.0);
+            double    anomaly = double.Pi / 6.0;
+            double [] param   = new double [] { 2.0 };
+
+            (double x, double y, double r, double trueAnomaly) expected = (1.7320508075688773, 1.0, 2.0, 0.52359877559829887);
+
+            (double x, double y, double r, double trueAnomaly) actual = Formulae.ComputePlanarPositionForCircle (sin, cos, anomaly, param);
+
+            Assert.AreEqual (expected.x, actual.x);
+            Assert.AreEqual (expected.y, actual.y);
+            Assert.AreEqual (expected.r, actual.r);
+            Assert.AreEqual (expected.trueAnomaly, actual.trueAnomaly);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarPositionForEllipseTest ()
+        {
+            double    sin     = 0.5;
+            double    cos     = 0.5 * double.Sqrt (3.0);
+            double    anomaly = double.Pi / 6.0;
+            double [] param   = new double [] { 2.0, 0.6, 0.8 };
+
+            (double x, double y, double r, double trueAnomaly) expected = (0.53205080756887729, 0.8, 0.96076951545867362, 0.98390442268361651);
+
+            (double x, double y, double r, double trueAnomaly) actual = Formulae.ComputePlanarPositionForEllipse (sin, cos, anomaly, param);
+
+            Assert.AreEqual (expected.x, actual.x);
+            Assert.AreEqual (expected.y, actual.y);
+            Assert.AreEqual (expected.r, actual.r);
+            Assert.AreEqual (expected.trueAnomaly, actual.trueAnomaly);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarPositionForHyperbolaTest ()
+        {
+            double    sh      = 0.52109530549374736;
+            double    ch      = 1.12762596520638079;
+            double    anomaly = 0.5;
+            double [] param   = new double [] { 2.0, 1.4, 0.97979589711327124 };
+
+            (double x, double y, double r, double trueAnomaly) expected = (0.54474806958723843, 1.02113408465552067, 1.1573527025778662, 1.08072980780868621);
+
+            (double x, double y, double r, double trueAnomaly) actual = Formulae.ComputePlanarPositionForHyperbola (sh, ch, anomaly, param);
+
+            Assert.AreEqual (expected.x, actual.x);
+            Assert.AreEqual (expected.y, actual.y);
+            Assert.AreEqual (expected.r, actual.r, 1.0e-15);
+            Assert.AreEqual (expected.trueAnomaly, actual.trueAnomaly);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarPositionForParabolaTest ()
+        {
+            double    sin     = 0.5;
+            double    cos     = 0.5 * double.Sqrt (3.0);
+            double    anomaly = double.Sqrt (3.0) / 3.0;
+            double [] param   = new double [] { 2.0 };
+
+            (double x, double y, double r, double trueAnomaly) expected = (1.3333333333333333, 2.3094010767585031, 2.6666666666666667, 1.0471975511965977);
+
+            (double x, double y, double r, double trueAnomaly) actual = Formulae.ComputePlanarPositionForParabola (sin, cos, anomaly, param);
+
+            Assert.AreEqual (expected.x, actual.x, 1.0e-15);
+            Assert.AreEqual (expected.y, actual.y);
+            Assert.AreEqual (expected.r, actual.r);
+            Assert.AreEqual (expected.trueAnomaly, actual.trueAnomaly);
+        }
     }
 }

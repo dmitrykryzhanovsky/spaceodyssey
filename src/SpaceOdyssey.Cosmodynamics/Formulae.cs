@@ -173,6 +173,14 @@ namespace SpaceOdyssey.Cosmodynamics
             return (x, y, r, trueAnomaly);
         }
 
+        /// <summary>
+        /// Вычисление скорости на круговой орбите.
+        /// </summary>
+        /// <param name="sin">Синус средней / истинной аномалии.</param>
+        /// <param name="cos">Косинус средней / истинной аномалии.</param>
+        /// <param name="param"><list type="number">
+        /// – [0] – корень из μ/a
+        /// </list></param>
         public static (double vx, double vy) ComputePlanarVelocityForCircle (double sin, double cos, params double [] param)
         {
             double vx = -param [0] * sin;
@@ -181,6 +189,16 @@ namespace SpaceOdyssey.Cosmodynamics
             return (vx, vy);
         }
 
+        /// <summary>
+        /// Вычисление скорости на эллиптической орбите.
+        /// </summary>
+        /// <param name="sin">Синус эксцентрической аномалии E.</param>
+        /// <param name="cos">Косинус эксцентрической аномалии E.</param>
+        /// <param name="param"><list type="number">
+        /// – [0] – корень из μ/a
+        /// – [1] – эксцентриситет орбиты e
+        /// – [2] – корень из 1 – e^2
+        /// </list></param>
         public static (double vx, double vy) ComputePlanarVelocityForEllipse (double sin, double cos, params double [] param)
         {
             double denominator = 1.0 - param [1] * cos;

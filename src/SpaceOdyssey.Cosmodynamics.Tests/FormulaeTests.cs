@@ -294,5 +294,35 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             Assert.AreEqual (expected.r, actual.r);
             Assert.AreEqual (expected.trueAnomaly, actual.trueAnomaly);
         }
+
+        [TestMethod ()]
+        public void ComputePlanarVelocityForCircleTest ()
+        {
+            double    sin   = 0.5 * double.Sqrt (3.0);
+            double    cos   = 0.5;
+            double [] param = new double [] { 8.8712555300358739e+8 };
+
+            (double vx, double vy) expected = (-7.682732652474252e+8, 4.43562776501793695e+8);
+
+            (double vx, double vy) actual = Formulae.ComputePlanarVelocityForCircle (sin, cos, param);
+
+            Assert.AreEqual (expected.vx, actual.vx, 1.0e-6);
+            Assert.AreEqual (expected.vy, actual.vy);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarVelocityForEllipseTest ()
+        {
+            double sin = 0.5 * double.Sqrt (3.0);
+            double cos = 0.5;
+            double [] param = new double [] { 8.8712555300358739e+8, 0.6, 0.8 };
+
+            (double vx, double vy) expected = (-1.09753323606775029e+9, 5.0692888743062137e+8);
+
+            (double vx, double vy) actual = Formulae.ComputePlanarVelocityForEllipse (sin, cos, param);
+
+            Assert.AreEqual (expected.vx, actual.vx);
+            Assert.AreEqual (expected.vy, actual.vy, 1.0e-7);
+        }
     }
 }

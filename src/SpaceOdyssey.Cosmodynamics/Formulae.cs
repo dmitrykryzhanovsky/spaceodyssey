@@ -209,19 +209,38 @@ namespace SpaceOdyssey.Cosmodynamics
             return (vx, vy);
         }
 
-        public static (double vx, double vy) ComputePlanarVelocityForHyperbola (double sin, double cos, params double [] param)
+        /// <summary>
+        /// Вычисление скорости на гиперболической орбите.
+        /// </summary>
+        /// <param name="sh">Гиперболический синус эксцентрической аномалии H.</param>
+        /// <param name="ch">Гиперболический косинус эксцентрической аномалии H.</param>
+        /// <param name="param"><list type="number">
+        /// – [0] – корень из μ/|a|
+        /// – [1] – эксцентриситет орбиты e
+        /// – [2] – корень из e^2 – 1
+        /// </list></param>
+        public static (double vx, double vy) ComputePlanarVelocityForHyperbola (double sh, double ch, params double [] param)
         {
-            double denominator = param [1] * cos - 1.0;
+            double denominator = param [1] * ch - 1.0;
 
-            double vx = -param [0] * sin / denominator;
-            double vy =  param [0] * param [2] * cos / denominator;
+            double vx = -param [0] * sh / denominator;
+            double vy =  param [0] * param [2] * ch / denominator;
 
             return (vx, vy);
         }
 
+        /// <summary>
+        /// Вычисление скорости на параболической орбите.
+        /// </summary>
+        /// <param name="r">Расстояние от тела до фокуса орбиты.</param>
+        /// <param name="y">Координата y в плоскости орбиты.</param>
+        /// <param name="param"><list type="number">
+        /// – [0] – локальная гравитационная постоянная μ
+        /// – [1] – фокальный параметр орбиты p
+        /// </list></param>
         public static (double vx, double vy) ComputePlanarVelocityForParabola (double r, double y, params double [] param)
         {
-            double beta = double.Atan2 (-y, param [1]);
+            double beta = double.Atan2 (param [1], -y);
             double v    = V2Escape (param [0], r);
 
             (double sin, double cos) = double.SinCos (beta);

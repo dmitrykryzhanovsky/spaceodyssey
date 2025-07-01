@@ -313,8 +313,8 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
         [TestMethod ()]
         public void ComputePlanarVelocityForEllipseTest ()
         {
-            double sin = 0.5 * double.Sqrt (3.0);
-            double cos = 0.5;
+            double    sin   = 0.5 * double.Sqrt (3.0);
+            double    cos   = 0.5;
             double [] param = new double [] { 8.8712555300358739e+8, 0.6, 0.8 };
 
             (double vx, double vy) expected = (-1.09753323606775029e+9, 5.0692888743062137e+8);
@@ -323,6 +323,66 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             Assert.AreEqual (expected.vx, actual.vx);
             Assert.AreEqual (expected.vy, actual.vy, 1.0e-7);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarVelocityForHyperbolaTest ()
+        {
+            double    sh    = 0.52109530549374736;
+            double    ch    = 1.12762596520638079;
+            double [] param = new double [] { 8.8712555300358739e+8, 1.4, 0.97979589711327124 };
+
+            (double vx, double vy) expected = (-798852346.435183, 1693752848.47108);
+
+            (double vx, double vy) actual = Formulae.ComputePlanarVelocityForHyperbola (sh, ch, param);
+
+            Assert.AreEqual (expected.vx, actual.vx, 1.0e-6);
+            Assert.AreEqual (expected.vy, actual.vy, 1.0e-5);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarVelocityForParabolaTest_AfterPericenter ()
+        {
+            double    r     = 2.6666666666666667;
+            double    y     = 2.3094010767585031;
+            double [] param = new double [] { 1.32712440018e+20, 4.0 };
+
+            (double vx, double vy) expected = (-4.98834466565563e+9, 8.64006640658074e+9);
+
+            (double vx, double vy) actual = Formulae.ComputePlanarVelocityForParabola (r, y, param);
+
+            Assert.AreEqual (expected.vx, actual.vx, 1.0e-5);
+            Assert.AreEqual (expected.vy, actual.vy);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarVelocityForParabolaTest_Pericenter ()
+        {
+            double    r     = 2.0;
+            double    y     = 0.0;
+            double [] param = new double [] { 1.32712440018e+20, 4.0 };
+
+            (double vx, double vy) expected = (0.0, 1.15200885421077E+10);
+
+            (double vx, double vy) actual = Formulae.ComputePlanarVelocityForParabola (r, y, param);
+
+            Assert.AreEqual (expected.vx, actual.vx, 1.0e-4);
+            Assert.AreEqual (expected.vy, actual.vy, 1.0e-4);
+        }
+
+        [TestMethod ()]
+        public void ComputePlanarVelocityForParabolaTest_BeforePericenter ()
+        {
+            double    r     =  2.6666666666666667;
+            double    y     = -2.3094010767585031;
+            double [] param = new double [] { 1.32712440018e+20, 4.0 };
+
+            (double vx, double vy) expected = (4.98834466565563e+9, 8.64006640658074e+9);
+
+            (double vx, double vy) actual = Formulae.ComputePlanarVelocityForParabola (r, y, param);
+
+            Assert.AreEqual (expected.vx, actual.vx, 1.0e-5);
+            Assert.AreEqual (expected.vy, actual.vy, 1.0e-5);
         }
     }
 }

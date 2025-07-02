@@ -313,13 +313,8 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
         [TestMethod ()]
         public void ComputePlanarVelocityForEllipseTest ()
         {
-<<<<<<< HEAD
             double    sin   = 0.5 * double.Sqrt (3.0);
             double    cos   = 0.5;
-=======
-            double sin = 0.5 * double.Sqrt (3.0);
-            double cos = 0.5;
->>>>>>> origin/features/cosmodynamics/keplerOrbit/planarVelocity
             double [] param = new double [] { 8.8712555300358739e+8, 0.6, 0.8 };
 
             (double vx, double vy) expected = (-1.09753323606775029e+9, 5.0692888743062137e+8);
@@ -329,7 +324,6 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             Assert.AreEqual (expected.vx, actual.vx);
             Assert.AreEqual (expected.vy, actual.vy, 1.0e-7);
         }
-<<<<<<< HEAD
 
         [TestMethod ()]
         public void ComputePlanarVelocityForHyperbolaTest ()
@@ -390,7 +384,5 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             Assert.AreEqual (expected.vx, actual.vx, 1.0e-5);
             Assert.AreEqual (expected.vy, actual.vy, 1.0e-5);
         }
-=======
->>>>>>> origin/features/cosmodynamics/keplerOrbit/planarVelocity
     }
 }

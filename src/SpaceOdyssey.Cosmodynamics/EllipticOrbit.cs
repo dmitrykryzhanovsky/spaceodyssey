@@ -7,7 +7,8 @@
     {
         protected double _ra;
 
-        private double _1me2; // Вспомогательная величина 1 – e^2.
+        private double _1me2;     // Вспомогательная величина 1 – e^2.
+        private double _sqrt1me2; // Вспомогательная величина корень из 1 – e^2.
 
         protected double _T;
         protected double _vmean;
@@ -71,7 +72,7 @@
 
         #region Constructors
 
-        protected EllipticOrbit (Mass center, Mass probe) : base (center, probe)
+        protected EllipticOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
         {
         }
 
@@ -82,12 +83,13 @@
         /// </summary> 
         /// <param name="a">Должно быть положительным, иначе сгенерируется исключение.</param>
         /// <param name="e">Должно лежать на полуинтервале [0; 1), иначе сгенерируется исключение.</param>
-        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a, double e)
+        /// <param name="t0">Момент прохождения перицентра.</param>
+        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a, double e, double t0)
         {
             Checkers.CheckA (a);
             Checkers.CheckEccentricityForEllipse (e);
 
-            EllipticOrbit orbit = new EllipticOrbit (center, probe);
+            EllipticOrbit orbit = new EllipticOrbit (center, probe, t0);
 
             orbit._a = a;
             orbit._e = e;
@@ -99,7 +101,8 @@
 
         protected override void ComputeShapeParameters ()
         {
-            _1me2 = _1me * _1pe;
+            _1me2     = _1me * _1pe;
+            _sqrt1me2 = double.Sqrt (_1me2);
 
             _p    = _a * _1me2;
             _rp   = _a * _1me;
@@ -139,6 +142,30 @@
             Checkers.CheckRClosed (r, _rp, _ra);
 
             return Formulae.ConicSectionInverse (r, _p, _e);
+        }
+
+        protected override OrbitalPosition ComputePositionByM (double t, double M)
+        {
+            double MPhase = double.Ieee754Remainder (M, double.Tau);
+
+            return ComputePositionByMPhase (t, M, MPhase);
+        }
+
+        public virtual OrbitalPosition ComputePositionByMPhase (double t, double M, double MPhase)
+        {
+            double E = Formulae.SolveKeplerEquationForEllipse (M, _e);
+
+            (double sin, double cos) = double.SinCos (E);
+
+            PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForEllipse,
+                E, sin, cos, _a, _e, _sqrt1me2);
+            
+            double speed = Formulae.VelocityByDistance (pp.R, _mu, _energyIntegral);
+            
+            PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForEllipse,
+                speed, sin, cos, _muasqrt, _e, _sqrt1me2);
+
+            return new OrbitalPosition (M: M, MPhase: M, E: E, t: t, planarPosition: pp, planarVelocity: pv);
         }
     }
 }

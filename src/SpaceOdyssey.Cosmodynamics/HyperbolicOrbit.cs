@@ -5,6 +5,9 @@
     /// </summary>
     public class HyperbolicOrbit : NonParabolicOrbit
     {
+        private double _e2m1;     // Вспомогательная величина e^2 - 1.
+        private double _sqrte2m1; // Вспомогательная величина корень из e^2 - 1.
+
         /// <summary>
         /// Асимптота орбиты.
         /// </summary>
@@ -16,7 +19,7 @@
 
         #region Constructors
 
-        private HyperbolicOrbit (Mass center, Mass probe) : base (center, probe)
+        private HyperbolicOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
         {
         }
 
@@ -27,12 +30,13 @@
         /// </summary>
         /// <param name="rp">Должно быть положительным, иначе сгенерируется исключение.</param>
         /// <param name="e">Должно быть больше 1, иначе сгенерируется исключение.</param>
-        public static HyperbolicOrbit CreateByPeriapsis (Mass center, Mass probe, double rp, double e)
+        /// <param name="t0">Момент прохождения перицентра.</param>
+        public static HyperbolicOrbit CreateByPeriapsis (Mass center, Mass probe, double rp, double e, double t0)
         {
             Checkers.CheckPeriapsis (rp);
             Checkers.CheckEccentricityForHyperbola (e);
 
-            HyperbolicOrbit orbit = new HyperbolicOrbit (center, probe);
+            HyperbolicOrbit orbit = new HyperbolicOrbit (center, probe, t0);
 
             orbit._rp = rp;
             orbit._e  = e;
@@ -44,6 +48,9 @@
 
         protected override void ComputeShapeParameters ()
         {
+            _e2m1     = _e * _e - 1.0;
+            _sqrte2m1 = double.Sqrt (_e2m1);
+
             _p = _rp * _1pe;
             _a = _rp / _1me;
         }
@@ -72,6 +79,24 @@
             Checkers.CheckRNonClosed (r, _rp);
 
             return Formulae.ConicSectionInverse (r, _p, _e);
+        }
+
+        protected override OrbitalPosition ComputePositionByM (double t, double M)
+        {
+            double H  = Formulae.SolveKeplerEquationForHyperbola (M, _e);
+
+            double sh = double.Sinh (H);
+            double ch = double.Cosh (H);
+
+            PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
+                H, sh, ch, -_a, _e, _sqrte2m1);
+
+            double speed = Formulae.VelocityByDistance (pp.R, _mu, _energyIntegral);
+
+            PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
+                speed, sh, ch, _muasqrt, _e, _sqrte2m1);
+
+            return new OrbitalPosition (M: M, MPhase: M, E: H, t: t, planarPosition: pp, planarVelocity: pv);
         }
     }
 }

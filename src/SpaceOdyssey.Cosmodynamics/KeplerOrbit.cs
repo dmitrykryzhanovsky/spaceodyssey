@@ -19,6 +19,8 @@
         protected double _energyIntegral;
         protected double _arealVelocity;
 
+        protected double _t0;
+
         /// <summary>
         /// Фокальный параметр орбиты (расстояние при истинной аномалии равной 90°).
         /// </summary>
@@ -67,11 +69,21 @@
             get => _arealVelocity;
         }
 
+        /// <summary>
+        /// Момент прохождения перицентра.
+        /// </summary>
+        public double T0
+        {
+            get => _t0;
+        }
+
         #region Constructors
 
-        protected KeplerOrbit (Mass center, Mass probe)
+        protected KeplerOrbit (Mass center, Mass probe, double t0)
         {
             InitMasses (center, probe);
+
+            _t0 = t0;
         }
 
         private void InitMasses (Mass center, Mass probe)
@@ -109,14 +121,7 @@
         /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
         public abstract double TrueAnomaly (double r);
 
-        public virtual void ComputePosition (double t)
-        {
-            // Находим M
-            // Находим E
-            // Определяем position
-            // Определяем velocity
-            // Добавляем M, E, t
-        }
+        public abstract OrbitalPosition ComputePosition (double t);
 
         /// <summary>
         /// Чекеры для проверки значений входных параметров орбит на корректность.

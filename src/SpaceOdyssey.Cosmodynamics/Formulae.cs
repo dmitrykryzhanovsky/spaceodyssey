@@ -7,11 +7,25 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public static class Formulae
     {
+        /// <summary>
+        /// Возвращает расстояние от фокуса конического сечения.
+        /// </summary>
+        /// <param name="trueAnomaly">Истинная аномалия.</param>
+        /// <param name="p">Фокальный параметр.</param>
+        /// <param name="e">Эксцентриситет.</param>
+        /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с уравнением конического сечения.</remarks>
         public static double ConicSection (double trueAnomaly, double p, double e)
         {
             return p / (1.0 + e * double.Cos (trueAnomaly));
         }
 
+        /// <summary>
+        /// Возвращает расстояние от фокуса параболы.
+        /// </summary>
+        /// <param name="trueAnomaly">Истинная аномалия.</param>
+        /// <param name="p">Фокальный параметр.</param>
+        /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с уравнением конического сечения при 
+        /// e = 1.</remarks>
         public static double ConicSectionParabola (double trueAnomaly, double p)
         {
             return p / (1.0 + double.Cos (trueAnomaly));
@@ -72,6 +86,11 @@ namespace SpaceOdyssey.Cosmodynamics
             return double.Sqrt (2.0 * mu / r);
         }
 
+        public static double VelocityByDistance (double r, double mu, double h)
+        {
+            return double.Sqrt (h + 2 * mu / r);
+        }
+
         public static double MeanMotion (double a, double muasqrt)
         {
             return muasqrt / a;
@@ -95,14 +114,14 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Вычисление положения на круговой орбите.
         /// </summary>
+        /// <param name="anomaly">Средняя / истинная аномалия.</param>
         /// <param name="sin">Синус средней / истинной аномалии.</param>
         /// <param name="cos">Косинус средней / истинной аномалии.</param>
-        /// <param name="anomaly">Средняя / истинная аномалия.</param>
         /// <param name="param"><list type="number">
         /// – [0] – радиус круговой орбиты
         /// </list></param>
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForCircle (double sin, double cos, 
-            double anomaly, params double [] param)
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForCircle (double anomaly, double sin,
+            double cos, params double [] param)
         {
             double x = param [0] * cos;
             double y = param [0] * sin;
@@ -115,16 +134,16 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Вычисление положения на эллиптической орбите.
         /// </summary>
+        /// <param name="anomaly">В данном методе в вычислениях не участвует.</param>
         /// <param name="sin">Синус эксцентрической аномалии E.</param>
         /// <param name="cos">Косинус эксцентрической аномалии E.</param>
-        /// <param name="anomaly">В данном методе в вычислениях не участвует.</param>
         /// <param name="param"><list type="number">
         /// – [0] – большая полуось орбиты a
         /// – [1] – эксцентриситет орбиты e
         /// – [2] – корень из 1 – e^2
         /// </list></param>
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForEllipse (double sin, double cos,
-            double anomaly, params double [] param)
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForEllipse (double anomaly, double sin,
+            double cos, params double [] param)
         {
             double x = param [0] * (cos - param [1]);
             double y = param [0] * param [2] * sin;
@@ -136,16 +155,16 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Вычисление положения на гиперболической орбите.
         /// </summary>
+        /// <param name="anomaly">В данном методе в вычислениях не участвует.</param>
         /// <param name="sh">Гиперболический синус эксцентрической аномалии H.</param>
         /// <param name="ch">Гиперболический косинус эксцентрической аномалии H.</param>
-        /// <param name="anomaly">В данном методе в вычислениях не участвует.</param>
         /// <param name="param"><list type="number">
         /// – [0] – модуль большой полуоси орбиты |a|
         /// – [1] – эксцентриситет орбиты e
         /// – [2] – корень из e^2 – 1
         /// </list></param>
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double sh, double ch,
-            double anomaly, params double [] param)
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double anomaly, double sh,
+            double ch, params double [] param)
         {
             double x = param [0] * (param [1] - ch);
             double y = param [0] * param [2] * sh;
@@ -157,14 +176,14 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Вычисление положения на параболической орбите.
         /// </summary>
+        /// <param name="anomaly">tan (ν/2), где ν – истинная аномалия.</param>
         /// <param name="sin">В данном методе в вычислениях не участвует.</param>
         /// <param name="cos">В данном методе в вычислениях не участвует.</param>
-        /// <param name="anomaly">tan (ν/2), где ν – истинная аномалия.</param>
         /// <param name="param"><list type="number">
         /// – [0] – расстояние в перицентре rp
         /// </list></param>
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForParabola (double sin, double cos,
-            double anomaly, params double [] param)
+        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForParabola (double anomaly, double sin,
+            double cos, params double [] param)
         {
             double x = param [0] * (1 - anomaly * anomaly);
             double y = 2.0 * param [0] * anomaly;
@@ -249,6 +268,16 @@ namespace SpaceOdyssey.Cosmodynamics
             double vy = v * sin;
 
             return (vx, vy);
+        }
+
+        public static double SolveKeplerEquationForEllipse (double M, double e)
+        {
+            throw new NotImplementedException ();
+        }
+
+        public static double SolveKeplerEquationForHyperbola (double M, double e)
+        {
+            throw new NotImplementedException ();
         }
     }
 }

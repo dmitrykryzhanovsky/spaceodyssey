@@ -14,7 +14,7 @@
 
         #region Constructors
 
-        private ParabolicOrbit (Mass center, Mass probe) : base (center, probe)
+        private ParabolicOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
         {
         }
 
@@ -24,12 +24,12 @@
         /// Инициализация параболической орбиты по расстоянию в периапсисе rp.
         /// </summary>
         /// <param name="rp">Должно быть положительным, иначе сгенерируется исключение.</param>
-
-        public static ParabolicOrbit CreateByPeriapsis (Mass center, Mass probe, double rp)
+        /// <param name="t0">Момент прохождения перицентра.</param>
+        public static ParabolicOrbit CreateByPeriapsis (Mass center, Mass probe, double rp, double t0)
         {
             Checkers.CheckPeriapsis (rp);
 
-            ParabolicOrbit orbit = new ParabolicOrbit (center, probe);
+            ParabolicOrbit orbit = new ParabolicOrbit (center, probe, t0);
 
             orbit._rp = rp;
 
@@ -71,6 +71,25 @@
             Checkers.CheckRNonClosed (r, _rp);
 
             return Formulae.ConicSectionInverseParabola (r, _p);
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M = _n * (t - _t0);
+            double H;
+
+            double sh = double.Sinh (H);
+            double ch = double.Cosh (H);
+
+            PlanarPosition planarPosition = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
+                H, sh, ch, -_a, _e, _sqrte2m1);
+
+            double speed = Formulae.VelocityByDistance (planarPosition.R, _mu, _energyIntegral);
+
+            PlanarVelocity planarVelocity = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
+                speed, sh, ch, _muasqrt, _e, _sqrte2m1);
+
+            return new OrbitalPosition (M, M, H, t, planarPosition, planarVelocity);
         }
     }
 }

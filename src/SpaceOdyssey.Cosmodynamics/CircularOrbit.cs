@@ -31,7 +31,7 @@
 
         #region Constructors
 
-        private CircularOrbit (Mass center, Mass probe) : base (center, probe)
+        private CircularOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
         {
         }
 
@@ -41,11 +41,12 @@
         /// Инициализация круговой орбиты по большой полуоси (радиусу) a.
         /// </summary>
         /// <param name="a">Должно быть положительным, иначе сгенерируется исключение.</param>
-        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a)
+        /// <param name="t0">Момент прохождения перицентра.</param>
+        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a, double t0)
         {
             Checkers.CheckA (a);
 
-            CircularOrbit orbit = new CircularOrbit (center, probe);
+            CircularOrbit orbit = new CircularOrbit (center, probe, t0);
 
             orbit._a = a;
 
@@ -95,6 +96,19 @@
             if (r == _a) return double.NaN;
 
             else throw new ArgumentOutOfRangeException ();
+        }
+
+        public override OrbitalPosition ComputePositionByMPhase (double t, double M, double MPhase)
+        {
+            (double sin, double cos) = double.SinCos (MPhase);
+
+            PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForCircle,
+                MPhase, sin, cos, _a);
+            
+            PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForCircle, 
+                _muasqrt, sin, cos, _muasqrt);
+
+            return new OrbitalPosition (M: M, MPhase: M, E: MPhase, t: t, planarPosition: pp, planarVelocity: pv);
         }
     }
 }

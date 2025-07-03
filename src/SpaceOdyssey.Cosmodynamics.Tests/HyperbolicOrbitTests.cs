@@ -13,7 +13,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double rp      = 147098290052.82897;
             double e       = 1.98328877;
 
-            HyperbolicOrbit actual = HyperbolicOrbit.CreateByPeriapsis (central, probe, rp, e);
+            HyperbolicOrbit actual = HyperbolicOrbit.CreateByPeriapsis (central, probe, rp, e, 2451545.0);
 
             Assert.AreEqual (-149598261000.0, actual.A, 1.0e-4);
             Assert.AreEqual ( 438836676800.80737, actual.P);
@@ -35,7 +35,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp: 2.0,
-                                                                       e:  1.6);
+                                                                       e:  1.6,
+                                                                       t0: 2451545.0);
 
             double trueAnomaly = double.Pi * (2.0 / 3.0);
 
@@ -50,7 +51,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
-                                                                       e:      2.0);
+                                                                       e:      2.0,
+                                                                       t0:     2451545.0);
 
             double r = 2.0;
 
@@ -65,7 +67,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
-                                                                       e:      2.0);
+                                                                       e:      2.0,
+                                                                       t0:     2451545.0);
 
             double r = 3.0;
 
@@ -80,7 +83,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
-                                                                       e:      2.0);
+                                                                       e:      2.0,
+                                                                       t0:     2451545.0);
 
             double r = 6.0;
 
@@ -95,7 +99,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
-                                                                       e:      2.0);
+                                                                       e:      2.0,
+                                                                       t0:     2451545.0);
 
             double r = double.PositiveInfinity;
 
@@ -110,7 +115,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
-                                                                       e:      2.0);
+                                                                       e:      2.0,
+                                                                       t0:     2451545.0);
 
             double r = 1.999999999999;
 

@@ -12,7 +12,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             Assert.AreEqual (1.0, actual.RangeARp);
         }
@@ -24,7 +24,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             Assert.AreEqual (1.0, actual.RangeRaA);
         }
@@ -36,7 +36,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             Assert.AreEqual (1.0, actual.RangeRaRp);
         }
@@ -48,7 +48,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             Assert.AreEqual (6471000.0, actual.A);
             Assert.AreEqual (6471000.0, actual.P);
@@ -73,7 +73,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             double trueAnomaly = 1.42;
 
@@ -89,7 +89,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             double r = 6471000.0;
 
@@ -105,7 +105,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             double r = 6470999.999;
 
@@ -131,7 +131,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             double r = 6471000.001;
 

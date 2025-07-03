@@ -35,7 +35,7 @@
 
         #region Constructors
 
-        protected NonParabolicOrbit (Mass center, Mass probe) : base (center, probe)
+        protected NonParabolicOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
         {
         }
 
@@ -73,5 +73,14 @@
         {
             return Formulae.ConicSection (trueAnomaly, _p, _e);
         }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M = _n * (t - _t0);
+
+            return ComputePositionByM (t, M);
+        }
+
+        protected abstract OrbitalPosition ComputePositionByM (double t, double M);
     }
 }

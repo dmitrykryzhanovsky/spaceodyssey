@@ -8,8 +8,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void CreateByPeriapsisTest ()
         {
-            Mass   central = Data.SunSI;
-            Mass   probe   = Data.EarthSI;
+            Mass   central = Data.Sun.SI;
+            Mass   probe   = Data.Earth.SI;
             double rp      = 74799130500.0;
 
             ParabolicOrbit actual = ParabolicOrbit.CreateByPeriapsis (central, probe, rp, 2451545.0);
@@ -29,7 +29,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RadiusTest ()
         {
-            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                      probe:  Data.ProbeZeroMass,
                                                                      rp:     2.0,
                                                                      t0:     2451545.0);
@@ -44,7 +44,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_0 ()
         {
-            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                      probe:  Data.ProbeZeroMass,
                                                                      rp:     2.0,
                                                                      t0:     2451545.0);
@@ -59,7 +59,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_60 ()
         {
-            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                      probe:  Data.ProbeZeroMass,
                                                                      rp:     2.0,
                                                                      t0:     2451545.0);
@@ -74,7 +74,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_90 ()
         {
-            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                      probe:  Data.ProbeZeroMass,
                                                                      rp:     2.0,
                                                                      t0:     2451545.0);
@@ -89,7 +89,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_120 ()
         {
-            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                      probe:  Data.ProbeZeroMass,
                                                                      rp:     2.0,
                                                                      t0:     2451545.0);
@@ -104,7 +104,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_Asymptote ()
         {
-            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                      probe:  Data.ProbeZeroMass,
                                                                      rp:     2.0,
                                                                      t0:     2451545.0);
@@ -119,7 +119,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
-            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                      probe:  Data.ProbeZeroMass,
                                                                      rp:     2.0,
                                                                      t0:     2451545.0);

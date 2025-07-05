@@ -153,19 +153,21 @@
 
         public virtual OrbitalPosition ComputePositionByMPhase (double t, double M, double MPhase)
         {
-            double E = Formulae.SolveKeplerEquationForEllipse (M, _e);
+            //double E = Formulae.SolveKeplerEquationForEllipse (M, _e);
 
-            (double sin, double cos) = double.SinCos (E);
+            //(double sin, double cos) = double.SinCos (E);
 
-            PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForEllipse,
-                E, sin, cos, _a, _e, _sqrt1me2);
-            
-            double speed = Formulae.Motion.VelocityByDistance (pp.R, _mu, _energyIntegral);
-            
-            PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForEllipse,
-                speed, sin, cos, _muasqrt, _e, _sqrt1me2);
+            //PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForEllipse,
+            //    E, sin, cos, _a, _e, _sqrt1me2);
 
-            return new OrbitalPosition (M: M, MPhase: M, E: E, t: t, planarPosition: pp, planarVelocity: pv);
+            //double speed = Formulae.Motion.VelocityByDistance (pp.R, _mu, _energyIntegral);
+
+            //PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForEllipse,
+            //    speed, sin, cos, _muasqrt, _e, _sqrt1me2);
+
+            //return new OrbitalPosition (M: M, MPhase: M, E: E, t: t, planarPosition: pp, planarVelocity: pv);
+
+            return new OrbitalPosition ();
         }
     }
 }

@@ -58,20 +58,20 @@ namespace SpaceOdyssey.Cosmodynamics
             _p = new Polar2 (r, trueAnomaly);
         }
 
-        /// <summary>
-        /// Определение положения в плоскости орбиты.
-        /// </summary>
-        /// <param name="method">Метод вычисления (зависит от геометрической формы орбиты).</param>
-        /// <param name="anomaly">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
-        /// <param name="sin">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
-        /// <param name="cos">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
-        /// <param name="param">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
-        public static PlanarPosition ComputePlanarPosition (ComputePlanarPositionDelegate method, double anomaly, 
-            double sin, double cos, params double [] param)
-        {
-            (double x, double y, double r, double trueAnomaly) = method (anomaly, sin, cos, param);
+        ///// <summary>
+        ///// Определение положения в плоскости орбиты.
+        ///// </summary>
+        ///// <param name="method">Метод вычисления (зависит от геометрической формы орбиты).</param>
+        ///// <param name="anomaly">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
+        ///// <param name="sin">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
+        ///// <param name="cos">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
+        ///// <param name="param">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
+        //public static PlanarPosition ComputePlanarPosition (ComputePlanarPositionDelegate method, double anomaly, 
+        //    double sin, double cos, params double [] param)
+        //{
+        //    (double x, double y, double r, double trueAnomaly) = method (anomaly, sin, cos, param);
 
-            return new PlanarPosition (x, y, r, trueAnomaly);
-        }
+        //    return new PlanarPosition (x, y, r, trueAnomaly);
+        //}
     }
 }

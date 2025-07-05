@@ -170,11 +170,21 @@ namespace SpaceOdyssey.Cosmodynamics
 
         public static class Integrals
         {
+            /// <summary>
+            /// Возвращает интеграл скорости для непараболической орбиты.
+            /// </summary>
+            /// <param name="mu">Локальная гравитационная постоянная.</param>
+            /// <param name="a">Модуль большой полуоси орбиты.</param>
             public static double ArealVelocityNonParabola (double mu, double a)
             {
                 return double.Sqrt (mu * a);
             }
 
+            /// <summary>
+            /// Возвращает интеграл скорости для параболической орбиты.
+            /// </summary>
+            /// <param name="mu">Локальная гравитационная постоянная.</param>
+            /// <param name="rp">Расстояние в перицентре.</param>
             public static double ArealVelocityParabola (double mu, double rp)
             {
                 return double.Sqrt (2.0 * mu * rp);

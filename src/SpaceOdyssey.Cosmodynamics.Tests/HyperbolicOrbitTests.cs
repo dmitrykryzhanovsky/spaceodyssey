@@ -8,8 +8,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void CreateByPeriapsisTest ()
         {
-            Mass   central = Data.SunSI;
-            Mass   probe   = Data.EarthSI;
+            Mass   central = Data.Sun.SI;
+            Mass   probe   = Data.Earth.SI;
             double rp      = 147098290052.82897;
             double e       = 1.98328877;
 
@@ -32,7 +32,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RadiusTest ()
         {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp: 2.0,
                                                                        e:  1.6,
@@ -48,7 +48,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_0 ()
         {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
@@ -64,7 +64,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_60 ()
         {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
@@ -80,7 +80,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_90 ()
         {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
@@ -96,7 +96,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance_Asymptote ()
         {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
@@ -112,7 +112,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.EarthSI,
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
                                                                        probe:  Data.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,

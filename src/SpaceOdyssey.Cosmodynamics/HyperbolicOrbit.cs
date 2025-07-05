@@ -83,20 +83,22 @@
 
         protected override OrbitalPosition ComputePositionByM (double t, double M)
         {
-            double H  = Formulae.SolveKeplerEquationForHyperbola (M, _e);
+            //double H  = Formulae.SolveKeplerEquationForHyperbola (M, _e);
 
-            double sh = double.Sinh (H);
-            double ch = double.Cosh (H);
+            //double sh = double.Sinh (H);
+            //double ch = double.Cosh (H);
 
-            PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
-                H, sh, ch, -_a, _e, _sqrte2m1);
+            //PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
+            //    H, sh, ch, -_a, _e, _sqrte2m1);
 
-            double speed = Formulae.Motion.VelocityByDistance (pp.R, _mu, _energyIntegral);
+            //double speed = Formulae.Motion.VelocityByDistance (pp.R, _mu, _energyIntegral);
 
-            PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
-                speed, sh, ch, _muasqrt, _e, _sqrte2m1);
+            //PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
+            //    speed, sh, ch, _muasqrt, _e, _sqrte2m1);
 
-            return new OrbitalPosition (M: M, MPhase: M, E: H, t: t, planarPosition: pp, planarVelocity: pv);
+            //return new OrbitalPosition (M: M, MPhase: M, E: H, t: t, planarPosition: pp, planarVelocity: pv);
+
+            return new OrbitalPosition ();
         }
     }
 }

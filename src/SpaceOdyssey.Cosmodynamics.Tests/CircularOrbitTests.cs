@@ -8,7 +8,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RangeARpTest ()
         {
-            Mass   central = Data.EarthSI;
+            Mass   central = Data.Earth.SI;
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
@@ -20,7 +20,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RangeRaATest ()
         {
-            Mass   central = Data.EarthSI;
+            Mass   central = Data.Earth.SI;
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
@@ -32,7 +32,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RangeRaRpTest ()
         {
-            Mass   central = Data.EarthSI;
+            Mass   central = Data.Earth.SI;
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
@@ -44,7 +44,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void CreateBySemiMajorAxisTest ()
         {
-            Mass   central = Data.EarthSI;
+            Mass   central = Data.Earth.SI;
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
@@ -69,7 +69,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RadiusTest ()
         {
-            Mass   central = Data.EarthSI;
+            Mass   central = Data.Earth.SI;
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
@@ -85,7 +85,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance ()
         {
-            Mass   central = Data.EarthSI;
+            Mass   central = Data.Earth.SI;
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
@@ -101,7 +101,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
-            Mass   central = Data.EarthSI;
+            Mass   central = Data.Earth.SI;
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 
@@ -127,7 +127,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_IncorrectDistanceGreater ()
         {
-            Mass   central = Data.EarthSI;
+            Mass   central = Data.Earth.SI;
             Mass   probe   = Data.ProbeZeroMass;
             double a       = 6471000.0;
 

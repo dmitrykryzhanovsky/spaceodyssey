@@ -100,15 +100,17 @@
 
         public override OrbitalPosition ComputePositionByMPhase (double t, double M, double MPhase)
         {
-            (double sin, double cos) = double.SinCos (MPhase);
+            //(double sin, double cos) = double.SinCos (MPhase);
 
-            PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForCircle,
-                MPhase, sin, cos, _a);
+            //PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForCircle,
+            //    MPhase, sin, cos, _a);
             
-            PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForCircle, 
-                _muasqrt, sin, cos, _muasqrt);
+            //PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForCircle, 
+            //    _muasqrt, sin, cos, _muasqrt);
 
-            return new OrbitalPosition (M: M, MPhase: M, E: MPhase, t: t, planarPosition: pp, planarVelocity: pv);
+            //return new OrbitalPosition (M: M, MPhase: M, E: MPhase, t: t, planarPosition: pp, planarVelocity: pv);
+
+            return new OrbitalPosition ();
         }
     }
 }

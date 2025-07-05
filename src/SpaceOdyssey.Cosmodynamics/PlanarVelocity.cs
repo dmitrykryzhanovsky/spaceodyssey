@@ -48,20 +48,20 @@ namespace SpaceOdyssey.Cosmodynamics
             _speed = speed;
         }
 
-        /// <summary>
-        /// Определение скорости в плоскости орбиты.
-        /// </summary>
-        /// <param name="method">Метод вычисления (зависит от геометрической формы орбиты).</param>
-        /// <param name="speed">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
-        /// <param name="sin">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
-        /// <param name="cos">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
-        /// <param name="param">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
-        public static PlanarVelocity ComputePlanarVelocity (ComputePlanarVelocityDelegate method, double speed, 
-            double sin, double cos, params double [] param)
-        {
-            (double vx, double vy) = method (sin, cos, param);
+        ///// <summary>
+        ///// Определение скорости в плоскости орбиты.
+        ///// </summary>
+        ///// <param name="method">Метод вычисления (зависит от геометрической формы орбиты).</param>
+        ///// <param name="speed">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
+        ///// <param name="sin">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
+        ///// <param name="cos">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
+        ///// <param name="param">Зависит от геометрической формы орбиты. Смотри комментарии к соответствующему методу в классе Formulae.</param>
+        //public static PlanarVelocity ComputePlanarVelocity (ComputePlanarVelocityDelegate method, double speed, 
+        //    double sin, double cos, params double [] param)
+        //{
+        //    (double vx, double vy) = method (sin, cos, param);
 
-            return new PlanarVelocity (vx, vy, speed);
-        }
+        //    return new PlanarVelocity (vx, vy, speed);
+        //}
     }
 }

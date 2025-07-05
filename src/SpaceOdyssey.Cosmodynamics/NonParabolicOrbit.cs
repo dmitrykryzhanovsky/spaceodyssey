@@ -71,7 +71,7 @@
 
         public override double Radius (double trueAnomaly)
         {
-            return Formulae.ConicSection (trueAnomaly, _p, _e);
+            return Formulae.Shape.ConicSection (trueAnomaly, _p, _e);
         }
 
         public override OrbitalPosition ComputePosition (double t)

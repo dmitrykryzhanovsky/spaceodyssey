@@ -5,6 +5,8 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
     [TestClass ()]
     public class FormulaeTests
     {
+        #region Shape
+
         [TestMethod ()]
         public void ConicSectionTest ()
         {
@@ -14,7 +16,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             
             double expected = 2.6666666666666667;
 
-            double actual = Formulae.ConicSection (trueAnomaly, p, e);
+            double actual = Formulae.Shape.ConicSection (trueAnomaly, p, e);
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }
@@ -27,7 +29,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 4.0;
 
-            double actual = Formulae.ConicSectionParabola (trueAnomaly, p);
+            double actual = Formulae.Shape.ConicSectionParabola (trueAnomaly, p);
 
             Assert.AreEqual (expected, actual, 1.0e-14);
         }
@@ -41,7 +43,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = double.Pi * 2.0 / 3.0;
 
-            double actual = Formulae.ConicSectionInverse (r, p, e);
+            double actual = Formulae.Shape.ConicSectionInverse (r, p, e);
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }
@@ -54,7 +56,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = double.Pi * 2.0 / 3.0;
 
-            double actual = Formulae.ConicSectionInverseParabola (r, p);
+            double actual = Formulae.Shape.ConicSectionInverseParabola (r, p);
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }
@@ -66,7 +68,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 4.0;
 
-            double actual = Formulae.PParabolaByRp (rp);
+            double actual = Formulae.Shape.PParabolaByRp (rp);
 
             Assert.AreEqual (expected, actual);
         }
@@ -78,7 +80,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = double.Pi * 2.0 / 3.0;
 
-            double actual = Formulae.Asymptote (e);
+            double actual = Formulae.Shape.Asymptote (e);
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }
@@ -90,7 +92,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 2.0;
 
-            double actual = Formulae.RangeARp (x1me);
+            double actual = Formulae.Shape.RangeARp (x1me);
 
             Assert.AreEqual (expected, actual);
         }
@@ -102,7 +104,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 1.5;
 
-            double actual = Formulae.RangeRaA (x1pe);
+            double actual = Formulae.Shape.RangeRaA (x1pe);
 
             Assert.AreEqual (expected, actual);
         }
@@ -115,10 +117,12 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 3.0;
 
-            double actual = Formulae.RangeRaRp (x1me, x1pe);
+            double actual = Formulae.Shape.RangeRaRp (x1me, x1pe);
 
             Assert.AreEqual (expected, actual);
         }
+
+        #endregion
 
         [TestMethod ()]
         public void GMATest ()

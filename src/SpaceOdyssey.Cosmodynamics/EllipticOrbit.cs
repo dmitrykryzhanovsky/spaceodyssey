@@ -27,7 +27,7 @@
         /// </summary>
         public virtual double RangeARp
         {
-            get => Formulae.RangeARp (_1me);
+            get => Formulae.Shape.RangeARp (_1me);
         }
 
         /// <summary>
@@ -35,7 +35,7 @@
         /// </summary>
         public virtual double RangeRaA
         {
-            get => Formulae.RangeRaA (_1pe);
+            get => Formulae.Shape.RangeRaA (_1pe);
         }
 
         /// <summary>
@@ -43,7 +43,7 @@
         /// </summary>
         public virtual double RangeRaRp
         {
-            get => Formulae.RangeRaRp (_1me, _1pe);
+            get => Formulae.Shape.RangeRaRp (_1me, _1pe);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@
         {
             Checkers.CheckRClosed (r, _rp, _ra);
 
-            return Formulae.ConicSectionInverse (r, _p, _e);
+            return Formulae.Shape.ConicSectionInverse (r, _p, _e);
         }
 
         protected override OrbitalPosition ComputePositionByM (double t, double M)

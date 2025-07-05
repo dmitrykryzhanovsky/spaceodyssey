@@ -7,64 +7,104 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public static class Formulae
     {
-        /// <summary>
-        /// Возвращает расстояние от фокуса конического сечения.
-        /// </summary>
-        /// <param name="trueAnomaly">Истинная аномалия.</param>
-        /// <param name="p">Фокальный параметр.</param>
-        /// <param name="e">Эксцентриситет.</param>
-        /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с уравнением конического сечения.</remarks>
-        public static double ConicSection (double trueAnomaly, double p, double e)
+        public static class Shape
         {
-            return p / (1.0 + e * double.Cos (trueAnomaly));
+            /// <summary>
+            /// Возвращает расстояние от фокуса конического сечения.
+            /// </summary>
+            /// <param name="trueAnomaly">Истинная аномалия.</param>
+            /// <param name="p">Фокальный параметр.</param>
+            /// <param name="e">Эксцентриситет.</param>
+            /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с уравнением конического сечения.</remarks>
+            public static double ConicSection (double trueAnomaly, double p, double e)
+            {
+                return p / (1.0 + e * double.Cos (trueAnomaly));
+            }
+
+            /// <summary>
+            /// Возвращает расстояние от фокуса параболы.
+            /// </summary>
+            /// <param name="trueAnomaly">Истинная аномалия.</param>
+            /// <param name="p">Фокальный параметр.</param>
+            /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с уравнением конического сечения при 
+            /// e = 1.</remarks>
+            public static double ConicSectionParabola (double trueAnomaly, double p)
+            {
+                return p / (1.0 + double.Cos (trueAnomaly));
+            }
+
+            /// <summary>
+            /// Возвращает истинную аномалию (в верхней полуплоскости) при заданном расстоянии r от фокуса конического сечения.
+            /// </summary>
+            /// <param name="r">Расстояние от фокуса конического сечения.</param>
+            /// <param name="p">Фокальный параметр.</param>
+            /// <param name="e">Эксцентриситет.</param>
+            /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с обратным уравнением 
+            /// конического сечения</remarks>
+            public static double ConicSectionInverse (double r, double p, double e)
+            {
+                return double.Acos ((p / r - 1.0) / e);
+            }
+
+            /// <summary>
+            /// Возвращает истинную аномалию (в верхней полуплоскости) при заданном расстоянии r от фокуса параболы.
+            /// </summary>
+            /// <param name="r">Расстояние от фокуса конического сечения.</param>
+            /// <param name="p">Фокальный параметр.</param>
+            /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с обратным уравнением 
+            /// конического сечения при e = 1.</remarks>
+            public static double ConicSectionInverseParabola (double r, double p)
+            {
+                return double.Acos (p / r - 1.0);
+            }
+
+            /// <summary>
+            /// Возвращает фокальный параметр для параболы по заданному расстоянию в перицентре rp.
+            /// </summary>
+            public static double PParabolaByRp (double rp)
+            {
+                return rp * 2.0;
+            }
+
+            /// <summary>
+            /// Возвращает угол асимптоты (в верхней полуплоскости), к которой стремится незамкнутая орбита с эксцентриситетом e.
+            /// </summary>
+            public static double Asymptote (double e)
+            {
+                return double.Acos (-1.0 / e);
+            }
+
+            /// <summary>
+            /// Возвращает отношение большой полуоси к расстоянию в перицентре для эллиптической орбиты.
+            /// </summary>
+            /// <param name="x1me">Величина 1 – e, где e – эксцентриситет орбиты.</param>
+            public static double RangeARp (double x1me)
+            {
+                return 1.0 / x1me;
+            }
+
+            /// <summary>
+            /// Возвращает отношение расстояния в апоцентре к большой полуоси для эллиптической орбиты.
+            /// </summary>
+            /// <param name="x1pe">Величина 1 + e, где e – эксцентриситет орбиты.</param>
+            public static double RangeRaA (double x1pe)
+            {
+                return x1pe;
+            }
+
+            /// <summary>
+            /// Возвращает отношение расстояния в апоцентре к расстоянию в перицентре для эллиптической орбиты.
+            /// </summary>
+            /// <param name="x1me">Величина 1 – e, где e – эксцентриситет орбиты.</param>
+            /// <param name="x1pe">Величина 1 + e, где e – эксцентриситет орбиты.</param>
+            public static double RangeRaRp (double x1me, double x1pe)
+            {
+                return x1pe / x1me;
+            }
+
         }
 
-        /// <summary>
-        /// Возвращает расстояние от фокуса параболы.
-        /// </summary>
-        /// <param name="trueAnomaly">Истинная аномалия.</param>
-        /// <param name="p">Фокальный параметр.</param>
-        /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с уравнением конического сечения при 
-        /// e = 1.</remarks>
-        public static double ConicSectionParabola (double trueAnomaly, double p)
-        {
-            return p / (1.0 + double.Cos (trueAnomaly));
-        }
 
-        public static double ConicSectionInverse (double r, double p, double e)
-        {
-            return double.Acos ((p / r - 1.0) / e);
-        }
-
-        public static double ConicSectionInverseParabola (double r, double p)
-        {
-            return double.Acos (p / r - 1.0);
-        }
-
-        public static double PParabolaByRp (double rp)
-        {
-            return rp * 2.0;
-        }
-
-        public static double Asymptote (double e)
-        {
-            return double.Acos (-1.0 / e);
-        }
-
-        public static double RangeARp (double x1me)
-        {
-            return 1.0 / x1me;
-        }
-
-        public static double RangeRaA (double x1pe)
-        {
-            return x1pe;
-        }
-
-        public static double RangeRaRp (double x1me, double x1pe)
-        {
-            return x1pe / x1me;
-        }
 
         public static double GMA (double mu, double a)
         {

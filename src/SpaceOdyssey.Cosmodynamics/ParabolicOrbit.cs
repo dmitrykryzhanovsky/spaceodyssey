@@ -41,7 +41,7 @@
         protected override void ComputeShape ()
         {
             _e = 1.0;
-            _p = Formulae.PParabolaByRp (_rp);            
+            _p = Formulae.Shape.PParabolaByRp (_rp);            
         }
 
         protected override void ComputeMotion ()
@@ -57,7 +57,7 @@
 
         public override double Radius (double trueAnomaly)
         {
-            return Formulae.ConicSectionParabola (trueAnomaly, _p);
+            return Formulae.Shape.ConicSectionParabola (trueAnomaly, _p);
         }
 
         /// <summary>
@@ -70,26 +70,28 @@
         {
             Checkers.CheckRNonClosed (r, _rp);
 
-            return Formulae.ConicSectionInverseParabola (r, _p);
+            return Formulae.Shape.ConicSectionInverseParabola (r, _p);
         }
 
         public override OrbitalPosition ComputePosition (double t)
         {
-            double M = _n * (t - _t0);
-            double H;
+            //double M = _n * (t - _t0);
+            //double H;
 
-            double sh = double.Sinh (H);
-            double ch = double.Cosh (H);
+            //double sh = double.Sinh (H);
+            //double ch = double.Cosh (H);
 
-            PlanarPosition planarPosition = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
-                H, sh, ch, -_a, _e, _sqrte2m1);
+            //PlanarPosition planarPosition = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
+            //    H, sh, ch, -_a, _e, _sqrte2m1);
 
-            double speed = Formulae.VelocityByDistance (planarPosition.R, _mu, _energyIntegral);
+            //double speed = Formulae.VelocityByDistance (planarPosition.R, _mu, _energyIntegral);
 
-            PlanarVelocity planarVelocity = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
-                speed, sh, ch, _muasqrt, _e, _sqrte2m1);
+            //PlanarVelocity planarVelocity = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
+            //    speed, sh, ch, _muasqrt, _e, _sqrte2m1);
 
-            return new OrbitalPosition (M, M, H, t, planarPosition, planarVelocity);
+            //return new OrbitalPosition (M, M, H, t, planarPosition, planarVelocity);
+
+            return new OrbitalPosition ();
         }
     }
 }

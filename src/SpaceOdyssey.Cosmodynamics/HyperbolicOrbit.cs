@@ -14,7 +14,7 @@
         /// <remarks>Истинная аномалия, к которой будет стремиться тело при удалении на бесконечность. Возвращается в радианах.</remarks>
         public double Asymptote
         {
-            get => Formulae.Asymptote (_e);
+            get => Formulae.Shape.Asymptote (_e);
         }
 
         #region Constructors
@@ -78,7 +78,7 @@
         {
             Checkers.CheckRNonClosed (r, _rp);
 
-            return Formulae.ConicSectionInverse (r, _p, _e);
+            return Formulae.Shape.ConicSectionInverse (r, _p, _e);
         }
 
         protected override OrbitalPosition ComputePositionByM (double t, double M)

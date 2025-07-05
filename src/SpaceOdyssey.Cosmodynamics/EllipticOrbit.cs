@@ -111,10 +111,10 @@
 
         protected override void ComputeMotionParameters ()
         {            
-            _muasqrt = Formulae.GMASqrt (_mua);
+            _muasqrt = Formulae.Motion.GMASqrt (_mua);
 
-            _n       = Formulae.MeanMotion (_a, _muasqrt);
-            _T       = Formulae.OrbitalPeriod (_a, _muasqrt);
+            _n       = Formulae.Motion.MeanMotion (_a, _muasqrt);
+            _T       = Formulae.Motion.OrbitalPeriod (_a, _muasqrt);
             _vmean   = _muasqrt;
 
             ComputeVelocityPA ();
@@ -128,7 +128,7 @@
 
         protected override void ComputeArealVelocity ()
         {
-            _arealVelocity = Formulae.ArealVelocityNonParabola (_mu, _a);
+            _arealVelocity = Formulae.Integrals.ArealVelocityNonParabola (_mu, _a);
         }
 
         /// <summary>
@@ -160,7 +160,7 @@
             PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForEllipse,
                 E, sin, cos, _a, _e, _sqrt1me2);
             
-            double speed = Formulae.VelocityByDistance (pp.R, _mu, _energyIntegral);
+            double speed = Formulae.Motion.VelocityByDistance (pp.R, _mu, _energyIntegral);
             
             PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForEllipse,
                 speed, sin, cos, _muasqrt, _e, _sqrt1me2);

@@ -53,7 +53,7 @@
 
         protected override void ComputeMotion ()
         {
-            _mua = Formulae.GMA (_mu, _a);
+            _mua = Formulae.Motion.GMA (_mu, _a);
 
             ComputeMotionParameters ();
         }

@@ -124,6 +124,8 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
         #endregion
 
+        #region Motion
+
         [TestMethod ()]
         public void GMATest ()
         {
@@ -132,7 +134,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 8.8712555300358739e+8;
 
-            double actual = Formulae.GMA (mu, a);
+            double actual = Formulae.Motion.GMA (mu, a);
 
             Assert.AreEqual (expected, actual);
         }
@@ -144,7 +146,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 2.9784652977726422e+4;
 
-            double actual = Formulae.GMASqrt (mua);
+            double actual = Formulae.Motion.GMASqrt (mua);
 
             Assert.AreEqual (expected, actual);
         }
@@ -157,7 +159,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 2.9784652977726422e+4;
 
-            double actual = Formulae.V1Circular (mu, r);
+            double actual = Formulae.Motion.V1Circular (mu, r);
 
             Assert.AreEqual (expected, actual);
         }
@@ -170,7 +172,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 4.2121860191676896e+4;
 
-            double actual = Formulae.V2Escape (mu, r);
+            double actual = Formulae.Motion.V2Escape (mu, r);
 
             Assert.AreEqual (expected, actual);
         }
@@ -178,7 +180,15 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
         [TestMethod ()]
         public void VelocityByDistanceTest ()
         {
-            Assert.Fail ();
+            double r  =  1.49598261e+11;
+            double mu =  1.32712440018e+20;
+            double h  = -8.8712555300358739e+8;
+
+            double expected = 29784.6529777264;
+                              
+            double actual = Formulae.Motion.VelocityByDistance (r, mu, h);
+
+            Assert.AreEqual (expected, actual, 1.0e-10);
         }
 
         [TestMethod ()]
@@ -189,7 +199,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 1.9909758829166084e-7;
 
-            double actual = Formulae.MeanMotion (a, muasqrt);
+            double actual = Formulae.Motion.MeanMotion (a, muasqrt);
 
             Assert.AreEqual (expected, actual);
         }
@@ -202,10 +212,14 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 3.1558319521054472e+7;
 
-            double actual = Formulae.OrbitalPeriod (a, muasqrt);
+            double actual = Formulae.Motion.OrbitalPeriod (a, muasqrt);
 
             Assert.AreEqual (expected, actual, 1.0e-8);
         }
+
+        #endregion
+
+        #region Integrals
 
         [TestMethod ()]
         public void ArealVelocityNonParabolaTest ()
@@ -215,7 +229,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 4.4557322899563444e+15;
 
-            double actual = Formulae.ArealVelocityNonParabola (mu, a);
+            double actual = Formulae.Integrals.ArealVelocityNonParabola (mu, a);
 
             Assert.AreEqual (expected, actual);
         }
@@ -228,10 +242,12 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             double expected = 4.4557322899563444e+15;
 
-            double actual = Formulae.ArealVelocityParabola (mu, rp);
+            double actual = Formulae.Integrals.ArealVelocityParabola (mu, rp);
 
             Assert.AreEqual (expected, actual);
         }
+
+        #endregion
 
         [TestMethod ()]
         public void ComputePlanarPositionForCircleTest ()

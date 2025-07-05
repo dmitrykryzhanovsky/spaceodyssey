@@ -101,54 +101,84 @@ namespace SpaceOdyssey.Cosmodynamics
             {
                 return x1pe / x1me;
             }
-
         }
 
-
-
-        public static double GMA (double mu, double a)
+        public static class Motion
         {
-            return mu / a;
+            /// <summary>
+            /// Возвращает величину μ / a (~GM / a).
+            /// </summary>
+            /// <param name="mu">Локальная гравитационная постоянная.</param>
+            /// <param name="a">Модуль большой полуоси орбиты.</param>
+            public static double GMA (double mu, double a)
+            {
+                return mu / a;
+            }
+
+            /// <summary>
+            /// Возвращает корень из величины μ / a (~sqrt (GM / a)).
+            /// </summary>
+            /// <param name="mua">Величина μ / a.</param>
+            public static double GMASqrt (double mua)
+            {
+                return double.Sqrt (mua);
+            }
+
+            /// <summary>
+            /// Возвращает 1-ю космическую (круговую) скорость на заданном расстоянии r.
+            /// </summary>
+            /// <param name="mu">Локальная гравитационная постоянная.</param>
+            public static double V1Circular (double mu, double r)
+            {
+                return double.Sqrt (mu / r);
+            }
+
+            /// <summary>
+            /// Возвращает 2-ю космическую (параболическую, убегания) скорость на заданном расстоянии r.
+            /// </summary>
+            /// <param name="mu">Локальная гравитационная постоянная.</param>
+            public static double V2Escape (double mu, double r)
+            {
+                return double.Sqrt (2.0 * mu / r);
+            }
+
+            public static double VelocityByDistance (double r, double mu, double h)
+            {
+                return double.Sqrt (h + 2 * mu / r);
+            }
+
+            /// <summary>
+            /// Возвращает среднее движение, угловая единица / единица времени.
+            /// </summary>
+            /// <param name="a">Модуль большой полуоси орбиты.</param>
+            /// <param name="muasqrt">Корень из величины μ / a.</param>
+            public static double MeanMotion (double a, double muasqrt)
+            {
+                return muasqrt / a;
+            }
+
+            /// <summary>
+            /// Возвращает период оборота по орбите.
+            /// </summary>
+            /// <param name="a">Модуль большой полуоси орбиты.</param>
+            /// <param name="muasqrt">Корень из величины μ / a.</param>
+            public static double OrbitalPeriod (double a, double muasqrt)
+            {
+                return double.Tau * a / muasqrt;
+            }
         }
 
-        public static double GMASqrt (double mua)
+        public static class Integrals
         {
-            return double.Sqrt (mua);
-        }
+            public static double ArealVelocityNonParabola (double mu, double a)
+            {
+                return double.Sqrt (mu * a);
+            }
 
-        public static double V1Circular (double mu, double r)
-        {
-            return double.Sqrt (mu / r);
-        }
-
-        public static double V2Escape (double mu, double r)
-        {
-            return double.Sqrt (2.0 * mu / r);
-        }
-
-        public static double VelocityByDistance (double r, double mu, double h)
-        {
-            return double.Sqrt (h + 2 * mu / r);
-        }
-
-        public static double MeanMotion (double a, double muasqrt)
-        {
-            return muasqrt / a;
-        }
-
-        public static double OrbitalPeriod (double a, double muasqrt)
-        {
-            return double.Tau * a / muasqrt;
-        }
-
-        public static double ArealVelocityNonParabola (double mu, double a)
-        {
-            return double.Sqrt (mu * a);
-        }
-
-        public static double ArealVelocityParabola (double mu, double rp)
-        {
-            return double.Sqrt (2.0 * mu * rp);
+            public static double ArealVelocityParabola (double mu, double rp)
+            {
+                return double.Sqrt (2.0 * mu * rp);
+            }
         }
 
         /// <summary>
@@ -300,7 +330,7 @@ namespace SpaceOdyssey.Cosmodynamics
         public static (double vx, double vy) ComputePlanarVelocityForParabola (double r, double y, params double [] param)
         {
             double beta = double.Atan2 (param [1], -y);
-            double v    = V2Escape (param [0], r);
+            double v    = Motion.V2Escape (param [0], r);
 
             (double sin, double cos) = double.SinCos (beta);
 

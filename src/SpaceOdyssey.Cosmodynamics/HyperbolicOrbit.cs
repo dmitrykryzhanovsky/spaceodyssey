@@ -57,15 +57,15 @@
 
         protected override void ComputeMotionParameters ()
         {
-            _muasqrt = Formulae.GMASqrt (-_mua);
+            _muasqrt = Formulae.Motion.GMASqrt (-_mua);
 
-            _n       = Formulae.MeanMotion (-_a, _muasqrt);
+            _n       = Formulae.Motion.MeanMotion (-_a, _muasqrt);
             _vp      = _muasqrt * double.Sqrt (-_1pe / _1me);
         }
 
         protected override void ComputeArealVelocity ()
         {
-            _arealVelocity = Formulae.ArealVelocityNonParabola (_mu, -_a);
+            _arealVelocity = Formulae.Integrals.ArealVelocityNonParabola (_mu, -_a);
         }
 
         /// <summary>
@@ -91,7 +91,7 @@
             PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
                 H, sh, ch, -_a, _e, _sqrte2m1);
 
-            double speed = Formulae.VelocityByDistance (pp.R, _mu, _energyIntegral);
+            double speed = Formulae.Motion.VelocityByDistance (pp.R, _mu, _energyIntegral);
 
             PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
                 speed, sh, ch, _muasqrt, _e, _sqrte2m1);

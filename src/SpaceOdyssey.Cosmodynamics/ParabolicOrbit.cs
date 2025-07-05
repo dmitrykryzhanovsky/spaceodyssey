@@ -46,13 +46,13 @@
 
         protected override void ComputeMotion ()
         {
-            _vp = Formulae.V2Escape (_mu, _rp);
+            _vp = Formulae.Motion.V2Escape (_mu, _rp);
         }
 
         protected override void ComputeIntegrals ()
         {
             _energyIntegral = 0.0;
-            _arealVelocity  = Formulae.ArealVelocityParabola (_mu, _rp);
+            _arealVelocity  = Formulae.Integrals.ArealVelocityParabola (_mu, _rp);
         }
 
         public override double Radius (double trueAnomaly)

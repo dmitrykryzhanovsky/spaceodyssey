@@ -99,6 +99,8 @@
             return orbit;
         }
 
+        #region Orbit parameter computations
+
         protected override void ComputeShapeParameters ()
         {
             _1me2     = _1me * _1pe;
@@ -130,6 +132,8 @@
         {
             _arealVelocity = Formulae.Integrals.ArealVelocityNonParabola (_mu, _a);
         }
+
+        #endregion
 
         /// <summary>
         /// Истинная аномалия при расстоянии до центра тяготения r.

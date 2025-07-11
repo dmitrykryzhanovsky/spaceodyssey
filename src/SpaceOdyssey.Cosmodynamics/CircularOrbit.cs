@@ -55,6 +55,8 @@
             return orbit;
         }
 
+        #region Orbit parameter computations
+
         /// <summary>
         /// Для круговой орбиты все геометрические параметры численно равны большой полуоси (радиусу), а эксцентриситет = 0.
         /// </summary>
@@ -74,6 +76,8 @@
             _vp = _muasqrt;
             _va = _muasqrt;
         }
+
+        #endregion
 
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.

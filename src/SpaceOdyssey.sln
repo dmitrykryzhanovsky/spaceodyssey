@@ -13,10 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceOdyssey.Cosmodynamics"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SpaceOdyssey.Cosmodynamics.Tests", "SpaceOdyssey.Cosmodynamics.Tests\SpaceOdyssey.Cosmodynamics.Tests.csproj", "{4BDFAD98-98AC-48B2-B99E-B1F97D8BAB12}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Archimedes", "Archimedes\Archimedes.csproj", "{1187F2BA-9CA2-4DFB-BF99-5917EECA24BE}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Archimedes.Tests", "Archimedes.Tests\Archimedes.Tests.csproj", "{05A99312-B568-40A9-B29E-65A09A20D80B}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -43,14 +39,6 @@ Global
 		{4BDFAD98-98AC-48B2-B99E-B1F97D8BAB12}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4BDFAD98-98AC-48B2-B99E-B1F97D8BAB12}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4BDFAD98-98AC-48B2-B99E-B1F97D8BAB12}.Release|Any CPU.Build.0 = Release|Any CPU
-		{1187F2BA-9CA2-4DFB-BF99-5917EECA24BE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{1187F2BA-9CA2-4DFB-BF99-5917EECA24BE}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{1187F2BA-9CA2-4DFB-BF99-5917EECA24BE}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{1187F2BA-9CA2-4DFB-BF99-5917EECA24BE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{05A99312-B568-40A9-B29E-65A09A20D80B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{05A99312-B568-40A9-B29E-65A09A20D80B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{05A99312-B568-40A9-B29E-65A09A20D80B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{05A99312-B568-40A9-B29E-65A09A20D80B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

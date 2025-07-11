@@ -191,173 +191,178 @@ namespace SpaceOdyssey.Cosmodynamics
             }
         }
 
-        /// <summary>
-        /// Вычисление положения на круговой орбите.
-        /// </summary>
-        /// <param name="anomaly">Средняя / истинная аномалия.</param>
-        /// <param name="sin">Синус средней / истинной аномалии.</param>
-        /// <param name="cos">Косинус средней / истинной аномалии.</param>
-        /// <param name="param"><list type="number">
-        /// – [0] – радиус круговой орбиты
-        /// </list></param>
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForCircle (double anomaly, double sin,
-            double cos, params double [] param)
+        public static class PlanarPosition
         {
-            double x = param [0] * cos;
-            double y = param [0] * sin;
-            double r = param [0];
-            double trueAnomaly = anomaly;
+            /// <summary>
+            /// Вычисление положения на круговой орбите.
+            /// </summary>
+            /// <param name="anomaly">Средняя / истинная аномалия.</param>
+            /// <param name="sin">Синус средней / истинной аномалии.</param>
+            /// <param name="cos">Косинус средней / истинной аномалии.</param>
+            /// <param name="param"><list type="number">
+            /// – [0] – радиус круговой орбиты
+            /// </list></param>
+            public static (double x, double y, double r, double trueAnomaly) ComputeForCircle (double anomaly, double sin, double cos, 
+                params double [] param)
+            {
+                double x           = param [0] * cos;
+                double y           = param [0] * sin;
+                double r           = param [0];
+                double trueAnomaly = anomaly;
 
-            return (x, y, r, trueAnomaly);
+                return (x, y, r, trueAnomaly);
+            }
+
+            /// <summary>
+            /// Вычисление положения на эллиптической орбите.
+            /// </summary>
+            /// <param name="sin">Синус эксцентрической аномалии E.</param>
+            /// <param name="cos">Косинус эксцентрической аномалии E.</param>
+            /// <param name="param"><list type="number">
+            /// – [0] – большая полуось орбиты a
+            /// – [1] – эксцентриситет орбиты e
+            /// – [2] – корень из 1 – e^2
+            /// </list></param>
+            public static (double x, double y, double r, double trueAnomaly) ComputeForEllipse (double sin, double cos, 
+                params double [] param)
+            {
+                double x = param [0] * (cos - param [1]);
+                double y = param [0] * param [2] * sin;
+                (double r, double trueAnomaly) = Space2.PolarCoordinates (x, y);
+
+                return (x, y, r, trueAnomaly);
+            }
+
+            /// <summary>
+            /// Вычисление положения на гиперболической орбите.
+            /// </summary>
+            /// <param name="sh">Гиперболический синус эксцентрической аномалии H.</param>
+            /// <param name="ch">Гиперболический косинус эксцентрической аномалии H.</param>
+            /// <param name="param"><list type="number">
+            /// – [0] – модуль большой полуоси орбиты |a|
+            /// – [1] – эксцентриситет орбиты e
+            /// – [2] – корень из e^2 – 1
+            /// </list></param>
+            public static (double x, double y, double r, double trueAnomaly) ComputeForHyperbola (double sh, double ch, 
+                params double [] param)
+            {
+                double x = param [0] * (param [1] - ch);
+                double y = param [0] * param [2] * sh;
+                (double r, double trueAnomaly) = Space2.PolarCoordinates (x, y);
+
+                return (x, y, r, trueAnomaly);
+            }
+
+            /// <summary>
+            /// Вычисление положения на параболической орбите.
+            /// </summary>
+            /// <param name="anomaly">tan (ν/2), где ν – истинная аномалия.</param>
+            /// <param name="param"><list type="number">
+            /// – [0] – расстояние в перицентре rp
+            /// </list></param>
+            public static (double x, double y, double r, double trueAnomaly) ComputeForParabola (double anomaly, 
+                params double [] param)
+            {
+                double x = param [0] * (1 - anomaly * anomaly);
+                double y = 2.0 * param [0] * anomaly;
+                (double r, double trueAnomaly) = Space2.PolarCoordinates (x, y);
+
+                return (x, y, r, trueAnomaly);
+            }
         }
 
-        /// <summary>
-        /// Вычисление положения на эллиптической орбите.
-        /// </summary>
-        /// <param name="anomaly">В данном методе в вычислениях не участвует.</param>
-        /// <param name="sin">Синус эксцентрической аномалии E.</param>
-        /// <param name="cos">Косинус эксцентрической аномалии E.</param>
-        /// <param name="param"><list type="number">
-        /// – [0] – большая полуось орбиты a
-        /// – [1] – эксцентриситет орбиты e
-        /// – [2] – корень из 1 – e^2
-        /// </list></param>
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForEllipse (double anomaly, double sin,
-            double cos, params double [] param)
+        public static class PlanarVelocity
         {
-            double x = param [0] * (cos - param [1]);
-            double y = param [0] * param [2] * sin;
-            (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
+            /// <summary>
+            /// Вычисление скорости на круговой орбите.
+            /// </summary>
+            /// <param name="sin">Синус средней / истинной аномалии.</param>
+            /// <param name="cos">Косинус средней / истинной аномалии.</param>
+            /// <param name="param"><list type="number">
+            /// – [0] – корень из μ/a
+            /// </list></param>
+            public static (double vx, double vy) ComputeForCircle (double sin, double cos, params double [] param)
+            {
+                double vx = -param [0] * sin;
+                double vy =  param [0] * cos;
 
-            return (x, y, r, trueAnomaly);
+                return (vx, vy);
+            }
+
+            /// <summary>
+            /// Вычисление скорости на эллиптической орбите.
+            /// </summary>
+            /// <param name="sin">Синус эксцентрической аномалии E.</param>
+            /// <param name="cos">Косинус эксцентрической аномалии E.</param>
+            /// <param name="param"><list type="number">
+            /// – [0] – корень из μ/a
+            /// – [1] – эксцентриситет орбиты e
+            /// – [2] – корень из 1 – e^2
+            /// </list></param>
+            public static (double vx, double vy) ComputeForEllipse (double sin, double cos, params double [] param)
+            {
+                double denominator = 1.0 - param [1] * cos;
+
+                double vx = -param [0] * sin / denominator;
+                double vy =  param [0] * param [2] * cos / denominator;
+
+                return (vx, vy);
+            }
+
+            /// <summary>
+            /// Вычисление скорости на гиперболической орбите.
+            /// </summary>
+            /// <param name="sh">Гиперболический синус эксцентрической аномалии H.</param>
+            /// <param name="ch">Гиперболический косинус эксцентрической аномалии H.</param>
+            /// <param name="param"><list type="number">
+            /// – [0] – корень из μ/|a|
+            /// – [1] – эксцентриситет орбиты e
+            /// – [2] – корень из e^2 – 1
+            /// </list></param>
+            public static (double vx, double vy) ComputeForHyperbola (double sh, double ch, params double [] param)
+            {
+                double denominator = param [1] * ch - 1.0;
+
+                double vx = -param [0] * sh / denominator;
+                double vy =  param [0] * param [2] * ch / denominator;
+
+                return (vx, vy);
+            }
+
+            /// <summary>
+            /// Вычисление скорости на параболической орбите.
+            /// </summary>
+            /// <param name="r">Расстояние от тела до фокуса орбиты.</param>
+            /// <param name="y">Координата y в плоскости орбиты.</param>
+            /// <param name="param"><list type="number">
+            /// – [0] – локальная гравитационная постоянная μ
+            /// – [1] – фокальный параметр орбиты p
+            /// </list></param>
+            public static (double vx, double vy) ComputeForParabola (double r, double y, params double [] param)
+            {
+                double beta = double.Atan2 (param [1], -y);
+                double v    = Motion.V2Escape (param [0], r);
+
+                (double sin, double cos) = double.SinCos (beta);
+
+                double vx = v * cos;
+                double vy = v * sin;
+
+                return (vx, vy);
+            }
         }
 
-        /// <summary>
-        /// Вычисление положения на гиперболической орбите.
-        /// </summary>
-        /// <param name="anomaly">В данном методе в вычислениях не участвует.</param>
-        /// <param name="sh">Гиперболический синус эксцентрической аномалии H.</param>
-        /// <param name="ch">Гиперболический косинус эксцентрической аномалии H.</param>
-        /// <param name="param"><list type="number">
-        /// – [0] – модуль большой полуоси орбиты |a|
-        /// – [1] – эксцентриситет орбиты e
-        /// – [2] – корень из e^2 – 1
-        /// </list></param>
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForHyperbola (double anomaly, double sh,
-            double ch, params double [] param)
+        public static class KeplerEquation
         {
-            double x = param [0] * (param [1] - ch);
-            double y = param [0] * param [2] * sh;
-            (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
+            public static double SolveForEllipse (double M, double e)
+            {
+                throw new NotImplementedException ();
+            }
 
-            return (x, y, r, trueAnomaly);
-        }
-
-        /// <summary>
-        /// Вычисление положения на параболической орбите.
-        /// </summary>
-        /// <param name="anomaly">tan (ν/2), где ν – истинная аномалия.</param>
-        /// <param name="sin">В данном методе в вычислениях не участвует.</param>
-        /// <param name="cos">В данном методе в вычислениях не участвует.</param>
-        /// <param name="param"><list type="number">
-        /// – [0] – расстояние в перицентре rp
-        /// </list></param>
-        public static (double x, double y, double r, double trueAnomaly) ComputePlanarPositionForParabola (double anomaly, double sin,
-            double cos, params double [] param)
-        {
-            double x = param [0] * (1 - anomaly * anomaly);
-            double y = 2.0 * param [0] * anomaly;
-            (double r, double trueAnomaly) = Space2.ComputePolarComponents (x, y);
-
-            return (x, y, r, trueAnomaly);
-        }
-
-        /// <summary>
-        /// Вычисление скорости на круговой орбите.
-        /// </summary>
-        /// <param name="sin">Синус средней / истинной аномалии.</param>
-        /// <param name="cos">Косинус средней / истинной аномалии.</param>
-        /// <param name="param"><list type="number">
-        /// – [0] – корень из μ/a
-        /// </list></param>
-        public static (double vx, double vy) ComputePlanarVelocityForCircle (double sin, double cos, params double [] param)
-        {
-            double vx = -param [0] * sin;
-            double vy =  param [0] * cos;
-
-            return (vx, vy);
-        }
-
-        /// <summary>
-        /// Вычисление скорости на эллиптической орбите.
-        /// </summary>
-        /// <param name="sin">Синус эксцентрической аномалии E.</param>
-        /// <param name="cos">Косинус эксцентрической аномалии E.</param>
-        /// <param name="param"><list type="number">
-        /// – [0] – корень из μ/a
-        /// – [1] – эксцентриситет орбиты e
-        /// – [2] – корень из 1 – e^2
-        /// </list></param>
-        public static (double vx, double vy) ComputePlanarVelocityForEllipse (double sin, double cos, params double [] param)
-        {
-            double denominator = 1.0 - param [1] * cos;
-
-            double vx = -param [0] * sin / denominator;
-            double vy =  param [0] * param [2] * cos / denominator;
-
-            return (vx, vy);
-        }
-
-        /// <summary>
-        /// Вычисление скорости на гиперболической орбите.
-        /// </summary>
-        /// <param name="sh">Гиперболический синус эксцентрической аномалии H.</param>
-        /// <param name="ch">Гиперболический косинус эксцентрической аномалии H.</param>
-        /// <param name="param"><list type="number">
-        /// – [0] – корень из μ/|a|
-        /// – [1] – эксцентриситет орбиты e
-        /// – [2] – корень из e^2 – 1
-        /// </list></param>
-        public static (double vx, double vy) ComputePlanarVelocityForHyperbola (double sh, double ch, params double [] param)
-        {
-            double denominator = param [1] * ch - 1.0;
-
-            double vx = -param [0] * sh / denominator;
-            double vy =  param [0] * param [2] * ch / denominator;
-
-            return (vx, vy);
-        }
-
-        /// <summary>
-        /// Вычисление скорости на параболической орбите.
-        /// </summary>
-        /// <param name="r">Расстояние от тела до фокуса орбиты.</param>
-        /// <param name="y">Координата y в плоскости орбиты.</param>
-        /// <param name="param"><list type="number">
-        /// – [0] – локальная гравитационная постоянная μ
-        /// – [1] – фокальный параметр орбиты p
-        /// </list></param>
-        public static (double vx, double vy) ComputePlanarVelocityForParabola (double r, double y, params double [] param)
-        {
-            double beta = double.Atan2 (param [1], -y);
-            double v    = Motion.V2Escape (param [0], r);
-
-            (double sin, double cos) = double.SinCos (beta);
-
-            double vx = v * cos;
-            double vy = v * sin;
-
-            return (vx, vy);
-        }
-
-        public static double SolveKeplerEquationForEllipse (double M, double e)
-        {
-            throw new NotImplementedException ();
-        }
-
-        public static double SolveKeplerEquationForHyperbola (double M, double e)
-        {
-            throw new NotImplementedException ();
+            public static double SolveForHyperbola (double M, double e)
+            {
+                throw new NotImplementedException ();
+            }
         }
     }
 }

@@ -38,6 +38,8 @@
             return orbit;
         }
 
+        #region Orbit parameter computations
+
         protected override void ComputeShape ()
         {
             _e = 1.0;
@@ -54,6 +56,8 @@
             _energyIntegral = 0.0;
             _arealVelocity  = Formulae.Integrals.ArealVelocityParabola (_mu, _rp);
         }
+
+        #endregion
 
         public override double Radius (double trueAnomaly)
         {

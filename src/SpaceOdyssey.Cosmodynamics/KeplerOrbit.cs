@@ -95,6 +95,8 @@
 
         #endregion
 
+        #region Orbit parameter computations
+
         protected void ComputeOrbit ()
         {
             ComputeShape ();
@@ -107,6 +109,8 @@
         protected abstract void ComputeMotion ();
 
         protected abstract void ComputeIntegrals ();
+
+        #endregion
 
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
@@ -121,7 +125,13 @@
         /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
         public abstract double TrueAnomaly (double r);
 
+        /// <summary>
+        /// Вычисление положения на орбите в момент времени t.
+        /// </summary>
+        /// <param name="t">Выражен в юлианских датах.</param>
         public abstract OrbitalPosition ComputePosition (double t);
+
+        #region Checkers
 
         /// <summary>
         /// Чекеры для проверки значений входных параметров орбит на корректность.
@@ -158,5 +168,7 @@
                 if (e <= 1.0) throw new ArgumentOutOfRangeException ();
             }
         }
+
+        #endregion
     }
 }

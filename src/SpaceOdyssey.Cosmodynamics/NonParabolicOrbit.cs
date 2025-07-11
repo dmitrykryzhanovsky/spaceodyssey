@@ -41,6 +41,8 @@
 
         #endregion
 
+        #region Orbit parameter computations
+
         protected override void ComputeShape ()
         {
             _1me = 1.0 - _e;
@@ -68,6 +70,8 @@
         }
 
         protected abstract void ComputeArealVelocity ();
+
+        #endregion
 
         public override double Radius (double trueAnomaly)
         {

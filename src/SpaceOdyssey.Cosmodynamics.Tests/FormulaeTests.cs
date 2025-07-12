@@ -451,5 +451,20 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
         }
 
         #endregion
+
+        [TestMethod ()]
+        public void KeplerEquationSolveBarkerEquationTest ()
+        {
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center: Data.Sun.SI, probe: Data.Earth.SI, rp: 3.0, t0: 2.0);
+
+            double t = 5.0;
+            double A = 7.0545952741398e+09;
+
+            double expected = 2416.3914583176;
+
+            double actual = Formulae.KeplerEquation.SolveBarkerEquation (A);
+
+            Assert.AreEqual (expected, actual, 1.0e-10);
+        }
     }
 }

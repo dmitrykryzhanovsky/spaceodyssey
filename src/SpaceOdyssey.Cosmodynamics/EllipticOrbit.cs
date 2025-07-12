@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Эллиптическая орбита.
@@ -115,7 +117,7 @@
         {            
             _muasqrt = Formulae.Motion.GMASqrt (_mua);
 
-            _n       = Formulae.Motion.MeanMotion (_a, _muasqrt);
+            _n       = Formulae.Motion.MeanMotionNonParabola (_a, _muasqrt);
             _T       = Formulae.Motion.OrbitalPeriod (_a, _muasqrt);
             _vmean   = _muasqrt;
 
@@ -150,28 +152,22 @@
 
         protected override OrbitalPosition ComputePositionByM (double t, double M)
         {
-            double MPhase = double.Ieee754Remainder (M, double.Tau);
+            double MNormalized = Trigonometry.NormalizeMinusPlusInRad (M);
 
-            return ComputePositionByMPhase (t, M, MPhase);
+            return ComputePositionByMNormalized (t, M, MNormalized);
         }
 
-        public virtual OrbitalPosition ComputePositionByMPhase (double t, double M, double MPhase)
+        protected virtual OrbitalPosition ComputePositionByMNormalized (double t, double M, double MNormalized)
         {
-            //double E = Formulae.SolveKeplerEquationForEllipse (M, _e);
+            double E = Formulae.KeplerEquation.SolveForEllipse (MNormalized, _e);
 
-            //(double sin, double cos) = double.SinCos (E);
+            (double sin, double cos) = double.SinCos (E);
 
-            //PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForEllipse,
-            //    E, sin, cos, _a, _e, _sqrt1me2);
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForEllipse (sin, cos, _a, _e, _1me2);
 
-            //double speed = Formulae.Motion.VelocityByDistance (pp.R, _mu, _energyIntegral);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, _muasqrt, _e, _1me2);
 
-            //PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForEllipse,
-            //    speed, sin, cos, _muasqrt, _e, _sqrt1me2);
-
-            //return new OrbitalPosition (M: M, MPhase: M, E: E, t: t, planarPosition: pp, planarVelocity: pv);
-
-            return new OrbitalPosition ();
+            return new OrbitalPosition (t, M, MNormalized, E, x, y, r, trueAnomaly, vx, vy, speed);
         }
     }
 }

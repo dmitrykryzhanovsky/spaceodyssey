@@ -14,6 +14,7 @@
         protected double _e;
         protected double _rp;
 
+        protected double _n;
         protected double _vp;
 
         protected double _energyIntegral;
@@ -43,6 +44,14 @@
         public double RPeri
         {
             get => _rp;
+        }
+
+        /// <summary>
+        /// Среднее движение, угол / единица времени.
+        /// </summary>
+        public double N
+        {
+            get => _n;
         }
 
         /// <summary>
@@ -129,7 +138,14 @@
         /// Вычисление положения на орбите в момент времени t.
         /// </summary>
         /// <param name="t">Выражен в юлианских датах.</param>
-        public abstract OrbitalPosition ComputePosition (double t);
+        public virtual OrbitalPosition ComputePosition (double t)
+        {
+            double M = _n * (t - _t0);
+
+            return ComputePositionByM (t, M);
+        }
+
+        protected abstract OrbitalPosition ComputePositionByM (double t, double M);
 
         #region Checkers
 

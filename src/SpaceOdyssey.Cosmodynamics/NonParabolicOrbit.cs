@@ -12,8 +12,6 @@
         protected double _1me;     // Вспомогательная величина 1 – e.
         protected double _1pe;     // Вспомогательная величина 1 + e.
 
-        protected double _n;
-
         protected double _mua;     // Вспомогательная величина mu / a.
         protected double _muasqrt; // Вспомогательная величина sqrt (|mu / a|).
 
@@ -23,15 +21,7 @@
         public double A
         {
             get => _a;
-        }
-
-        /// <summary>
-        /// Среднее движение, угол / единица времени.
-        /// </summary>
-        public double N
-        {
-            get => _n;
-        }
+        }        
 
         #region Constructors
 
@@ -76,15 +66,6 @@
         public override double Radius (double trueAnomaly)
         {
             return Formulae.Shape.ConicSection (trueAnomaly, _p, _e);
-        }
-
-        public override OrbitalPosition ComputePosition (double t)
-        {
-            double M = _n * (t - _t0);
-
-            return ComputePositionByM (t, M);
-        }
-
-        protected abstract OrbitalPosition ComputePositionByM (double t, double M);
+        }        
     }
 }

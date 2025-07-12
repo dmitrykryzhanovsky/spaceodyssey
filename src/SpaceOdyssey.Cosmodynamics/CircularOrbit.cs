@@ -102,19 +102,15 @@
             else throw new ArgumentOutOfRangeException ();
         }
 
-        public override OrbitalPosition ComputePositionByMPhase (double t, double M, double MPhase)
+        protected override OrbitalPosition ComputePositionByMNormalized (double t, double M, double MNormalized)
         {
-            //(double sin, double cos) = double.SinCos (MPhase);
-
-            //PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForCircle,
-            //    MPhase, sin, cos, _a);
+            (double sin, double cos) = double.SinCos (MNormalized);
             
-            //PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForCircle, 
-            //    _muasqrt, sin, cos, _muasqrt);
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForCircle (MNormalized, sin, cos, _a);
 
-            //return new OrbitalPosition (M: M, MPhase: M, E: MPhase, t: t, planarPosition: pp, planarVelocity: pv);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForCircle (sin, cos, _muasqrt);
 
-            return new OrbitalPosition ();
+            return new OrbitalPosition (t, M, MNormalized, MNormalized, x, y, r, trueAnomaly, vx, vy, speed);
         }
     }
 }

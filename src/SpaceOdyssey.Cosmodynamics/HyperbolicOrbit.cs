@@ -61,7 +61,7 @@
         {
             _muasqrt = Formulae.Motion.GMASqrt (-_mua);
 
-            _n       = Formulae.Motion.MeanMotion (-_a, _muasqrt);
+            _n       = Formulae.Motion.MeanMotionNonParabola (-_a, _muasqrt);
             _vp      = _muasqrt * double.Sqrt (-_1pe / _1me);
         }
 
@@ -87,22 +87,16 @@
 
         protected override OrbitalPosition ComputePositionByM (double t, double M)
         {
-            //double H  = Formulae.SolveKeplerEquationForHyperbola (M, _e);
+            double H = Formulae.KeplerEquation.SolveForEllipse (M, _e);
 
-            //double sh = double.Sinh (H);
-            //double ch = double.Cosh (H);
+            double sh = double.Sinh (H);
+            double ch = double.Cosh (H);
 
-            //PlanarPosition pp = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
-            //    H, sh, ch, -_a, _e, _sqrte2m1);
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForHyperbola (sh, ch, -_a, _e, _e2m1);
 
-            //double speed = Formulae.Motion.VelocityByDistance (pp.R, _mu, _energyIntegral);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForHyperbola (sh, ch, _muasqrt, _e, _e2m1);
 
-            //PlanarVelocity pv = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
-            //    speed, sh, ch, _muasqrt, _e, _sqrte2m1);
-
-            //return new OrbitalPosition (M: M, MPhase: M, E: H, t: t, planarPosition: pp, planarVelocity: pv);
-
-            return new OrbitalPosition ();
+            return new OrbitalPosition (t, M, M, H, x, y, r, trueAnomaly, vx, vy, speed);
         }
     }
 }

@@ -192,16 +192,29 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
         }
 
         [TestMethod ()]
-        public void MeanMotionTest ()
+        public void MeanMotionNonParabolaTest ()
         {
             double a       = 149598261000.0;
             double muasqrt = 2.9784652977726422e+4;
 
             double expected = 1.9909758829166084e-7;
 
-            double actual = Formulae.Motion.MeanMotion (a, muasqrt);
+            double actual = Formulae.Motion.MeanMotionNonParabola (a, muasqrt);
 
             Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void MeanMotionParabolaTest ()
+        {
+            double mu = 1.32712440018e+20;
+            double rp = 74799130500.0;
+
+            double expected = 5.97292764874982e-07;
+
+            double actual = Formulae.Motion.MeanMotionParabola (mu, rp);
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
         }
 
         [TestMethod ()]
@@ -319,8 +332,8 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
         [TestMethod ()]
         public void PlanarPositionComputeForParabolaTest ()
         {
-            double    anomaly = double.Sqrt (3.0) / 3.0;
-            double [] param   = new double [] { 2.0 };
+            double    tanv2 = double.Sqrt (3.0) / 3.0;
+            double [] param = new double [] { 2.0 };
 
             (double x, double y, double r, double trueAnomaly) expected = 
                 (1.3333333333333333, 
@@ -328,7 +341,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
                  2.6666666666666667, 
                  1.0471975511965977);
 
-            (double x, double y, double r, double trueAnomaly) actual = Formulae.PlanarPosition.ComputeForParabola (anomaly, param);
+            (double x, double y, double r, double trueAnomaly) actual = Formulae.PlanarPosition.ComputeForParabola (tanv2, param);
 
             Assert.AreEqual (expected.x, actual.x, 1.0e-15);
             Assert.AreEqual (expected.y, actual.y);
@@ -347,12 +360,13 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             double    cos   = 0.5;
             double [] param = new double [] { 8.8712555300358739e+8 };
 
-            (double vx, double vy) expected = (-7.682732652474252e+8, 4.43562776501793695e+8);
+            (double vx, double vy, double speed) expected = (-7.682732652474252e+8, 4.43562776501793695e+8, 8.8712555300358739e+8);
 
-            (double vx, double vy) actual = Formulae.PlanarVelocity.ComputeForCircle (sin, cos, param);
+            (double vx, double vy, double speed) actual = Formulae.PlanarVelocity.ComputeForCircle (sin, cos, param);
 
             Assert.AreEqual (expected.vx, actual.vx, 1.0e-6);
             Assert.AreEqual (expected.vy, actual.vy);
+            Assert.AreEqual (expected.speed, actual.speed);
         }
 
         [TestMethod ()]
@@ -362,12 +376,14 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             double    cos   = 0.5;
             double [] param = new double [] { 8.8712555300358739e+8, 0.6, 0.8 };
 
-            (double vx, double vy) expected = (-1.09753323606775029e+9, 5.0692888743062137e+8);
+            (double vx, double vy, double speed) expected = (-1.09753323606775029e+9, 5.0692888743062137e+8, 
+                1.2089483451268692e+9);
 
-            (double vx, double vy) actual = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, param);
+            (double vx, double vy, double speed) actual = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, param);
 
             Assert.AreEqual (expected.vx, actual.vx);
             Assert.AreEqual (expected.vy, actual.vy, 1.0e-7);
+            Assert.AreEqual (expected.speed, actual.speed, 1.0e-6);
         }
 
         [TestMethod ()]
@@ -377,12 +393,13 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             double    ch    = 1.12762596520638079;
             double [] param = new double [] { 8.8712555300358739e+8, 1.4, 0.97979589711327124 };
 
-            (double vx, double vy) expected = (-798852346.435183, 1693752848.47108);
+            (double vx, double vy, double speed) expected = (-798852346.435183, 1693752848.47108, 1872688917.868874);
 
-            (double vx, double vy) actual = Formulae.PlanarVelocity.ComputeForHyperbola (sh, ch, param);
+            (double vx, double vy, double speed) actual = Formulae.PlanarVelocity.ComputeForHyperbola (sh, ch, param);
 
             Assert.AreEqual (expected.vx, actual.vx, 1.0e-6);
             Assert.AreEqual (expected.vy, actual.vy, 1.0e-5);
+            Assert.AreEqual (expected.speed, actual.speed, 1.0e-5);
         }
 
         [TestMethod ()]
@@ -392,12 +409,13 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             double    y     = 2.3094010767585031;
             double [] param = new double [] { 1.32712440018e+20, 4.0 };
 
-            (double vx, double vy) expected = (-4.98834466565563e+9, 8.64006640658074e+9);
+            (double vx, double vy, double speed) expected = (-4.98834466565563e+9, 8.64006640658074e+9, 9.9766893313112642e+9);
 
-            (double vx, double vy) actual = Formulae.PlanarVelocity.ComputeForParabola (r, y, param);
+            (double vx, double vy, double speed) actual = Formulae.PlanarVelocity.ComputeForParabola (r, y, param);
 
             Assert.AreEqual (expected.vx, actual.vx, 1.0e-5);
             Assert.AreEqual (expected.vy, actual.vy);
+            Assert.AreEqual (expected.speed, actual.speed);
         }
 
         [TestMethod ()]
@@ -407,12 +425,13 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             double    y     = 0.0;
             double [] param = new double [] { 1.32712440018e+20, 4.0 };
 
-            (double vx, double vy) expected = (0.0, 1.15200885421077E+10);
+            (double vx, double vy, double speed) expected = (0.0, 1.15200885421077E+10, 1.15200885421077E+10);
 
-            (double vx, double vy) actual = Formulae.PlanarVelocity.ComputeForParabola (r, y, param);
+            (double vx, double vy, double speed) actual = Formulae.PlanarVelocity.ComputeForParabola (r, y, param);
 
             Assert.AreEqual (expected.vx, actual.vx, 1.0e-4);
             Assert.AreEqual (expected.vy, actual.vy, 1.0e-4);
+            Assert.AreEqual (expected.speed, actual.speed, 1.0e-4);
         }
 
         [TestMethod ()]
@@ -422,12 +441,13 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             double    y     = -2.3094010767585031;
             double [] param = new double [] { 1.32712440018e+20, 4.0 };
 
-            (double vx, double vy) expected = (4.98834466565563e+9, 8.64006640658074e+9);
+            (double vx, double vy, double speed) expected = (4.98834466565563e+9, 8.64006640658074e+9, 9.9766893313112642e+9);
 
-            (double vx, double vy) actual = Formulae.PlanarVelocity.ComputeForParabola (r, y, param);
+            (double vx, double vy, double speed) actual = Formulae.PlanarVelocity.ComputeForParabola (r, y, param);
 
             Assert.AreEqual (expected.vx, actual.vx, 1.0e-5);
             Assert.AreEqual (expected.vy, actual.vy, 1.0e-5);
+            Assert.AreEqual (expected.speed, actual.speed);
         }
 
         #endregion

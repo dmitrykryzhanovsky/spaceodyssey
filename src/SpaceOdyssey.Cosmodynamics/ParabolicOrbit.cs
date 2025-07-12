@@ -48,6 +48,7 @@
 
         protected override void ComputeMotion ()
         {
+            _n  = Formulae.Motion.MeanMotionParabola (_mu, _rp);
             _vp = Formulae.Motion.V2Escape (_mu, _rp);
         }
 
@@ -77,25 +78,15 @@
             return Formulae.Shape.ConicSectionInverseParabola (r, _p);
         }
 
-        public override OrbitalPosition ComputePosition (double t)
+        protected override OrbitalPosition ComputePositionByM (double t, double M)
         {
-            //double M = _n * (t - _t0);
-            //double H;
+            double tanv2 = Formulae.KeplerEquation.SolveBarkerEquation (M);
 
-            //double sh = double.Sinh (H);
-            //double ch = double.Cosh (H);
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForParabola (tanv2, _rp);
 
-            //PlanarPosition planarPosition = PlanarPosition.ComputePlanarPosition (Formulae.ComputePlanarPositionForHyperbola,
-            //    H, sh, ch, -_a, _e, _sqrte2m1);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForParabola (r, y, _mu, _p);
 
-            //double speed = Formulae.VelocityByDistance (planarPosition.R, _mu, _energyIntegral);
-
-            //PlanarVelocity planarVelocity = PlanarVelocity.ComputePlanarVelocity (Formulae.ComputePlanarVelocityForHyperbola,
-            //    speed, sh, ch, _muasqrt, _e, _sqrte2m1);
-
-            //return new OrbitalPosition (M, M, H, t, planarPosition, planarVelocity);
-
-            return new OrbitalPosition ();
+            return new OrbitalPosition (t, M, M, M, x, y, r, trueAnomaly, vx, vy, speed);
         }
     }
 }

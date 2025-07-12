@@ -148,13 +148,23 @@ namespace SpaceOdyssey.Cosmodynamics
             }
 
             /// <summary>
-            /// Возвращает среднее движение, угловая единица / единица времени.
+            /// Возвращает среднее движение для непараболических орбит, угловая единица / единица времени.
             /// </summary>
             /// <param name="a">Модуль большой полуоси орбиты.</param>
             /// <param name="muasqrt">Корень из величины μ / a.</param>
-            public static double MeanMotion (double a, double muasqrt)
+            public static double MeanMotionNonParabola (double a, double muasqrt)
             {
                 return muasqrt / a;
+            }
+
+            /// <summary>
+            /// Возвращает среднее движение для параболических орбит, угловая единица / единица времени.
+            /// </summary>
+            /// <param name="mu">Локальная гравитационная постоянная.</param>
+            /// <param name="rp">Расстояние в перигелии.</param>
+            public static double MeanMotionParabola (double mu, double rp)
+            {
+                return 1.5 * double.Sqrt (mu / (2.0 * rp)) / rp;
             }
 
             /// <summary>
@@ -256,15 +266,14 @@ namespace SpaceOdyssey.Cosmodynamics
             /// <summary>
             /// Вычисление положения на параболической орбите.
             /// </summary>
-            /// <param name="anomaly">tan (ν/2), где ν – истинная аномалия.</param>
+            /// <param name="tanv2">tan (ν/2), где ν – истинная аномалия.</param>
             /// <param name="param"><list type="number">
             /// – [0] – расстояние в перицентре rp
             /// </list></param>
-            public static (double x, double y, double r, double trueAnomaly) ComputeForParabola (double anomaly, 
-                params double [] param)
+            public static (double x, double y, double r, double trueAnomaly) ComputeForParabola (double tanv2, params double [] param)
             {
-                double x = param [0] * (1 - anomaly * anomaly);
-                double y = 2.0 * param [0] * anomaly;
+                double x = param [0] * (1 - tanv2 * tanv2);
+                double y = 2.0 * param [0] * tanv2;
                 (double r, double trueAnomaly) = Space2.PolarCoordinates (x, y);
 
                 return (x, y, r, trueAnomaly);
@@ -281,12 +290,13 @@ namespace SpaceOdyssey.Cosmodynamics
             /// <param name="param"><list type="number">
             /// – [0] – корень из μ/a
             /// </list></param>
-            public static (double vx, double vy) ComputeForCircle (double sin, double cos, params double [] param)
+            public static (double vx, double vy, double speed) ComputeForCircle (double sin, double cos, params double [] param)
             {
-                double vx = -param [0] * sin;
-                double vy =  param [0] * cos;
+                double vx    = -param [0] * sin;
+                double vy    =  param [0] * cos;
+                double speed =  param [0];
 
-                return (vx, vy);
+                return (vx, vy, speed);
             }
 
             /// <summary>
@@ -299,14 +309,15 @@ namespace SpaceOdyssey.Cosmodynamics
             /// – [1] – эксцентриситет орбиты e
             /// – [2] – корень из 1 – e^2
             /// </list></param>
-            public static (double vx, double vy) ComputeForEllipse (double sin, double cos, params double [] param)
+            public static (double vx, double vy, double speed) ComputeForEllipse (double sin, double cos, params double [] param)
             {
                 double denominator = 1.0 - param [1] * cos;
 
-                double vx = -param [0] * sin / denominator;
-                double vy =  param [0] * param [2] * cos / denominator;
+                double vx    = -param [0] * sin / denominator;
+                double vy    =  param [0] * param [2] * cos / denominator;
+                double speed =  param [0] * double.Sqrt ((1.0 + param [1] * cos) / denominator);
 
-                return (vx, vy);
+                return (vx, vy, speed);
             }
 
             /// <summary>
@@ -319,14 +330,15 @@ namespace SpaceOdyssey.Cosmodynamics
             /// – [1] – эксцентриситет орбиты e
             /// – [2] – корень из e^2 – 1
             /// </list></param>
-            public static (double vx, double vy) ComputeForHyperbola (double sh, double ch, params double [] param)
+            public static (double vx, double vy, double speed) ComputeForHyperbola (double sh, double ch, params double [] param)
             {
                 double denominator = param [1] * ch - 1.0;
 
-                double vx = -param [0] * sh / denominator;
-                double vy =  param [0] * param [2] * ch / denominator;
+                double vx    = -param [0] * sh / denominator;
+                double vy    =  param [0] * param [2] * ch / denominator;
+                double speed =  param [0] * double.Sqrt ((param [1] * ch + 1.0) / denominator);
 
-                return (vx, vy);
+                return (vx, vy, speed);
             }
 
             /// <summary>
@@ -338,17 +350,17 @@ namespace SpaceOdyssey.Cosmodynamics
             /// – [0] – локальная гравитационная постоянная μ
             /// – [1] – фокальный параметр орбиты p
             /// </list></param>
-            public static (double vx, double vy) ComputeForParabola (double r, double y, params double [] param)
+            public static (double vx, double vy, double speed) ComputeForParabola (double r, double y, params double [] param)
             {
-                double beta = double.Atan2 (param [1], -y);
-                double v    = Motion.V2Escape (param [0], r);
+                double beta  = double.Atan2 (param [1], -y);
+                double speed = Motion.V2Escape (param [0], r);
 
                 (double sin, double cos) = double.SinCos (beta);
 
-                double vx = v * cos;
-                double vy = v * sin;
+                double vx = speed * cos;
+                double vy = speed * sin;
 
-                return (vx, vy);
+                return (vx, vy, speed);
             }
         }
 
@@ -362,6 +374,13 @@ namespace SpaceOdyssey.Cosmodynamics
             public static double SolveForHyperbola (double M, double e)
             {
                 throw new NotImplementedException ();
+            }
+
+            public static double SolveBarkerEquation (double M)
+            {
+                double B = double.Cbrt (M + double.Sqrt (M * M + 1));
+
+                return B - 1.0 / B;
             }
         }
     }

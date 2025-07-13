@@ -33,7 +33,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void RadiusTest ()
         {
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        rp: 2.0,
                                                                        e:  1.6,
                                                                        t0: 2451545.0);
@@ -49,7 +49,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_0 ()
         {
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
                                                                        t0:     2451545.0);
@@ -65,7 +65,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_60 ()
         {
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
                                                                        t0:     2451545.0);
@@ -81,7 +81,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_90 ()
         {
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
                                                                        t0:     2451545.0);
@@ -97,7 +97,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_Asymptote ()
         {
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
                                                                        t0:     2451545.0);
@@ -113,7 +113,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        rp:     2.0,
                                                                        e:      2.0,
                                                                        t0:     2451545.0);

@@ -2,8 +2,6 @@
 {
     public static class Data
     {
-        public static readonly Mass ProbeZeroMass = Mass.CreateByMass (0.0);
-
         public static class Sun
         {
             private const double GM_SI = 1.32712440018e+20;

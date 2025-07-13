@@ -376,6 +376,10 @@ namespace SpaceOdyssey.Cosmodynamics
                 throw new NotImplementedException ();
             }
 
+            /// <summary>
+            /// Решение уравнения Баркера относительно средней аномалии (для параболических орбит обычно обозначается как A).
+            /// </summary>
+            /// <returns>Возвращает tan (v/2), где v – истинная аномалия.</returns>
             public static double SolveBarkerEquation (double M)
             {
                 double B = double.Cbrt (M + double.Sqrt (M * M + 1));

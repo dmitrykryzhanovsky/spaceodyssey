@@ -8,6 +8,11 @@ namespace SpaceOdyssey.Cosmodynamics
     public class Mass : ICloneable
     {
         /// <summary>
+        /// Спутник нулевой массы.
+        /// </summary>
+        public static readonly Mass ProbeZeroMass = CreateByMass (0.0);
+
+        /// <summary>
         /// Масса тела.
         /// </summary>
         public double M { get; private set; }

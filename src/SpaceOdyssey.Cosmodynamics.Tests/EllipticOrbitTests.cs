@@ -69,9 +69,9 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void RadiusTest ()
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.Earth.SI, 
-                                                                       probe:  Data.ProbeZeroMass, 
-                                                                       a: 2.0, 
-                                                                       e: 0.6, 
+                                                                       probe:  Mass.ProbeZeroMass, 
+                                                                       a:  2.0, 
+                                                                       e:  0.6, 
                                                                        t0: 2451545.0);
 
             double trueAnomaly = double.Pi * (2.0 / 3.0);
@@ -85,7 +85,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_0 ()
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        a: 2.0,
                                                                        e: 0.5,
                                                                        t0: 2451545.0);
@@ -101,7 +101,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_60 ()
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        a: 2.0,
                                                                        e: 0.5,
                                                                        t0: 2451545.0);
@@ -117,7 +117,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_90 ()
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        a: 2.0,
                                                                        e: 0.5,
                                                                        t0: 2451545.0);
@@ -133,7 +133,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_120 ()
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        a: 2.0,
                                                                        e: 0.5,
                                                                        t0: 2451545.0);
@@ -149,7 +149,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_CorrectDistance_180 ()
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        a: 2.0,
                                                                        e: 0.5,
                                                                        t0: 2451545.0);
@@ -165,7 +165,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        a: 2.0,
                                                                        e: 0.5,
                                                                        t0: 2451545.0);
@@ -191,7 +191,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         public void TrueAnomalyTest_IncorrectDistanceGteater ()
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Data.Earth.SI,
-                                                                       probe:  Data.ProbeZeroMass,
+                                                                       probe:  Mass.ProbeZeroMass,
                                                                        a: 2.0,
                                                                        e: 0.5,
                                                                        t0: 2451545.0);

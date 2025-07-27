@@ -102,15 +102,22 @@
             else throw new ArgumentOutOfRangeException ();
         }
 
-        protected override OrbitalPosition ComputePositionByMNormalized (double t, double M, double MNormalized)
+        protected override OrbitalPosition ComputePositionByMArg (double t, double M, double MArg)
         {
-            (double sin, double cos) = double.SinCos (MNormalized);
-            
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForCircle (MNormalized, sin, cos, _a);
+            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (MArg);
 
+            return new OrbitalPosition (t, M, MArg, MArg, x, y, r, trueAnomaly, vx, vy, speed);
+        }
+
+        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
+            (double MArg)
+        {
+            (double sin, double cos) = double.SinCos (MArg);
+
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForCircle (MArg, sin, cos, _a);
             (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForCircle (sin, cos, _muasqrt);
 
-            return new OrbitalPosition (t, M, MNormalized, MNormalized, x, y, r, trueAnomaly, vx, vy, speed);
+            return (x, y, r, trueAnomaly, vx, vy, speed);
         }
     }
 }

@@ -8,7 +8,7 @@
         private readonly double _t;
 
         private readonly double _M;
-        private readonly double _MNormalized;
+        private readonly double _MArg;
         private readonly double _E;
 
         private readonly Planar _planarPosition;
@@ -33,9 +33,9 @@
         /// <summary>
         /// Средняя аномалия, приведённая в диапазон (-π; +π].
         /// </summary>
-        public double MNormalized
+        public double MArg
         {
-            get => _MNormalized;
+            get => _MArg;
         }
 
         /// <summary>
@@ -78,14 +78,14 @@
             get => _planarPosition;
         }
 
-        internal OrbitalPosition (double t, double M, double MNormalized, double E, double planarX, double planarY, double r, 
+        internal OrbitalPosition (double t, double M, double MArg, double E, double planarX, double planarY, double r, 
             double trueAnomaly, double planarVX, double planarVY, double speed)
         {
-            _t = t;
+            _t    = t;
 
-            _M           = M;
-            _MNormalized = MNormalized;
-            _E           = E;
+            _M    = M;
+            _MArg = MArg;
+            _E    = E;
 
             _planarPosition = new Planar (planarX, planarY, r, trueAnomaly, planarVX, planarVY, speed);
         }

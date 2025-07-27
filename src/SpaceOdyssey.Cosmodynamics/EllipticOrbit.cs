@@ -152,22 +152,27 @@ namespace SpaceOdyssey.Cosmodynamics
 
         protected override OrbitalPosition ComputePositionByM (double t, double M)
         {
-            double MNormalized = Trigonometry.NormalizeMinusPlusInRad (M);
-
-            return ComputePositionByMNormalized (t, M, MNormalized);
+            return ComputePositionByMArg (t, M, Trigonometry.NormalizeMinusPlusInRad (M));
         }
 
-        protected virtual OrbitalPosition ComputePositionByMNormalized (double t, double M, double MNormalized)
+        protected virtual OrbitalPosition ComputePositionByMArg (double t, double M, double MArg)
         {
-            double E = Formulae.KeplerEquation.SolveForEllipse (MNormalized, _e);
+            double E = Formulae.KeplerEquation.SolveForEllipse (MArg, _e);
 
+            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (E);
+
+            return new OrbitalPosition (t, M, MArg, E, x, y, r, trueAnomaly, vx, vy, speed);
+        }
+
+        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
+            (double E)
+        {
             (double sin, double cos) = double.SinCos (E);
 
             (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForEllipse (sin, cos, _a, _e, _1me2);
-
             (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, _muasqrt, _e, _1me2);
 
-            return new OrbitalPosition (t, M, MNormalized, E, x, y, r, trueAnomaly, vx, vy, speed);
+            return (x, y, r, trueAnomaly, vx, vy, speed);
         }
     }
 }

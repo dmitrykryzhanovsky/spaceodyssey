@@ -89,14 +89,21 @@
         {
             double H = Formulae.KeplerEquation.SolveForEllipse (M, _e);
 
+            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (H);
+
+            return new OrbitalPosition (t, M, M, H, x, y, r, trueAnomaly, vx, vy, speed);
+        }
+
+        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements 
+            (double H)
+        {
             double sh = double.Sinh (H);
             double ch = double.Cosh (H);
 
             (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForHyperbola (sh, ch, -_a, _e, _e2m1);
-
             (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForHyperbola (sh, ch, _muasqrt, _e, _e2m1);
 
-            return new OrbitalPosition (t, M, M, H, x, y, r, trueAnomaly, vx, vy, speed);
+            return (x, y, r, trueAnomaly, vx, vy, speed);
         }
     }
 }

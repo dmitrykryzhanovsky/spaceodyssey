@@ -140,12 +140,14 @@
         /// <param name="t">Выражен в юлианских датах.</param>
         public virtual OrbitalPosition ComputePosition (double t)
         {
-            double M = _n * (t - _t0);
-
-            return ComputePositionByM (t, M);
+            return ComputePositionByM (t, _n * (t - _t0));
         }
 
+        // TODO: подумать здесь над организацией, оформлением, регионами и комментариями кода
         protected abstract OrbitalPosition ComputePositionByM (double t, double M);
+
+        protected abstract (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements 
+            (double angleParam);
 
         #region Checkers
 

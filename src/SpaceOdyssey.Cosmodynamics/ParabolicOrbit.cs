@@ -82,11 +82,18 @@
         {
             double tanv2 = Formulae.KeplerEquation.SolveBarkerEquation (M);
 
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForParabola (tanv2, _rp);
-
-            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForParabola (r, y, _mu, _p);
+            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (tanv2);
 
             return new OrbitalPosition (t, M, M, M, x, y, r, trueAnomaly, vx, vy, speed);
+        }
+
+        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
+            (double tanv2)
+        {
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForParabola (tanv2, _rp);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForParabola (r, y, _mu, _p);
+
+            return (x, y, r, trueAnomaly, vx, vy, speed);
         }
     }
 }

@@ -80,6 +80,11 @@
 
         #region Compute position in the orbit plane
 
+        protected override double GetMeanAnolamy (double MTotal)
+        {
+            return MTotal;
+        }
+
         /// <summary>
         /// Решает уравнение Баркера и возвращает величину tan (v/2), где v – истинная аномалия.
         /// </summary>

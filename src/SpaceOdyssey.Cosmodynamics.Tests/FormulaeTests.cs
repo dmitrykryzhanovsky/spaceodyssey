@@ -233,7 +233,15 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
         [TestMethod ()]
         public void MeanAnomalyForTimeTest ()
         {
-            // TODO: написать тест
+            double t  = 5.0;
+            double t0 = 2.0;
+            double n  = 7.0;
+
+            double expected = 21.0;
+
+            double actual = Formulae.Motion.MeanAnomalyForTime (t, t0, n);
+
+            Assert.AreEqual (expected, actual);
         }
 
         #endregion

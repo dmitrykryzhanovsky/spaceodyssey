@@ -152,6 +152,11 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Compute position in the orbit plane
 
+        protected override double GetMeanAnolamy (double MTotal)
+        {
+            return Trigonometry.NormalizeMinusPlusInRad (MTotal);
+        }
+
         /// <summary>
         /// Решает уравнение Кеплера и возвращает эксцентрическую аномалию E.
         /// </summary>

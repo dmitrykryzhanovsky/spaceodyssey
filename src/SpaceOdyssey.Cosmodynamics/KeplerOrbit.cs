@@ -145,8 +145,7 @@ namespace SpaceOdyssey.Cosmodynamics
         public OrbitalPosition ComputePosition (double t)
         {
             double MTotal = Formulae.Motion.MeanAnomalyForTime (t, _t0, _n);
-            // TODO: общий вариант не прокатил, нужно сделать по типа орбит
-            double M      = Trigonometry.NormalizeMinusPlusInRad (MTotal);
+            double M      = GetMeanAnolamy (MTotal);
             double E      = SolveKeplerEquation (M, _e);
 
             (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (E);
@@ -154,8 +153,10 @@ namespace SpaceOdyssey.Cosmodynamics
             return new OrbitalPosition (t, MTotal, M, E, x, y, r, trueAnomaly, vx, vy, speed);
         }
 
+        protected abstract double GetMeanAnolamy (double MTotal);
+
         /// <summary>
-        /// В обще случае решает уравнение Кеплера для средней аномалии M и эксцентриситета e. Более подробные комментарии см. в 
+        /// В общем случае решает уравнение Кеплера для средней аномалии M и эксцентриситета e. Более подробные комментарии см. в 
         /// перегруженных методах в дочерних классах.
         /// </summary>
         protected abstract double SolveKeplerEquation (double M, double e);

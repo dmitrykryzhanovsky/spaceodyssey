@@ -87,6 +87,11 @@
 
         #region Compute position in the orbit plane
 
+        protected override double GetMeanAnolamy (double MTotal)
+        {
+            return MTotal;
+        }
+
         /// <summary>
         /// Решает уравнение Кеплера и возвращает эксцентрическую аномалию H.
         /// </summary>

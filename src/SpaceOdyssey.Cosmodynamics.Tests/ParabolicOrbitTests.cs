@@ -156,9 +156,9 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (5.0, actual.Time);
 
             Assert.AreEqual ( 6.12372435695795, actual.MTotal, 1.0e-14);
-            Assert.AreEqual (-0.15946095022164, actual.M, 1.0e-14);
+            Assert.AreEqual ( 6.12372435695795, actual.M, 1.0e-14);
             // TODO: починить тест
-            Assert.AreEqual (6.12372435695795, actual.E, 1.0e-14);
+            Assert.AreEqual ( 2.79074558090696, actual.E, 1.0e-14);
 
             Assert.AreEqual (-7.57232126451531, actual.PlanarPosition.X, 1.0e-14);
             Assert.AreEqual (11.2635631650994,  actual.PlanarPosition.Y, 1.0e-13);

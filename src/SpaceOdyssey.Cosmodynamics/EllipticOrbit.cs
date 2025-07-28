@@ -150,20 +150,19 @@ namespace SpaceOdyssey.Cosmodynamics
             return Formulae.Shape.ConicSectionInverse (r, _p, _e);
         }
 
-        protected override OrbitalPosition ComputePositionByM (double t, double M)
+        #region Compute position in the orbit plane
+
+        /// <summary>
+        /// Решает уравнение Кеплера и возвращает эксцентрическую аномалию E.
+        /// </summary>
+        protected override double SolveKeplerEquation (double M, double e)
         {
-            return ComputePositionByMArg (t, M, Trigonometry.NormalizeMinusPlusInRad (M));
+            return Formulae.KeplerEquation.SolveForEllipse (M, e);
         }
 
-        protected virtual OrbitalPosition ComputePositionByMArg (double t, double M, double MArg)
-        {
-            double E = Formulae.KeplerEquation.SolveForEllipse (MArg, _e);
-
-            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (E);
-
-            return new OrbitalPosition (t, M, MArg, E, x, y, r, trueAnomaly, vx, vy, speed);
-        }
-
+        /// <summary>
+        /// Определяет характеристики положения на орбите на основе эксцентрической аномалии E.
+        /// </summary>
         protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
             (double E)
         {
@@ -174,5 +173,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
             return (x, y, r, trueAnomaly, vx, vy, speed);
         }
+
+        #endregion
     }
 }

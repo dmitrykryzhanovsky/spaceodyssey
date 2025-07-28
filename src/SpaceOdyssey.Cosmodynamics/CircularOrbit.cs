@@ -102,22 +102,31 @@
             else throw new ArgumentOutOfRangeException ();
         }
 
-        protected override OrbitalPosition ComputePositionByMArg (double t, double M, double MArg)
-        {
-            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (MArg);
+        #region Compute position in the orbit plane
 
-            return new OrbitalPosition (t, M, MArg, MArg, x, y, r, trueAnomaly, vx, vy, speed);
+        /// <summary>
+        /// Так как для окружности уравнение Кеплера решать ненужно, данная перегрузка метода носит формальный характер и возвращает 
+        /// переданное в него значение средней аномалии M.
+        /// </summary>
+        protected override double SolveKeplerEquation (double M, double e)
+        {
+            return M;
         }
 
+        /// <summary>
+        /// Определяет характеристики положения на орбите на основе средней аномалии M.
+        /// </summary>
         protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
-            (double MArg)
+            (double M)
         {
-            (double sin, double cos) = double.SinCos (MArg);
+            (double sin, double cos) = double.SinCos (M);
 
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForCircle (MArg, sin, cos, _a);
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForCircle (M, sin, cos, _a);
             (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForCircle (sin, cos, _muasqrt);
 
             return (x, y, r, trueAnomaly, vx, vy, speed);
         }
+
+        #endregion
     }
 }

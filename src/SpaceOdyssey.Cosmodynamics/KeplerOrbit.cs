@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Базовый класс для кеплеровых орбит.
@@ -134,20 +136,37 @@
         /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
         public abstract double TrueAnomaly (double r);
 
+        #region Compute position in the orbit plane
+
         /// <summary>
         /// Вычисление положения на орбите в момент времени t.
         /// </summary>
         /// <param name="t">Выражен в юлианских датах.</param>
-        public virtual OrbitalPosition ComputePosition (double t)
+        public OrbitalPosition ComputePosition (double t)
         {
-            return ComputePositionByM (t, _n * (t - _t0));
+            double MTotal = Formulae.Motion.MeanAnomalyForTime (t, _t0, _n);
+            // TODO: общий вариант не прокатил, нужно сделать по типа орбит
+            double M      = Trigonometry.NormalizeMinusPlusInRad (MTotal);
+            double E      = SolveKeplerEquation (M, _e);
+
+            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (E);
+
+            return new OrbitalPosition (t, MTotal, M, E, x, y, r, trueAnomaly, vx, vy, speed);
         }
 
-        // TODO: подумать здесь над организацией, оформлением, регионами и комментариями кода
-        protected abstract OrbitalPosition ComputePositionByM (double t, double M);
+        /// <summary>
+        /// В обще случае решает уравнение Кеплера для средней аномалии M и эксцентриситета e. Более подробные комментарии см. в 
+        /// перегруженных методах в дочерних классах.
+        /// </summary>
+        protected abstract double SolveKeplerEquation (double M, double e);
 
+        /// <summary>
+        /// Определяет характеристики положения на орбите на основе решения уравнения Кеплера.
+        /// </summary>
         protected abstract (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements 
-            (double angleParam);
+            (double E);
+
+        #endregion
 
         #region Checkers
 

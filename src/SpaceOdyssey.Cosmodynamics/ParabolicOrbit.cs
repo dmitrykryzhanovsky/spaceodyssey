@@ -78,15 +78,19 @@
             return Formulae.Shape.ConicSectionInverseParabola (r, _p);
         }
 
-        protected override OrbitalPosition ComputePositionByM (double t, double M)
+        #region Compute position in the orbit plane
+
+        /// <summary>
+        /// Решает уравнение Баркера и возвращает величину tan (v/2), где v – истинная аномалия.
+        /// </summary>
+        protected override double SolveKeplerEquation (double M, double e)
         {
-            double tanv2 = Formulae.KeplerEquation.SolveBarkerEquation (M);
-
-            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (tanv2);
-
-            return new OrbitalPosition (t, M, M, M, x, y, r, trueAnomaly, vx, vy, speed);
+            return Formulae.KeplerEquation.SolveBarkerEquation (M);
         }
 
+        /// <summary>
+        /// Определяет характеристики положения на орбите на основе величины tan (v/2), где v – истинная аномалия.
+        /// </summary>
         protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
             (double tanv2)
         {
@@ -95,5 +99,7 @@
 
             return (x, y, r, trueAnomaly, vx, vy, speed);
         }
+
+        #endregion
     }
 }

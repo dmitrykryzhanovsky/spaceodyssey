@@ -7,8 +7,8 @@
     {
         private readonly double _t;
 
+        private readonly double _MTotal;
         private readonly double _M;
-        private readonly double _MArg;
         private readonly double _E;
 
         private readonly Planar _planarPosition;
@@ -25,17 +25,17 @@
         /// Средняя аномалия, отсчитываемая от момента прохождения перицентра, заданного в элементах орбиты.
         /// </summary>
         /// <remarks>Может содержать в себе любое число оборотов, и, таким образом, выходить за пределы диапазона (-π; +π].</remarks>
-        public double M
+        public double MTotal
         {
-            get => _M;
+            get => _MTotal;
         }
 
         /// <summary>
         /// Средняя аномалия, приведённая в диапазон (-π; +π].
         /// </summary>
-        public double MArg
+        public double M
         {
-            get => _MArg;
+            get => _M;
         }
 
         /// <summary>
@@ -78,14 +78,16 @@
             get => _planarPosition;
         }
 
-        internal OrbitalPosition (double t, double M, double MArg, double E, double planarX, double planarY, double r, 
-            double trueAnomaly, double planarVX, double planarVY, double speed)
+        internal OrbitalPosition (double t, 
+                                  double MTotal, double M, double E, 
+                                  double planarX, double planarY, double r, double trueAnomaly, 
+                                  double planarVX, double planarVY, double speed)
         {
-            _t    = t;
+            _t      = t;
 
-            _M    = M;
-            _MArg = MArg;
-            _E    = E;
+            _MTotal = MTotal;
+            _M      = M;
+            _E      = E;
 
             _planarPosition = new Planar (planarX, planarY, r, trueAnomaly, planarVX, planarVY, speed);
         }

@@ -72,7 +72,8 @@ namespace SpaceOdyssey.Cosmodynamics
                 get => _speed;
             }
 
-            public Planar (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed)
+            public Planar (double x, double y, double r, double trueAnomaly, 
+                           double vx, double vy, double speed)
             {
                 _u     = new Vector2 (x, y);
                 _p     = new Polar2 (r, trueAnomaly);

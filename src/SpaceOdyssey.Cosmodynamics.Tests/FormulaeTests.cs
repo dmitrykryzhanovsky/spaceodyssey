@@ -230,6 +230,12 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             Assert.AreEqual (expected, actual, 1.0e-8);
         }
 
+        [TestMethod ()]
+        public void MeanAnomalyForTimeTest ()
+        {
+            // TODO: написать тест
+        }
+
         #endregion
 
         #region Integrals

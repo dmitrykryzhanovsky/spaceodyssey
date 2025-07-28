@@ -176,6 +176,16 @@ namespace SpaceOdyssey.Cosmodynamics
             {
                 return double.Tau * a / muasqrt;
             }
+
+            /// <summary>
+            /// Возвращает среднюю аномалию для момента времени t.
+            /// </summary>
+            /// <param name="t0">Момент прохождения перицентра.</param>
+            /// <param name="n">Среднее движение.</param>
+            public static double MeanAnomalyForTime (double t, double t0, double n)
+            {
+                return n * (t - t0);
+            }
         }
 
         public static class Integrals

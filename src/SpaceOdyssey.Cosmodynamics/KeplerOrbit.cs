@@ -144,16 +144,16 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <param name="t">Выражен в юлианских датах.</param>
         public OrbitalPosition ComputePosition (double t)
         {
-            double MTotal = Formulae.Motion.MeanAnomalyForTime (t, _t0, _n);
-            double M      = GetMeanAnolamy (MTotal);
-            double E      = SolveKeplerEquation (M, _e);
+            double averageSector = Formulae.Motion.MeanAnomalyForTime (t, _t0, _n);
+            double M = GetMeanAnolamyForThisOrbitType (averageSector);
+            double E = SolveKeplerEquation (M, _e);
 
             (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (E);
 
-            return new OrbitalPosition (t, MTotal, M, E, x, y, r, trueAnomaly, vx, vy, speed);
+            return new OrbitalPosition (t, averageSector, M, E, x, y, r, trueAnomaly, vx, vy, speed);
         }
 
-        protected abstract double GetMeanAnolamy (double MTotal);
+        protected abstract double GetMeanAnolamyForThisOrbitType (double averageSector);
 
         /// <summary>
         /// В общем случае решает уравнение Кеплера для средней аномалии M и эксцентриситета e. Более подробные комментарии см. в 

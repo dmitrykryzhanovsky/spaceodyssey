@@ -87,7 +87,7 @@
 
         #region Compute position in the orbit plane
 
-        protected override double GetMeanAnolamy (double MTotal)
+        protected override double GetMeanAnolamyForThisOrbitType (double MTotal)
         {
             return MTotal;
         }

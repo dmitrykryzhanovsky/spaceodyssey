@@ -153,7 +153,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void ComputePositionTest ()
         {
-            // TODO: Начать с проверки этого теста
             CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center: Mass.CreateByGMSqrt (10.0),
                                                                        probe:  Mass.ProbeZeroMass,
                                                                        a:      3.0,
@@ -165,18 +164,18 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (5.0, actual.Time);
 
-            Assert.AreEqual (6.12372435695795, actual.MTotal, 1.0e-14);
-            Assert.AreEqual (6.12372435695795, actual.M, 1.0e-14);
-            Assert.AreEqual (6.12372435695795, actual.E, 1.0e-14);
+            Assert.AreEqual ( 5.77350269189626, actual.AverageSector, 1.0e-14);
+            Assert.AreEqual (-0.509682615283329, actual.M, 1.0e-14);
+            Assert.AreEqual (-0.509682615283329, actual.E, 1.0e-14);
 
-            Assert.AreEqual (-7.57232126451531, actual.PlanarPosition.X, 1.0e-14);
-            Assert.AreEqual (11.2635631650994, actual.PlanarPosition.Y, 1.0e-13);
-            Assert.AreEqual (13.5723212645153, actual.R, 1.0e-13);
-            Assert.AreEqual (2.16267826462284, actual.TrueAnomaly, 1.0e-14);
+            Assert.AreEqual ( 2.61869821104968, actual.PlanarPosition.X, 1.0e-14);
+            Assert.AreEqual (-1.46370067959444, actual.PlanarPosition.Y, 1.0e-14);
+            Assert.AreEqual ( 3.0, actual.R, 1.0e-14);
+            Assert.AreEqual (-0.509682615283329, actual.TrueAnomaly, 1.0e-14);
 
-            Assert.AreEqual (-3.38802060241961, actual.PlanarPosition.VX, 1.0e-14);
-            Assert.AreEqual (1.80476846594204, actual.PlanarPosition.VY, 1.0e-14);
-            Assert.AreEqual (3.83873323090815, actual.Speed, 1.0e-14);
+            Assert.AreEqual ( 2.81689327125629, actual.PlanarPosition.VX, 1.0e-14);
+            Assert.AreEqual ( 5.03968705691975, actual.PlanarPosition.VY, 1.0e-14);
+            Assert.AreEqual ( 5.77350269189626, actual.Speed, 1.0e-14);
         }
     }
 }

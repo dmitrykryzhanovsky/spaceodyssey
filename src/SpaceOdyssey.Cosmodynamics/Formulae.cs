@@ -1,4 +1,5 @@
 ﻿using Archimedes;
+using Archimedes.Numerical;
 
 namespace SpaceOdyssey.Cosmodynamics
 {
@@ -378,7 +379,18 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             public static double SolveForEllipse (double M, double e)
             {
-                throw new NotImplementedException ();
+                return Equation.Newton (KeplerEquationForEllipse, KeplerDerivativeForEllipse, ComputingSettings.NumericalEpsilon,
+                    M, e, M);
+            }
+
+            private static double KeplerEquationForEllipse (double x, params double [] a)
+            {
+                return x - a [0] * double.Sin (x) - a [1];
+            }
+
+            private static double KeplerDerivativeForEllipse (double x, params double [] a)
+            {
+                return 1.0 - a [0] * double.Cos (x);
             }
 
             public static double SolveForHyperbola (double M, double e)

@@ -466,6 +466,112 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
         #endregion
 
+        #region KeplerEquation
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForEllipseTest_Ecc0_E0 ()
+        {
+            double M = 0.0;
+            double e = 0.0;
+
+            double expected = 0.0;
+
+            double actual = Formulae.KeplerEquation.SolveForEllipse (M, e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForEllipseTest_Ecc0_E01 ()
+        {
+            double M = 0.1;
+            double e = 0.0;
+
+            double expected = 0.1;
+
+            double actual = Formulae.KeplerEquation.SolveForEllipse (M, e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForEllipseTest_Ecc0_EPI2 ()
+        {
+            double M = double.Pi / 2.0;
+            double e = 0.0;
+
+            double expected = double.Pi / 2.0;
+
+            double actual = Formulae.KeplerEquation.SolveForEllipse (M, e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForEllipseTest_Ecc0_E30 ()
+        {
+            double M = 3.0;
+            double e = 0.0;
+
+            double expected = 3.0;
+
+            double actual = Formulae.KeplerEquation.SolveForEllipse (M, e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForEllipseTest_Ecc0_EPI ()
+        {
+            double M = double.Pi;
+            double e = 0.0;
+
+            double expected = double.Pi;
+
+            double actual = Formulae.KeplerEquation.SolveForEllipse (M, e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForEllipseTest_Ecc0_E32 ()
+        {
+            double M = 3.2;
+            double e = 0.0;
+
+            double expected = 3.2;
+
+            double actual = Formulae.KeplerEquation.SolveForEllipse (M, e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForEllipseTest_Ecc0_EMinusPI2 ()
+        {
+            double M = -double.Pi / 2.0;
+            double e =  0.0;
+
+            double expected = -double.Pi / 2.0;
+
+            double actual = Formulae.KeplerEquation.SolveForEllipse (M, e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForEllipseTest_Ecc0_EMinus01 ()
+        {
+            double M = -0.1;
+            double e =  0.0;
+
+            double expected = -0.1;
+
+            double actual = Formulae.KeplerEquation.SolveForEllipse (M, e);
+
+            Assert.AreEqual (expected, actual);
+        }
+
         [TestMethod ()]
         public void KeplerEquationSolveBarkerEquationTest ()
         {
@@ -482,5 +588,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
 
             Assert.AreEqual (expected, actual, 1.0e-14);
         }
+
+        #endregion
     }
 }

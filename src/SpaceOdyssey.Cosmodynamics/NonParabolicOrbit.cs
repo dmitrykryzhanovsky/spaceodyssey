@@ -12,8 +12,6 @@
         protected double _1me;     // Вспомогательная величина 1 – e.
         protected double _1pe;     // Вспомогательная величина 1 + e.
 
-        protected double _n;
-
         protected double _mua;     // Вспомогательная величина mu / a.
         protected double _muasqrt; // Вспомогательная величина sqrt (|mu / a|).
 
@@ -23,23 +21,17 @@
         public double A
         {
             get => _a;
-        }
-
-        /// <summary>
-        /// Среднее движение, угол / единица времени.
-        /// </summary>
-        public double N
-        {
-            get => _n;
-        }
+        }        
 
         #region Constructors
 
-        protected NonParabolicOrbit (Mass center, Mass probe) : base (center, probe)
+        protected NonParabolicOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
         {
         }
 
         #endregion
+
+        #region Orbit parameter computations
 
         protected override void ComputeShape ()
         {
@@ -53,7 +45,7 @@
 
         protected override void ComputeMotion ()
         {
-            _mua = Formulae.GMA (_mu, _a);
+            _mua = Formulae.Motion.GMA (_mu, _a);
 
             ComputeMotionParameters ();
         }
@@ -69,9 +61,11 @@
 
         protected abstract void ComputeArealVelocity ();
 
+        #endregion
+
         public override double Radius (double trueAnomaly)
         {
-            return Formulae.ConicSection (trueAnomaly, _p, _e);
-        }
+            return Formulae.Shape.ConicSection (trueAnomaly, _p, _e);
+        }        
     }
 }

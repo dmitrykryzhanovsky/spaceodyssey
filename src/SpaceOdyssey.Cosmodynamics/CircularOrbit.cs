@@ -31,7 +31,7 @@
 
         #region Constructors
 
-        private CircularOrbit (Mass center, Mass probe) : base (center, probe)
+        private CircularOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
         {
         }
 
@@ -41,11 +41,12 @@
         /// Инициализация круговой орбиты по большой полуоси (радиусу) a.
         /// </summary>
         /// <param name="a">Должно быть положительным, иначе сгенерируется исключение.</param>
-        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a)
+        /// <param name="t0">Момент прохождения перицентра.</param>
+        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a, double t0)
         {
             Checkers.CheckA (a);
 
-            CircularOrbit orbit = new CircularOrbit (center, probe);
+            CircularOrbit orbit = new CircularOrbit (center, probe, t0);
 
             orbit._a = a;
 
@@ -53,6 +54,8 @@
 
             return orbit;
         }
+
+        #region Orbit parameter computations
 
         /// <summary>
         /// Для круговой орбиты все геометрические параметры численно равны большой полуоси (радиусу), а эксцентриситет = 0.
@@ -73,6 +76,8 @@
             _vp = _muasqrt;
             _va = _muasqrt;
         }
+
+        #endregion
 
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
@@ -96,5 +101,32 @@
 
             else throw new ArgumentOutOfRangeException ();
         }
+
+        #region Compute position in the orbit plane
+
+        /// <summary>
+        /// Так как для окружности уравнение Кеплера решать ненужно, данная перегрузка метода носит формальный характер и возвращает 
+        /// переданное в него значение средней аномалии M.
+        /// </summary>
+        protected override double SolveKeplerEquation (double M, double e)
+        {
+            return M;
+        }
+
+        /// <summary>
+        /// Определяет характеристики положения на орбите на основе средней аномалии M.
+        /// </summary>
+        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
+            (double M)
+        {
+            (double sin, double cos) = double.SinCos (M);
+
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForCircle (M, sin, cos, _a);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForCircle (sin, cos, _muasqrt);
+
+            return (x, y, r, trueAnomaly, vx, vy, speed);
+        }
+
+        #endregion
     }
 }

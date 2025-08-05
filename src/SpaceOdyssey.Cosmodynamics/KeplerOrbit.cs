@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Базовый класс для кеплеровых орбит.
@@ -14,10 +16,13 @@
         protected double _e;
         protected double _rp;
 
+        protected double _n;
         protected double _vp;
 
         protected double _energyIntegral;
         protected double _arealVelocity;
+
+        protected double _t0;
 
         /// <summary>
         /// Фокальный параметр орбиты (расстояние при истинной аномалии равной 90°).
@@ -44,6 +49,14 @@
         }
 
         /// <summary>
+        /// Среднее движение, угол / единица времени.
+        /// </summary>
+        public double N
+        {
+            get => _n;
+        }
+
+        /// <summary>
         /// Орбитальная скорость в перицентре.
         /// </summary>
         public double VPeri
@@ -67,11 +80,21 @@
             get => _arealVelocity;
         }
 
+        /// <summary>
+        /// Момент прохождения перицентра.
+        /// </summary>
+        public double T0
+        {
+            get => _t0;
+        }
+
         #region Constructors
 
-        protected KeplerOrbit (Mass center, Mass probe)
+        protected KeplerOrbit (Mass center, Mass probe, double t0)
         {
             InitMasses (center, probe);
+
+            _t0 = t0;
         }
 
         private void InitMasses (Mass center, Mass probe)
@@ -82,6 +105,8 @@
         }
 
         #endregion
+
+        #region Orbit parameter computations
 
         protected void ComputeOrbit ()
         {
@@ -96,6 +121,8 @@
 
         protected abstract void ComputeIntegrals ();
 
+        #endregion
+
         /// <summary>
         /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
         /// </summary>
@@ -109,14 +136,40 @@
         /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
         public abstract double TrueAnomaly (double r);
 
-        public virtual void ComputePosition (double t)
+        #region Compute position in the orbit plane
+
+        /// <summary>
+        /// Вычисление положения на орбите в момент времени t.
+        /// </summary>
+        /// <param name="t">Выражен в юлианских датах.</param>
+        public OrbitalPosition ComputePosition (double t)
         {
-            // Находим M
-            // Находим E
-            // Определяем position
-            // Определяем velocity
-            // Добавляем M, E, t
+            double averageSector = Formulae.Motion.MeanAnomalyForTime (t, _t0, _n);
+            double M = GetMeanAnolamyForThisOrbitType (averageSector);
+            double E = SolveKeplerEquation (M, _e);
+
+            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (E);
+
+            return new OrbitalPosition (t, averageSector, M, E, x, y, r, trueAnomaly, vx, vy, speed);
         }
+
+        protected abstract double GetMeanAnolamyForThisOrbitType (double averageSector);
+
+        /// <summary>
+        /// В общем случае решает уравнение Кеплера для средней аномалии M и эксцентриситета e. Более подробные комментарии см. в 
+        /// перегруженных методах в дочерних классах.
+        /// </summary>
+        protected abstract double SolveKeplerEquation (double M, double e);
+
+        /// <summary>
+        /// Определяет характеристики положения на орбите на основе решения уравнения Кеплера.
+        /// </summary>
+        protected abstract (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements 
+            (double E);
+
+        #endregion
+
+        #region Checkers
 
         /// <summary>
         /// Чекеры для проверки значений входных параметров орбит на корректность.
@@ -153,5 +206,7 @@
                 if (e <= 1.0) throw new ArgumentOutOfRangeException ();
             }
         }
+
+        #endregion
     }
 }

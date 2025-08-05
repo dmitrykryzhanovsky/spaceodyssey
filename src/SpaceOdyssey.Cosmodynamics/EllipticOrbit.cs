@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
     /// Эллиптическая орбита.
@@ -7,7 +9,8 @@
     {
         protected double _ra;
 
-        private double _1me2; // Вспомогательная величина 1 – e^2.
+        private double _1me2;     // Вспомогательная величина 1 – e^2.
+        private double _sqrt1me2; // Вспомогательная величина корень из 1 – e^2.
 
         protected double _T;
         protected double _vmean;
@@ -26,7 +29,7 @@
         /// </summary>
         public virtual double RangeARp
         {
-            get => Formulae.RangeARp (_1me);
+            get => Formulae.Shape.RangeARp (_1me);
         }
 
         /// <summary>
@@ -34,7 +37,7 @@
         /// </summary>
         public virtual double RangeRaA
         {
-            get => Formulae.RangeRaA (_1pe);
+            get => Formulae.Shape.RangeRaA (_1pe);
         }
 
         /// <summary>
@@ -42,7 +45,7 @@
         /// </summary>
         public virtual double RangeRaRp
         {
-            get => Formulae.RangeRaRp (_1me, _1pe);
+            get => Formulae.Shape.RangeRaRp (_1me, _1pe);
         }
 
         /// <summary>
@@ -71,7 +74,7 @@
 
         #region Constructors
 
-        protected EllipticOrbit (Mass center, Mass probe) : base (center, probe)
+        protected EllipticOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
         {
         }
 
@@ -82,12 +85,13 @@
         /// </summary> 
         /// <param name="a">Должно быть положительным, иначе сгенерируется исключение.</param>
         /// <param name="e">Должно лежать на полуинтервале [0; 1), иначе сгенерируется исключение.</param>
-        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a, double e)
+        /// <param name="t0">Момент прохождения перицентра.</param>
+        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a, double e, double t0)
         {
             Checkers.CheckA (a);
             Checkers.CheckEccentricityForEllipse (e);
 
-            EllipticOrbit orbit = new EllipticOrbit (center, probe);
+            EllipticOrbit orbit = new EllipticOrbit (center, probe, t0);
 
             orbit._a = a;
             orbit._e = e;
@@ -97,9 +101,12 @@
             return orbit;
         }
 
+        #region Orbit parameter computations
+
         protected override void ComputeShapeParameters ()
         {
-            _1me2 = _1me * _1pe;
+            _1me2     = _1me * _1pe;
+            _sqrt1me2 = double.Sqrt (_1me2);
 
             _p    = _a * _1me2;
             _rp   = _a * _1me;
@@ -108,10 +115,10 @@
 
         protected override void ComputeMotionParameters ()
         {            
-            _muasqrt = Formulae.GMASqrt (_mua);
+            _muasqrt = Formulae.Motion.GMASqrt (_mua);
 
-            _n       = Formulae.MeanMotion (_a, _muasqrt);
-            _T       = Formulae.OrbitalPeriod (_a, _muasqrt);
+            _n       = Formulae.Motion.MeanMotionNonParabola (_a, _muasqrt);
+            _T       = Formulae.Motion.OrbitalPeriod (_a, _muasqrt);
             _vmean   = _muasqrt;
 
             ComputeVelocityPA ();
@@ -125,8 +132,10 @@
 
         protected override void ComputeArealVelocity ()
         {
-            _arealVelocity = Formulae.ArealVelocityNonParabola (_mu, _a);
+            _arealVelocity = Formulae.Integrals.ArealVelocityNonParabola (_mu, _a);
         }
+
+        #endregion
 
         /// <summary>
         /// Истинная аномалия при расстоянии до центра тяготения r.
@@ -138,7 +147,38 @@
         {
             Checkers.CheckRClosed (r, _rp, _ra);
 
-            return Formulae.ConicSectionInverse (r, _p, _e);
+            return Formulae.Shape.ConicSectionInverse (r, _p, _e);
         }
+
+        #region Compute position in the orbit plane
+
+        protected override double GetMeanAnolamyForThisOrbitType (double MTotal)
+        {
+            return Trigonometry.NormalizeMinusPlusInRad (MTotal);
+        }
+
+        /// <summary>
+        /// Решает уравнение Кеплера и возвращает эксцентрическую аномалию E.
+        /// </summary>
+        protected override double SolveKeplerEquation (double M, double e)
+        {
+            return Formulae.KeplerEquation.SolveForEllipse (M, e);
+        }
+
+        /// <summary>
+        /// Определяет характеристики положения на орбите на основе эксцентрической аномалии E.
+        /// </summary>
+        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
+            (double E)
+        {
+            (double sin, double cos) = double.SinCos (E);
+
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForEllipse (sin, cos, _a, _e, _1me2);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, _muasqrt, _e, _1me2);
+
+            return (x, y, r, trueAnomaly, vx, vy, speed);
+        }
+
+        #endregion
     }
 }

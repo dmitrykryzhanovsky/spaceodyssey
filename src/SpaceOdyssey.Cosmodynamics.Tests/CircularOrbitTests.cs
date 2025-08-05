@@ -8,11 +8,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RangeARpTest ()
         {
-            Mass   central = Data.EarthSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   central = Data.Earth.SI;
+            Mass   probe   = Mass.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             Assert.AreEqual (1.0, actual.RangeARp);
         }
@@ -20,11 +20,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RangeRaATest ()
         {
-            Mass   central = Data.EarthSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   central = Data.Earth.SI;
+            Mass   probe   = Mass.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             Assert.AreEqual (1.0, actual.RangeRaA);
         }
@@ -32,11 +32,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RangeRaRpTest ()
         {
-            Mass   central = Data.EarthSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   central = Data.Earth.SI;
+            Mass   probe   = Mass.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             Assert.AreEqual (1.0, actual.RangeRaRp);
         }
@@ -44,11 +44,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void CreateBySemiMajorAxisTest ()
         {
-            Mass   central = Data.EarthSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   central = Data.Earth.SI;
+            Mass   probe   = Mass.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit actual = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             Assert.AreEqual (6471000.0, actual.A);
             Assert.AreEqual (6471000.0, actual.P);
@@ -69,11 +69,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void RadiusTest ()
         {
-            Mass   central = Data.EarthSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   central = Data.Earth.SI;
+            Mass   probe   = Mass.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             double trueAnomaly = 1.42;
 
@@ -85,11 +85,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_CorrectDistance ()
         {
-            Mass   central = Data.EarthSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   central = Data.Earth.SI;
+            Mass   probe   = Mass.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             double r = 6471000.0;
 
@@ -101,11 +101,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_IncorrectDistanceLess ()
         {
-            Mass   central = Data.EarthSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   central = Data.Earth.SI;
+            Mass   probe   = Mass.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             double r = 6470999.999;
 
@@ -127,11 +127,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void TrueAnomalyTest_IncorrectDistanceGreater ()
         {
-            Mass   central = Data.EarthSI;
-            Mass   probe   = Data.ProbeZeroMass;
+            Mass   central = Data.Earth.SI;
+            Mass   probe   = Mass.ProbeZeroMass;
             double a       = 6471000.0;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (central, probe, a, 2451545.0);
 
             double r = 6471000.001;
 
@@ -148,6 +148,34 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             }
 
             Assert.IsTrue (flag);
+        }
+
+        [TestMethod ()]
+        public void ComputePositionTest ()
+        {
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center: Mass.CreateByGMSqrt (10.0),
+                                                                       probe:  Mass.ProbeZeroMass,
+                                                                       a:      3.0,
+                                                                       t0:     2.0);
+
+            double t = 5.0;
+
+            OrbitalPosition actual = orbit.ComputePosition (t);
+
+            Assert.AreEqual (5.0, actual.Time);
+
+            Assert.AreEqual ( 5.77350269189626, actual.AverageSector, 1.0e-14);
+            Assert.AreEqual (-0.509682615283329, actual.M, 1.0e-14);
+            Assert.AreEqual (-0.509682615283329, actual.E, 1.0e-14);
+
+            Assert.AreEqual ( 2.61869821104968, actual.PlanarPosition.X, 1.0e-14);
+            Assert.AreEqual (-1.46370067959444, actual.PlanarPosition.Y, 1.0e-14);
+            Assert.AreEqual ( 3.0, actual.R, 1.0e-14);
+            Assert.AreEqual (-0.509682615283329, actual.TrueAnomaly, 1.0e-14);
+
+            Assert.AreEqual ( 2.81689327125629, actual.PlanarPosition.VX, 1.0e-14);
+            Assert.AreEqual ( 5.03968705691975, actual.PlanarPosition.VY, 1.0e-14);
+            Assert.AreEqual ( 5.77350269189626, actual.Speed, 1.0e-14);
         }
     }
 }

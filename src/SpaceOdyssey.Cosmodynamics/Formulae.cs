@@ -377,6 +377,12 @@ namespace SpaceOdyssey.Cosmodynamics
 
         public static class KeplerEquation
         {
+            /// <summary>
+            /// Решает уравнение Кеплера для эллипса.
+            /// </summary>
+            /// <param name="M">Средняя аномалия в радианах.</param>
+            /// <param name="e">Эксцентриситет орбиты.</param>
+            /// <returns>Возвращает эксцентрическую аномалию в радианах с точностью 1.0e-14.</returns>
             public static double SolveForEllipse (double M, double e)
             {
                 return Equation.Newton (KeplerEquationForEllipse, KeplerDerivativeForEllipse, ComputingSettings.NumericalEpsilon,
@@ -395,7 +401,18 @@ namespace SpaceOdyssey.Cosmodynamics
 
             public static double SolveForHyperbola (double M, double e)
             {
-                throw new NotImplementedException ();
+                return Equation.Newton (KeplerEquationForHyperbola, KeplerDerivativeForHyperbola, ComputingSettings.NumericalEpsilon,
+                    M, e, M);
+            }
+
+            private static double KeplerEquationForHyperbola (double x, params double [] a)
+            {
+                return a [0] * double.Sinh (x) - a [0] - a [1];
+            }
+
+            private static double KeplerDerivativeForHyperbola (double x, params double [] a)
+            {
+                return a [0] * double.Cosh (x) - 1.0;
             }
 
             /// <summary>

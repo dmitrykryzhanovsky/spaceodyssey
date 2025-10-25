@@ -9,6 +9,17 @@
             /// </summary>
             private const double GM_SI = 1.32712440018e+20;
 
+            /// <summary>
+            /// Гауссова гравитационная постоянная.
+            /// </summary>
+            /// <remarks>Квадратный корень локальной гравитационной постоянной, связанной с Солнцем, выраженный в единицах (а.е., сутки))</remarks>
+            private const double GaussianSqrtGM = 0.01720209895;
+
+            /// <summary>
+            /// Квадрат гауссовой гравитационной постоянной.
+            /// </summary>
+            private const double GaussianGM = GaussianSqrtGM * GaussianSqrtGM;
+
             public static readonly Mass SI = Mass.CreateByGM (GM_SI);
         }
 

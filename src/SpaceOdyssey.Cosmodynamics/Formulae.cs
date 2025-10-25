@@ -26,8 +26,8 @@ namespace SpaceOdyssey.Cosmodynamics
             /// </summary>
             /// <param name="trueAnomaly">Истинная аномалия.</param>
             /// <param name="p">Фокальный параметр.</param>
-            /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с уравнением конического сечения при 
-            /// e = 1.</remarks>
+            /// <remarks>Метод так назван, поскольку он фактически возвращает значение в соответствии с уравнением конического сечения 
+            /// при e = 1.</remarks>
             public static double ConicSectionParabola (double trueAnomaly, double p)
             {
                 return p / (1.0 + double.Cos (trueAnomaly));
@@ -142,6 +142,12 @@ namespace SpaceOdyssey.Cosmodynamics
                 return double.Sqrt (2.0 * mu / r);
             }
 
+            /// <summary>
+            /// Возвращает скорость на заданном расстоянии от центра тяготения.
+            /// </summary>
+            /// <param name="r">Расстояние от центра тяготения.</param>
+            /// <param name="mu">Локальная гравитационная постоянная.</param>
+            /// <param name="h">Интеграл энергии.</param>
             public static double VelocityByDistance (double r, double mu, double h)
             {
                 return double.Sqrt (h + 2 * mu / r);
@@ -248,7 +254,7 @@ namespace SpaceOdyssey.Cosmodynamics
             {
                 double x = param [0] * (cos - param [1]);
                 double y = param [0] * param [2] * sin;
-                (double r, double trueAnomaly) = Space2.PolarCoordinates (x, y);
+                (double r, double trueAnomaly) = Space2.GetPolarCoordinates (x, y);
 
                 return (x, y, r, trueAnomaly);
             }
@@ -268,7 +274,7 @@ namespace SpaceOdyssey.Cosmodynamics
             {
                 double x = param [0] * (param [1] - ch);
                 double y = param [0] * param [2] * sh;
-                (double r, double trueAnomaly) = Space2.PolarCoordinates (x, y);
+                (double r, double trueAnomaly) = Space2.GetPolarCoordinates (x, y);
 
                 return (x, y, r, trueAnomaly);
             }
@@ -284,7 +290,7 @@ namespace SpaceOdyssey.Cosmodynamics
             {
                 double x = param [0] * (1 - tanv2 * tanv2);
                 double y = 2.0 * param [0] * tanv2;
-                (double r, double trueAnomaly) = Space2.PolarCoordinates (x, y);
+                (double r, double trueAnomaly) = Space2.GetPolarCoordinates (x, y);
 
                 return (x, y, r, trueAnomaly);
             }

@@ -87,9 +87,12 @@
 
         #region Compute position in the orbit plane
 
-        protected override double GetMeanAnolamyForThisOrbitType (double MTotal)
+        /// <summary>
+        /// Для гиперболической орбиты пройденная средняя аномалия лежит в диапазоне (-π; +π].
+        /// </summary>
+        protected override double GetMeanAnolamyForThisOrbitType (double passedMeanAnomaly)
         {
-            return MTotal;
+            return passedMeanAnomaly;
         }
 
         /// <summary>
@@ -110,7 +113,7 @@
             double ch = double.Cosh (H);
 
             (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForHyperbola (sh, ch, -_a, _e, _e2m1);
-            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForHyperbola (sh, ch, _muasqrt, _e, _e2m1);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForHyperbola (sh, ch, _muasqrt, _e, _sqrte2m1);
 
             return (x, y, r, trueAnomaly, vx, vy, speed);
         }

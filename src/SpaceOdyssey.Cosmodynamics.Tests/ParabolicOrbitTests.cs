@@ -155,7 +155,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (5.0, actual.Time);
 
-            Assert.AreEqual ( 6.12372435695795, actual.AverageSector, 1.0e-14);
+            Assert.AreEqual ( 6.12372435695795, actual.PassedMeanAnomaly, 1.0e-14);
             Assert.AreEqual ( 6.12372435695795, actual.M, 1.0e-14);
             Assert.AreEqual ( 1.87726052751656, actual.E, 1.0e-14);
 

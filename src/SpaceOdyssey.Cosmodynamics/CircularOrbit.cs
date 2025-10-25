@@ -62,7 +62,7 @@
         /// </summary>
         protected override void ComputeShape ()
         {
-            _e  = 0.0;
+            _e  = CircularEccentricity;
             _p  = _a;
             _rp = _a;
             _ra = _a;

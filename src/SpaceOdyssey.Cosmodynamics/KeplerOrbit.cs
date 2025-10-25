@@ -7,6 +7,21 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public abstract class KeplerOrbit
     {
+        /// <summary>
+        /// Эксцентриситет круговой орбиты e = 0.
+        /// </summary>
+        protected const double CircularEccentricity = 0.0;
+
+        /// <summary>
+        /// Эксцентриситет параболической орбиты e = 1.
+        /// </summary>
+        protected const double ParabolicEccentricity = 1.0;
+
+        /// <summary>
+        /// Интеграл энергии параболической орбиты.
+        /// </summary>
+        protected const double ParabolicEnergyIntegral = 0.0;
+
         private Mass _center; // Центральное тело.
         private Mass _probe;  // Обращающееся тело.
 
@@ -144,16 +159,21 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <param name="t">Выражен в юлианских датах.</param>
         public OrbitalPosition ComputePosition (double t)
         {
-            double averageSector = Formulae.Motion.MeanAnomalyForTime (t, _t0, _n);
-            double M = GetMeanAnolamyForThisOrbitType (averageSector);
+            double passedMeanAnomaly = Formulae.Motion.MeanAnomalyForTime (t, _t0, _n);
+            double M = GetMeanAnolamyForThisOrbitType (passedMeanAnomaly);
             double E = SolveKeplerEquation (M, _e);
 
             (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (E);
 
-            return new OrbitalPosition (t, averageSector, M, E, x, y, r, trueAnomaly, vx, vy, speed);
+            return new OrbitalPosition (t, passedMeanAnomaly, M, E, x, y, r, trueAnomaly, vx, vy, speed);
         }
 
-        protected abstract double GetMeanAnolamyForThisOrbitType (double averageSector);
+        /// <summary>
+        /// На основе пройденной средней аномалии passedMeanAnomaly (которая в общем случае может выходить за пределы диапазона (-π; +π]) 
+        /// вычисляет для заданного типа орбиты среднюю аномалию, приведённую в диапазон (-π; +π], которая используется для дальнейших 
+        /// расчётов положения на орбите.
+        /// </summary>
+        protected abstract double GetMeanAnolamyForThisOrbitType (double passedMeanAnomaly);
 
         /// <summary>
         /// В общем случае решает уравнение Кеплера для средней аномалии M и эксцентриситета e. Более подробные комментарии см. в 
@@ -178,32 +198,32 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             public static void CheckRNonClosed (double r, double rp)
             {
-                if (r < rp) throw new ArgumentOutOfRangeException ();
+                ArgumentOutOfRangeCheckers.CheckGreaterEqual (r, rp);
             }
 
             public static void CheckRClosed (double r, double rp, double ra)
             {
-                if ((r < rp) || (r > ra)) throw new ArgumentOutOfRangeException ();
+                ArgumentOutOfRangeCheckers.CheckInterval (r, rp, ra);
             }
 
             public static void CheckA (double a)
             {
-                if (a <= 0.0) throw new ArgumentOutOfRangeException ();
+                ArgumentOutOfRangeCheckers.CheckPositive (a);
             }
 
             public static void CheckPeriapsis (double rp)
             {
-                if (rp <= 0.0) throw new ArgumentOutOfRangeException ();
+                ArgumentOutOfRangeCheckers.CheckPositive (rp);
             }
 
             public static void CheckEccentricityForEllipse (double e)
             {
-                if ((e < 0.0) || (e >= 1.0)) throw new ArgumentOutOfRangeException ();
+                ArgumentOutOfRangeCheckers.CheckIntervalRightExcluded (e, CircularEccentricity, ParabolicEccentricity);
             }
 
             public static void CheckEccentricityForHyperbola (double e)
             {
-                if (e <= 1.0) throw new ArgumentOutOfRangeException ();
+                ArgumentOutOfRangeCheckers.CheckGreater (e, ParabolicEccentricity);
             }
         }
 

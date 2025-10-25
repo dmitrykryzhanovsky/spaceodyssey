@@ -152,9 +152,13 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Compute position in the orbit plane
 
-        protected override double GetMeanAnolamyForThisOrbitType (double MTotal)
+        /// <summary>
+        /// На основе пройденной средней аномалии passedMeanAnomaly (которая в общем случае может выходить за пределы диапазона (-π; +π]) 
+        /// вычисляет среднюю аномалию, приведённую в диапазон (-π; +π], которая используется для дальнейших расчётов положения на орбите.
+        /// </summary>
+        protected override double GetMeanAnolamyForThisOrbitType (double passedMeanAnomaly)
         {
-            return Trigonometry.NormalizeMinusPlusInRad (MTotal);
+            return Trigonometry.NormalizeHalfTurnInRad (passedMeanAnomaly);
         }
 
         /// <summary>
@@ -174,7 +178,7 @@ namespace SpaceOdyssey.Cosmodynamics
             (double sin, double cos) = double.SinCos (E);
 
             (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForEllipse (sin, cos, _a, _e, _1me2);
-            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, _muasqrt, _e, _1me2);
+            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, _muasqrt, _e, _sqrt1me2);
 
             return (x, y, r, trueAnomaly, vx, vy, speed);
         }

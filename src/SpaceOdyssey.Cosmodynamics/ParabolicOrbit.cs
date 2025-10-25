@@ -42,7 +42,7 @@
 
         protected override void ComputeShape ()
         {
-            _e = 1.0;
+            _e = ParabolicEccentricity;
             _p = Formulae.Shape.PParabolaByRp (_rp);            
         }
 
@@ -54,7 +54,7 @@
 
         protected override void ComputeIntegrals ()
         {
-            _energyIntegral = 0.0;
+            _energyIntegral = ParabolicEnergyIntegral;
             _arealVelocity  = Formulae.Integrals.ArealVelocityParabola (_mu, _rp);
         }
 
@@ -80,9 +80,12 @@
 
         #region Compute position in the orbit plane
 
-        protected override double GetMeanAnolamyForThisOrbitType (double MTotal)
+        /// <summary>
+        /// Для параболической орбиты пройденная средняя аномалия лежит в диапазоне (-π; +π].
+        /// </summary>
+        protected override double GetMeanAnolamyForThisOrbitType (double passedMeanAnomaly)
         {
-            return MTotal;
+            return passedMeanAnomaly;
         }
 
         /// <summary>

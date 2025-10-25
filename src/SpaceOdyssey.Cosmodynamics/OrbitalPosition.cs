@@ -7,7 +7,7 @@
     {
         private readonly double _t;
 
-        private readonly double _averageSector;
+        private readonly double _passedMeanAnomaly;
         private readonly double _M;
         private readonly double _E;
 
@@ -25,9 +25,9 @@
         /// Средняя аномалия, отсчитываемая от момента прохождения перицентра, заданного в элементах орбиты.
         /// </summary>
         /// <remarks>Может содержать в себе любое число оборотов, и, таким образом, выходить за пределы диапазона (-π; +π].</remarks>
-        public double AverageSector
+        public double PassedMeanAnomaly
         {
-            get => _averageSector;
+            get => _passedMeanAnomaly;
         }
 
         /// <summary>
@@ -79,13 +79,13 @@
         }
 
         internal OrbitalPosition (double t, 
-                                  double averageSector, double M, double E, 
+                                  double passedMeanAnomaly, double M, double E, 
                                   double planarX, double planarY, double r, double trueAnomaly, 
                                   double planarVX, double planarVY, double speed)
         {
             _t = t;
 
-            _averageSector = averageSector;
+            _passedMeanAnomaly = passedMeanAnomaly;
             _M = M;
             _E = E;
 

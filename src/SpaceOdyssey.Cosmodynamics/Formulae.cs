@@ -405,10 +405,16 @@ namespace SpaceOdyssey.Cosmodynamics
                 return 1.0 - a [0] * double.Cos (x);
             }
 
-            public static double SolveForHyperbola (double M, double e)
+            /// <summary>
+            /// Решает уравнение Кеплера для гиперболы.
+            /// </summary>
+            /// <param name="H">Средняя аномалия в радианах.</param>
+            /// <param name="e">Эксцентриситет орбиты.</param>
+            /// <returns>Возвращает эксцентрическую аномалию в радианах с точностью 1e-14.</returns>
+            public static double SolveForHyperbola (double H, double e)
             {
                 return Equation.Newton (KeplerEquationForHyperbola, KeplerDerivativeForHyperbola, ComputingSettings.NumericalHalfEpsilon,
-                    M, e, M);
+                    H, e, H);
             }
 
             private static double KeplerEquationForHyperbola (double x, params double [] a)

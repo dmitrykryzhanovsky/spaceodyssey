@@ -3,7 +3,7 @@
 namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
-    /// Тип для представления тяготеющей массы – центрального тела системы или спутника.
+    /// Тип для представления массы – центрального тела системы или спутника.
     /// </summary>
     public class Mass : ICloneable
     {

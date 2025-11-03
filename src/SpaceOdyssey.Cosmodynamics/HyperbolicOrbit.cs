@@ -112,7 +112,7 @@
             double sh = double.Sinh (H);
             double ch = double.Cosh (H);
 
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForHyperbola (sh, ch, -_a, _e, _e2m1);
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForHyperbola (sh, ch, -_a, _e, _sqrte2m1);
             (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForHyperbola (sh, ch, _muasqrt, _e, _sqrte2m1);
 
             return (x, y, r, trueAnomaly, vx, vy, speed);

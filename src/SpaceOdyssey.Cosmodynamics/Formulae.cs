@@ -255,7 +255,8 @@ namespace SpaceOdyssey.Cosmodynamics
             {
                 double x = param [0] * (cos - param [1]);
                 double y = param [0] * param [2] * sin;
-                (double r, double trueAnomaly) = Space2.GetPolarCoordinates (x, y);
+                double r = param [0] * (1.0 - param [1] * cos);
+                double trueAnomaly = double.Atan2 (y, x);
 
                 return (x, y, r, trueAnomaly);
             }
@@ -275,7 +276,8 @@ namespace SpaceOdyssey.Cosmodynamics
             {
                 double x = param [0] * (param [1] - ch);
                 double y = param [0] * param [2] * sh;
-                (double r, double trueAnomaly) = Space2.GetPolarCoordinates (x, y);
+                double r = param [0] * (param [1] * ch - 1.0);
+                double trueAnomaly = double.Atan2 (y, x);
 
                 return (x, y, r, trueAnomaly);
             }
@@ -286,12 +288,14 @@ namespace SpaceOdyssey.Cosmodynamics
             /// <param name="tanv2">tan (ν/2), где ν – истинная аномалия.</param>
             /// <param name="param"><list type="number">
             /// – [0] – расстояние в перицентре rp
+            /// - [1] - фокальный параметр орбиты p
             /// </list></param>
             public static (double x, double y, double r, double trueAnomaly) ComputeForParabola (double tanv2, params double [] param)
             {
                 double x = param [0] * (1 - tanv2 * tanv2);
-                double y = 2.0 * param [0] * tanv2;
-                (double r, double trueAnomaly) = Space2.GetPolarCoordinates (x, y);
+                double y = param [1] * tanv2;
+                double trueAnomaly = double.Atan2 (y, x);
+                double r = Shape.ConicSectionParabola (trueAnomaly, param [1]);
 
                 return (x, y, r, trueAnomaly);
             }

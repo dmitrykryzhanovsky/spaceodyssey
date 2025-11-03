@@ -86,8 +86,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
                                                                        probe:  Mass.ProbeZeroMass,
-                                                                       a: 2.0,
-                                                                       e: 0.5,
+                                                                       a:  2.0,
+                                                                       e:  0.5,
                                                                        t0: 2451545.0);
 
             double r = 1.0;
@@ -102,8 +102,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
                                                                        probe:  Mass.ProbeZeroMass,
-                                                                       a: 2.0,
-                                                                       e: 0.5,
+                                                                       a:  2.0,
+                                                                       e:  0.5,
                                                                        t0: 2451545.0);
 
             double r = 1.2;
@@ -118,8 +118,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
                                                                        probe:  Mass.ProbeZeroMass,
-                                                                       a: 2.0,
-                                                                       e: 0.5,
+                                                                       a:  2.0,
+                                                                       e:  0.5,
                                                                        t0: 2451545.0);
 
             double r = 1.5;
@@ -134,8 +134,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
                                                                        probe:  Mass.ProbeZeroMass,
-                                                                       a: 2.0,
-                                                                       e: 0.5,
+                                                                       a:  2.0,
+                                                                       e:  0.5,
                                                                        t0: 2451545.0);
 
             double r = 2.0;
@@ -150,8 +150,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
                                                                        probe:  Mass.ProbeZeroMass,
-                                                                       a: 2.0,
-                                                                       e: 0.5,
+                                                                       a:  2.0,
+                                                                       e:  0.5,
                                                                        t0: 2451545.0);
 
             double r = 3.0;
@@ -166,8 +166,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
                                                                        probe:  Mass.ProbeZeroMass,
-                                                                       a: 2.0,
-                                                                       e: 0.5,
+                                                                       a:  2.0,
+                                                                       e:  0.5,
                                                                        t0: 2451545.0);
 
             double r = 0.999999999999;
@@ -192,8 +192,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         {
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
                                                                        probe:  Mass.ProbeZeroMass,
-                                                                       a: 2.0,
-                                                                       e: 0.5,
+                                                                       a:  2.0,
+                                                                       e:  0.5,
                                                                        t0: 2451545.0);
 
             double r = 3.000000000001;
@@ -211,6 +211,35 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             }
 
             Assert.IsTrue (flag);
+        }
+
+        [TestMethod ()]
+        public void ComputePositionTest ()
+        {
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Mass.CreateByGMSqrt (10.0),
+                                                                       probe:  Mass.ProbeZeroMass,
+                                                                       a:      3.0,
+                                                                       e:      0.75,
+                                                                       t0:     2.0);
+
+            double t = 5.0;
+
+            OrbitalPosition actual = orbit.ComputePosition (t);
+
+            Assert.AreEqual (5.0, actual.Time);
+
+            Assert.AreEqual ( 5.77350269189626, actual.PassedMeanAnomaly, 1.0e-14);
+            Assert.AreEqual (-0.509682615283329, actual.M, 1.0e-14);
+            Assert.AreEqual (-1.21189511545443, actual.E, 1.0e-14);
+
+            Assert.AreEqual (-1.19626299597325, actual.PlanarPosition.X, 1.0e-14);
+            Assert.AreEqual (-1.85787964297363, actual.PlanarPosition.Y, 1.0e-14);
+            Assert.AreEqual ( 2.20969724697994, actual.R, 1.0e-14);
+            Assert.AreEqual (-2.14286158169433, actual.TrueAnomaly, 1.0e-14);
+
+            Assert.AreEqual ( 7.33897055908828, actual.PlanarPosition.VX, 1.0e-14);
+            Assert.AreEqual ( 1.82107510811278, actual.PlanarPosition.VY, 1.0e-14);
+            Assert.AreEqual ( 7.56153446177113, actual.Speed, 1.0e-14);
         }
     }
 }

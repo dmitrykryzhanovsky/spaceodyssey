@@ -134,5 +134,34 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.IsTrue (flag);
         }
+
+        [TestMethod ()]
+        public void ComputePositionTest ()
+        {
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Mass.CreateByGMSqrt (10.0),
+                                                                       probe:  Mass.ProbeZeroMass,
+                                                                       rp:     2.0,
+                                                                       e:      2.0,
+                                                                       t0:     2.0);
+
+            double t = 5.0;
+
+            OrbitalPosition actual = orbit.ComputePosition (t);
+
+            Assert.AreEqual (5.0, actual.Time);
+
+            Assert.AreEqual (10.6066017177982, actual.PassedMeanAnomaly, 1.0e-13);
+            Assert.AreEqual (10.6066017177982, actual.M, 1.0e-13);
+            Assert.AreEqual ( 2.58530052730714, actual.E, 1.0e-14);
+
+            Assert.AreEqual (-9.34264909395491, actual.PlanarPosition.X, 1.0e-14);
+            Assert.AreEqual (22.8490449370044, actual.PlanarPosition.Y, 1.0e-13);
+            Assert.AreEqual (24.6852981879098, actual.R, 1.0e-13);
+            Assert.AreEqual ( 1.95893929360818, actual.TrueAnomaly, 1.0e-14);
+
+            Assert.AreEqual (-3.77880123758549, actual.PlanarPosition.VX, 1.0e-14);
+            Assert.AreEqual ( 6.61986779507588, actual.PlanarPosition.VY, 1.0e-14);
+            Assert.AreEqual ( 7.62246603255537, actual.Speed, 1.0e-14);
+        }
     }
 }

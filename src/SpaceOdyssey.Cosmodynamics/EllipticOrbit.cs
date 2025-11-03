@@ -177,7 +177,7 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             (double sin, double cos) = double.SinCos (E);
 
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForEllipse (sin, cos, _a, _e, _1me2);
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForEllipse (sin, cos, _a, _e, _sqrt1me2);
             (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, _muasqrt, _e, _sqrt1me2);
 
             return (x, y, r, trueAnomaly, vx, vy, speed);

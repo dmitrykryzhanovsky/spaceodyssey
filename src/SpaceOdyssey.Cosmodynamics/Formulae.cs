@@ -143,6 +143,16 @@ namespace SpaceOdyssey.Cosmodynamics
                 return double.Sqrt (2.0 * mu / r);
             }
 
+            public static double VPeriapsis (double mua, double _1pe, double _1me)
+            {
+                return double.Sqrt (mua * (_1pe / _1me));
+            }
+
+            public static double VApoapsisEllipse (double mua, double _1pe, double _1me)
+            {
+                return double.Sqrt (mua * (_1me / _1pe));
+            }
+
             /// <summary>
             /// Возвращает скорость на заданном расстоянии от центра тяготения.
             /// </summary>

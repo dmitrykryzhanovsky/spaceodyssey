@@ -7,22 +7,11 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public class EllipticOrbit : NonParabolicOrbit
     {
-        protected double _ra;
-
         private double _1me2;     // Вспомогательная величина 1 – e^2.
         private double _sqrt1me2; // Вспомогательная величина корень из 1 – e^2.
 
         protected double _T;
         protected double _vmean;
-        protected double _va;
-
-        /// <summary>
-        /// Расстояние в апоцентре.
-        /// </summary>
-        public double RApo
-        {
-            get => _ra;
-        }
 
         /// <summary>
         /// Отношение A / Rp.
@@ -62,14 +51,6 @@ namespace SpaceOdyssey.Cosmodynamics
         public double VMean
         {
             get => _vmean;
-        }
-
-        /// <summary>
-        /// Орбитальная скорость в апоцентре.
-        /// </summary>
-        public double VApo
-        {
-            get => _va;
         }
 
         #region Constructors
@@ -119,15 +100,9 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _n       = Formulae.Motion.MeanMotionNonParabola (_a, _muasqrt);
             _T       = Formulae.Motion.OrbitalPeriod (_a, _muasqrt);
+            
             _vmean   = _muasqrt;
-
-            ComputeVelocityPA ();
-        }
-
-        protected virtual void ComputeVelocityPA ()
-        {
-            _vp = _muasqrt * double.Sqrt (_1pe / _1me);
-            _va = _muasqrt * double.Sqrt (_1me / _1pe);
+            _va      = Formulae.Motion.VApoapsisEllipse (_mua, _1pe, _1me);
         }
 
         protected override void ComputeArealVelocity ()

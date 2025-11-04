@@ -46,6 +46,7 @@
         protected override void ComputeMotion ()
         {
             _mua = Formulae.Motion.GMA (_mu, _a);
+            _vp  = Formulae.Motion.VPeriapsis (_mua, _1pe, _1me);
 
             ComputeMotionParameters ();
         }

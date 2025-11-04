@@ -42,14 +42,16 @@
 
         protected override void ComputeShape ()
         {
-            _e = ParabolicEccentricity;
-            _p = Formulae.Shape.PParabolaByRp (_rp);            
+            _e  = ParabolicEccentricity;
+            _p  = Formulae.Shape.PParabolaByRp (_rp);
+            _ra = NonClosedApoapsisDistance;
         }
 
         protected override void ComputeMotion ()
         {
             _n  = Formulae.Motion.MeanMotionParabola (_mu, _rp);
             _vp = Formulae.Motion.V2Escape (_mu, _rp);
+            _va = ParabolicInfinityVelocity;
         }
 
         protected override void ComputeIntegrals ()

@@ -13,6 +13,11 @@ namespace SpaceOdyssey.Cosmodynamics
         protected const double CircularEccentricity = 0.0;
 
         /// <summary>
+        /// Расстояние в апоцентре для незамкнутой орбиты (параболической и гиперболической).
+        /// </summary>
+        protected const double NonClosedApoapsisDistance = double.PositiveInfinity;
+
+        /// <summary>
         /// Эксцентриситет параболической орбиты e = 1.
         /// </summary>
         protected const double ParabolicEccentricity = 1.0;
@@ -22,6 +27,11 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </summary>
         protected const double ParabolicEnergyIntegral = 0.0;
 
+        /// <summary>
+        /// Скорость на бесконечности для параболической орбиты.
+        /// </summary>
+        protected const double ParabolicInfinityVelocity = 0.0;
+
         private Mass _center; // Центральное тело.
         private Mass _probe;  // Обращающееся тело.
 
@@ -30,9 +40,11 @@ namespace SpaceOdyssey.Cosmodynamics
         protected double _p;
         protected double _e;
         protected double _rp;
+        protected double _ra;
 
         protected double _n;
         protected double _vp;
+        protected double _va;
 
         protected double _energyIntegral;
         protected double _arealVelocity;
@@ -64,6 +76,15 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         /// <summary>
+        /// Расстояние в апоцентре.
+        /// </summary>
+        /// <remarks>Для незамкнутых орбит (параболических и гиперболических) возвращается +∞.</remarks>
+        public double RApo
+        {
+            get => _ra;
+        }
+
+        /// <summary>
         /// Среднее движение, угол / единица времени.
         /// </summary>
         public double N
@@ -77,6 +98,15 @@ namespace SpaceOdyssey.Cosmodynamics
         public double VPeri
         {
             get => _vp;
+        }
+
+        /// <summary>
+        /// Орбитальная скорость в апоцентре.
+        /// </summary>
+        /// <remarks>Для незамкнутых орбит (параболических и гиперболических) возвращается скорость на бесконечности.</remarks>
+        public double VApo
+        {
+            get => _va;
         }
 
         /// <summary>

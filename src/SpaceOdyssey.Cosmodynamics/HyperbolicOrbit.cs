@@ -53,16 +53,16 @@
             _e2m1     = _e * _e - 1.0;
             _sqrte2m1 = double.Sqrt (_e2m1);
 
-            _p = _rp * _1pe;
-            _a = _rp / _1me;
+            _p  = _rp * _1pe;
+            _a  = _rp / _1me;
+            _ra = NonClosedApoapsisDistance;
         }
 
         protected override void ComputeMotionParameters ()
         {
             _muasqrt = Formulae.Motion.GMASqrt (-_mua);
-
             _n       = Formulae.Motion.MeanMotionNonParabola (-_a, _muasqrt);
-            _vp      = _muasqrt * double.Sqrt (-_1pe / _1me);
+            _va      = _muasqrt;
         }
 
         protected override void ComputeArealVelocity ()

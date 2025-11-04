@@ -68,15 +68,6 @@
             _ra = _a;
         }
 
-        /// <summary>
-        /// На круговой орбите скорость не изменяется.
-        /// </summary>
-        protected override void ComputeVelocityPA ()
-        {
-            _vp = _muasqrt;
-            _va = _muasqrt;
-        }
-
         #endregion
 
         /// <summary>

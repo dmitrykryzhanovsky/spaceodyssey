@@ -13,6 +13,8 @@ namespace SpaceOdyssey.Cosmodynamics
             private readonly Polar2  _p;
             private readonly Vector2 _v;
             private readonly double  _speed;
+            private readonly double  _inclintaion;
+            private readonly double  _orthogonality;
 
             /// <summary>
             /// Радиус-вектор в плоскости орбиты в декартовых координатах.
@@ -70,6 +72,22 @@ namespace SpaceOdyssey.Cosmodynamics
             public double Speed
             {
                 get => _speed;
+            }
+
+            /// <summary>
+            /// Угол между касательной и вектором скорости в данной точке орбиты, в радианах.
+            /// </summary>
+            public double Inclination
+            {
+                get => _inclintaion;
+            }
+
+            /// <summary>
+            /// Угол между касательной и радиус-векторов в данной точке орбиты, в радианах.
+            /// </summary>
+            public double Orthogonality
+            {
+                get => _orthogonality;
             }
 
             internal Planar (double x, double y, double r, double trueAnomaly, 

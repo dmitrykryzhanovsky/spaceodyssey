@@ -311,7 +311,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
             (double x, double y, double r, double trueAnomaly) expected =
                 (0.53205080756887729,
                  0.8,
-                 0.96076951545867362,
+                 0.9607695154586737,
                  0.98390442268361651);
 
             (double x, double y, double r, double trueAnomaly) actual = Formulae.PlanarPosition.ComputeForEllipse (sin, cos, param);
@@ -347,7 +347,7 @@ namespace SpaceOdyssey.Cosmodynamics.KeplerOrbit.Tests
         public void PlanarPositionComputeForParabolaTest ()
         {
             double tanv2 = double.Sqrt (3.0) / 3.0;
-            double [] param = new double [] { 2.0 };
+            double [] param = new double [] { 2.0, 4.0 };
 
             (double x, double y, double r, double trueAnomaly) expected =
                 (1.3333333333333333,

@@ -42,14 +42,16 @@
 
         protected override void ComputeShape ()
         {
-            _e = ParabolicEccentricity;
-            _p = Formulae.Shape.PParabolaByRp (_rp);            
+            _e  = ParabolicEccentricity;
+            _p  = Formulae.Shape.PParabolaByRp (_rp);
+            _ra = NonClosedApoapsisDistance;
         }
 
         protected override void ComputeMotion ()
         {
             _n  = Formulae.Motion.MeanMotionParabola (_mu, _rp);
             _vp = Formulae.Motion.V2Escape (_mu, _rp);
+            _va = ParabolicInfinityVelocity;
         }
 
         protected override void ComputeIntegrals ()
@@ -102,7 +104,7 @@
         protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
             (double tanv2)
         {
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForParabola (tanv2, _rp);
+            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForParabola (tanv2, _rp, _p);
             (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForParabola (r, y, _mu, _p);
 
             return (x, y, r, trueAnomaly, vx, vy, speed);

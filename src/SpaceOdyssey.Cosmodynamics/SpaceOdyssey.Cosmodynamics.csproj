@@ -7,6 +7,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CircularOrbit.cs" />
+    <Compile Remove="EllipticalOrbit.cs" />
+    <Compile Remove="HyperbolicOrbit.cs" />
+    <Compile Remove="INonClosedOrbit.cs" />
+    <Compile Remove="KeplerOrbit.cs" />
+    <Compile Remove="NonParabolicOrbit.cs" />
+    <Compile Remove="ParabolicOrbit.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SpaceOdyssey.Core\SpaceOdyssey.Core.csproj" />
   </ItemGroup>
 

@@ -7,13 +7,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="CircularOrbit.cs" />
-    <Compile Remove="EllipticalOrbit.cs" />
-    <Compile Remove="HyperbolicOrbit.cs" />
-    <Compile Remove="INonClosedOrbit.cs" />
-    <Compile Remove="KeplerOrbit.cs" />
-    <Compile Remove="NonParabolicOrbit.cs" />
-    <Compile Remove="ParabolicOrbit.cs" />
+    <Compile Remove="OrbitalPosition.Planar.Coordinates.cs" />
+    <Compile Remove="OrbitalPosition.Planar.cs" />
+    <Compile Remove="OrbitalPosition.Planar.Velocity.cs" />
   </ItemGroup>
 
   <ItemGroup>

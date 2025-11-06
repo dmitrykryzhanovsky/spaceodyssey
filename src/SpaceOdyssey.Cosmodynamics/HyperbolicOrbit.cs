@@ -3,8 +3,12 @@
     public class HyperbolicOrbit : KeplerOrbit
     {
         private double _asymptote;
+        private double _vinifinity;
 
-        public override double RA
+        /// <summary>
+        /// Свойство для отражения того факта, что орбита незамкнутая и уходит на бесконечность.
+        /// </summary>
+        public double RInfinity
         {
             get => double.PositiveInfinity;
         }
@@ -15,6 +19,14 @@
         public double Asymptote
         {
             get => _asymptote;
+        }
+
+        /// <summary>
+        /// Скорость при удалении на бесконечность.
+        /// </summary>
+        public double VInfinity
+        {
+            get => _vinifinity;
         }
 
         protected HyperbolicOrbit (Mass center, Mass orbiting) : base (center, orbiting)

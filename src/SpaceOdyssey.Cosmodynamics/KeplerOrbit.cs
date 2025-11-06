@@ -11,6 +11,13 @@
         private double _e;
         private double _rp;
 
+        private double _n;
+        private double _vp;
+
+        private double _h;
+
+        private double _t0;
+
         /// <summary>
         /// Фокальный параметр.
         /// </summary>
@@ -36,11 +43,44 @@
         }
 
         /// <summary>
-        /// Расстояние в апоцентре.
+        /// Среднее движение, угол / единица времени.
         /// </summary>
-        /// <remarks>Для незамкнутых орбит (параболической и гиперболической) апоцентра не существует, расстояние до небесного тела 
-        /// возрастает до бесконечности. В этом случае данное свойство возвращает +∞.</remarks>
-        public abstract double RA { get; }
+        public double N
+        {
+            get => _n;
+        }
+
+        /// <summary>
+        /// Скорость в перицентре.
+        /// </summary>
+        public double VP
+        {
+            get => _vp;
+        }
+
+        /// <summary>
+        /// Интеграл энергии.
+        /// </summary>
+        public double EnergyIntegral
+        {
+            get => _h;
+        }
+
+        /// <summary>
+        /// Полная удельная энергия (приходящаяся на 1 кг массы) тела, двигающегося по данной орбите.
+        /// </summary>
+        public double W
+        {
+            get => _h / 2.0;
+        }
+
+        /// <summary>
+        /// Момент прохождения перицентра, в юлианских датах.
+        /// </summary>
+        public double T0
+        {
+            get => _t0;
+        }
 
         protected KeplerOrbit (Mass center, Mass orbiting)
         {

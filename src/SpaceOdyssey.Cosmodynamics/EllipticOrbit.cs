@@ -5,6 +5,12 @@
         private double _b;
         private double _ra;
 
+        private double _T;
+        private double _va;
+        private double _vmean;
+
+        private double _M0;
+
         /// <summary>
         /// Малая полуось.
         /// </summary>
@@ -13,7 +19,10 @@
             get => _b;
         }
 
-        public override double RA
+        /// <summary>
+        /// Расстояние в апоцентре.
+        /// </summary>
+        public double RA
         {
             get => _ra;
         }
@@ -21,7 +30,7 @@
         /// <summary>
         /// Отношение расстояния в апоцентре к расстоянию в перицентре.
         /// </summary>
-        public double RatioAP
+        public virtual double RatioAP
         {
             get => throw new NotImplementedException ();
         }
@@ -29,7 +38,7 @@
         /// <summary>
         /// Отношение расстояния в апоцентре к среднему расстоянию.
         /// </summary>
-        public double RatioAMean
+        public virtual double RatioAMean
         {
             get => throw new NotImplementedException ();
         }
@@ -37,9 +46,41 @@
         /// <summary>
         /// Отношение расстояния среднего расстояния к расстоянию в перицентре.
         /// </summary>
-        public double RatioMeanP
+        public virtual double RatioMeanP
         {
             get => throw new NotImplementedException ();
+        }
+
+        /// <summary>
+        /// Период обращения.
+        /// </summary>
+        public double T
+        {
+            get => _T;
+        }
+
+        /// <summary>
+        /// Скорость в апоцентре.
+        /// </summary>
+        public double VA
+        {
+            get => _va;
+        }
+
+        /// <summary>
+        /// Средняя скорость на данной орбите.
+        /// </summary>
+        public double VMean
+        {
+            get => _vmean;
+        }
+
+        /// <summary>
+        /// Средняя аномалия в момент времени J2000.
+        /// </summary>
+        public double M0
+        {
+            get => _M0;
         }
 
         protected EllipticOrbit (Mass center, Mass orbiting) : base (center, orbiting)

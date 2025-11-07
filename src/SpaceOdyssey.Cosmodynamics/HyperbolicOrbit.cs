@@ -1,6 +1,6 @@
 ﻿namespace SpaceOdyssey.Cosmodynamics
 {
-    public class HyperbolicOrbit : KeplerOrbit
+    public class HyperbolicOrbit : NonParabolicOrbit
     {
         private double _asymptote;
         private double _vinifinity;
@@ -31,6 +31,31 @@
 
         protected HyperbolicOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
+        }
+
+        protected override void CheckR (double r)
+        {
+            CheckRForNonClosedOrbit (r, _rp);
+        }
+
+        public override double SpeedForRadius (double r)
+        {
+            throw new NotImplementedException ();
+        }
+
+        public override double SpeedForTrueAnomaly (double trueAnomaly)
+        {
+            throw new NotImplementedException ();
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            throw new NotImplementedException ();
+        }
+
+        public override OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly)
+        {
+            throw new NotImplementedException ();
         }
     }
 }

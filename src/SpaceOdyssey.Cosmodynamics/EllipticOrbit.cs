@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public class EllipticOrbit : NonParabolicOrbit
     {
@@ -10,6 +12,9 @@
         private double _vmean;
 
         private double _M0;
+
+        private double _aux1pe;
+        private double _aux1me;
 
         /// <summary>
         /// Малая полуось.
@@ -32,7 +37,7 @@
         /// </summary>
         public virtual double RatioAP
         {
-            get => throw new NotImplementedException ();
+            get => _aux1pe;
         }
 
         /// <summary>
@@ -40,7 +45,7 @@
         /// </summary>
         public virtual double RatioAMean
         {
-            get => throw new NotImplementedException ();
+            get => 1.0 / _aux1me;
         }
 
         /// <summary>
@@ -48,7 +53,7 @@
         /// </summary>
         public virtual double RatioMeanP
         {
-            get => throw new NotImplementedException ();
+            get => _aux1pe / _aux1me;
         }
 
         /// <summary>
@@ -85,6 +90,31 @@
 
         protected EllipticOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
+        }
+
+        protected override void CheckR (double r)
+        {
+            ArgumentOutOfRangeCheckers.CheckInterval (r, _rp, _ra);
+        }
+
+        public override double SpeedForRadius (double r)
+        {
+            throw new NotImplementedException ();
+        }
+
+        public override double SpeedForTrueAnomaly (double trueAnomaly)
+        {
+            throw new NotImplementedException ();
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            throw new NotImplementedException ();
+        }
+
+        public override OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly)
+        {
+            throw new NotImplementedException ();
         }
     }
 }

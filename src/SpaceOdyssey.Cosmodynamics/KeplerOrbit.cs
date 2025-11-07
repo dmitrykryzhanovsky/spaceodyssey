@@ -1,22 +1,25 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public abstract class KeplerOrbit
     {
-        private readonly Mass _center;   // Центральное тело.
-        private readonly Mass _orbiting; // Тело, обращающееся по орбите.
+        private readonly Mass _center;     // Центральное тело.
+        private readonly Mass _orbiting;   // Тело, обращающееся по орбите.
 
-        private readonly double _mu;     // Локальная гравитационная постоянная для данной орбиты.
+        protected readonly double _mu;     // Локальная гравитационная постоянная для данной орбиты.
+        protected readonly double _sqrtmu; // Квадратный корень из локальной гравитационной постоянной.
 
-        private double _p;
-        private double _e;
-        private double _rp;
+        protected double _p;
+        protected double _e;
+        protected double _rp;
 
-        private double _n;
-        private double _vp;
+        protected double _n;
+        protected double _vp;
 
-        private double _h;
+        protected double _h;
 
-        private double _t0;
+        protected double _t0;
 
         /// <summary>
         /// Фокальный параметр.
@@ -67,7 +70,7 @@
         }
 
         /// <summary>
-        /// Полная удельная энергия (приходящаяся на 1 кг массы) тела, двигающегося по данной орбите.
+        /// Удельная орбитальная энергия.
         /// </summary>
         public double W
         {
@@ -82,17 +85,40 @@
             get => _t0;
         }
 
+        #region Constructors
+
         protected KeplerOrbit (Mass center, Mass orbiting)
         {
             _center   = center;
             _orbiting = orbiting;
 
             _mu       = _center.GM + _orbiting.GM;
+            _sqrtmu   = double.Sqrt (_mu);
         }
+
+        #endregion
 
         public abstract double Radius (double trueAnomaly);
 
-        public abstract double TrueAnomaly (double r);
+        public double TrueAnomaly (double r)
+        {
+            CheckR (r);
+
+            return ConicSectionInverseEquation (r);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="r"></param>
+        protected abstract void CheckR (double r);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="r"></param>
+        /// <returns></returns>
+        protected abstract double ConicSectionInverseEquation (double r);
 
         public abstract double SpeedForRadius (double r);
 
@@ -101,5 +127,24 @@
         public abstract OrbitalPosition ComputePosition (double t);
 
         public abstract OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly);
+
+        /// <summary>
+        /// Проверяет, чтобы расстояние r было положительным.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r <= 0.</exception>
+        protected static void CheckRPositive (double r)
+        {
+            ArgumentOutOfRangeCheckers.CheckPositive (r);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="r"></param>
+        /// <param name="rp"></param>
+        protected static void CheckRForNonClosedOrbit (double r, double rp)
+        {
+            ArgumentOutOfRangeCheckers.CheckGreaterEqual (r, rp);
+        }
     }
 }

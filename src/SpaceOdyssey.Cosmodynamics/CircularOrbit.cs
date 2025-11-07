@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public class CircularOrbit : EllipticOrbit
     {
@@ -19,6 +21,21 @@
 
         protected CircularOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
+        }
+
+        public override double Radius (double trueAnomaly)
+        {
+            return _a;
+        }
+
+        protected override void CheckR (double r)
+        {
+            ArgumentOutOfRangeCheckers.CheckEqual (r, _a);
+        }
+
+        protected override double ConicSectionInverseEquation (double r)
+        {
+            return double.NaN;
         }
     }
 }

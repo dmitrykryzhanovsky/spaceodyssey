@@ -11,10 +11,7 @@ namespace SpaceOdyssey.Cosmodynamics
         private double _va;
         private double _vmean;
 
-        private double _M0;
-
-        private double _aux1pe;
-        private double _aux1me;
+        private double _M0;        
 
         /// <summary>
         /// Малая полуось.

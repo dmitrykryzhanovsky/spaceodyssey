@@ -28,8 +28,30 @@
                     return double.Acos (((p / r) - 1.0) / e);
                 }
 
+                /// <summary>
+                /// Возвращает фокальный параметр по заданным расстоянию в перицентре rp и вспомогательной величине aux1pe = 1 + e, где e 
+                /// – эксцентриситет.
+                /// </summary>
+                public static double FocalParameterByRP (double rp, double aux1pe)
+                {
+                    return rp * aux1pe;
+                }
+
+                /// <summary>
+                /// Возвращает большую полуось по заданным расстоянию в перицентре rp и вспомогательной величине aux1me = 1 - e, где e 
+                /// – эксцентриситет.
+                /// </summary>
+                public static double SemiMajorAxisByRP (double rp, double aux1me)
+                {
+                    return rp / aux1me;
+                }
+
                 public static class Hyperbola
                 {
+                    /// <summary>
+                    /// Возвращает асимптотический угол, к которому стремится гипербола при удалении на бесконечность при данном 
+                    /// эксцентриситете e.
+                    /// </summary>
                     public static double Asymptote (double e)
                     {
                         return double.Acos (-1.0 / e);
@@ -71,6 +93,32 @@
 
         public static class Motion
         {
+            public static class NonParabola
+            {
+                /// <summary>
+                /// Возвращает среднее движение для непараболической орбиты.
+                /// </summary>
+                /// <param name="sqrtmu">Квадратный корень из локальной гравитационной постоянной.</param>
+                /// <param name="a">Большая полуось орбиты: положительная для эллипса, отрицательная для гиперболы.</param>
+                public static double MeanMotion (double sqrtmu, double a)
+                {
+                    double absa = double.Abs (a);
+
+                    return sqrtmu / (absa * double.Sqrt (absa));
+                }
+
+                /// <summary>
+                /// Возвращает скорость на непараболической орбите в перицентре.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <param name="rp">Расстояние в перицентре.</param>
+                /// <param name="aux1pe">Вспомогательная величина 1 + e, где e – эксцентриситет.</param>
+                public static double SpeedAtPeriapsisByRP (double mu, double rp, double aux1pe)
+                {
+                    return double.Sqrt (mu * aux1pe / rp);
+                }
+            }
+
             public static class Parabola
             {
                 /// <summary>
@@ -90,6 +138,22 @@
                 public static double SpeedAtRadius (double mu, double r)
                 {
                     return double.Sqrt (2.0 * mu / r);
+                }
+            }
+        }
+
+        public static class Integrals
+        {
+            public static class NonParabola
+            {
+                /// <summary>
+                /// Возвращает интеграл энергии.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <param name="a">Большая полуось орбиты: положительная для эллипса, отрицательная для гиперболы.</param>
+                public static double EnergyIntegral (double mu, double a)
+                {
+                    return -mu / a;
                 }
             }
         }

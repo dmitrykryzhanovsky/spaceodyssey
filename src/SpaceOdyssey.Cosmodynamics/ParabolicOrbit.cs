@@ -55,9 +55,10 @@
 
         private void ComputeOrbit (double rp, double t0)
         {
-            _p  = Formulae.Shape.Parabola.FocalParameterByRP (rp);
-            _e  = 1.0;
             _rp = rp;
+
+            _p  = Formulae.Shape.Parabola.FocalParameterByRP (_rp);
+            _e  = 1.0;            
 
             _n  = Formulae.Motion.Parabola.MeanMotion (_sqrtmu, _rp);
             _vp = Formulae.Motion.Parabola.SpeedAtRadius (_mu, _rp);

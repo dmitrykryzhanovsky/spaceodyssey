@@ -138,6 +138,15 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         /// <summary>
+        /// Проверяет, чтобы эксцентриситет гиперболы e был больше 1.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если e <= 1.</exception>
+        protected static void CheckEForHyperbola (double e)
+        {
+            ArgumentOutOfRangeCheckers.CheckGreater (e, 1.0);
+        }
+
+        /// <summary>
         /// 
         /// </summary>
         /// <param name="r"></param>

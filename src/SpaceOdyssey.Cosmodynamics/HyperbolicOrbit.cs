@@ -3,7 +3,7 @@
     public class HyperbolicOrbit : NonParabolicOrbit
     {
         private double _asymptote;
-        private double _vinifinity;
+        private double _vinfinity;
 
         /// <summary>
         /// Свойство для отражения того факта, что орбита незамкнутая и уходит на бесконечность.
@@ -26,12 +26,55 @@
         /// </summary>
         public double VInfinity
         {
-            get => _vinifinity;
+            get => _vinfinity;
         }
+
+        #region Constructors
 
         protected HyperbolicOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
         }
+
+        #endregion
+
+        #region Init and compute orbit
+
+        public static HyperbolicOrbit CreateByRPeriapsis (Mass center, Mass orbiting, double rp, double e, double t0)
+        {
+            CheckEForHyperbola (e);
+            CheckRPositive (rp);
+
+            HyperbolicOrbit orbit = new HyperbolicOrbit (center, orbiting);
+
+            orbit.ComputeOrbitByRPE (rp, e, t0);
+
+            return orbit;
+        }
+
+        private void ComputeOrbitByRPE (double rp, double e, double t0)
+        {
+            _e  = e;
+            _rp = rp;
+
+            _aux1pe = 1.0 + _e;
+            _aux1me = 1.0 - _e;
+
+            _a  = Formulae.Shape.NonParabola.SemiMajorAxisByRP (_rp, _aux1me);
+            _p  = Formulae.Shape.NonParabola.FocalParameterByRP (_rp, _aux1pe);
+
+            _asymptote = Formulae.Shape.NonParabola.Hyperbola.Asymptote (_e);
+
+            _n  = Formulae.Motion.NonParabola.MeanMotion (_sqrtmu, _a);
+            _vp = Formulae.Motion.NonParabola.SpeedAtPeriapsisByRP (_mu, _rp, _aux1pe);
+
+            _h  = Formulae.Integrals.NonParabola.EnergyIntegral (_mu, _a);
+
+            _vinfinity = double.Sqrt (_h);
+
+            _t0 = t0;
+        }
+
+        #endregion
 
         protected override void CheckR (double r)
         {

@@ -48,12 +48,12 @@
 
             ParabolicOrbit orbit = new ParabolicOrbit (center, orbiting);
 
-            orbit.ComputeOrbit (rp, t0);
+            orbit.ComputeOrbitByRP (rp, t0);
 
             return orbit;
         }
 
-        private void ComputeOrbit (double rp, double t0)
+        private void ComputeOrbitByRP (double rp, double t0)
         {
             _rp = rp;
 

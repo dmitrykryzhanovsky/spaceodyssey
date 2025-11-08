@@ -117,6 +117,18 @@
                 {
                     return double.Sqrt (mu * aux1pe / rp);
                 }
+
+                /// <summary>
+                /// Возвращает скорость на эллиптической орбите в апоцентре.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <param name="rp">Расстояние в перицентре.</param>
+                /// <param name="aux1pe">Вспомогательная величина 1 + e, где e – эксцентриситет.</param>
+                /// <param name="aux1me">Вспомогательная величина 1 - e, где e – эксцентриситет.</param>
+                public static double SpeedAtApoapsisByRP (double mu, double rp, double aux1pe, double aux1me)
+                {
+                    return double.Sqrt (mu * aux1me * aux1me / (rp * aux1pe));
+                }
             }
 
             public static class Parabola

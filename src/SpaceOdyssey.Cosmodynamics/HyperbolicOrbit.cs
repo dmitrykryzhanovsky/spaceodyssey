@@ -39,6 +39,13 @@
 
         #region Init and compute orbit
 
+        /// <summary>
+        /// Создаёт гиперболическую орбиту, инициализируя расстояние в перицентре rp, эксцентриситет e и момент прохождения перицентра 
+        /// t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>e <= 1 или</item>
+        /// <item>rp <= 0.</item></list></exception>
         public static HyperbolicOrbit CreateByRPeriapsis (Mass center, Mass orbiting, double rp, double e, double t0)
         {
             CheckEForHyperbola (e);
@@ -51,27 +58,12 @@
             return orbit;
         }
 
-        private void ComputeOrbitByRPE (double rp, double e, double t0)
+        protected override void ComputeOrbitByRPE (double rp, double e, double t0)
         {
-            _e  = e;
-            _rp = rp;
-
-            _aux1pe = 1.0 + _e;
-            _aux1me = 1.0 - _e;
-
-            _a  = Formulae.Shape.NonParabola.SemiMajorAxisByRP (_rp, _aux1me);
-            _p  = Formulae.Shape.NonParabola.FocalParameterByRP (_rp, _aux1pe);
+            base.ComputeOrbitByRPE (rp, e, t0);
 
             _asymptote = Formulae.Shape.NonParabola.Hyperbola.Asymptote (_e);
-
-            _n  = Formulae.Motion.NonParabola.MeanMotion (_sqrtmu, _a);
-            _vp = Formulae.Motion.NonParabola.SpeedAtPeriapsisByRP (_mu, _rp, _aux1pe);
-
-            _h  = Formulae.Integrals.NonParabola.EnergyIntegral (_mu, _a);
-
             _vinfinity = double.Sqrt (_h);
-
-            _t0 = t0;
         }
 
         #endregion

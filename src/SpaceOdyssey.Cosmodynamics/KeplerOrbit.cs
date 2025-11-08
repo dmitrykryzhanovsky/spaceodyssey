@@ -129,12 +129,29 @@ namespace SpaceOdyssey.Cosmodynamics
         public abstract OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly);
 
         /// <summary>
+        /// Приводит среднюю аномалию, накопившуюся при среднем движении n за интервал времени dt, в диапазон [-π; +π].
+        /// </summary>
+        protected static double NormalizeMeanAnomaly (double n, double dt)
+        {
+            return Trigonometry.NormalizeHalfTurnInRad (n * dt);
+        }
+
+        /// <summary>
         /// Проверяет, чтобы расстояние r было положительным.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r <= 0.</exception>
         protected static void CheckRPositive (double r)
         {
             ArgumentOutOfRangeCheckers.CheckPositive (r);
+        }
+
+        /// <summary>
+        /// Проверяет, чтобы эксцентриситет эллипса был 0 <= e < 1..
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если e < 0 или e >= 1.</exception>
+        protected static void CheckEForEllipse (double e)
+        {
+            ArgumentOutOfRangeCheckers.CheckIntervalRightExcluded (e, 0.0, 1.0);
         }
 
         /// <summary>

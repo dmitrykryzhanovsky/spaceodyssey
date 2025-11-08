@@ -8,6 +8,25 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="CelestialSphere\**" />
+    <Compile Remove="CoordinateSystem\**" />
+    <Compile Remove="Structures\**" />
+    <EmbeddedResource Remove="CelestialSphere\**" />
+    <EmbeddedResource Remove="CoordinateSystem\**" />
+    <EmbeddedResource Remove="Structures\**" />
+    <None Remove="CelestialSphere\**" />
+    <None Remove="CoordinateSystem\**" />
+    <None Remove="Structures\**" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="EarthAxialTilt.cs" />
+    <Compile Remove="EarthPrecession.cs" />
+    <Compile Remove="Location.cs" />
+    <Compile Remove="SiderealTime.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Reference Include="Archimedes.Core">
       <HintPath>..\..\..\archimedes\src\Archimedes.Core\bin\Release\net7.0\Archimedes.Core.dll</HintPath>
     </Reference>

@@ -166,6 +166,21 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (expected, actual, 1.0e-19);
         }
 
+        [TestMethod ()]
+        public void Motion_NonParabola_SpeedAtApoapsisByRPTest ()
+        {
+            double mu     = 6.6743e-10;
+            double rp     = 1.38;
+            double aux1pe = 1.42;
+            double aux1me = 0.58;
+
+            double expected = 1.07040256223242e-5;
+
+            double actual = Formulae.Motion.NonParabola.SpeedAtApoapsisByRP (mu, rp, aux1pe, aux1me);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
         #endregion
 
         #region Parabola

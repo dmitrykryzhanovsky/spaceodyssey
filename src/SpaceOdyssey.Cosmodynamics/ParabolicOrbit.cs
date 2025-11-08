@@ -28,13 +28,20 @@
             get => 0.0;
         }
 
-        // TODO: тесты и комментарии здесь
         #region Constructors
 
         protected ParabolicOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
         }
 
+        #endregion
+
+        #region Init and compute orbit
+
+        /// <summary>
+        /// Создаёт параболическую орбиту, инициализируя расстояние в перицентре rp и момент прохождения перицентра t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если rp <= 0.</exception>
         public static ParabolicOrbit CreateByRPeriapsis (Mass center, Mass orbiting, double rp, double t0)
         {
             CheckRPositive (rp);

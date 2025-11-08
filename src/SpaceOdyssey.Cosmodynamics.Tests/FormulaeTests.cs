@@ -106,7 +106,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double mu = 6.6743e-10;
             double r  = 1.38;
 
-            double expected = 3.11012838171106e-05;
+            double expected = 3.11012838171106e-5;
 
             double actual = Formulae.Motion.Parabola.SpeedAtRadius (mu, r);
 

@@ -19,9 +19,19 @@ namespace SpaceOdyssey.Cosmodynamics
             get => 1.0;
         }
 
+        #region Constructors
+
         protected CircularOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
         }
+
+        #endregion
+
+        #region Init and compute orbit
+
+        
+
+        #endregion
 
         public override double Radius (double trueAnomaly)
         {

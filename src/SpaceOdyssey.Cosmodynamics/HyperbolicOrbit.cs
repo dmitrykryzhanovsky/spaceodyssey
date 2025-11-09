@@ -58,12 +58,20 @@
             return orbit;
         }
 
-        protected override void ComputeOrbitByRPE (double rp, double e, double t0)
+        protected void ComputeOrbitByRPE (double rp, double e, double t0)
         {
-            base.ComputeOrbitByRPE (rp, e, t0);
+            _e  = e;
+            _rp = rp;
 
+            ComputeAuxiliary ();
+            ComputeShapeByRPE ();
+            ComputeMotionByRPE ();
+            ComputeIntegrals ();
+            
             _asymptote = Formulae.Shape.NonParabola.Hyperbola.Asymptote (_e);
             _vinfinity = double.Sqrt (_h);
+
+            _t0 = t0;            
         }
 
         #endregion

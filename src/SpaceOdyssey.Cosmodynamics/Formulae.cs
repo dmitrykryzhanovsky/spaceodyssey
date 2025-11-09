@@ -29,6 +29,15 @@
                 }
 
                 /// <summary>
+                /// Возвращает большую полуось по заданным расстоянию в перицентре rp и вспомогательной величине aux1me = 1 - e, где e 
+                /// – эксцентриситет.
+                /// </summary>
+                public static double SemiMajorAxisByRP (double rp, double aux1me)
+                {
+                    return rp / aux1me;
+                }
+
+                /// <summary>
                 /// Возвращает фокальный параметр по заданным расстоянию в перицентре rp и вспомогательной величине aux1pe = 1 + e, где e 
                 /// – эксцентриситет.
                 /// </summary>
@@ -38,13 +47,13 @@
                 }
 
                 /// <summary>
-                /// Возвращает большую полуось по заданным расстоянию в перицентре rp и вспомогательной величине aux1me = 1 - e, где e 
+                /// Возвращает фокальный параметр по заданным большой полуоси a и вспомогательной величине aux1me2 = 1 - e^2, где e 
                 /// – эксцентриситет.
                 /// </summary>
-                public static double SemiMajorAxisByRP (double rp, double aux1me)
+                public static double FocalParameterByA (double a, double aux1me2)
                 {
-                    return rp / aux1me;
-                }
+                    return a * aux1me2;
+                }                
 
                 public static class Hyperbola
                 {
@@ -119,6 +128,18 @@
                 }
 
                 /// <summary>
+                /// Возвращает скорость на непараболической орбите в перицентре.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <param name="a">Большая полуось.</param>
+                /// <param name="aux1pe">Вспомогательная величина 1 + e, где e – эксцентриситет.</param>
+                /// <param name="aux1me">Вспомогательная величина 1 - e, где e – эксцентриситет.</param>
+                public static double SpeedAtPeriapsisByA (double mu, double a, double aux1pe, double aux1me)
+                {
+                    return double.Sqrt (mu * aux1pe / (a * aux1me));
+                }
+
+                /// <summary>
                 /// Возвращает скорость на эллиптической орбите в апоцентре.
                 /// </summary>
                 /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
@@ -128,6 +149,29 @@
                 public static double SpeedAtApoapsisByRP (double mu, double rp, double aux1pe, double aux1me)
                 {
                     return double.Sqrt (mu * aux1me * aux1me / (rp * aux1pe));
+                }
+
+                /// <summary>
+                /// Возвращает скорость на непараболической орбите в апоцентре.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <param name="a">Большая полуось.</param>
+                /// <param name="aux1pe">Вспомогательная величина 1 + e, где e – эксцентриситет.</param>
+                /// <param name="aux1me">Вспомогательная величина 1 - e, где e – эксцентриситет.</param>
+                public static double SpeedAtApoapsisByA (double mu, double a, double aux1pe, double aux1me)
+                {
+                    return double.Sqrt (mu * aux1me / (a * aux1pe));
+                }
+
+                public static class Ellipse
+                {
+                    /// <summary>
+                    /// Возвращает период обращения в соответствии со средним движением n.
+                    /// </summary>
+                    public static double OrbitalPeriodByMeanMotion (double n)
+                    {
+                        return double.Tau / n;
+                    }
                 }
             }
 

@@ -4,6 +4,7 @@ namespace SpaceOdyssey.Cosmodynamics
 {
     public class EllipticOrbit : NonParabolicOrbit
     {
+        private double _aux1me2;     // Вспомогательная величина 1 - e^2.
         private double _auxsqrt1me2; // Вспомогательная величина sqrt(1 - e^2).
 
         private double _b;
@@ -116,20 +117,97 @@ namespace SpaceOdyssey.Cosmodynamics
             return orbit;
         }
 
-        protected override void ComputeOrbitByRPE (double rp, double e, double t0)
+        /// <summary>
+        /// Создаёт эллиптическую орбиту, инициализируя большую полуось a, эксцентриситет e и момент прохождения перицентра t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>e < 0 или e >= 1 или</item>
+        /// <item>a <= 0.</item></list></exception>
+        public static EllipticOrbit CreateBySemiMajor (Mass center, Mass orbiting, double a, double e, double t0)
         {
-            base.ComputeOrbitByRPE (rp, e, t0);
+            CheckEForEllipse (e);
+            CheckRPositive (a);
 
-            _auxsqrt1me2 = double.Sqrt (1.0 - _e * _e);
+            EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
 
-            _b     = rp * double.Sqrt (_aux1pe / _aux1me);
-            _ra    = rp * _aux1pe / _aux1me;
+            orbit.ComputeOrbitByAE (a, e, t0);
 
-            _T     = double.Tau / _n;
-            _va    = Formulae.Motion.NonParabola.SpeedAtApoapsisByRP (_mu, _rp, _aux1pe, _aux1me);
-            _vmean = Geometry2.Ellipse.Length (_a, _b, _auxsqrt1me2) / _T;
+            return orbit;
+        }
 
-            _M0    = NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+        protected void ComputeOrbitByRPE (double rp, double e, double t0)
+        {
+            _e  = e;
+            _rp = rp;
+
+            ComputeAuxiliary ();
+            ComputeShapeByRPE ();
+            ComputeMotionByRPE ();
+            ComputeIntegrals ();
+
+            _t0 = t0;
+            _M0 = NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+        }
+
+        protected void ComputeOrbitByAE (double a, double e, double t0)
+        {
+            _a = a;
+            _e = e;
+
+            ComputeAuxiliary ();
+            ComputeShapeByAE ();
+            ComputeMotionByAE ();
+            ComputeIntegrals ();
+
+            _t0 = t0;
+            _M0 = NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+        }
+
+        protected override void ComputeAuxiliary ()
+        {
+            base.ComputeAuxiliary ();
+
+            _aux1me2     = 1.0 - _e * _e;
+            _auxsqrt1me2 = double.Sqrt (_aux1me2);
+        }
+
+        protected override void ComputeShapeByRPE ()
+        {
+            base.ComputeShapeByRPE ();
+
+            _b  = _rp * double.Sqrt (_aux1pe / _aux1me);
+            _ra = _rp * _aux1pe / _aux1me;
+        }
+
+        private void ComputeShapeByAE ()
+        {
+            _p  = Formulae.Shape.NonParabola.FocalParameterByA (_a, _aux1me2);
+            _b  = _a * _auxsqrt1me2;
+            _rp = _a * _aux1me;
+            _ra = _a * _aux1pe;
+        }
+
+        protected override void ComputeMotionByRPE ()
+        {
+            base.ComputeMotionByRPE ();
+
+            _va = Formulae.Motion.NonParabola.SpeedAtApoapsisByRP (_mu, _rp, _aux1pe, _aux1me);
+        }
+
+        protected void ComputeMotionByAE ()
+        {
+            ComputeMotionInvariants ();
+
+            _vp = Formulae.Motion.NonParabola.SpeedAtPeriapsisByA (_mu, _a, _aux1pe, _aux1me);
+            _va = Formulae.Motion.NonParabola.SpeedAtApoapsisByA (_mu, _a, _aux1pe, _aux1me);
+        }
+
+        protected override void ComputeMotionInvariants ()
+        {
+            base.ComputeMotionInvariants ();
+
+            _T     = Formulae.Motion.NonParabola.Ellipse.OrbitalPeriodByMeanMotion (_n);
+            _vmean = Geometry2.Ellipse.Length (_a, _auxsqrt1me2) / _T;
         }
 
         #endregion

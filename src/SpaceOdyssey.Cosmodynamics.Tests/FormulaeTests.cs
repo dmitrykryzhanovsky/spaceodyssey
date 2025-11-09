@@ -38,6 +38,19 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
+        public void Shape_NonParabola_SemiMajorAxisByRPTest ()
+        {
+            double rp     =  1.38;
+            double aux1me = -0.42;
+
+            double expected = -3.28571428571429;
+
+            double actual = Formulae.Shape.NonParabola.SemiMajorAxisByRP (rp, aux1me);
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
+        }
+
+        [TestMethod ()]
         public void Shape_NonParabola_FocalParameterByRPTest ()
         {
             double rp     = 1.38;
@@ -51,14 +64,14 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void Shape_NonParabola_SemiMajorAxisByRPTest ()
+        public void Shape_NonParabola_FocalParameterByATest ()
         {
-            double rp     =  1.38;
-            double aux1me = -0.42;
+            double a       = 1.38;
+            double aux1me2 = 0.8236;
 
-            double expected = -3.28571428571429;
+            double expected = 1.136568;
 
-            double actual = Formulae.Shape.NonParabola.SemiMajorAxisByRP (rp, aux1me);
+            double actual = Formulae.Shape.NonParabola.FocalParameterByA (a, aux1me2);
 
             Assert.AreEqual (expected, actual, 1.0e-14);
         }
@@ -167,6 +180,36 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
+        public void Motion_NonParabola_SpeedAtPeriapsisByATest_Ellipse ()
+        {
+            double mu     = 6.6743e-10;
+            double a      = 2.37931034482759;
+            double aux1pe = 1.42;
+            double aux1me = 0.58;
+
+            double expected = 2.6206407558104e-5;
+
+            double actual = Formulae.Motion.NonParabola.SpeedAtPeriapsisByA (mu, a, aux1pe, aux1me);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        [TestMethod ()]
+        public void Motion_NonParabola_SpeedAtPeriapsisByATest_Hyperbola ()
+        {
+            double mu     =  6.6743e-10;
+            double a      = -2.37931034482759;
+            double aux1pe =  2.42;
+            double aux1me = -0.58;
+
+            double expected = 3.42114121988216e-5;
+
+            double actual = Formulae.Motion.NonParabola.SpeedAtPeriapsisByA (mu, a, aux1pe, aux1me);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        [TestMethod ()]
         public void Motion_NonParabola_SpeedAtApoapsisByRPTest ()
         {
             double mu     = 6.6743e-10;
@@ -179,6 +222,33 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double actual = Formulae.Motion.NonParabola.SpeedAtApoapsisByRP (mu, rp, aux1pe, aux1me);
 
             Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        [TestMethod ()]
+        public void Motion_NonParabola_SpeedAtApoapsisByATest ()
+        {
+            double mu     = 6.6743e-10;
+            double a      = 2.37931034482759;
+            double aux1pe = 1.42;
+            double aux1me = 0.58;
+
+            double expected = 1.07040256223242e-5;
+
+            double actual = Formulae.Motion.NonParabola.SpeedAtApoapsisByA (mu, a, aux1pe, aux1me);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        [TestMethod ()]
+        public void Motion_NonParabola_Ellipse_OrbitalPeriodByMeanMotionTest ()
+        {
+            double n = 9.93959118862213e-06;
+
+            double expected = 6.32137196384089e+5;
+
+            double actual = Formulae.Motion.NonParabola.Ellipse.OrbitalPeriodByMeanMotion (n);
+
+            Assert.AreEqual (expected, actual, 1.0e-9);
         }
 
         #endregion

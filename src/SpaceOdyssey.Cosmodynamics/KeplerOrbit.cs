@@ -129,14 +129,6 @@ namespace SpaceOdyssey.Cosmodynamics
         public abstract OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly);
 
         /// <summary>
-        /// Приводит среднюю аномалию, накопившуюся при среднем движении n за интервал времени dt, в диапазон [-π; +π].
-        /// </summary>
-        protected static double NormalizeMeanAnomaly (double n, double dt)
-        {
-            return Trigonometry.NormalizeHalfTurnInRad (n * dt);
-        }
-
-        /// <summary>
         /// Проверяет, чтобы расстояние r было положительным.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r <= 0.</exception>

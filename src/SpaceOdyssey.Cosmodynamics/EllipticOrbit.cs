@@ -4,15 +4,15 @@ namespace SpaceOdyssey.Cosmodynamics
 {
     public class EllipticOrbit : NonParabolicOrbit
     {
-        private double _aux1me2;     // Вспомогательная величина 1 - e^2.
-        private double _auxsqrt1me2; // Вспомогательная величина sqrt(1 - e^2).
+        protected double _aux1me2;     // Вспомогательная величина 1 - e^2.
+        protected double _auxsqrt1me2; // Вспомогательная величина sqrt(1 - e^2).
 
-        private double _b;
-        private double _ra;
+        protected double _b;
+        protected double _ra;
 
-        private double _T;
-        private double _va;
-        private double _vmean;
+        protected double _T;
+        protected double _va;
+        protected double _vmean;
 
         private double _M0;        
 
@@ -145,8 +145,7 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeMotionByRPE ();
             ComputeIntegrals ();
 
-            _t0 = t0;
-            _M0 = NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+            SetMeanAnomalyForT0 (t0);
         }
 
         protected void ComputeOrbitByAE (double a, double e, double t0)
@@ -159,8 +158,7 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeMotionByAE ();
             ComputeIntegrals ();
 
-            _t0 = t0;
-            _M0 = NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+            SetMeanAnomalyForT0 (t0);
         }
 
         protected override void ComputeAuxiliary ()
@@ -208,6 +206,12 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _T     = Formulae.Motion.NonParabola.Ellipse.OrbitalPeriodByMeanMotion (_n);
             _vmean = Geometry2.Ellipse.Length (_a, _auxsqrt1me2) / _T;
+        }
+
+        protected void SetMeanAnomalyForT0 (double t0)
+        {
+            _t0 = t0;
+            _M0 = Formulae.Motion.NonParabola.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
         }
 
         #endregion

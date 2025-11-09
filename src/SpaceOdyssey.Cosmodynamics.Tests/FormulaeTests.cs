@@ -251,6 +251,19 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (expected, actual, 1.0e-9);
         }
 
+        [TestMethod ()]
+        public void Motion_NonParabola_Ellipse_NormalizeMeanAnomalyTest ()
+        {
+            double n  = 9.93959118862213e-06;
+            double dt = 2.0e+8;
+
+            double expected = 2.43168065567485;
+
+            double actual = Formulae.Motion.NonParabola.Ellipse.NormalizeMeanAnomaly (n, dt);
+
+            Assert.AreEqual (expected, actual, 1.0e-11);
+        }
+
         #endregion
 
         #region Parabola

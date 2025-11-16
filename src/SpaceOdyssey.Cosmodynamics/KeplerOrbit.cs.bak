@@ -75,7 +75,9 @@ namespace SpaceOdyssey.Cosmodynamics
         public double VP
         {
             get => _vp;
-        }        
+        }
+
+        
 
         /// <summary>
         /// Момент прохождения перицентра, в юлианских датах.

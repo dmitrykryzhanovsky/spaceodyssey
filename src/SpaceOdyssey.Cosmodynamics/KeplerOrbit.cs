@@ -95,5 +95,12 @@
         }
 
         #endregion
+
+        protected virtual void ComputeOrbitByPeriapsis (double e, double rp, double t0)
+        {
+            _e  = e;
+            _rp = rp;
+            _t0 = t0;
+        }
     }
 }

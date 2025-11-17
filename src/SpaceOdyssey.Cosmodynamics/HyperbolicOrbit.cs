@@ -36,5 +36,12 @@
         }
 
         #endregion
+
+        protected override void ComputeOrbitByPeriapsis (double e, double rp, double t0)
+        {
+            base.ComputeOrbitByPeriapsis (e, rp, t0);
+
+            _vinfinity = _auxsqrth;
+        }
     }
 }

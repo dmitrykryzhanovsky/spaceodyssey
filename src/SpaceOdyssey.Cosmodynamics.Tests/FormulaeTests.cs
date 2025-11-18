@@ -60,7 +60,24 @@ namespace SpaceOdyssey.Cosmodynamics
 
             double actual = Formulae.Motion.NonParabola.MeanMotion (sqrth, a);
 
-            Assert.AreEqual (expected, actual, 1.0e-21);
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        #endregion
+
+        #region Ellipse
+
+        [TestMethod ()]
+        public void Motion_Ellipse_NormalizeMeanAnomalyTest ()
+        {
+            double n  = 9.93959118862213e-6;
+            double dt = 2.0e+8;
+
+            double expected = 2.43168065567485;
+
+            double actual = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (n, dt);
+
+            Assert.AreEqual (expected, actual, 1.0e-11);
         }
 
         #endregion

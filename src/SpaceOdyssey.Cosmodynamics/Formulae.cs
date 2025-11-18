@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public static class Formulae
     {
@@ -45,6 +47,22 @@
                 public static double MeanMotion (double sqrth, double a)
                 {
                     return sqrth / double.Abs (a);
+                }
+            }
+
+            public static class Ellipse
+            {
+                /// <summary>
+                /// Приводит среднюю аномалию, накопившуюся при среднем движении n за интервал времени dt, в диапазон [-π; +π].
+                /// </summary>
+                public static double NormalizeMeanAnomaly (double n, double dt)
+                {
+                    return Trigonometry.NormalizeHalfTurnInRad (n * dt);
+                }
+
+                public static double SpeedMean (double a, double sqrt1me2, double T)
+                {
+                    return Geometry2.Ellipse.Length (a, sqrt1me2) / T; ;
                 }
             }
 

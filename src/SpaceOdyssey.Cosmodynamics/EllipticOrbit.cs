@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public class EllipticOrbit : NonParabolicOrbit
     {
@@ -93,5 +95,79 @@
         }
 
         #endregion
+
+        private void ComputeOrbitBySemiMajorAxis (double e, double a, double t0)
+        {
+            SetParametersBySemiMajorAxis (e, a, t0);
+
+            ComputeAuxiliariesByEccentricity ();
+            ComputeShapeBySemiMajorAxis ();
+            ComputeIntegrals ();
+            ComputeMotionBySemiMajorAxis ();
+            ComputeVelocityBySemiMajorAxis ();
+        }
+
+        protected override void SetParametersByPeriapsis (double e, double rp, double t0)
+        {
+            base.SetParametersByPeriapsis (e, rp, t0);
+
+            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+        }
+
+        protected void SetParametersBySemiMajorAxis (double e, double a, double t0)
+        {
+            _e  = e;
+            _a  = a;
+            _t0 = t0;
+
+            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+        }
+
+        protected override void ComputeAuxiliariesByEccentricity ()
+        {
+            base.ComputeAuxiliariesByEccentricity ();
+
+            _aux1me2     = 1.0 - _e * _e;
+            _auxsqrt1me2 = double.Sqrt (_aux1me2);
+        }
+
+        protected override void ComputeShapeByPeriapsis ()
+        {
+            base.ComputeShapeByPeriapsis ();
+
+            _b  = _rp * double.Sqrt (_aux1pe / _aux1me);
+            _ra = _rp * _aux1pe / _aux1me;
+        }
+
+        protected virtual void ComputeShapeBySemiMajorAxis ()
+        {
+            _p  = _a * _aux1me2;
+            _b  = _a * _auxsqrt1me2;
+            _rp = _a * _aux1me;
+            _ra = _a * _aux1pe;
+        }
+
+        protected override void ComputeMotionBySemiMajorAxis ()
+        {
+            base.ComputeMotionBySemiMajorAxis ();
+
+            _T = double.Tau / _n;
+        }
+
+        protected override void ComputeVelocityByPeriapsis ()
+        {
+            base.ComputeVelocityByPeriapsis ();
+
+            _va    = _mu * _aux1me * _aux1me / (_rp * _aux1pe);
+            _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
+        }
+
+        protected virtual void ComputeVelocityBySemiMajorAxis ()
+        {
+            _vp = double.Sqrt (-_h * _aux1pe / _aux1me);
+            _va = double.Sqrt (-_h * _aux1me / _aux1pe);
+
+            _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
+        }
     }
 }

@@ -43,7 +43,7 @@
 
         private void ComputeOrbitByPeriapsis (double rp, double t0)
         {
-            base.ComputeOrbitByPeriapsis (ParabolicEccentricity, rp, t0);
+            SetParametersByPeriapsis (ParabolicEccentricity, rp, t0);
 
             _p  = 2.0 * _rp;
             _h  = 0.0;

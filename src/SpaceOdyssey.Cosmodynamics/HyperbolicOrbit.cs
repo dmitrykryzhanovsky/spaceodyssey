@@ -41,6 +41,7 @@
         {
             base.ComputeOrbitByPeriapsis (e, rp, t0);
 
+            _asymptote = Formulae.Shape.Hyperbola.Asymptote (_e);
             _vinfinity = _auxsqrth;
         }
     }

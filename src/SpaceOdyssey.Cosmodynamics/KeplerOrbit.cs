@@ -96,7 +96,7 @@
 
         #endregion
 
-        protected virtual void ComputeOrbitByPeriapsis (double e, double rp, double t0)
+        protected virtual void SetParametersByPeriapsis (double e, double rp, double t0)
         {
             _e  = e;
             _rp = rp;

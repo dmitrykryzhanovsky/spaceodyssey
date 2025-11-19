@@ -14,7 +14,7 @@ namespace SpaceOdyssey.Cosmodynamics
         protected double _va;
         protected double _vmean;
 
-        private double _M0;
+        protected double _M0;
 
         /// <summary>
         /// Малая полуось.
@@ -107,6 +107,19 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeVelocityBySemiMajorAxis ();
         }
 
+        private void ComputeOrbitByApsides (double rp, double ra, double t0)
+        {
+            SetParametersByApsides (rp, ra, t0);
+
+            double plus;
+
+            ComputeAuxiliariesByApsides (out plus);
+            ComputeShapeByApsides (plus);
+            ComputeIntegrals ();
+            ComputeMotionBySemiMajorAxis ();
+            ComputeVelocityByApsides ();
+        }
+
         protected override void SetParametersByPeriapsis (double e, double rp, double t0)
         {
             base.SetParametersByPeriapsis (e, rp, t0);
@@ -123,11 +136,30 @@ namespace SpaceOdyssey.Cosmodynamics
             _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
         }
 
+        private void SetParametersByApsides (double rp, double ra, double t0)
+        {
+            _rp = rp;
+            _ra = ra;
+            _t0 = t0;
+
+            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+        }
+
         protected override void ComputeAuxiliariesByEccentricity ()
         {
             base.ComputeAuxiliariesByEccentricity ();
 
             _aux1me2     = 1.0 - _e * _e;
+            _auxsqrt1me2 = double.Sqrt (_aux1me2);
+        }
+
+        private void ComputeAuxiliariesByApsides (out double plus)
+        {
+            plus  = _ra + _rp;
+
+            _aux1pe      = 2.0 * _ra / plus;
+            _aux1me      = 2.0 * _rp / plus;
+            _aux1me2     = _aux1pe * _aux1me;
             _auxsqrt1me2 = double.Sqrt (_aux1me2);
         }
 
@@ -147,6 +179,14 @@ namespace SpaceOdyssey.Cosmodynamics
             _ra = _a * _aux1pe;
         }
 
+        private void ComputeShapeByApsides (double plus)
+        {
+            _e = (_ra - _rp) / plus;
+            _p = 2.0 * _ra * _rp / plus;
+            _a = plus / 2.0;
+            _b = double.Sqrt (_ra * _rp);
+        }
+
         protected override void ComputeMotionBySemiMajorAxis ()
         {
             base.ComputeMotionBySemiMajorAxis ();
@@ -162,10 +202,18 @@ namespace SpaceOdyssey.Cosmodynamics
             _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
         }
 
-        protected virtual void ComputeVelocityBySemiMajorAxis ()
+        private void ComputeVelocityBySemiMajorAxis ()
         {
             _vp = double.Sqrt (-_h * _aux1pe / _aux1me);
             _va = double.Sqrt (-_h * _aux1me / _aux1pe);
+
+            _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
+        }
+
+        private void ComputeVelocityByApsides ()
+        {
+            _vp = double.Sqrt (-_h * _ra / _rp);
+            _va = double.Sqrt (-_h * _rp / _ra);
 
             _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
         }

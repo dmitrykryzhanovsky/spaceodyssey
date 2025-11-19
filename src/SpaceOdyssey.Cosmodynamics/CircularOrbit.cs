@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public class CircularOrbit : EllipticOrbit
     {
@@ -38,7 +40,27 @@
             ComputeShapeBySemiMajorAxis ();
             ComputeIntegrals ();
             ComputeMotionBySemiMajorAxis ();
-            ComputeVelocityBySemiMajorAxis ();
+            ComputeVelocity ();
+        }
+
+        private void ComputeOrbitByOrbitingPeriod (double T, double t0)
+        {
+            SetParametersByOrbitingPeriod (T, t0);
+
+            ComputeAuxiliaries ();
+            ComputeShapeByOrbitingPeriod ();
+            ComputeIntegrals ();
+            ComputeMotionByOrbitingPeriod ();
+            ComputeVelocity ();
+        }
+
+        private void SetParametersByOrbitingPeriod (double T, double t0)
+        {
+            _e  = CircularEccentricity;
+            _T  = T;
+            _t0 = t0;
+
+            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
         }
 
         private void ComputeAuxiliaries ()
@@ -57,7 +79,21 @@
             _ra = _a;
         }
 
-        protected override void ComputeVelocityBySemiMajorAxis ()
+        private void ComputeShapeByOrbitingPeriod ()
+        {
+            _a  = double.Cbrt (_mu * _T * _T / MathConst.M4_PI_SQR);
+            _p  = _a;
+            _b  = _a;
+            _rp = _a;
+            _ra = _a;
+        }
+
+        private void ComputeMotionByOrbitingPeriod ()
+        {
+            _n = double.Tau / _T;
+        }
+
+        private void ComputeVelocity ()
         {
             _vp    = _auxsqrth;
             _va    = _auxsqrth;

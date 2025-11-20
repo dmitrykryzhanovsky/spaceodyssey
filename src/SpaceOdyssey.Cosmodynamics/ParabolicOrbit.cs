@@ -41,6 +41,23 @@
 
         #endregion
 
+        #region Init and compute orbit
+
+        /// <summary>
+        /// Создаёт параболическую орбиту, инициализируя расстояние в перицентре rp и момент прохождения перицентра t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если rp <= 0.</exception>
+        public static ParabolicOrbit CreateByPeriapsis (Mass center, Mass orbiting, double rp, double t0)
+        {
+            Checkers.CheckRPositive (rp);
+
+            ParabolicOrbit orbit = new ParabolicOrbit (center, orbiting);
+
+            orbit.ComputeOrbitByPeriapsis (rp, t0);
+
+            return orbit;
+        }
+
         private void ComputeOrbitByPeriapsis (double rp, double t0)
         {
             SetParametersByPeriapsis (ParabolicEccentricity, rp, t0);
@@ -50,5 +67,7 @@
             _n  = double.Sqrt (_mu / _p) / _rp;
             _vp = Formulae.Motion.Parabola.Speed (_mu, _rp);
         }
+
+        #endregion
     }
 }

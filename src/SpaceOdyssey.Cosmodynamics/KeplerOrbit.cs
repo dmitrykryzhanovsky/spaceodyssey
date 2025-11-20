@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public abstract class KeplerOrbit
     {
@@ -96,11 +98,31 @@
 
         #endregion
 
+        #region Init and compute orbit
+
+        #region Set parameters
+
         protected virtual void SetParametersByPeriapsis (double e, double rp, double t0)
         {
             _e  = e;
             _rp = rp;
             _t0 = t0;
+        }
+
+        #endregion
+
+        #endregion
+
+        protected static class Checkers
+        {
+            /// <summary>
+            /// Проверяет, чтобы расстояние r было положительным.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r <= 0.</exception>
+            internal static void CheckRPositive (double r)
+            {
+                ArgumentOutOfRangeCheckers.CheckPositive (r);
+            }
         }
     }
 }

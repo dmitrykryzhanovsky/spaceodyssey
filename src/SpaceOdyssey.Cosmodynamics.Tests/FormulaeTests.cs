@@ -80,6 +80,20 @@ namespace SpaceOdyssey.Cosmodynamics
             Assert.AreEqual (expected, actual, 1.0e-11);
         }
 
+        [TestMethod ()]
+        public void Motion_Ellipse_SpeedMeanTest ()
+        {
+            double a        = 1.89041095890411;
+            double sqrt1me2 = 0.6;
+            double T        = 6.32137196384089e+5;
+
+            double expected = 1.52677357618512e-5;
+
+            double actual = Formulae.Motion.Ellipse.SpeedMean (a, sqrt1me2, T);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
         #endregion
 
         #region Parabola

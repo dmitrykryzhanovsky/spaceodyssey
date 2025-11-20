@@ -60,6 +60,12 @@ namespace SpaceOdyssey.Cosmodynamics
                     return Trigonometry.NormalizeHalfTurnInRad (n * dt);
                 }
 
+                /// <summary>
+                /// Возвращает среднюю скорость для эллиптической орбиты.
+                /// </summary>
+                /// <param name="a">Большая полуось.</param>
+                /// <param name="sqrt1me2">Вспомогательная величина sqrt (1 - e^2).</param>
+                /// <param name="T">Период обращения.</param>
                 public static double SpeedMean (double a, double sqrt1me2, double T)
                 {
                     return Geometry2.Ellipse.Length (a, sqrt1me2) / T; ;

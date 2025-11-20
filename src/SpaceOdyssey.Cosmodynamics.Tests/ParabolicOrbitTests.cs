@@ -6,7 +6,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     public class ParabolicOrbitTests
     {
         [TestMethod ()]
-        public void CreateByRPeriapsisTest ()
+        public void CreateByPeriapsisTest ()
         {
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
@@ -15,8 +15,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp, t0);
 
-            Assert.AreEqual (2.76, orbit.P);
             Assert.AreEqual (1.0, orbit.E);
+            Assert.AreEqual (2.76, orbit.P);            
             Assert.AreEqual (1.38, orbit.RP);
             Assert.AreEqual (double.PositiveInfinity, orbit.RInfinity);
             Assert.AreEqual (double.Pi, orbit.Asymptote);
@@ -29,7 +29,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void CreateByRPeriapsisTest_Exception_RpZero ()
+        public void CreateByPeriapsisTest_Exception_RpZero ()
         {
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
@@ -52,7 +52,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void CreateByRPeriapsisTest_Exception_RpNegative ()
+        public void CreateByPeriapsisTest_Exception_RpNegative ()
         {
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;

@@ -10,8 +10,8 @@ namespace SpaceOdyssey.Cosmodynamics
         protected readonly double _mu;     // Локальная гравитационная постоянная для данной орбиты.
         protected readonly double _sqrtmu; // Квадратный корень из локальной гравитационной постоянной.
 
-        protected double _p;
         protected double _e;
+        protected double _p;
         protected double _rp;
 
         protected double _h;
@@ -22,19 +22,19 @@ namespace SpaceOdyssey.Cosmodynamics
         protected double _t0;
 
         /// <summary>
-        /// Фокальный параметр.
-        /// </summary>
-        public double P
-        {
-            get => _p;
-        }
-
-        /// <summary>
         /// Эксцентриситет.
         /// </summary>
         public double E
         {
             get => _e;
+        }
+
+        /// <summary>
+        /// Фокальный параметр.
+        /// </summary>
+        public double P
+        {
+            get => _p;
         }
 
         /// <summary>
@@ -116,13 +116,22 @@ namespace SpaceOdyssey.Cosmodynamics
         protected static class Checkers
         {
             /// <summary>
+            /// Проверяет, чтобы эксцентриситет гиперболы e был больше 1.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если e <= 1.</exception>
+            internal static void CheckEForHyperbola (double e)
+            {
+                ArgumentOutOfRangeCheckers.CheckGreater (e, 1.0);
+            }
+
+            /// <summary>
             /// Проверяет, чтобы расстояние r было положительным.
             /// </summary>
             /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r <= 0.</exception>
             internal static void CheckRPositive (double r)
             {
                 ArgumentOutOfRangeCheckers.CheckPositive (r);
-            }
+            }            
         }
     }
 }

@@ -26,6 +26,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        #region Init and compute orbit
+
         protected virtual void ComputeOrbitByPeriapsis (double e, double rp, double t0)
         {
             SetParametersByPeriapsis (e, rp, t0);
@@ -37,11 +39,17 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeVelocityByPeriapsis ();            
         }
 
+        #region Auxiliaries
+
         protected virtual void ComputeAuxiliariesByEccentricity ()
         {
             _aux1pe = 1.0 + _e;
             _aux1me = 1.0 - _e;
         }
+
+        #endregion
+
+        #region Shape
 
         protected virtual void ComputeShapeByPeriapsis ()
         {
@@ -49,20 +57,36 @@ namespace SpaceOdyssey.Cosmodynamics
             _a = _rp / _aux1me;
         }
 
+        #endregion
+
+        #region Integrals
+
         protected void ComputeIntegrals ()
         {
             _h        = Formulae.Integrals.NonParabola.EnergyIntegral (_mu, _a);
             _auxsqrth = double.Sqrt (double.Abs (_h));
         }
 
+        #endregion
+
+        #region Motion
+
         protected virtual void ComputeMotionBySemiMajorAxis ()
         {
             _n = Formulae.Motion.NonParabola.MeanMotion (_auxsqrth, _a);
         }
 
+        #endregion
+
+        #region Velocity
+
         protected virtual void ComputeVelocityByPeriapsis ()
         {
             _vp = double.Sqrt (_mu * _aux1pe / _rp);
         }
+
+        #endregion
+
+        #endregion
     }
 }

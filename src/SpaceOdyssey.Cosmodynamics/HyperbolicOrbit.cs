@@ -37,6 +37,27 @@
 
         #endregion
 
+        #region Init and compute orbit
+
+        /// <summary>
+        /// Создаёт гиперболическую орбиту, инициализируя расстояние в перицентре rp, эксцентриситет e и момент прохождения перицентра 
+        /// t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>e <= 1 или</item>
+        /// <item>rp <= 0.</item></list></exception>
+        public static HyperbolicOrbit CreateByPeriapsis (Mass center, Mass orbiting, double e, double rp, double t0)
+        {
+            Checkers.CheckEForHyperbola (e);
+            Checkers.CheckRPositive (rp);
+
+            HyperbolicOrbit orbit = new HyperbolicOrbit (center, orbiting);
+
+            orbit.ComputeOrbitByPeriapsis (e, rp, t0);
+
+            return orbit;
+        }
+
         protected override void ComputeOrbitByPeriapsis (double e, double rp, double t0)
         {
             base.ComputeOrbitByPeriapsis (e, rp, t0);
@@ -44,5 +65,7 @@
             _asymptote = Formulae.Shape.Hyperbola.Asymptote (_e);
             _vinfinity = _auxsqrth;
         }
+
+        #endregion
     }
 }

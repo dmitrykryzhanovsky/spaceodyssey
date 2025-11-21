@@ -96,6 +96,71 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        #region Init and compute orbit
+
+        /// <summary>
+        /// Создаёт эллиптическую орбиту, инициализируя расстояние в перицентре rp, эксцентриситет e и момент прохождения перицентра 
+        /// t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>e < 0 или e >= 1 или</item>
+        /// <item>rp <= 0.</item></list></exception>
+        public static EllipticOrbit CreateByPeriapsis (Mass center, Mass orbiting, double e, double rp, double t0)
+        {
+            Checkers.CheckEForEllipse (e);
+            Checkers.CheckRPositive (rp);
+
+            EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
+
+            orbit.ComputeOrbitByPeriapsis (e, rp, t0);
+
+            return orbit;
+        }
+
+        /// <summary>
+        /// Создаёт эллиптическую орбиту, инициализируя большую полуось a, эксцентриситет e и момент прохождения перицентра t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>e < 0 или e >= 1 или</item>
+        /// <item>a <= 0.</item></list></exception>
+        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass orbiting, double e, double a, double t0)
+        {
+            Checkers.CheckEForEllipse (e);
+            Checkers.CheckRPositive (a);
+
+            EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
+
+            orbit.ComputeOrbitBySemiMajorAxis (e, a, t0);
+
+            return orbit;
+        }
+
+        /// <summary>
+        /// Создаёт эллиптическую орбиту, инициализируя расстояние в перицентре rp, расстояние в апоцентре ra и момент прохождения 
+        /// перицентра t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>rp <= 0 или</item>
+        /// <item>ra < rp.</item></list></exception>
+        public static EllipticOrbit CreateByApsides (Mass center, Mass orbiting, double rp, double ra, double t0)
+        {
+            Checkers.CheckRPositive (rp);
+            Checkers.CheckRNotPeriapsis (ra, rp);
+
+            EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
+
+            orbit.ComputeOrbitByApsides (rp, ra, t0);
+
+            return orbit;
+        }
+
+        protected override void ComputeOrbitByPeriapsis (double e, double rp, double t0)
+        {
+            base.ComputeOrbitByPeriapsis (e, rp, t0);
+
+            SetMeanAnomalyForJ2000 ();
+        }
+
         private void ComputeOrbitBySemiMajorAxis (double e, double a, double t0)
         {
             SetParametersBySemiMajorAxis (e, a, t0);
@@ -105,6 +170,8 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeIntegrals ();
             ComputeMotionBySemiMajorAxis ();
             ComputeVelocityBySemiMajorAxis ();
+
+            SetMeanAnomalyForJ2000 ();
         }
 
         private void ComputeOrbitByApsides (double rp, double ra, double t0)
@@ -118,13 +185,15 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeIntegrals ();
             ComputeMotionBySemiMajorAxis ();
             ComputeVelocityByApsides ();
+            
+            SetMeanAnomalyForJ2000 ();
         }
+
+        #region Set parameters
 
         protected override void SetParametersByPeriapsis (double e, double rp, double t0)
         {
             base.SetParametersByPeriapsis (e, rp, t0);
-
-            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
         }
 
         protected void SetParametersBySemiMajorAxis (double e, double a, double t0)
@@ -132,18 +201,18 @@ namespace SpaceOdyssey.Cosmodynamics
             _e  = e;
             _a  = a;
             _t0 = t0;
-
-            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
         }
 
         private void SetParametersByApsides (double rp, double ra, double t0)
         {
             _rp = rp;
             _ra = ra;
-            _t0 = t0;
-
-            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+            _t0 = t0;            
         }
+
+        #endregion
+
+        #region Auxiliaries
 
         protected override void ComputeAuxiliariesByEccentricity ()
         {
@@ -162,6 +231,10 @@ namespace SpaceOdyssey.Cosmodynamics
             _aux1me2     = _aux1pe * _aux1me;
             _auxsqrt1me2 = double.Sqrt (_aux1me2);
         }
+
+        #endregion
+
+        #region Shape
 
         protected override void ComputeShapeByPeriapsis ()
         {
@@ -187,6 +260,10 @@ namespace SpaceOdyssey.Cosmodynamics
             _b = double.Sqrt (_ra * _rp);
         }
 
+        #endregion
+
+        #region Motion
+
         protected override void ComputeMotionBySemiMajorAxis ()
         {
             base.ComputeMotionBySemiMajorAxis ();
@@ -194,11 +271,15 @@ namespace SpaceOdyssey.Cosmodynamics
             _T = double.Tau / _n;
         }
 
+        #endregion
+
+        #region Velocity
+
         protected override void ComputeVelocityByPeriapsis ()
         {
             base.ComputeVelocityByPeriapsis ();
 
-            _va    = _mu * _aux1me * _aux1me / (_rp * _aux1pe);
+            _va    = _aux1me * double.Sqrt (_mu / (_rp * _aux1pe));
             _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
         }
 
@@ -217,5 +298,14 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
         }
+
+        #endregion
+
+        protected void SetMeanAnomalyForJ2000 ()
+        {
+            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+        }
+
+        #endregion
     }
 }

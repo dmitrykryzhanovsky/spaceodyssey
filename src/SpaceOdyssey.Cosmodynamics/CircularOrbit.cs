@@ -4,11 +4,6 @@ namespace SpaceOdyssey.Cosmodynamics
 {
     public class CircularOrbit : EllipticOrbit
     {
-        /// <summary>
-        /// Эксцентриситет окружности = 0.
-        /// </summary>
-        private const double CircularEccentricity = 0.0;
-
         public override double RatioAP
         {
             get => 1.0;
@@ -41,6 +36,8 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeIntegrals ();
             ComputeMotionBySemiMajorAxis ();
             ComputeVelocity ();
+
+            SetMeanAnomalyForJ2000 ();
         }
 
         private void ComputeOrbitByOrbitingPeriod (double T, double t0)
@@ -52,6 +49,8 @@ namespace SpaceOdyssey.Cosmodynamics
             ComputeIntegrals ();
             ComputeMotionByOrbitingPeriod ();
             ComputeVelocity ();
+
+            SetMeanAnomalyForJ2000 ();
         }
 
         private void SetParametersByOrbitingPeriod (double T, double t0)
@@ -59,8 +58,6 @@ namespace SpaceOdyssey.Cosmodynamics
             _e  = CircularEccentricity;
             _T  = T;
             _t0 = t0;
-
-            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
         }
 
         private void ComputeAuxiliaries ()

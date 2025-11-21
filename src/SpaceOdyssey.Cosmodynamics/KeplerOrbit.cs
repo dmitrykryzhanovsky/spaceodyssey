@@ -4,6 +4,16 @@ namespace SpaceOdyssey.Cosmodynamics
 {
     public abstract class KeplerOrbit
     {
+        /// <summary>
+        /// Эксцентриситет окружности = 0.
+        /// </summary>
+        protected const double CircularEccentricity = 0.0;
+
+        /// <summary>
+        /// Эксцентриситет параболы = 1.
+        /// </summary>
+        protected const double ParabolicEccentricity = 1.0;
+
         private readonly Mass _center;     // Центральное тело.
         private readonly Mass _orbiting;   // Тело, обращающееся по орбите.
 
@@ -116,12 +126,21 @@ namespace SpaceOdyssey.Cosmodynamics
         protected static class Checkers
         {
             /// <summary>
+            /// Проверяет, чтобы эксцентриситет эллипса был 0 <= e < 1.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если e < 0 или e >= 1.</exception>
+            internal static void CheckEForEllipse (double e)
+            {
+                ArgumentOutOfRangeCheckers.CheckIntervalRightExcluded (e, CircularEccentricity, ParabolicEccentricity);
+            }
+
+            /// <summary>
             /// Проверяет, чтобы эксцентриситет гиперболы e был больше 1.
             /// </summary>
             /// <exception cref="ArgumentOutOfRangeException">Генерируется, если e <= 1.</exception>
             internal static void CheckEForHyperbola (double e)
             {
-                ArgumentOutOfRangeCheckers.CheckGreater (e, 1.0);
+                ArgumentOutOfRangeCheckers.CheckGreater (e, ParabolicEccentricity);
             }
 
             /// <summary>
@@ -131,7 +150,16 @@ namespace SpaceOdyssey.Cosmodynamics
             internal static void CheckRPositive (double r)
             {
                 ArgumentOutOfRangeCheckers.CheckPositive (r);
-            }            
+            }
+
+            /// <summary>
+            /// Проверяет, чтобы расстояние r было больше или равно rp.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r < rp.</exception>
+            internal static void CheckRNotPeriapsis (double r, double rp)
+            {
+                ArgumentOutOfRangeCheckers.CheckGreaterEqual (r, rp);
+            }
         }
     }
 }

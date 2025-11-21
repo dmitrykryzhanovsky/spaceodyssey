@@ -3,11 +3,6 @@
     public class ParabolicOrbit : KeplerOrbit
     {
         /// <summary>
-        /// Эксцентриситет параболы = 1.
-        /// </summary>
-        private const double ParabolicEccentricity = 1.0;
-
-        /// <summary>
         /// Свойство для отражения того факта, что орбита незамкнутая и уходит на бесконечность.
         /// </summary>
         public double RInfinity

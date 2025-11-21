@@ -16,9 +16,9 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
 
-            Assert.AreEqual (-1.89041095890411, orbit.A, 1.0e-15);
-            Assert.AreEqual (3.7674, orbit.P);
             Assert.AreEqual (1.73, orbit.E);
+            Assert.AreEqual (3.7674, orbit.P);
+            Assert.AreEqual (-1.89041095890411, orbit.A, 1.0e-15);                        
             Assert.AreEqual (1.38, orbit.RP);
             Assert.AreEqual (double.PositiveInfinity, orbit.RInfinity);
             Assert.AreEqual (2.18711451530721, orbit.Asymptote, 1.0e-14);

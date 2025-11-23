@@ -160,6 +160,15 @@ namespace SpaceOdyssey.Cosmodynamics
             {
                 ArgumentOutOfRangeCheckers.CheckGreaterEqual (r, rp);
             }
+
+            /// <summary>
+            /// Проверяет, чтобы отрезок времени T был положительным.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если T <= 0.</exception>
+            internal static void CheckTPositive (double T)
+            {
+                ArgumentOutOfRangeCheckers.CheckPositive (T);
+            }
         }
     }
 }

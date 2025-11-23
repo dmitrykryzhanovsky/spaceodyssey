@@ -1,6 +1,4 @@
-﻿using Archimedes;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     public class EllipticOrbit : NonParabolicOrbit
     {
@@ -178,9 +176,7 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             SetParametersByApsides (rp, ra, t0);
 
-            double plus;
-
-            ComputeAuxiliariesByApsides (out plus);
+            ComputeAuxiliariesByApsides (out double plus);
             ComputeShapeByApsides (plus);
             ComputeIntegrals ();
             ComputeMotionBySemiMajorAxis ();

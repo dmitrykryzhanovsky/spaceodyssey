@@ -1,44 +1,61 @@
-﻿using Archimedes;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
-    /// <summary>
-    /// Эллиптическая орбита.
-    /// </summary>
     public class EllipticOrbit : NonParabolicOrbit
     {
-        private double _1me2;     // Вспомогательная величина 1 – e^2.
-        private double _sqrt1me2; // Вспомогательная величина корень из 1 – e^2.
+        protected double _aux1me2;     // Вспомогательная величина 1 - e^2.
+        protected double _auxsqrt1me2; // Вспомогательная величина sqrt (1 - e^2).
+
+        protected double _b;
+        protected double _ra;
 
         protected double _T;
+        protected double _va;
         protected double _vmean;
 
+        protected double _M0;
+
         /// <summary>
-        /// Отношение A / Rp.
+        /// Малая полуось.
         /// </summary>
-        public virtual double RangeARp
+        public double B
         {
-            get => Formulae.Shape.RangeARp (_1me);
+            get => _b;
         }
 
         /// <summary>
-        /// Отношение Ra / A.
+        /// Расстояние в апоцентре.
         /// </summary>
-        public virtual double RangeRaA
+        public double RA
         {
-            get => Formulae.Shape.RangeRaA (_1pe);
+            get => _ra;
         }
 
         /// <summary>
-        /// Отношение Ra / Rp.
+        /// Отношение расстояния в апоцентре к расстоянию в перицентре.
         /// </summary>
-        public virtual double RangeRaRp
+        public virtual double RatioAP
         {
-            get => Formulae.Shape.RangeRaRp (_1me, _1pe);
+            get => _aux1pe / _aux1me;
         }
 
         /// <summary>
-        /// Орбитальный период.
+        /// Отношение расстояния в апоцентре к среднему расстоянию.
+        /// </summary>
+        public virtual double RatioAMean
+        {
+            get => _aux1pe;
+        }
+
+        /// <summary>
+        /// Отношение расстояния среднего расстояния к расстоянию в перицентре.
+        /// </summary>
+        public virtual double RatioMeanP
+        {
+            get => 1.0 / _aux1me;
+        }
+
+        /// <summary>
+        /// Период обращения.
         /// </summary>
         public double T
         {
@@ -46,116 +63,243 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         /// <summary>
-        /// Средняя скорость движения по орбите.
+        /// Скорость в апоцентре.
+        /// </summary>
+        public double VA
+        {
+            get => _va;
+        }
+
+        /// <summary>
+        /// Средняя скорость на данной орбите.
         /// </summary>
         public double VMean
         {
             get => _vmean;
         }
 
+        /// <summary>
+        /// Средняя аномалия в момент времени J2000.
+        /// </summary>
+        public double M0
+        {
+            get => _M0;
+        }
+
         #region Constructors
 
-        protected EllipticOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
+        protected EllipticOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
         }
 
         #endregion
 
+        #region Init and compute orbit
+
         /// <summary>
-        /// Инициализация эллиптической орбиты по большой полуоси a и эксцентриситету e.
-        /// </summary> 
-        /// <param name="a">Должно быть положительным, иначе сгенерируется исключение.</param>
-        /// <param name="e">Должно лежать на полуинтервале [0; 1), иначе сгенерируется исключение.</param>
-        /// <param name="t0">Момент прохождения перицентра.</param>
-        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a, double e, double t0)
+        /// Создаёт эллиптическую орбиту, инициализируя расстояние в перицентре rp, эксцентриситет e и момент прохождения перицентра 
+        /// t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>e < 0 или e >= 1 или</item>
+        /// <item>rp <= 0.</item></list></exception>
+        public static EllipticOrbit CreateByPeriapsis (Mass center, Mass orbiting, double e, double rp, double t0)
         {
-            Checkers.CheckA (a);
-            Checkers.CheckEccentricityForEllipse (e);
+            Checkers.CheckEForEllipse (e);
+            Checkers.CheckRPositive (rp);
 
-            EllipticOrbit orbit = new EllipticOrbit (center, probe, t0);
+            EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
 
-            orbit._a = a;
-            orbit._e = e;
-
-            orbit.ComputeOrbit ();
+            orbit.ComputeOrbitByPeriapsis (e, rp, t0);
 
             return orbit;
         }
 
-        #region Orbit parameter computations
-
-        protected override void ComputeShapeParameters ()
+        /// <summary>
+        /// Создаёт эллиптическую орбиту, инициализируя большую полуось a, эксцентриситет e и момент прохождения перицентра t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>e < 0 или e >= 1 или</item>
+        /// <item>a <= 0.</item></list></exception>
+        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass orbiting, double e, double a, double t0)
         {
-            _1me2     = _1me * _1pe;
-            _sqrt1me2 = double.Sqrt (_1me2);
+            Checkers.CheckEForEllipse (e);
+            Checkers.CheckRPositive (a);
 
-            _p    = _a * _1me2;
-            _rp   = _a * _1me;
-            _ra   = _a * _1pe;
+            EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
+
+            orbit.ComputeOrbitBySemiMajorAxis (e, a, t0);
+
+            return orbit;
         }
 
-        protected override void ComputeMotionParameters ()
-        {            
-            _muasqrt = Formulae.Motion.GMASqrt (_mua);
+        /// <summary>
+        /// Создаёт эллиптическую орбиту, инициализируя расстояние в перицентре rp, расстояние в апоцентре ra и момент прохождения 
+        /// перицентра t0.
+        /// </summary>
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
+        /// <item>rp <= 0 или</item>
+        /// <item>ra < rp.</item></list></exception>
+        public static EllipticOrbit CreateByApsides (Mass center, Mass orbiting, double rp, double ra, double t0)
+        {
+            Checkers.CheckRPositive (rp);
+            Checkers.CheckRNotPeriapsis (ra, rp);
 
-            _n       = Formulae.Motion.MeanMotionNonParabola (_a, _muasqrt);
-            _T       = Formulae.Motion.OrbitalPeriod (_a, _muasqrt);
+            EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
+
+            orbit.ComputeOrbitByApsides (rp, ra, t0);
+
+            return orbit;
+        }
+
+        protected override void ComputeOrbitByPeriapsis (double e, double rp, double t0)
+        {
+            base.ComputeOrbitByPeriapsis (e, rp, t0);
+
+            SetMeanAnomalyForJ2000 ();
+        }
+
+        private void ComputeOrbitBySemiMajorAxis (double e, double a, double t0)
+        {
+            SetParametersBySemiMajorAxis (e, a, t0);
+
+            ComputeAuxiliariesByEccentricity ();
+            ComputeShapeBySemiMajorAxis ();
+            ComputeIntegrals ();
+            ComputeMotionBySemiMajorAxis ();
+            ComputeVelocityBySemiMajorAxis ();
+
+            SetMeanAnomalyForJ2000 ();
+        }
+
+        private void ComputeOrbitByApsides (double rp, double ra, double t0)
+        {
+            SetParametersByApsides (rp, ra, t0);
+
+            ComputeAuxiliariesByApsides (out double plus);
+            ComputeShapeByApsides (plus);
+            ComputeIntegrals ();
+            ComputeMotionBySemiMajorAxis ();
+            ComputeVelocityByApsides ();
             
-            _vmean   = _muasqrt;
-            _va      = Formulae.Motion.VApoapsisEllipse (_mua, _1pe, _1me);
+            SetMeanAnomalyForJ2000 ();
         }
 
-        protected override void ComputeArealVelocity ()
+        #region Set parameters
+
+        protected override void SetParametersByPeriapsis (double e, double rp, double t0)
         {
-            _arealVelocity = Formulae.Integrals.ArealVelocityNonParabola (_mu, _a);
+            base.SetParametersByPeriapsis (e, rp, t0);
+        }
+
+        protected void SetParametersBySemiMajorAxis (double e, double a, double t0)
+        {
+            _e  = e;
+            _a  = a;
+            _t0 = t0;
+        }
+
+        private void SetParametersByApsides (double rp, double ra, double t0)
+        {
+            _rp = rp;
+            _ra = ra;
+            _t0 = t0;            
         }
 
         #endregion
 
-        /// <summary>
-        /// Истинная аномалия при расстоянии до центра тяготения r.
-        /// </summary>
-        /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
-        /// неотрицательное значение из двух корректных.</returns>
-        /// <param name="r">Должно быть заключено на отрезке [rp; ra], где rp – расстояние в перицентре, а ra – расстояние в апоцентре.</param>
-        public override double TrueAnomaly (double r)
-        {
-            Checkers.CheckRClosed (r, _rp, _ra);
+        #region Auxiliaries
 
-            return Formulae.Shape.ConicSectionInverse (r, _p, _e);
+        protected override void ComputeAuxiliariesByEccentricity ()
+        {
+            base.ComputeAuxiliariesByEccentricity ();
+
+            _aux1me2     = 1.0 - _e * _e;
+            _auxsqrt1me2 = double.Sqrt (_aux1me2);
         }
 
-        #region Compute position in the orbit plane
-
-        /// <summary>
-        /// На основе пройденной средней аномалии passedMeanAnomaly (которая в общем случае может выходить за пределы диапазона (-π; +π]) 
-        /// вычисляет среднюю аномалию, приведённую в диапазон (-π; +π], которая используется для дальнейших расчётов положения на орбите.
-        /// </summary>
-        protected override double GetMeanAnolamyForThisOrbitType (double passedMeanAnomaly)
+        private void ComputeAuxiliariesByApsides (out double plus)
         {
-            return Trigonometry.NormalizeHalfTurnInRad (passedMeanAnomaly);
+            plus  = _ra + _rp;
+
+            _aux1pe      = 2.0 * _ra / plus;
+            _aux1me      = 2.0 * _rp / plus;
+            _aux1me2     = _aux1pe * _aux1me;
+            _auxsqrt1me2 = double.Sqrt (_aux1me2);
         }
 
-        /// <summary>
-        /// Решает уравнение Кеплера и возвращает эксцентрическую аномалию E.
-        /// </summary>
-        protected override double SolveKeplerEquation (double M, double e)
+        #endregion
+
+        #region Shape
+
+        protected override void ComputeShapeByPeriapsis ()
         {
-            return Formulae.KeplerEquation.SolveForEllipse (M, e);
+            base.ComputeShapeByPeriapsis ();
+
+            _b  = _rp * double.Sqrt (_aux1pe / _aux1me);
+            _ra = _rp * _aux1pe / _aux1me;
         }
 
-        /// <summary>
-        /// Определяет характеристики положения на орбите на основе эксцентрической аномалии E.
-        /// </summary>
-        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
-            (double E)
+        protected virtual void ComputeShapeBySemiMajorAxis ()
         {
-            (double sin, double cos) = double.SinCos (E);
+            _p  = _a * _aux1me2;
+            _b  = _a * _auxsqrt1me2;
+            _rp = _a * _aux1me;
+            _ra = _a * _aux1pe;
+        }
 
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForEllipse (sin, cos, _a, _e, _sqrt1me2);
-            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForEllipse (sin, cos, _muasqrt, _e, _sqrt1me2);
+        private void ComputeShapeByApsides (double plus)
+        {
+            _e = (_ra - _rp) / plus;
+            _p = 2.0 * _ra * _rp / plus;
+            _a = plus / 2.0;
+            _b = double.Sqrt (_ra * _rp);
+        }
 
-            return (x, y, r, trueAnomaly, vx, vy, speed);
+        #endregion
+
+        #region Motion
+
+        protected override void ComputeMotionBySemiMajorAxis ()
+        {
+            base.ComputeMotionBySemiMajorAxis ();
+
+            _T = double.Tau / _n;
+        }
+
+        #endregion
+
+        #region Velocity
+
+        protected override void ComputeVelocityByPeriapsis ()
+        {
+            base.ComputeVelocityByPeriapsis ();
+
+            _va    = _aux1me * double.Sqrt (_mu / (_rp * _aux1pe));
+            _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
+        }
+
+        private void ComputeVelocityBySemiMajorAxis ()
+        {
+            _vp = double.Sqrt (-_h * _aux1pe / _aux1me);
+            _va = double.Sqrt (-_h * _aux1me / _aux1pe);
+
+            _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
+        }
+
+        private void ComputeVelocityByApsides ()
+        {
+            _vp = double.Sqrt (-_h * _ra / _rp);
+            _va = double.Sqrt (-_h * _rp / _ra);
+
+            _vmean = Formulae.Motion.Ellipse.SpeedMean (_a, _auxsqrt1me2, _T);
+        }
+
+        #endregion
+
+        protected void SetMeanAnomalyForJ2000 ()
+        {
+            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
         }
 
         #endregion

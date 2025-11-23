@@ -8,160 +8,122 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void CreateByPeriapsisTest ()
         {
-            Mass   central = Astrodata.Sun.SI;
-            Mass   probe   = Astrodata.Earth.SI;
-            double rp      = 147098290052.82897;
-            double e       = 1.98328877;
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;            
+            double e        = 1.73;
+            double rp       = 1.38;
+            double t0       = 0.42;
 
-            HyperbolicOrbit actual = HyperbolicOrbit.CreateByPeriapsis (central, probe, rp, e, 2451545.0);
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
 
-            Assert.AreEqual (-149598261000.0, actual.A, 1.0e-4);
-            Assert.AreEqual ( 438836676800.80737, actual.P);
-            Assert.AreEqual ( 1.98328877, actual.E);
-            Assert.AreEqual ( 147098290052.82897, actual.RPeri);
-
-            Assert.AreEqual (2.0992667373965830, actual.Asymptote);
-
-            Assert.AreEqual (1.99097887285211e-7, actual.N, 1.0e-21);
-            Assert.AreEqual (51880.040177546139, actual.VPeri);
-
-            Assert.AreEqual (8.87128217476016e+8, actual.EnergyIntegral, 1.0e-6);
-            Assert.AreEqual (4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
+            Assert.AreEqual (1.73, orbit.E);
+            Assert.AreEqual (3.7674, orbit.P);
+            Assert.AreEqual (-1.89041095890411, orbit.A, 1.0e-15);                        
+            Assert.AreEqual (1.38, orbit.RP);
+            Assert.AreEqual (double.PositiveInfinity, orbit.RInfinity);
+            Assert.AreEqual (2.18711451530721, orbit.Asymptote, 1.0e-14);
+            Assert.AreEqual (3.53060797101449e-10, orbit.EnergyIntegral, 1.0e-24);
+            Assert.AreEqual (1.76530398550725e-10, orbit.W, 1.0e-24);
+            Assert.AreEqual (9.93959118862213e-6, orbit.N, 1.0e-20);
+            Assert.AreEqual (3.63366296204521e-5, orbit.VP, 1.0e-19);
+            Assert.AreEqual (1.8789912109998e-5, orbit.VInfinity, 1.0e-19);            
+            Assert.AreEqual (0.42, orbit.T0);
         }
 
         [TestMethod ()]
-        public void RadiusTest ()
+        public void CreateByPeriapsisTest_Exception_E1 ()
         {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       rp: 2.0,
-                                                                       e:  1.6,
-                                                                       t0: 2451545.0);
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;            
+            double e        = 1.0;
+            double rp       = 1.38;
+            double t0       = 0.42;
 
-            double trueAnomaly = double.Pi * (2.0 / 3.0);
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (26, actual, 1.0e-13);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_0 ()
-        {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       rp:     2.0,
-                                                                       e:      2.0,
-                                                                       t0:     2451545.0);
-
-            double r = 2.0;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (0.0, actual);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_60 ()
-        {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       rp:     2.0,
-                                                                       e:      2.0,
-                                                                       t0:     2451545.0);
-
-            double r = 3.0;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (double.Pi / 3.0, actual, 1.0e-15);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_90 ()
-        {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       rp:     2.0,
-                                                                       e:      2.0,
-                                                                       t0:     2451545.0);
-
-            double r = 6.0;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (double.Pi / 2.0, actual);
-        }               
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_Asymptote ()
-        {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       rp:     2.0,
-                                                                       e:      2.0,
-                                                                       t0:     2451545.0);
-
-            double r = double.PositiveInfinity;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (double.Pi * 2.0 / 3.0, actual, 1.0e-15);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_IncorrectDistanceLess ()
-        {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       rp:     2.0,
-                                                                       e:      2.0,
-                                                                       t0:     2451545.0);
-
-            double r = 1.999999999999;
-
-            bool flag = false;
+            bool argumentOutOfRangeException = false;
 
             try
             {
-                orbit.TrueAnomaly (r);
+                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
             }
 
             catch (ArgumentOutOfRangeException)
             {
-                flag = true;
+                argumentOutOfRangeException = true;
             }
 
-            Assert.IsTrue (flag);
+            Assert.IsTrue (argumentOutOfRangeException);
         }
 
         [TestMethod ()]
-        public void ComputePositionTest ()
+        public void CreateByPeriapsisTest_Exception_ELess1 ()
         {
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center: Mass.CreateByGMSqrt (10.0),
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       rp:     2.0,
-                                                                       e:      2.0,
-                                                                       t0:     2.0);
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.73;
+            double rp       = 1.38;            
+            double t0       = 0.42;
 
-            double t = 5.0;
+            bool argumentOutOfRangeException = false;
 
-            OrbitalPosition actual = orbit.ComputePosition (t);
+            try
+            {
+                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+            }
 
-            Assert.AreEqual (5.0, actual.Time);
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
 
-            Assert.AreEqual (10.6066017177982, actual.PassedMeanAnomaly, 1.0e-13);
-            Assert.AreEqual (10.6066017177982, actual.M, 1.0e-13);
-            Assert.AreEqual ( 2.58530052730714, actual.E, 1.0e-14);
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
 
-            Assert.AreEqual (-9.34264909395491, actual.PlanarPosition.X, 1.0e-14);
-            Assert.AreEqual (22.8490449370044, actual.PlanarPosition.Y, 1.0e-13);
-            Assert.AreEqual (24.6852981879098, actual.R, 1.0e-13);
-            Assert.AreEqual ( 1.95893929360818, actual.TrueAnomaly, 1.0e-14);
+        [TestMethod ()]
+        public void CreateByPeriapsisTest_Exception_RpZero ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.73;
+            double rp       = 0.0;            
+            double t0       = 0.42;
 
-            Assert.AreEqual (-3.77880123758549, actual.PlanarPosition.VX, 1.0e-14);
-            Assert.AreEqual ( 6.61986779507588, actual.PlanarPosition.VY, 1.0e-14);
-            Assert.AreEqual ( 7.62246603255537, actual.Speed, 1.0e-14);
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateByPeriapsisTest_Exception_RpNegative ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        =  0.73;
+            double rp       = -1.38;            
+            double t0       =  0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
         }
     }
 }

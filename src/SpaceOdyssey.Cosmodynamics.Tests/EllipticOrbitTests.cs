@@ -6,240 +6,439 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     public class EllipticOrbitTests
     {
         [TestMethod ()]
-        public void CreateBySemiMajorAxisTest_E0 ()
+        public void CreateByPeriapsisTest ()
         {
-            Mass   central = Astrodata.Sun.SI;
-            Mass   probe   = Astrodata.Earth.SI;
-            double a       = 149598261000.0;
-            double e       = 0.0;
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.27;
+            double rp       = 1.38;            
+            double t0       = 0.42;
 
-            EllipticOrbit actual = EllipticOrbit.CreateBySemiMajorAxis (central, probe, a, e, 2451545.0);
+            EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
 
-            Assert.AreEqual (149598261000.0, actual.A);
-            Assert.AreEqual (149598261000.0, actual.P);
-            Assert.AreEqual (0.0, actual.E);
-            Assert.AreEqual (149598261000.0, actual.RPeri);
-            Assert.AreEqual (149598261000.0, actual.RApo);
-
-            Assert.AreEqual (1.0, actual.RangeARp);
-            Assert.AreEqual (1.0, actual.RangeRaA);
-            Assert.AreEqual (1.0, actual.RangeRaRp);
-
-            Assert.AreEqual (1.99097887285211e-7, actual.N, 1.0e-21);
-            Assert.AreEqual (3.15582721286180e+7, actual.T, 1.0e-8);
-            Assert.AreEqual (29784.6977066415, actual.VMean, 1.0e-10);
-            Assert.AreEqual (29784.6977066415, actual.VPeri, 1.0e-10);            
-            Assert.AreEqual (29784.6977066415, actual.VApo, 1.0e-10);
-
-            Assert.AreEqual (-8.87128217476016e+8, actual.EnergyIntegral);
-            Assert.AreEqual ( 4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
+            Assert.AreEqual (0.27, orbit.E);
+            Assert.AreEqual (1.7526, orbit.P);
+            Assert.AreEqual (1.89041095890411, orbit.A, 1.0e-15);
+            Assert.AreEqual (1.82020170491496, orbit.B, 1.0e-14);
+            Assert.AreEqual (1.38, orbit.RP);
+            Assert.AreEqual (2.40082191780822, orbit.RA, 1.0e-15);
+            Assert.AreEqual (1.73972602739726, orbit.RatioAP, 1.0e-14);
+            Assert.AreEqual (1.27, orbit.RatioAMean);
+            Assert.AreEqual (1.36986301369863, orbit.RatioMeanP);
+            Assert.AreEqual (-3.53060797101449e-10, orbit.EnergyIntegral, 1.0e-24);
+            Assert.AreEqual (-1.76530398550725e-10, orbit.W, 1.0e-24);
+            Assert.AreEqual (9.93959118862213e-6, orbit.N, 1.0e-20);
+            Assert.AreEqual (6.32137196384089e+5, orbit.T, 1.0e-9);
+            Assert.AreEqual (2.4783644969435e-5, orbit.VP, 1.0e-18);
+            Assert.AreEqual (1.42457171871557e-5, orbit.VA, 1.0e-19);
+            Assert.AreEqual (1.84426370289652e-5, orbit.VMean, 1.0e-19);            
+            Assert.AreEqual (0.42, orbit.T0);
+            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-14);
         }
 
         [TestMethod ()]
-        public void CreateBySemiMajorAxisTest_EEarth ()
+        public void CreateByPeriapsisTest_Exception_ELess0 ()
         {
-            Mass   central = Astrodata.Sun.SI;
-            Mass   probe   = Astrodata.Earth.SI;
-            double a       = 149598261000.0;
-            double e       = 0.01671123;
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = -0.27;
+            double rp       =  1.38;            
+            double t0       =  0.42;
 
-            EllipticOrbit actual = EllipticOrbit.CreateBySemiMajorAxis (central, probe, a, e, 2451545.0);
-
-            Assert.AreEqual (149598261000.0, actual.A);
-            Assert.AreEqual (149556483410.509, actual.P, 1.0e-3);
-            Assert.AreEqual (0.01671123, actual.E);
-            Assert.AreEqual (147098290052.829, actual.RPeri, 1.0e-3);
-            Assert.AreEqual (152098231947.171, actual.RApo, 1.0e-3);
-
-            Assert.AreEqual (1.01699524138774, actual.RangeARp, 1.0e-14);
-            Assert.AreEqual (1.01671123, actual.RangeRaA);
-            Assert.AreEqual (1.03399048277547, actual.RangeRaRp, 1.0e-14);
-
-            Assert.AreEqual (1.99097887285211e-7, actual.N, 1.0e-21);
-            Assert.AreEqual (3.15582721286180e+7, actual.T, 1.0e-8);
-            Assert.AreEqual (29784.6977066415, actual.VMean, 1.0e-10);
-            Assert.AreEqual (30286.6659418261, actual.VPeri, 1.0e-10);
-            Assert.AreEqual (29291.0490438264, actual.VApo, 1.0e-10);
-
-            Assert.AreEqual (-8.87128217476016e+8, actual.EnergyIntegral);
-            Assert.AreEqual ( 4.45573898132426e+15, actual.ArealVelocity, 1.0e+1);
-        }
-
-        [TestMethod ()]
-        public void RadiusTest ()
-        {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI, 
-                                                                       probe:  Mass.ProbeZeroMass, 
-                                                                       a:  2.0, 
-                                                                       e:  0.6, 
-                                                                       t0: 2451545.0);
-
-            double trueAnomaly = double.Pi * (2.0 / 3.0);
-
-            double actual = orbit.Radius (trueAnomaly);
-
-            Assert.AreEqual (1.8285714285714286, actual);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_0 ()
-        {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       a:  2.0,
-                                                                       e:  0.5,
-                                                                       t0: 2451545.0);
-
-            double r = 1.0;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (0.0, actual);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_60 ()
-        {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       a:  2.0,
-                                                                       e:  0.5,
-                                                                       t0: 2451545.0);
-
-            double r = 1.2;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (double.Pi / 3.0, actual, 1.0e-15);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_90 ()
-        {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       a:  2.0,
-                                                                       e:  0.5,
-                                                                       t0: 2451545.0);
-
-            double r = 1.5;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (double.Pi / 2.0, actual);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_120 ()
-        {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       a:  2.0,
-                                                                       e:  0.5,
-                                                                       t0: 2451545.0);
-
-            double r = 2.0;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (double.Pi * 2.0 / 3.0, actual, 1.0e-15);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_CorrectDistance_180 ()
-        {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       a:  2.0,
-                                                                       e:  0.5,
-                                                                       t0: 2451545.0);
-
-            double r = 3.0;
-
-            double actual = orbit.TrueAnomaly (r);
-
-            Assert.AreEqual (double.Pi, actual);
-        }
-
-        [TestMethod ()]
-        public void TrueAnomalyTest_IncorrectDistanceLess ()
-        {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       a:  2.0,
-                                                                       e:  0.5,
-                                                                       t0: 2451545.0);
-
-            double r = 0.999999999999;
-
-            bool flag = false;
+            bool argumentOutOfRangeException = false;
 
             try
             {
-                orbit.TrueAnomaly (r);
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
             }
 
             catch (ArgumentOutOfRangeException)
             {
-                flag = true;
+                argumentOutOfRangeException = true;
             }
 
-            Assert.IsTrue (flag);
+            Assert.IsTrue (argumentOutOfRangeException);
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_IncorrectDistanceGteater ()
+        public void CreateByPeriapsisTest_Exception_E1 ()
         {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Astrodata.Earth.SI,
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       a:  2.0,
-                                                                       e:  0.5,
-                                                                       t0: 2451545.0);
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.0;
+            double rp       = 1.38;            
+            double t0       = 0.42;
 
-            double r = 3.000000000001;
-
-            bool flag = false;
+            bool argumentOutOfRangeException = false;
 
             try
             {
-                orbit.TrueAnomaly (r);
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
             }
 
             catch (ArgumentOutOfRangeException)
             {
-                flag = true;
+                argumentOutOfRangeException = true;
             }
 
-            Assert.IsTrue (flag);
+            Assert.IsTrue (argumentOutOfRangeException);
         }
 
         [TestMethod ()]
-        public void ComputePositionTest ()
+        public void CreateByPeriapsisTest_Exception_EGreater1 ()
         {
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center: Mass.CreateByGMSqrt (10.0),
-                                                                       probe:  Mass.ProbeZeroMass,
-                                                                       a:      3.0,
-                                                                       e:      0.75,
-                                                                       t0:     2.0);
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.27;
+            double rp       = 1.38;            
+            double t0       = 0.42;
 
-            double t = 5.0;
+            bool argumentOutOfRangeException = false;
 
-            OrbitalPosition actual = orbit.ComputePosition (t);
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+            }
 
-            Assert.AreEqual (5.0, actual.Time);
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
 
-            Assert.AreEqual ( 5.77350269189626, actual.PassedMeanAnomaly, 1.0e-14);
-            Assert.AreEqual (-0.509682615283329, actual.M, 1.0e-14);
-            Assert.AreEqual (-1.21189511545443, actual.E, 1.0e-14);
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
 
-            Assert.AreEqual (-1.19626299597325, actual.PlanarPosition.X, 1.0e-14);
-            Assert.AreEqual (-1.85787964297363, actual.PlanarPosition.Y, 1.0e-14);
-            Assert.AreEqual ( 2.20969724697994, actual.R, 1.0e-14);
-            Assert.AreEqual (-2.14286158169433, actual.TrueAnomaly, 1.0e-14);
+        [TestMethod ()]
+        public void CreateByPeriapsisTest_Exception_RpZero ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.27;
+            double rp       = 0.0;            
+            double t0       = 0.42;
 
-            Assert.AreEqual ( 7.33897055908828, actual.PlanarPosition.VX, 1.0e-14);
-            Assert.AreEqual ( 1.82107510811278, actual.PlanarPosition.VY, 1.0e-14);
-            Assert.AreEqual ( 7.56153446177113, actual.Speed, 1.0e-14);
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateByPeriapsisTest_Exception_RpNegative()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        =  0.27;
+            double rp       = -1.38;            
+            double t0       =  0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateBySemiMajorAxisTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.27;
+            double a        = 1.89041095890411;
+            double t0       = 0.42;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+
+            Assert.AreEqual (0.27, orbit.E);
+            Assert.AreEqual (1.7526, orbit.P, 1.0e-15);
+            Assert.AreEqual (1.89041095890411, orbit.A);
+            Assert.AreEqual (1.82020170491496, orbit.B, 1.0e-14);
+            Assert.AreEqual (1.38, orbit.RP, 1.0e-15);
+            Assert.AreEqual (2.40082191780822, orbit.RA, 1.0e-15);
+            Assert.AreEqual (1.73972602739726, orbit.RatioAP, 1.0e-14);
+            Assert.AreEqual (1.27, orbit.RatioAMean);
+            Assert.AreEqual (1.36986301369863, orbit.RatioMeanP);
+            Assert.AreEqual (-3.53060797101449e-10, orbit.EnergyIntegral, 1.0e-24);
+            Assert.AreEqual (-1.76530398550725e-10, orbit.W, 1.0e-24);
+            Assert.AreEqual (9.93959118862213e-6, orbit.N, 1.0e-20);
+            Assert.AreEqual (6.32137196384089e+5, orbit.T, 1.0e-9);
+            Assert.AreEqual (2.4783644969435e-5, orbit.VP, 1.0e-18);
+            Assert.AreEqual (1.42457171871557e-5, orbit.VA, 1.0e-19);
+            Assert.AreEqual (1.84426370289652e-5, orbit.VMean, 1.0e-19);
+            Assert.AreEqual (0.42, orbit.T0);
+            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
+        }
+
+        [TestMethod ()]
+        public void CreateBySemiMajorAxisTest_Exception_ELess0 ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = -0.27;
+            double a        =  1.38;
+            double t0       =  0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateBySemiMajorAxisTest_Exception_E1 ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.0;
+            double a        = 1.38;
+            double t0       = 0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateBySemiMajorAxisTest_Exception_EGreater1 ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.27;
+            double a        = 1.38;
+            double t0       = 0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateBySemiMajorAxisTest_Exception_AZero ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.27;
+            double a        = 0.0;
+            double t0       = 0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateBySemiMajorAxisTest_Exception_ANegative ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        =  0.27;
+            double a        = -1.38;
+            double t0       =  0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateByApsidesTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double rp       = 1.38;
+            double ra       = 2.40082191780822;
+            double t0       = 0.42;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+
+            Assert.AreEqual (0.27, orbit.E, 1.0e-15);
+            Assert.AreEqual (1.7526, orbit.P, 1.0e-15);
+            Assert.AreEqual (1.89041095890411, orbit.A);
+            Assert.AreEqual (1.82020170491496, orbit.B, 1.0e-14);
+            Assert.AreEqual (1.38, orbit.RP);
+            Assert.AreEqual (2.40082191780822, orbit.RA);
+            Assert.AreEqual (1.73972602739726, orbit.RatioAP, 1.0e-14);
+            Assert.AreEqual (1.27, orbit.RatioAMean, 1.0e-15);
+            Assert.AreEqual (1.36986301369863, orbit.RatioMeanP, 1.0e-15);
+            Assert.AreEqual (-3.53060797101449e-10, orbit.EnergyIntegral, 1.0e-24);
+            Assert.AreEqual (-1.76530398550725e-10, orbit.W, 1.0e-24);
+            Assert.AreEqual (9.93959118862213e-6, orbit.N, 1.0e-20);
+            Assert.AreEqual (6.32137196384089e+5, orbit.T, 1.0e-9);
+            Assert.AreEqual (2.4783644969435e-5, orbit.VP, 1.0e-18);
+            Assert.AreEqual (1.42457171871557e-5, orbit.VA, 1.0e-19);
+            Assert.AreEqual (1.84426370289652e-5, orbit.VMean, 1.0e-19);
+            Assert.AreEqual (0.42, orbit.T0);
+            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
+        }
+
+        [TestMethod ()]
+        public void CreateByApsidesTest_RaEqualsRp ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double rp       = 1.89041095890411;
+            double ra       = 1.89041095890411;
+            double t0       = 0.42;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+
+            Assert.AreEqual (0.0, orbit.E);
+            Assert.AreEqual (1.89041095890411, orbit.P);
+            Assert.AreEqual (1.89041095890411, orbit.A);
+            Assert.AreEqual (1.89041095890411, orbit.B);
+            Assert.AreEqual (1.89041095890411, orbit.RP);
+            Assert.AreEqual (1.89041095890411, orbit.RA);
+            Assert.AreEqual (1.0, orbit.RatioAP);
+            Assert.AreEqual (1.0, orbit.RatioAMean);
+            Assert.AreEqual (1.0, orbit.RatioMeanP);
+            Assert.AreEqual (-3.53060797101449e-10, orbit.EnergyIntegral, 1.0e-24);
+            Assert.AreEqual (-1.76530398550725e-10, orbit.W, 1.0e-24);
+            Assert.AreEqual (9.93959118862213e-6, orbit.N, 1.0e-20);
+            Assert.AreEqual (6.32137196384089e+5, orbit.T, 1.0e-9);
+            Assert.AreEqual (1.87899121099980e-5, orbit.VP, 1.0e-19);
+            Assert.AreEqual (1.87899121099980e-5, orbit.VA, 1.0e-19);
+            Assert.AreEqual (1.87899121099980e-5, orbit.VMean, 1.0e-19);
+            Assert.AreEqual (0.42, orbit.T0);
+            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
+        }
+
+        [TestMethod ()]
+        public void CreateByApsidesTestTest_Exception_RpZero ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double rp       = 0.0;
+            double ra       = 2.40082191780822;
+            double t0       = 0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateByApsidesTestTest_Exception_RpNegative ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double rp       = -1.38;
+            double ra       =  2.40082191780822;
+            double t0       =  0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateByApsidesTestTest_Exception_RaLessRp ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double rp       = 1.38;
+            double ra       = 1.379999999999;
+            double t0       = 0.42;
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
         }
     }
 }

@@ -1,122 +1,153 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
-    /// <summary>
-    /// Круговая орбита.
-    /// </summary>
     public class CircularOrbit : EllipticOrbit
     {
-        /// <summary>
-        /// Отношение A / Rp (для круговой орбиты равно 1).
-        /// </summary>
-        public override double RangeARp
+        public override double RatioAP
         {
             get => 1.0;
         }
 
-        /// <summary>
-        /// Отношение Ra / A (для круговой орбиты равно 1).
-        /// </summary>
-        public override double RangeRaA
+        public override double RatioAMean
         {
             get => 1.0;
         }
 
-        /// <summary>
-        /// Отношение Ra / Rp (для круговой орбиты равно 1).
-        /// </summary>
-        public override double RangeRaRp
+        public override double RatioMeanP
         {
             get => 1.0;
         }
 
         #region Constructors
 
-        private CircularOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
+        private CircularOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
         }
 
         #endregion
 
+        #region Init and compute orbit
+
         /// <summary>
-        /// Инициализация круговой орбиты по большой полуоси (радиусу) a.
+        /// Создаёт круговую орбиту, инициализируя большую полуось a и момент прохождения перицентра t0.
         /// </summary>
-        /// <param name="a">Должно быть положительным, иначе сгенерируется исключение.</param>
-        /// <param name="t0">Момент прохождения перицентра.</param>
-        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass probe, double a, double t0)
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если a <= 0.</exception>
+        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass orbiting, double a, double t0)
         {
-            Checkers.CheckA (a);
+            Checkers.CheckRPositive (a);
 
-            CircularOrbit orbit = new CircularOrbit (center, probe, t0);
+            CircularOrbit orbit = new CircularOrbit (center, orbiting);
 
-            orbit._a = a;
-
-            orbit.ComputeOrbit ();
+            orbit.ComputeOrbitBySemiMajorAxis (a, t0);
 
             return orbit;
         }
 
-        #region Orbit parameter computations
-
         /// <summary>
-        /// Для круговой орбиты все геометрические параметры численно равны большой полуоси (радиусу), а эксцентриситет = 0.
+        /// Создаёт круговую орбиту, инициализируя период обращения T и момент прохождения перицентра t0.
         /// </summary>
-        protected override void ComputeShape ()
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если T <= 0.</exception>
+        public static CircularOrbit CreateByOrbitingPeriod (Mass center, Mass orbiting, double T, double t0)
+        {
+            Checkers.CheckTPositive (T);
+
+            CircularOrbit orbit = new CircularOrbit (center, orbiting);
+
+            orbit.ComputeOrbitByOrbitingPeriod (T, t0);
+
+            return orbit;
+        }
+
+        private void ComputeOrbitBySemiMajorAxis (double a, double t0)
+        {
+            SetParametersBySemiMajorAxis (CircularEccentricity, a, t0);
+
+            ComputeAuxiliaries ();
+            ComputeShapeBySemiMajorAxis ();
+            ComputeIntegrals ();
+            ComputeMotionBySemiMajorAxis ();
+            ComputeVelocity ();
+
+            SetMeanAnomalyForJ2000 ();
+        }
+
+        private void ComputeOrbitByOrbitingPeriod (double T, double t0)
+        {
+            SetParametersByOrbitingPeriod (T, t0);
+
+            ComputeAuxiliaries ();
+            ComputeShapeByOrbitingPeriod ();
+            ComputeIntegrals ();
+            ComputeMotionByOrbitingPeriod ();
+            ComputeVelocity ();
+
+            SetMeanAnomalyForJ2000 ();
+        }
+
+        #region Set parameters
+
+        private void SetParametersByOrbitingPeriod (double T, double t0)
         {
             _e  = CircularEccentricity;
+            _T  = T;
+            _t0 = t0;
+        }
+
+        #endregion
+
+        #region Auxiliaries
+
+        private void ComputeAuxiliaries ()
+        {
+            _aux1pe      = 1.0;
+            _aux1me      = 1.0;
+            _aux1me2     = 1.0;
+            _auxsqrt1me2 = 1.0;
+        }
+
+        #endregion
+
+        #region Shape
+
+        protected override void ComputeShapeBySemiMajorAxis ()
+        {
             _p  = _a;
+            _b  = _a;
+            _rp = _a;
+            _ra = _a;
+        }
+
+        private void ComputeShapeByOrbitingPeriod ()
+        {
+            _a  = double.Cbrt (_mu * _T * _T / MathConst.M4_PI_SQR);
+            _p  = _a;
+            _b  = _a;
             _rp = _a;
             _ra = _a;
         }
 
         #endregion
 
-        /// <summary>
-        /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
-        /// </summary>
-        /// <remarks>В случае круговой орбиты одно и то же для всех значений истинной аномалии и равно большой полуоси (радиусу) 
-        /// орбиты.</remarks>
-        public override double Radius (double trueAnomaly)
+        #region Motion
+
+        private void ComputeMotionByOrbitingPeriod ()
         {
-            return _a;
+            _n = double.Tau / _T;
         }
 
-        /// <summary>
-        /// Истинная аномалия при расстоянии до центра тяготения r.
-        /// </summary>
-        /// <param name="r">Так как для круговой орбиты расстояние до центра остаётся неизменным при изменении истинной аномалии, по её 
-        /// значение определить расстояние нельзя. Поэтому в том случае, если r = a (большой полуоси орбиты), метод возвращает NaN. 
-        /// Если же r ≠ a, генерируется исключение, так как для данной круговой орбиты такое расстояние некорректно.</param>
-        public override double TrueAnomaly (double r)
-        {
-            if (r == _a) return double.NaN;
+        #endregion
 
-            else throw new ArgumentOutOfRangeException ();
+        #region Velocity
+
+        private void ComputeVelocity ()
+        {
+            _vp    = _auxsqrth;
+            _va    = _auxsqrth;
+            _vmean = _auxsqrth;
         }
 
-        #region Compute position in the orbit plane
-
-        /// <summary>
-        /// Так как для окружности уравнение Кеплера решать ненужно, данная перегрузка метода носит формальный характер и возвращает 
-        /// переданное в него значение средней аномалии M.
-        /// </summary>
-        protected override double SolveKeplerEquation (double M, double e)
-        {
-            return M;
-        }
-
-        /// <summary>
-        /// Определяет характеристики положения на орбите на основе средней аномалии M.
-        /// </summary>
-        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
-            (double M)
-        {
-            (double sin, double cos) = double.SinCos (M);
-
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForCircle (M, sin, cos, _a);
-            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForCircle (sin, cos, _muasqrt);
-
-            return (x, y, r, trueAnomaly, vx, vy, speed);
-        }
+        #endregion
 
         #endregion
     }

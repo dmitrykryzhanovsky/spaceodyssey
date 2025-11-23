@@ -3,42 +3,55 @@
 namespace SpaceOdyssey.Cosmodynamics
 {
     /// <summary>
-    /// Тип для представления массы – центрального тела системы или спутника.
+    /// Масса – центральное тело системы или спутник (любое тело, совершающее обращение вокруг центрального тела).
     /// </summary>
     public class Mass : ICloneable
     {
         /// <summary>
-        /// Спутник нулевой массы.
+        /// Тело нулевой массы.
         /// </summary>
-        public static readonly Mass ProbeZeroMass = CreateByMass (0.0);
+        public static readonly Mass ZeroMass = new Mass (0.0, 0.0, 0.0);
+
+        private readonly double _mass;
+        private readonly double _GM;
+        private readonly double _sqrtGM;
 
         /// <summary>
         /// Масса тела.
         /// </summary>
-        public double M { get; private set; }
+        public double M
+        {
+            get => _mass;
+        }
 
         /// <summary>
         /// Локальная гравитационная постоянная, связанная с данным телом.
         /// </summary>
-        /// <remarks>Равна GM, т.е. произведению универсальной гравитационной постоянной на массу тела.</remarks>
-        public double GM { get; private set; }
+        /// <remarks>Произведение универсальной гравитационной постоянной G на массу данного тела M.</remarks>
+        public double GM
+        {
+            get => _GM;
+        }
 
         /// <summary>
         /// Квадратный корень из локальной гравитационной постоянной, связанной с данным телом.
         /// </summary>
-        /// <remarks>Равен sqrt (GM), т.е. квадратному корню из произведения универсальной гравитационной постоянной на массу тела.</remarks>
-        public double GMSqrt { get; private set; }
+        /// <remarks>Квадратный корень из произведения GM, где G – универсальная гравитационная постоянная, M – масса данного тела.</remarks>
+        public double SqrtGM
+        {
+            get => _sqrtGM;
+        }
 
         #region Constructors
 
-        private Mass (double m, double gm, double gmsqrt)
+        private Mass (double mass, double GM, double sqrtGM)
         {
-            M      = m;
-            GM     = gm;
-            GMSqrt = gmsqrt;
+            _mass   = mass;
+            _GM     = GM;
+            _sqrtGM = sqrtGM;
         }
 
-        private Mass (Mass other) : this (other.M, other.GM, other.GMSqrt)
+        public Mass (Mass other) : this (other._mass, other._GM, other._sqrtGM)
         {
         }
 
@@ -49,41 +62,29 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
-        /// <summary>
-        /// Инициализация по массе тела.
-        /// </summary>
-        /// <param name="m">Должно быть положительным, иначе сгенерируется исключение.</param>
-        public static Mass CreateByMass (double m)
+        public static Mass CreateByMass (double mass)
         {
-            ArgumentOutOfRangeCheckers.CheckNotNegative (m);
+            ArgumentOutOfRangeCheckers.CheckNotNegative (mass);
 
-            double gm = m * PhysConst.G;
+            double GM = PhysConst.G * mass;
 
-            return new Mass (m, gm, double.Sqrt (gm));
+            return new Mass (mass: mass, GM: GM, sqrtGM: double.Sqrt (GM));
         }
 
-        /// <summary>
-        /// Инициализация по локальной гравитационной постоянной (произведению GM).
-        /// </summary>
-        /// <param name="gm">Должно быть положительным, иначе сгенерируется исключение.</param>
-        public static Mass CreateByGM (double gm)
+        public static Mass CreateByGM (double GM)
         {
-            ArgumentOutOfRangeCheckers.CheckNotNegative (gm);
+            ArgumentOutOfRangeCheckers.CheckNotNegative (GM);
 
-            return new Mass (gm / PhysConst.G, gm, double.Sqrt (gm));
+            return new Mass (mass: GM / PhysConst.G, GM: GM, sqrtGM: double.Sqrt (GM));
         }
 
-        /// <summary>
-        /// Инициализация по квадратному корню из локальной гравитационной постоянной sqrt (GM).
-        /// </summary>
-        /// <param name="gmsqrt">Должно быть положительным, иначе сгенерируется исключение.</param>
-        public static Mass CreateByGMSqrt (double gmsqrt)
+        public static Mass CreateBySqrtGM (double sqrtGM)
         {
-            ArgumentOutOfRangeCheckers.CheckNotNegative (gmsqrt);
+            ArgumentOutOfRangeCheckers.CheckNotNegative (sqrtGM);
 
-            double gm = gmsqrt * gmsqrt;
+            double GM = sqrtGM * sqrtGM;
 
-            return new Mass (gm / PhysConst.G, gm, gmsqrt);
+            return new Mass (mass: GM / PhysConst.G, GM: GM, sqrtGM: sqrtGM);
         }
     }
 }

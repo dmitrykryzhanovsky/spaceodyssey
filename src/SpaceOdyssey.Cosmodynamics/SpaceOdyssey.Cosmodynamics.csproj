@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="OrbitalPosition.Planar.Coordinates.cs" />
+    <Compile Remove="OrbitalPosition.Planar.cs" />
+    <Compile Remove="OrbitalPosition.Planar.Velocity.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SpaceOdyssey.Core\SpaceOdyssey.Core.csproj" />
   </ItemGroup>
 

@@ -6,52 +6,139 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     public class MassTests
     {
         [TestMethod ()]
+        public void MassTest_Copying ()
+        {
+            Mass other  = Mass.CreateByMass (10.0);
+            Mass actual = new Mass (other);
+
+            Assert.AreEqual (10.0, actual.M);
+            Assert.AreEqual (6.6743e-10, actual.GM, 1.0e-24);
+            Assert.AreEqual (2.58346666322598403e-5, actual.SqrtGM, 1.0e-20);
+        }
+
+        [TestMethod ()]
         public void CloneTest ()
         {
-            double m = 42.0;
-
-            Mass other  = Mass.CreateByMass (m);
+            Mass other  = Mass.CreateByMass (10.0);
             Mass actual = (Mass)other.Clone ();
 
-            Assert.AreEqual (42.0, actual.M);
-            Assert.AreEqual (2.803206e-9, actual.GM);
-            Assert.AreEqual (5.2945311407149170e-5, actual.GMSqrt);
+            Assert.AreEqual (10.0, actual.M);
+            Assert.AreEqual (6.6743e-10, actual.GM, 1.0e-24);
+            Assert.AreEqual (2.58346666322598403e-5, actual.SqrtGM, 1.0e-20);
         }
 
         [TestMethod ()]
-        public void CreateByMassTest ()
+        public void CreateByMassTest_Positive ()
         {
-            double m = 42.0;
+            Mass body = Mass.CreateByMass (10.0);
 
-            Mass actual = Mass.CreateByMass (m);
-
-            Assert.AreEqual (42.0, actual.M);
-            Assert.AreEqual (2.803206e-9, actual.GM);
-            Assert.AreEqual (5.2945311407149170e-5, actual.GMSqrt);
+            Assert.AreEqual (10.0, body.M);
+            Assert.AreEqual (6.6743e-10, body.GM, 1.0e-24);
+            Assert.AreEqual (2.58346666322598403e-5, body.SqrtGM, 1.0e-20);
         }
 
         [TestMethod ()]
-        public void CreateByGMTest ()
+        public void CreateByMassTest_Zero ()
         {
-            double gm = 73.0;
+            Mass body = Mass.CreateByMass (0.0);
 
-            Mass actual = Mass.CreateByGM (gm);
-
-            Assert.AreEqual (1.0937476589305245e+12, actual.M, 1.0e-3);
-            Assert.AreEqual (73.0, actual.GM);
-            Assert.AreEqual (8.5440037453175312, actual.GMSqrt);
+            Assert.AreEqual (0.0, body.M);
+            Assert.AreEqual (0.0, body.GM);
+            Assert.AreEqual (0.0, body.SqrtGM);
         }
 
         [TestMethod ()]
-        public void CreateByGMSqrtTest ()
+        public void CreateByMassTest_Exception_Negative ()
         {
-            double gmsqrt = 108.0;
+            bool argumentOutOfRangeException = false;
 
-            Mass actual = Mass.CreateByGMSqrt (gmsqrt);
+            try
+            {
+                Mass body = Mass.CreateByMass (-10.0);
+            }
+            
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
 
-            Assert.AreEqual (1.7475989991459779e+14, actual.M, 1.0e-1);
-            Assert.AreEqual (11664.0, actual.GM);
-            Assert.AreEqual (  108.0, actual.GMSqrt);
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateByGMTest_Positive ()
+        {
+            Mass body = Mass.CreateByGM (6.6743e-10);
+
+            Assert.AreEqual (10.0, body.M, 1.0e-14);
+            Assert.AreEqual (6.6743e-10, body.GM);
+            Assert.AreEqual (2.58346666322598403e-5, body.SqrtGM);
+        }
+
+        [TestMethod ()]
+        public void CreateByGMTest_Zero ()
+        {
+            Mass body = Mass.CreateByGM (0.0);
+
+            Assert.AreEqual (0.0, body.M);
+            Assert.AreEqual (0.0, body.GM);
+            Assert.AreEqual (0.0, body.SqrtGM);
+        }
+
+        [TestMethod ()]
+        public void CreateByGMTest_Exception_Negative ()
+        {
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                Mass body = Mass.CreateByGM (-10.0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void CreateBySqrtGMTest_Positive ()
+        {
+            Mass body = Mass.CreateBySqrtGM (2.58346666322598403e-5);
+
+            Assert.AreEqual (10.0, body.M, 1.0e-14);
+            Assert.AreEqual (6.6743e-10, body.GM);
+            Assert.AreEqual (2.58346666322598403e-5, body.SqrtGM);
+        }
+
+        [TestMethod ()]
+        public void CreateBySqrtGMTest_Zero ()
+        {
+            Mass body = Mass.CreateBySqrtGM (0.0);
+
+            Assert.AreEqual (0.0, body.M);
+            Assert.AreEqual (0.0, body.GM);
+            Assert.AreEqual (0.0, body.SqrtGM);
+        }
+
+        [TestMethod ()]
+        public void CreateBySqrtGMTest_Exception_Negative ()
+        {
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                Mass body = Mass.CreateBySqrtGM (-10.0);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
         }
     }
 }

@@ -1,72 +1,92 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using System.Reflection.Metadata;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
-    /// <summary>
-    /// Базовый класс для непараболических орбит (гиперболических и эллиптических, включая круговые).
-    /// </summary>
-    /// <remarks>Главной особенностью непараболических орбит является то, что для них определена большая полуось a – положительная для 
-    /// эллипсов и отрицательная для гипербол. Все базовые формулы записываются через большую полуось.</remarks>
     public abstract class NonParabolicOrbit : KeplerOrbit
     {
+        protected double _aux1pe;   // Вспомогательная величина 1 + e.
+        protected double _aux1me;   // Вспомогательная величина 1 - e.
+        protected double _auxsqrth; // Вспомогательная величина sqrt (mu / abs (a)) = sqrt (abs (h)).
+
         protected double _a;
 
-        protected double _1me;     // Вспомогательная величина 1 – e.
-        protected double _1pe;     // Вспомогательная величина 1 + e.
-
-        protected double _mua;     // Вспомогательная величина mu / a.
-        protected double _muasqrt; // Вспомогательная величина sqrt (|mu / a|).
-
         /// <summary>
-        /// Большая полуось орбиты.
+        /// Большая полуось.
         /// </summary>
         public double A
         {
             get => _a;
-        }        
+        }
 
         #region Constructors
 
-        protected NonParabolicOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
+        protected NonParabolicOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
         }
 
         #endregion
 
-        #region Orbit parameter computations
+        #region Init and compute orbit
 
-        protected override void ComputeShape ()
+        protected virtual void ComputeOrbitByPeriapsis (double e, double rp, double t0)
         {
-            _1me = 1.0 - _e;
-            _1pe = 1.0 + _e;
+            SetParametersByPeriapsis (e, rp, t0);
 
-            ComputeShapeParameters ();
+            ComputeAuxiliariesByEccentricity ();
+            ComputeShapeByPeriapsis ();
+            ComputeIntegrals ();
+            ComputeMotionBySemiMajorAxis ();
+            ComputeVelocityByPeriapsis ();            
         }
 
-        protected abstract void ComputeShapeParameters ();
+        #region Auxiliaries
 
-        protected override void ComputeMotion ()
+        protected virtual void ComputeAuxiliariesByEccentricity ()
         {
-            _mua = Formulae.Motion.GMA (_mu, _a);
-            _vp  = Formulae.Motion.VPeriapsis (_mua, _1pe, _1me);
-
-            ComputeMotionParameters ();
+            _aux1pe = 1.0 + _e;
+            _aux1me = 1.0 - _e;
         }
-
-        protected abstract void ComputeMotionParameters ();
-
-        protected override void ComputeIntegrals ()
-        {
-            _energyIntegral = -_mua;
-            
-            ComputeArealVelocity ();
-        }
-
-        protected abstract void ComputeArealVelocity ();
 
         #endregion
 
-        public override double Radius (double trueAnomaly)
+        #region Shape
+
+        protected virtual void ComputeShapeByPeriapsis ()
         {
-            return Formulae.Shape.ConicSection (trueAnomaly, _p, _e);
-        }        
+            _p = _rp * _aux1pe;
+            _a = _rp / _aux1me;
+        }
+
+        #endregion
+
+        #region Integrals
+
+        protected void ComputeIntegrals ()
+        {
+            _h        = Formulae.Integrals.NonParabola.EnergyIntegral (_mu, _a);
+            _auxsqrth = double.Sqrt (double.Abs (_h));
+        }
+
+        #endregion
+
+        #region Motion
+
+        protected virtual void ComputeMotionBySemiMajorAxis ()
+        {
+            _n = Formulae.Motion.NonParabola.MeanMotion (_auxsqrth, _a);
+        }
+
+        #endregion
+
+        #region Velocity
+
+        protected virtual void ComputeVelocityByPeriapsis ()
+        {
+            _vp = double.Sqrt (_mu * _aux1pe / _rp);
+        }
+
+        #endregion
+
+        #endregion
     }
 }

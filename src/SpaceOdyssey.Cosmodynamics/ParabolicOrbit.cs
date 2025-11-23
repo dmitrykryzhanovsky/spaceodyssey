@@ -3,111 +3,64 @@
     public class ParabolicOrbit : KeplerOrbit
     {
         /// <summary>
-        /// Асимптота орбиты.
+        /// Свойство для отражения того факта, что орбита незамкнутая и уходит на бесконечность.
         /// </summary>
-        /// <remarks>Истинная аномалия, к которой будет стремиться тело при удалении на бесконечность. Возвращается в радианах. Для 
-        /// параболической орбиты равна π.</remarks>
+        public double RInfinity
+        {
+            get => double.PositiveInfinity;
+        }
+
+        /// <summary>
+        /// Асимптота – истинная аномалия (в верхней полуплоскости), к которой тело стремится, удаляясь на бесконечность.
+        /// </summary>
+        /// <remarks>Для параболы всегда равна π.</remarks>
         public double Asymptote
         {
             get => double.Pi;
         }
 
+        /// <summary>
+        /// Скорость при удалении на бесконечность.
+        /// </summary>
+        /// <remarks>Для параболы всегда равна 0.</remarks>
+        public double VInfinity
+        {
+            get => 0.0;
+        }
+
         #region Constructors
 
-        private ParabolicOrbit (Mass center, Mass probe, double t0) : base (center, probe, t0)
+        private ParabolicOrbit (Mass center, Mass orbiting) : base (center, orbiting)
         {
         }
 
         #endregion
 
+        #region Init and compute orbit
+
         /// <summary>
-        /// Инициализация параболической орбиты по расстоянию в периапсисе rp.
+        /// Создаёт параболическую орбиту, инициализируя расстояние в перицентре rp и момент прохождения перицентра t0.
         /// </summary>
-        /// <param name="rp">Должно быть положительным, иначе сгенерируется исключение.</param>
-        /// <param name="t0">Момент прохождения перицентра.</param>
-        public static ParabolicOrbit CreateByPeriapsis (Mass center, Mass probe, double rp, double t0)
+        /// <exception cref="ArgumentOutOfRangeException">Генерируется, если rp <= 0.</exception>
+        public static ParabolicOrbit CreateByPeriapsis (Mass center, Mass orbiting, double rp, double t0)
         {
-            Checkers.CheckPeriapsis (rp);
+            Checkers.CheckRPositive (rp);
 
-            ParabolicOrbit orbit = new ParabolicOrbit (center, probe, t0);
+            ParabolicOrbit orbit = new ParabolicOrbit (center, orbiting);
 
-            orbit._rp = rp;
-
-            orbit.ComputeOrbit ();
+            orbit.ComputeOrbitByPeriapsis (rp, t0);
 
             return orbit;
         }
 
-        #region Orbit parameter computations
-
-        protected override void ComputeShape ()
+        private void ComputeOrbitByPeriapsis (double rp, double t0)
         {
-            _e  = ParabolicEccentricity;
-            _p  = Formulae.Shape.PParabolaByRp (_rp);
-            _ra = NonClosedApoapsisDistance;
-        }
+            SetParametersByPeriapsis (ParabolicEccentricity, rp, t0);
 
-        protected override void ComputeMotion ()
-        {
-            _n  = Formulae.Motion.MeanMotionParabola (_mu, _rp);
-            _vp = Formulae.Motion.V2Escape (_mu, _rp);
-            _va = ParabolicInfinityVelocity;
-        }
-
-        protected override void ComputeIntegrals ()
-        {
-            _energyIntegral = ParabolicEnergyIntegral;
-            _arealVelocity  = Formulae.Integrals.ArealVelocityParabola (_mu, _rp);
-        }
-
-        #endregion
-
-        public override double Radius (double trueAnomaly)
-        {
-            return Formulae.Shape.ConicSectionParabola (trueAnomaly, _p);
-        }
-
-        /// <summary>
-        /// Истинная аномалия при расстоянии до центра тяготения r.
-        /// </summary>
-        /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
-        /// неотрицательное значение из двух корректных.</returns>
-        /// <param name="r">Должно быть больше либо равно расстоянию в перицентре rp.</param>
-        public override double TrueAnomaly (double r)
-        {
-            Checkers.CheckRNonClosed (r, _rp);
-
-            return Formulae.Shape.ConicSectionInverseParabola (r, _p);
-        }
-
-        #region Compute position in the orbit plane
-
-        /// <summary>
-        /// Для параболической орбиты пройденная средняя аномалия лежит в диапазоне (-π; +π].
-        /// </summary>
-        protected override double GetMeanAnolamyForThisOrbitType (double passedMeanAnomaly)
-        {
-            return passedMeanAnomaly;
-        }
-
-        /// <summary>
-        /// Решает уравнение Баркера и возвращает величину tan (v/2), где v – истинная аномалия.
-        /// </summary>
-        protected override double SolveKeplerEquation (double M, double e)
-        {
-            return Formulae.KeplerEquation.SolveBarkerEquation (M);
-        }
-
-        /// <summary>
-        /// Определяет характеристики положения на орбите на основе величины tan (v/2), где v – истинная аномалия.
-        /// </summary>
-        protected override (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements
-            (double tanv2)
-        {
-            (double x, double y, double r, double trueAnomaly) = Formulae.PlanarPosition.ComputeForParabola (tanv2, _rp, _p);
-            (double vx, double vy, double speed) = Formulae.PlanarVelocity.ComputeForParabola (r, y, _mu, _p);
-
-            return (x, y, r, trueAnomaly, vx, vy, speed);
+            _p  = 2.0 * _rp;
+            _h  = 0.0;
+            _n  = double.Sqrt (_mu / _p) / _rp;
+            _vp = Formulae.Motion.Parabola.Speed (_mu, _rp);
         }
 
         #endregion

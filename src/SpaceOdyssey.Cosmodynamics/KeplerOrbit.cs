@@ -2,62 +2,34 @@
 
 namespace SpaceOdyssey.Cosmodynamics
 {
-    /// <summary>
-    /// Базовый класс для кеплеровых орбит.
-    /// </summary>
     public abstract class KeplerOrbit
     {
         /// <summary>
-        /// Эксцентриситет круговой орбиты e = 0.
+        /// Эксцентриситет окружности = 0.
         /// </summary>
         protected const double CircularEccentricity = 0.0;
 
         /// <summary>
-        /// Расстояние в апоцентре для незамкнутой орбиты (параболической и гиперболической).
-        /// </summary>
-        protected const double NonClosedApoapsisDistance = double.PositiveInfinity;
-
-        /// <summary>
-        /// Эксцентриситет параболической орбиты e = 1.
+        /// Эксцентриситет параболы = 1.
         /// </summary>
         protected const double ParabolicEccentricity = 1.0;
 
-        /// <summary>
-        /// Интеграл энергии параболической орбиты.
-        /// </summary>
-        protected const double ParabolicEnergyIntegral = 0.0;
+        private readonly Mass _center;     // Центральное тело.
+        private readonly Mass _orbiting;   // Тело, обращающееся по орбите.
 
-        /// <summary>
-        /// Скорость на бесконечности для параболической орбиты.
-        /// </summary>
-        protected const double ParabolicInfinityVelocity = 0.0;
+        protected readonly double _mu;     // Локальная гравитационная постоянная для данной орбиты.
+        protected readonly double _sqrtmu; // Квадратный корень из локальной гравитационной постоянной.
 
-        private Mass _center; // Центральное тело.
-        private Mass _probe;  // Обращающееся тело.
-
-        protected double _mu; // Локальная гравитационная постоянная (по сумме масс _center и _probe).
-
-        protected double _p;
         protected double _e;
+        protected double _p;
         protected double _rp;
-        protected double _ra;
+
+        protected double _h;
 
         protected double _n;
         protected double _vp;
-        protected double _va;
-
-        protected double _energyIntegral;
-        protected double _arealVelocity;
 
         protected double _t0;
-
-        /// <summary>
-        /// Фокальный параметр орбиты (расстояние при истинной аномалии равной 90°).
-        /// </summary>
-        public double P
-        {
-            get => _p;
-        }
 
         /// <summary>
         /// Эксцентриситет.
@@ -68,20 +40,35 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         /// <summary>
+        /// Фокальный параметр.
+        /// </summary>
+        public double P
+        {
+            get => _p;
+        }
+
+        /// <summary>
         /// Расстояние в перицентре.
         /// </summary>
-        public double RPeri
+        public double RP
         {
             get => _rp;
         }
 
         /// <summary>
-        /// Расстояние в апоцентре.
+        /// Интеграл энергии.
         /// </summary>
-        /// <remarks>Для незамкнутых орбит (параболических и гиперболических) возвращается +∞.</remarks>
-        public double RApo
+        public double EnergyIntegral
         {
-            get => _ra;
+            get => _h;
+        }
+
+        /// <summary>
+        /// Удельная орбитальная энергия.
+        /// </summary>
+        public double W
+        {
+            get => _h / 2.0;
         }
 
         /// <summary>
@@ -93,40 +80,15 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         /// <summary>
-        /// Орбитальная скорость в перицентре.
+        /// Скорость в перицентре.
         /// </summary>
-        public double VPeri
+        public double VP
         {
             get => _vp;
         }
 
         /// <summary>
-        /// Орбитальная скорость в апоцентре.
-        /// </summary>
-        /// <remarks>Для незамкнутых орбит (параболических и гиперболических) возвращается скорость на бесконечности.</remarks>
-        public double VApo
-        {
-            get => _va;
-        }
-
-        /// <summary>
-        /// Интеграл энергии.
-        /// </summary>
-        public double EnergyIntegral
-        {
-            get => _energyIntegral;
-        }
-
-        /// <summary>
-        /// Секторальная скорость.
-        /// </summary>
-        public double ArealVelocity
-        {
-            get => _arealVelocity;
-        }
-
-        /// <summary>
-        /// Момент прохождения перицентра.
+        /// Момент прохождения перицентра, в юлианских датах.
         /// </summary>
         public double T0
         {
@@ -135,128 +97,78 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Constructors
 
-        protected KeplerOrbit (Mass center, Mass probe, double t0)
+        protected KeplerOrbit (Mass center, Mass orbiting)
         {
-            InitMasses (center, probe);
+            _center   = center;
+            _orbiting = orbiting;
 
+            _mu       = _center.GM + _orbiting.GM;
+            _sqrtmu   = double.Sqrt (_mu);
+        }
+
+        #endregion
+
+        #region Init and compute orbit
+
+        #region Set parameters
+
+        protected virtual void SetParametersByPeriapsis (double e, double rp, double t0)
+        {
+            _e  = e;
+            _rp = rp;
             _t0 = t0;
         }
 
-        private void InitMasses (Mass center, Mass probe)
-        {
-            _center = center;
-            _probe  = probe;
-            _mu     = center.GM + probe.GM;
-        }
+        #endregion
 
         #endregion
 
-        #region Orbit parameter computations
-
-        protected void ComputeOrbit ()
-        {
-            ComputeShape ();
-            ComputeMotion ();
-            ComputeIntegrals ();
-        }
-
-        protected abstract void ComputeShape ();
-
-        protected abstract void ComputeMotion ();
-
-        protected abstract void ComputeIntegrals ();
-
-        #endregion
-
-        /// <summary>
-        /// Расстояние до центра тяготения при истинной аномалии trueAnomaly.
-        /// </summary>
-        public abstract double Radius (double trueAnomaly);
-
-        /// <summary>
-        /// Истинная аномалия при расстоянии до центра тяготения r.
-        /// </summary>
-        /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
-        /// неотрицательное значение из двух корректных.</returns>
-        /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
-        public abstract double TrueAnomaly (double r);
-
-        #region Compute position in the orbit plane
-
-        /// <summary>
-        /// Вычисление положения на орбите в момент времени t.
-        /// </summary>
-        /// <param name="t">Выражен в юлианских датах.</param>
-        public OrbitalPosition ComputePosition (double t)
-        {
-            double passedMeanAnomaly = Formulae.Motion.MeanAnomalyForTime (t, _t0, _n);
-            double M = GetMeanAnolamyForThisOrbitType (passedMeanAnomaly);
-            double E = SolveKeplerEquation (M, _e);
-
-            (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) = GetPositionElements (E);
-
-            return new OrbitalPosition (t, passedMeanAnomaly, M, E, x, y, r, trueAnomaly, vx, vy, speed);
-        }
-
-        /// <summary>
-        /// На основе пройденной средней аномалии passedMeanAnomaly (которая в общем случае может выходить за пределы диапазона (-π; +π]) 
-        /// вычисляет для заданного типа орбиты среднюю аномалию, приведённую в диапазон (-π; +π], которая используется для дальнейших 
-        /// расчётов положения на орбите.
-        /// </summary>
-        protected abstract double GetMeanAnolamyForThisOrbitType (double passedMeanAnomaly);
-
-        /// <summary>
-        /// В общем случае решает уравнение Кеплера для средней аномалии M и эксцентриситета e. Более подробные комментарии см. в 
-        /// перегруженных методах в дочерних классах.
-        /// </summary>
-        protected abstract double SolveKeplerEquation (double M, double e);
-
-        /// <summary>
-        /// Определяет характеристики положения на орбите на основе решения уравнения Кеплера.
-        /// </summary>
-        protected abstract (double x, double y, double r, double trueAnomaly, double vx, double vy, double speed) GetPositionElements 
-            (double E);
-
-        #endregion
-
-        #region Checkers
-
-        /// <summary>
-        /// Чекеры для проверки значений входных параметров орбит на корректность.
-        /// </summary>
         protected static class Checkers
         {
-            public static void CheckRNonClosed (double r, double rp)
-            {
-                ArgumentOutOfRangeCheckers.CheckGreaterEqual (r, rp);
-            }
-
-            public static void CheckRClosed (double r, double rp, double ra)
-            {
-                ArgumentOutOfRangeCheckers.CheckInterval (r, rp, ra);
-            }
-
-            public static void CheckA (double a)
-            {
-                ArgumentOutOfRangeCheckers.CheckPositive (a);
-            }
-
-            public static void CheckPeriapsis (double rp)
-            {
-                ArgumentOutOfRangeCheckers.CheckPositive (rp);
-            }
-
-            public static void CheckEccentricityForEllipse (double e)
+            /// <summary>
+            /// Проверяет, чтобы эксцентриситет эллипса был 0 <= e < 1.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если e < 0 или e >= 1.</exception>
+            internal static void CheckEForEllipse (double e)
             {
                 ArgumentOutOfRangeCheckers.CheckIntervalRightExcluded (e, CircularEccentricity, ParabolicEccentricity);
             }
 
-            public static void CheckEccentricityForHyperbola (double e)
+            /// <summary>
+            /// Проверяет, чтобы эксцентриситет гиперболы e был больше 1.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если e <= 1.</exception>
+            internal static void CheckEForHyperbola (double e)
             {
                 ArgumentOutOfRangeCheckers.CheckGreater (e, ParabolicEccentricity);
             }
-        }
 
-        #endregion
+            /// <summary>
+            /// Проверяет, чтобы расстояние r было положительным.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r <= 0.</exception>
+            internal static void CheckRPositive (double r)
+            {
+                ArgumentOutOfRangeCheckers.CheckPositive (r);
+            }
+
+            /// <summary>
+            /// Проверяет, чтобы расстояние r было больше или равно rp.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r < rp.</exception>
+            internal static void CheckRNotPeriapsis (double r, double rp)
+            {
+                ArgumentOutOfRangeCheckers.CheckGreaterEqual (r, rp);
+            }
+
+            /// <summary>
+            /// Проверяет, чтобы отрезок времени T был положительным.
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если T <= 0.</exception>
+            internal static void CheckTPositive (double T)
+            {
+                ArgumentOutOfRangeCheckers.CheckPositive (T);
+            }
+        }
     }
 }

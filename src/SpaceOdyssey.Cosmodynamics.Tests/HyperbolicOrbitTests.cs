@@ -38,7 +38,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;            
             double e        = 1.0;
             double rp       = 1.38;
-            double t0       = 0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -61,8 +60,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = 0.73;
-            double rp       = 1.38;            
-            double t0       = 0.42;
+            double rp       = 1.38;
 
             bool argumentOutOfRangeException = false;
 
@@ -85,8 +83,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = 0.73;
-            double rp       = 0.0;            
-            double t0       = 0.42;
+            double rp       = 0.0;
 
             bool argumentOutOfRangeException = false;
 
@@ -109,8 +106,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        =  0.73;
-            double rp       = -1.38;            
-            double t0       =  0.42;
+            double rp       = -1.38;
 
             bool argumentOutOfRangeException = false;
 
@@ -125,6 +121,24 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             }
 
             Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void RadiusTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.6;
+            double rp       = 2.0;            
+
+            double trueAnomaly = double.Pi * (2.0 / 3.0);
+            double expected    = 26.0;
+
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+
+            double actual = orbit.Radius (trueAnomaly);
+
+            Assert.AreEqual (expected, actual, 1.0e-13);
         }
     }
 }

@@ -127,6 +127,35 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        /// <summary>
+        /// Возвращает расстояние от фокуса (радиус) для истинной аномалии trueAnomaly.
+        /// </summary>
+        public abstract double Radius (double trueAnomaly);
+
+        /// <summary>
+        /// Истинная аномалия при расстоянии до центра тяготения r.
+        /// </summary>
+        /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
+        /// неотрицательное значение из двух корректных.</returns>
+        /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
+        public virtual double TrueAnomaly (double r)
+        {
+            CheckR (r);
+
+            return ConicSectionInverseEquation (r);
+        }
+
+        /// <summary>
+        /// Проверяет, что расстояние r соответствует ограничениям, накладываемым формой орбиты, а именно что r >= расстояния в 
+        /// перицентре r.
+        /// </summary>
+        protected virtual void CheckR (double r)
+        {
+            Checkers.CheckRGreaterEqualPeriapsis (r, _rp);
+        }
+
+        protected abstract double ConicSectionInverseEquation (double r);
+
         protected static class Checkers
         {
             /// <summary>
@@ -160,9 +189,18 @@ namespace SpaceOdyssey.Cosmodynamics
             /// Проверяет, чтобы расстояние r было больше или равно rp.
             /// </summary>
             /// <exception cref="ArgumentOutOfRangeException">Генерируется, если r < rp.</exception>
-            internal static void CheckRNotPeriapsis (double r, double rp)
+            internal static void CheckRGreaterEqualPeriapsis (double r, double rp)
             {
                 ArgumentOutOfRangeCheckers.CheckGreaterEqual (r, rp);
+            }
+
+            /// <summary>
+            /// Проверяет, чтобы расстояние r лежало на интервале [rp; ra].
+            /// </summary>
+            /// <exception cref="ArgumentOutOfRangeException">Генерируется, если rp <= r <= ra.</exception>
+            internal static void CheckRBetweenPeriapsisAndApoapsis (double r, double rp, double ra)
+            {
+                ArgumentOutOfRangeCheckers.CheckInterval (r, rp, ra);
             }
 
             /// <summary>

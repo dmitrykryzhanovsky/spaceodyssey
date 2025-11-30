@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using Archimedes;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public class EllipticOrbit : NonParabolicOrbit
     {
@@ -143,7 +145,7 @@
         public static EllipticOrbit CreateByApsides (Mass center, Mass orbiting, double rp, double ra)
         {
             Checkers.CheckRPositive (rp);
-            Checkers.CheckRNotPeriapsis (ra, rp);
+            Checkers.CheckRGreaterEqualPeriapsis (ra, rp);
 
             EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
 
@@ -298,5 +300,14 @@
         #endregion
 
         #endregion
+
+        /// <summary>
+        /// Проверяет, что расстояние r соответствует ограничениям, накладываемым формой орбиты, а именно что r лежит на интервале 
+        /// [rp; ra].
+        /// </summary>
+        protected override void CheckR (double r)
+        {
+            Checkers.CheckRBetweenPeriapsisAndApoapsis (r, _rp, _ra);
+        }
     }
 }

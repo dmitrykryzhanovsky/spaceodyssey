@@ -43,8 +43,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = -0.27;
-            double rp       =  1.38;            
-            double t0       =  0.42;
+            double rp       =  1.38; 
 
             bool argumentOutOfRangeException = false;
 
@@ -67,8 +66,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = 1.0;
-            double rp       = 1.38;            
-            double t0       = 0.42;
+            double rp       = 1.38;
 
             bool argumentOutOfRangeException = false;
 
@@ -91,8 +89,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = 1.27;
-            double rp       = 1.38;            
-            double t0       = 0.42;
+            double rp       = 1.38;
 
             bool argumentOutOfRangeException = false;
 
@@ -115,8 +112,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = 0.27;
-            double rp       = 0.0;            
-            double t0       = 0.42;
+            double rp       = 0.0;
 
             bool argumentOutOfRangeException = false;
 
@@ -139,8 +135,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        =  0.27;
-            double rp       = -1.38;            
-            double t0       =  0.42;
+            double rp       = -1.38;
 
             bool argumentOutOfRangeException = false;
 
@@ -196,7 +191,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;
             double e        = -0.27;
             double a        =  1.38;
-            double t0       =  0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -220,7 +214,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;
             double e        = 1.0;
             double a        = 1.38;
-            double t0       = 0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -244,7 +237,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;
             double e        = 1.27;
             double a        = 1.38;
-            double t0       = 0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -268,7 +260,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;
             double e        = 0.27;
             double a        = 0.0;
-            double t0       = 0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -292,7 +283,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;
             double e        =  0.27;
             double a        = -1.38;
-            double t0       =  0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -380,7 +370,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;
             double rp       = 0.0;
             double ra       = 2.40082191780822;
-            double t0       = 0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -404,7 +393,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;
             double rp       = -1.38;
             double ra       =  2.40082191780822;
-            double t0       =  0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -428,7 +416,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;
             double rp       = 1.38;
             double ra       = 1.379999999999;
-            double t0       = 0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -459,6 +446,24 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (2374540.79446364426, orbit.T0);
             Assert.AreEqual (0.765390322836009, orbit.M0);
+        }
+
+        [TestMethod ()]
+        public void RadiusTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.6;
+            double a        = 2.0;
+
+            double trueAnomaly = double.Pi * (2.0 / 3.0);
+            double expected    = 1.8285714285714286;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            double actual = orbit.Radius (trueAnomaly);
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
         }
     }
 }

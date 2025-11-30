@@ -7,6 +7,38 @@ namespace SpaceOdyssey.Cosmodynamics
     {
         #region Shape
 
+        #region Non parabola
+
+        [TestMethod ()]
+        public void Shape_NonParabola_ConicSectionEquationTest ()
+        {
+            double p   = 1.38;
+            double e   = 0.42;
+            double phi = 0.73;
+
+            double expected = 1.05104959378798;
+
+            double actual = Formulae.Shape.NonParabola.ConicSectionEquation (p, e, phi);
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
+        }
+
+        [TestMethod ()]
+        public void Shape_NonParabola_ConicSectionInverseEquationTest ()
+        {
+            double p = 1.38;
+            double e = 0.42;
+            double r = 1.05104959378798;
+
+            double expected = 0.73;
+
+            double actual = Formulae.Shape.NonParabola.ConicSectionInverseEquation (p, e, r);
+
+            Assert.AreEqual (expected, actual, 1.0e-13);
+        }
+
+        #endregion
+
         #region Hyperbola
 
         [TestMethod ()]
@@ -19,6 +51,36 @@ namespace SpaceOdyssey.Cosmodynamics
             double actual = Formulae.Shape.Hyperbola.Asymptote (e);
 
             Assert.AreEqual (expected, actual, 1.0e-14);
+        }
+
+        #endregion
+
+        #region Parabola
+
+        [TestMethod ()]
+        public void Shape_Parabola_ConicSectionEquationTest ()
+        {
+            double p   = 1.38;
+            double phi = 0.73;
+
+            double expected = 0.790751914619988;
+
+            double actual = Formulae.Shape.Parabola.ConicSectionEquation (p, phi);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void Shape_Parabola_ConicSectionInverseEquationTest ()
+        {
+            double p = 1.38;
+            double r = 0.790751914619988;
+
+            double expected = 0.73;
+
+            double actual = Formulae.Shape.Parabola.ConicSectionInverseEquation (p, r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
         }
 
         #endregion

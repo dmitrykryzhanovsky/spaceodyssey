@@ -28,9 +28,9 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Init and compute orbit
 
-        protected virtual void ComputeOrbitByPeriapsis (double e, double rp, double t0)
+        protected virtual void ComputeOrbitByPeriapsis (double e, double rp)
         {
-            SetParametersByPeriapsis (e, rp, t0);
+            SetParametersByPeriapsis (e, rp);
 
             ComputeAuxiliariesByEccentricity ();
             ComputeShapeByPeriapsis ();

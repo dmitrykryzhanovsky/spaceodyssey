@@ -13,7 +13,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double rp       = 1.38;
             double t0       = 0.42;
 
-            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp, t0);
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (1.0, orbit.E);
             Assert.AreEqual (2.76, orbit.P);            
@@ -40,7 +41,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp, t0);
+                ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -63,7 +64,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp, t0);
+                ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
             }
 
             catch (ArgumentOutOfRangeException)

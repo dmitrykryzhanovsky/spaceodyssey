@@ -13,7 +13,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double a        = 1.89041095890411;
             double t0       = 0.42;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a, t0);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (1.89041095890411, orbit.P);
@@ -34,7 +35,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (0.42, orbit.T0);
             Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
         }
-
+       
         [TestMethod ()]
         public void CreateBySemiMajorAxisTest_Exception_AZero ()
         {
@@ -47,7 +48,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a, t0);
+                CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -70,7 +71,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a, t0);
+                CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -89,7 +90,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double T        = 6.32137196384089e+5;
             double t0       = 0.42;
 
-            CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T, t0);
+            CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (1.89041095890411, orbit.P, 1.0e-14);
@@ -123,7 +125,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T, t0);
+                CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -146,7 +148,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T, t0);
+                CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -155,6 +157,21 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             }
 
             Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void SetMeanAnomalyForJ2000Test ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double a        = 1.89041095890411;
+            double M0       = 0.765390322836009;
+
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
+            orbit.SetMeanAnomalyForJ2000 (M0);
+
+            Assert.AreEqual (2374540.79446364426, orbit.T0);
+            Assert.AreEqual (0.765390322836009, orbit.M0);
         }
     }
 }

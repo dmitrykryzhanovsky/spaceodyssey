@@ -103,14 +103,14 @@
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
         /// <item>e < 0 или e >= 1 или</item>
         /// <item>rp <= 0.</item></list></exception>
-        public static EllipticOrbit CreateByPeriapsis (Mass center, Mass orbiting, double e, double rp, double t0)
+        public static EllipticOrbit CreateByPeriapsis (Mass center, Mass orbiting, double e, double rp)
         {
             Checkers.CheckEForEllipse (e);
             Checkers.CheckRPositive (rp);
 
             EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
 
-            orbit.ComputeOrbitByPeriapsis (e, rp, t0);
+            orbit.ComputeOrbitByPeriapsis (e, rp);
 
             return orbit;
         }
@@ -121,14 +121,14 @@
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
         /// <item>e < 0 или e >= 1 или</item>
         /// <item>a <= 0.</item></list></exception>
-        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass orbiting, double e, double a, double t0)
+        public static EllipticOrbit CreateBySemiMajorAxis (Mass center, Mass orbiting, double e, double a)
         {
             Checkers.CheckEForEllipse (e);
             Checkers.CheckRPositive (a);
 
             EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
 
-            orbit.ComputeOrbitBySemiMajorAxis (e, a, t0);
+            orbit.ComputeOrbitBySemiMajorAxis (e, a);
 
             return orbit;
         }
@@ -140,70 +140,64 @@
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если <list type="number">
         /// <item>rp <= 0 или</item>
         /// <item>ra < rp.</item></list></exception>
-        public static EllipticOrbit CreateByApsides (Mass center, Mass orbiting, double rp, double ra, double t0)
+        public static EllipticOrbit CreateByApsides (Mass center, Mass orbiting, double rp, double ra)
         {
             Checkers.CheckRPositive (rp);
             Checkers.CheckRNotPeriapsis (ra, rp);
 
             EllipticOrbit orbit = new EllipticOrbit (center, orbiting);
 
-            orbit.ComputeOrbitByApsides (rp, ra, t0);
+            orbit.ComputeOrbitByApsides (rp, ra);
 
             return orbit;
         }
 
-        protected override void ComputeOrbitByPeriapsis (double e, double rp, double t0)
+        protected override void ComputeOrbitByPeriapsis (double e, double rp)
         {
-            base.ComputeOrbitByPeriapsis (e, rp, t0);
-
-            SetMeanAnomalyForJ2000 ();
+            base.ComputeOrbitByPeriapsis (e, rp);
         }
 
-        private void ComputeOrbitBySemiMajorAxis (double e, double a, double t0)
+        private void ComputeOrbitBySemiMajorAxis (double e, double a)
         {
-            SetParametersBySemiMajorAxis (e, a, t0);
+            SetParametersBySemiMajorAxis (e, a);
 
             ComputeAuxiliariesByEccentricity ();
             ComputeShapeBySemiMajorAxis ();
             ComputeIntegrals ();
             ComputeMotionBySemiMajorAxis ();
             ComputeVelocityBySemiMajorAxis ();
-
-            SetMeanAnomalyForJ2000 ();
         }
 
-        private void ComputeOrbitByApsides (double rp, double ra, double t0)
+        private void ComputeOrbitByApsides (double rp, double ra)
         {
-            SetParametersByApsides (rp, ra, t0);
+            SetParametersByApsides (rp, ra);
 
             ComputeAuxiliariesByApsides (out double plus);
             ComputeShapeByApsides (plus);
             ComputeIntegrals ();
             ComputeMotionBySemiMajorAxis ();
             ComputeVelocityByApsides ();
-            
-            SetMeanAnomalyForJ2000 ();
         }
 
         #region Set parameters
 
-        protected override void SetParametersByPeriapsis (double e, double rp, double t0)
-        {
-            base.SetParametersByPeriapsis (e, rp, t0);
-        }
-
-        protected void SetParametersBySemiMajorAxis (double e, double a, double t0)
+        protected void SetParametersBySemiMajorAxis (double e, double a)
         {
             _e  = e;
             _a  = a;
-            _t0 = t0;
         }
 
-        private void SetParametersByApsides (double rp, double ra, double t0)
+        private void SetParametersByApsides (double rp, double ra)
         {
             _rp = rp;
-            _ra = ra;
-            _t0 = t0;            
+            _ra = ra;            
+        }
+
+        public override void SetPeriapsisTime (double t0)
+        {
+            base.SetPeriapsisTime (t0);
+
+            SetMeanAnomalyForJ2000 ();
         }
 
         #endregion

@@ -11,10 +11,11 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = 0.27;
-            double rp       = 1.38;            
+            double rp       = 1.38;
             double t0       = 0.42;
 
-            EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+            EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (0.27, orbit.E);
             Assert.AreEqual (1.7526, orbit.P);
@@ -49,7 +50,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -73,7 +74,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -97,7 +98,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -121,7 +122,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -145,7 +146,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -165,7 +166,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double a        = 1.89041095890411;
             double t0       = 0.42;
 
-            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (0.27, orbit.E);
             Assert.AreEqual (1.7526, orbit.P, 1.0e-15);
@@ -200,7 +202,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -224,7 +226,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -248,7 +250,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -272,7 +274,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -296,7 +298,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -316,7 +318,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double ra       = 2.40082191780822;
             double t0       = 0.42;
 
-            EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+            EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (0.27, orbit.E, 1.0e-15);
             Assert.AreEqual (1.7526, orbit.P, 1.0e-15);
@@ -347,7 +350,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double ra       = 1.89041095890411;
             double t0       = 0.42;
 
-            EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+            EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (1.89041095890411, orbit.P);
@@ -382,7 +386,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -406,7 +410,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -430,7 +434,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra, t0);
+                EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra);
             }
 
             catch (ArgumentOutOfRangeException)

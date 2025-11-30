@@ -112,10 +112,14 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Set parameters
 
-        protected virtual void SetParametersByPeriapsis (double e, double rp, double t0)
+        protected void SetParametersByPeriapsis (double e, double rp)
         {
             _e  = e;
             _rp = rp;
+        }
+
+        public virtual void SetPeriapsisTime (double t0)
+        {
             _t0 = t0;
         }
 

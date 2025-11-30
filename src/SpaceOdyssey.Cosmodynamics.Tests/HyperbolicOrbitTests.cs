@@ -14,7 +14,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double rp       = 1.38;
             double t0       = 0.42;
 
-            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (1.73, orbit.E);
             Assert.AreEqual (3.7674, orbit.P);
@@ -43,7 +44,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -67,7 +68,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -91,7 +92,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -115,7 +116,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp, t0);
+                HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
             }
 
             catch (ArgumentOutOfRangeException)

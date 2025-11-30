@@ -33,13 +33,13 @@ namespace SpaceOdyssey.Cosmodynamics
         /// Создаёт круговую орбиту, инициализируя большую полуось a и момент прохождения перицентра t0.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если a <= 0.</exception>
-        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass orbiting, double a, double t0)
+        public static CircularOrbit CreateBySemiMajorAxis (Mass center, Mass orbiting, double a)
         {
             Checkers.CheckRPositive (a);
 
             CircularOrbit orbit = new CircularOrbit (center, orbiting);
 
-            orbit.ComputeOrbitBySemiMajorAxis (a, t0);
+            orbit.ComputeOrbitBySemiMajorAxis (a);
 
             return orbit;
         }
@@ -48,50 +48,45 @@ namespace SpaceOdyssey.Cosmodynamics
         /// Создаёт круговую орбиту, инициализируя период обращения T и момент прохождения перицентра t0.
         /// </summary>
         /// <exception cref="ArgumentOutOfRangeException">Генерируется, если T <= 0.</exception>
-        public static CircularOrbit CreateByOrbitingPeriod (Mass center, Mass orbiting, double T, double t0)
+        public static CircularOrbit CreateByOrbitingPeriod (Mass center, Mass orbiting, double T)
         {
             Checkers.CheckTPositive (T);
 
             CircularOrbit orbit = new CircularOrbit (center, orbiting);
 
-            orbit.ComputeOrbitByOrbitingPeriod (T, t0);
+            orbit.ComputeOrbitByOrbitingPeriod (T);
 
             return orbit;
         }
 
-        private void ComputeOrbitBySemiMajorAxis (double a, double t0)
+        private void ComputeOrbitBySemiMajorAxis (double a)
         {
-            SetParametersBySemiMajorAxis (CircularEccentricity, a, t0);
+            SetParametersBySemiMajorAxis (CircularEccentricity, a);
 
             ComputeAuxiliaries ();
             ComputeShapeBySemiMajorAxis ();
             ComputeIntegrals ();
             ComputeMotionBySemiMajorAxis ();
             ComputeVelocity ();
-
-            SetMeanAnomalyForJ2000 ();
         }
 
-        private void ComputeOrbitByOrbitingPeriod (double T, double t0)
+        private void ComputeOrbitByOrbitingPeriod (double T)
         {
-            SetParametersByOrbitingPeriod (T, t0);
+            SetParametersByOrbitingPeriod (T);
 
             ComputeAuxiliaries ();
             ComputeShapeByOrbitingPeriod ();
             ComputeIntegrals ();
             ComputeMotionByOrbitingPeriod ();
             ComputeVelocity ();
-
-            SetMeanAnomalyForJ2000 ();
         }
 
         #region Set parameters
 
-        private void SetParametersByOrbitingPeriod (double T, double t0)
+        private void SetParametersByOrbitingPeriod (double T)
         {
-            _e  = CircularEccentricity;
-            _T  = T;
-            _t0 = t0;
+            _e = CircularEccentricity;
+            _T = T;
         }
 
         #endregion

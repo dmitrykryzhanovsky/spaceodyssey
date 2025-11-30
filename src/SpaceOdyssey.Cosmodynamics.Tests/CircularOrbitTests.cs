@@ -13,7 +13,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double a        = 1.89041095890411;
             double t0       = 0.42;
 
-            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a, t0);
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (1.89041095890411, orbit.P);
@@ -47,7 +48,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a, t0);
+                CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -70,7 +71,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a, t0);
+                CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -89,7 +90,8 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double T        = 6.32137196384089e+5;
             double t0       = 0.42;
 
-            CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T, t0);
+            CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T);
+            orbit.SetPeriapsisTime (t0);
 
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (1.89041095890411, orbit.P, 1.0e-14);
@@ -123,7 +125,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T, t0);
+                CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T);
             }
 
             catch (ArgumentOutOfRangeException)
@@ -146,7 +148,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             try
             {
-                CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T, t0);
+                CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T);
             }
 
             catch (ArgumentOutOfRangeException)

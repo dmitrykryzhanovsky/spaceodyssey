@@ -197,7 +197,13 @@
         {
             base.SetPeriapsisTime (t0);
 
-            SetMeanAnomalyForJ2000 ();
+            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+        }
+
+        public void SetMeanAnomalyForJ2000 (double M0)
+        {
+            _M0 = M0;
+            _t0 = Time.J2000 - _M0 / _n;            
         }
 
         #endregion
@@ -290,11 +296,6 @@
         }
 
         #endregion
-
-        protected void SetMeanAnomalyForJ2000 ()
-        {
-            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
-        }
 
         #endregion
     }

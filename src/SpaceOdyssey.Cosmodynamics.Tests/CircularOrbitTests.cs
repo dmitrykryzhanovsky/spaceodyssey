@@ -35,7 +35,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (0.42, orbit.T0);
             Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
         }
-
+       
         [TestMethod ()]
         public void CreateBySemiMajorAxisTest_Exception_AZero ()
         {
@@ -157,6 +157,21 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             }
 
             Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void SetMeanAnomalyForJ2000Test ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double a        = 1.89041095890411;
+            double M0       = 0.765390322836009;
+
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
+            orbit.SetMeanAnomalyForJ2000 (M0);
+
+            Assert.AreEqual (2374540.79446364426, orbit.T0);
+            Assert.AreEqual (0.765390322836009, orbit.M0);
         }
     }
 }

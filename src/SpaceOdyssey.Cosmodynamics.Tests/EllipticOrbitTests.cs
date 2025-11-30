@@ -444,5 +444,21 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.IsTrue (argumentOutOfRangeException);
         }
+
+        [TestMethod ()]
+        public void SetMeanAnomalyForJ2000Test ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.27;
+            double rp       = 1.38;
+            double M0       = 0.765390322836009;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+            orbit.SetMeanAnomalyForJ2000 (M0);
+
+            Assert.AreEqual (2374540.79446364426, orbit.T0);
+            Assert.AreEqual (0.765390322836009, orbit.M0);
+        }
     }
 }

@@ -125,6 +125,18 @@ namespace SpaceOdyssey.Cosmodynamics
             Assert.AreEqual (expected, actual, 1.0e-19);
         }
 
+        [TestMethod ()]
+        public void Motion_NonParabola_SpeedTest_Ellipse ()
+        {
+            
+        }
+
+        [TestMethod ()]
+        public void Motion_NonParabola_SpeedTest_Hyperbola ()
+        {
+
+        }
+
         #endregion
 
         #region Ellipse

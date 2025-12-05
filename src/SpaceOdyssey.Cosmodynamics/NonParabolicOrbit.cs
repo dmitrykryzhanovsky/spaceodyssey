@@ -98,5 +98,10 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             return Formulae.Shape.NonParabola.ConicSectionInverseEquation (_p, _e, r);
         }
+
+        public override double SpeedForRadius (double r)
+        {
+            return Formulae.Motion.NonParabola.Speed (_mu, r, _a);
+        }
     }
 }

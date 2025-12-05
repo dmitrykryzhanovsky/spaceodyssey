@@ -96,6 +96,16 @@ namespace SpaceOdyssey.Cosmodynamics
                 {
                     return sqrth / double.Abs (a);
                 }
+
+                /// <summary>
+                /// Возвращает скорость на непараболической орбите на расстоянии r.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <param name="a">Большая полуось орбиты: положительная для эллипса, отрицательная для гиперболы.</param>
+                public static double Speed (double mu, double r, double a)
+                {
+                    return double.Sqrt (mu * (2.0 / r - 1.0 / a));
+                }
             }
 
             public static class Ellipse
@@ -120,6 +130,14 @@ namespace SpaceOdyssey.Cosmodynamics
                 }
             }
 
+            public static class Circle
+            {
+                public static double Speed (double mu, double r)
+                {
+                    return double.Sqrt (mu / r);
+                }
+            }
+
             public static class Parabola
             {
                 /// <summary>
@@ -128,7 +146,7 @@ namespace SpaceOdyssey.Cosmodynamics
                 /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
                 public static double Speed (double mu, double r)
                 {
-                    return double.Sqrt (2.0 * mu / r);
+                    return double.Sqrt (mu * 2.0 / r);
                 }
             }
         }

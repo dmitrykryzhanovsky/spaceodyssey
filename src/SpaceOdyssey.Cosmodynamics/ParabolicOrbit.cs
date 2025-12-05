@@ -74,5 +74,10 @@
         {
             return Formulae.Shape.Parabola.ConicSectionInverseEquation (_p, r);
         }
+
+        public override double SpeedForRadius (double r)
+        {
+            return Formulae.Motion.Parabola.Speed (_mu, r);
+        }
     }
 }

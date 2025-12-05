@@ -168,5 +168,12 @@ namespace SpaceOdyssey.Cosmodynamics
 
             else throw new ArgumentOutOfRangeException ();
         }
+
+        public override double SpeedForRadius (double r)
+        {
+            return Formulae.Motion.Circle.Speed (_mu, _a);
+        }
+
+        //sealed
     }
 }

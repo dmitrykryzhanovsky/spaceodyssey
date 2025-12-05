@@ -156,6 +156,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
         protected abstract double ConicSectionInverseEquation (double r);
 
+        public abstract double SpeedForRadius (double r);
+
         protected static class Checkers
         {
             /// <summary>

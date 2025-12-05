@@ -108,7 +108,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         }
 
         [TestMethod ()]
-        public void TrueAnomalyTest_Asymptote ()
+        public void TrueAnomalyTest_Boundary_Asymptote ()
         {
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
@@ -116,6 +116,23 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double r        = double.PositiveInfinity;
             double expected = double.Pi;
+
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Boundary_REqualsRp ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double rp       = 2.0;
+
+            double r        = 2.0;
+            double expected = 0.0;
 
             ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
 

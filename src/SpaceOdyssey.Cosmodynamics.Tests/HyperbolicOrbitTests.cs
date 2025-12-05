@@ -38,7 +38,6 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   orbiting = Mass.ZeroMass;            
             double e        = 1.0;
             double rp       = 1.38;
-            double t0       = 0.42;
 
             bool argumentOutOfRangeException = false;
 
@@ -61,8 +60,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = 0.73;
-            double rp       = 1.38;            
-            double t0       = 0.42;
+            double rp       = 1.38;
 
             bool argumentOutOfRangeException = false;
 
@@ -85,8 +83,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        = 0.73;
-            double rp       = 0.0;            
-            double t0       = 0.42;
+            double rp       = 0.0;
 
             bool argumentOutOfRangeException = false;
 
@@ -109,14 +106,111 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Mass   center   = Mass.CreateByMass (10.0);
             Mass   orbiting = Mass.ZeroMass;
             double e        =  0.73;
-            double rp       = -1.38;            
-            double t0       =  0.42;
+            double rp       = -1.38;
 
             bool argumentOutOfRangeException = false;
 
             try
             {
                 HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void RadiusTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.6;
+            double rp       = 2.0;            
+
+            double trueAnomaly = double.Pi * (2.0 / 3.0);
+            double expected    = 26.0;
+
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+
+            double actual = orbit.Radius (trueAnomaly);
+
+            Assert.AreEqual (expected, actual, 1.0e-13);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.6;
+            double rp       = 2.0;
+
+            double r        = 26.0;
+            double expected = double.Pi * 2.0 / 3.0;
+
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Boundary_Asymptote ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.6;
+            double rp       = 2.0;
+
+            double r        = double.PositiveInfinity;
+            double expected = 2.24592785973192827;
+
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Boundary_REqualsRp ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.6;
+            double rp       = 2.0;
+
+            double r        = 2.0;
+            double expected = 0.0;
+
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Exception_RLessRp ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 1.6;
+            double rp       = 2.0;
+            double r        = 1.999999999999;
+
+            HyperbolicOrbit orbit = HyperbolicOrbit.CreateByPeriapsis (center, orbiting, e, rp);
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                double actual = orbit.TrueAnomaly (r);
             }
 
             catch (ArgumentOutOfRangeException)

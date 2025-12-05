@@ -64,5 +64,15 @@
         }
 
         #endregion
+
+        public override double Radius (double trueAnomaly)
+        {
+            return Formulae.Shape.Parabola.ConicSectionEquation (_p, trueAnomaly);
+        }
+
+        protected override double ConicSectionInverseEquation (double r)
+        {
+            return Formulae.Shape.Parabola.ConicSectionInverseEquation (_p, r);
+        }
     }
 }

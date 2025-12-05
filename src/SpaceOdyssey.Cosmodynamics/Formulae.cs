@@ -6,6 +6,31 @@ namespace SpaceOdyssey.Cosmodynamics
     {
         public static class Shape
         {
+            public static class NonParabola
+            {
+                /// <summary>
+                /// Возвращает расстояние от фокуса при данном полярном угле phi.
+                /// </summary>
+                /// <param name="p">Фокальный параметр.</param>
+                /// <param name="e">Эксцентриситет.</param>
+                /// <remarks>Вычисляет уравнение конического сечения в полярных координатах.</remarks>
+                public static double ConicSectionEquation (double p, double e, double phi)
+                {
+                    return p / (1.0 + e * double.Cos (phi));
+                }
+
+                /// <summary>
+                /// Возвращает полярный угол для данного расстояния от фокуса r.
+                /// </summary>
+                /// <param name="p">Фокальный параметр.</param>
+                /// <param name="e">Эксцентриситет.</param>
+                /// <returns>Вычисляет обратное уравнение конического сечения в полярных координатах.</returns>
+                public static double ConicSectionInverseEquation (double p, double e, double r)
+                {
+                    return double.Acos ((p - r) / (r * e));
+                }
+            }
+
             public static class Hyperbola
             {
                 /// <summary>
@@ -15,6 +40,29 @@ namespace SpaceOdyssey.Cosmodynamics
                 public static double Asymptote (double e)
                 {
                     return double.Acos (-1.0 / e);
+                }
+            }
+
+            public static class Parabola
+            {
+                /// <summary>
+                /// Возвращает расстояние от фокуса при данном полярном угле phi.
+                /// </summary>
+                /// <param name="p">Фокальный параметр.</param>
+                /// <remarks>Вычисляет уравнение конического сечения в полярных координатах при эксцентриситете e = 1.</remarks>
+                public static double ConicSectionEquation (double p, double phi)
+                {
+                    return p / (1.0 + double.Cos (phi));
+                }
+
+                /// <summary>
+                /// Возвращает полярный угол для данного расстояния от фокуса r.
+                /// </summary>
+                /// <param name="p">Фокальный параметр.</param>
+                /// <returns>Вычисляет обратное уравнение конического сечения в полярных координатах при эксцентриситете e = 1.</returns>
+                public static double ConicSectionInverseEquation (double p, double r)
+                {
+                    return double.Acos ((p - r) / r);
                 }
             }
         }

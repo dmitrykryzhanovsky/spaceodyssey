@@ -465,5 +465,111 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (expected, actual, 1.0e-14);
         }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.6;
+            double a        = 2.0;
+
+            double r        = 1.82857142857142857;
+            double expected = double.Pi * 2.0 / 3.0;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Boundary_REqualsRp ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.6;
+            double a        = 2.0;
+
+            double r        = 0.8;
+            double expected = 0.0;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Boundary_REqualsRa ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.6;
+            double a        = 2.0;
+
+            double r        = 3.1999999999999999;
+            double expected = double.Pi;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Exception_RLessRp ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.6;
+            double a        = 2.0;
+            double r        = 0.799999999999;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                double actual = orbit.TrueAnomaly (r);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Exception_RGreaterRa ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.6;
+            double a        = 2.0;
+            double r        = 3.200000000001;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                double actual = orbit.TrueAnomaly (r);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
     }
 }

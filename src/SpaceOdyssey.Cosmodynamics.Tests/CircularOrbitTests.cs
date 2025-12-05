@@ -186,5 +186,47 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (expected, actual, 1.0e-14);
         }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_REqualsA ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double a        = 2.0;
+
+            double r        = 2.0;
+
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
+
+            double actual = orbit.TrueAnomaly (r);
+
+            Assert.IsTrue (double.IsNaN (actual));
+        }
+
+        [TestMethod ()]
+        public void TrueAnomalyTest_Exception_RLessRp ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double a        = 2.0;
+
+            double r        = 1.999999999999;
+
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
+
+            bool argumentOutOfRangeException = false;
+
+            try
+            {
+                double actual = orbit.TrueAnomaly (r);
+            }
+
+            catch (ArgumentOutOfRangeException)
+            {
+                argumentOutOfRangeException = true;
+            }
+
+            Assert.IsTrue (argumentOutOfRangeException);
+        }
     }
 }

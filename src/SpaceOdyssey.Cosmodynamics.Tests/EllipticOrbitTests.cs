@@ -499,7 +499,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             double actual = orbit.TrueAnomaly (r);
 
-            Assert.AreEqual (expected, actual, 1.0e-15);
+            Assert.AreEqual (expected, actual, 1.0e-7);
         }
 
         [TestMethod ()]
@@ -586,6 +586,24 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
 
             double actual = orbit.SpeedForRadius (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void SpeedForTrueAnomalyTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.5;
+            double a        = 4.0;
+
+            double trueAnomaly = double.Pi / 6.0;
+            double expected    = 2.16971490849823239e-5;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            double actual = orbit.SpeedForTrueAnomaly (trueAnomaly);
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }

@@ -27,7 +27,7 @@ namespace SpaceOdyssey.Cosmodynamics
                 /// <returns>Вычисляет обратное уравнение конического сечения в полярных координатах.</returns>
                 public static double ConicSectionInverseEquation (double p, double e, double r)
                 {
-                    return double.Acos ((p - r) / (r * e));
+                    return double.Acos (((p / r) - 1.0) / e);
                 }
             }
 
@@ -62,7 +62,7 @@ namespace SpaceOdyssey.Cosmodynamics
                 /// <returns>Вычисляет обратное уравнение конического сечения в полярных координатах при эксцентриситете e = 1.</returns>
                 public static double ConicSectionInverseEquation (double p, double r)
                 {
-                    return double.Acos ((p - r) / r);
+                    return double.Acos ((p / r) - 1.0);
                 }
             }
         }

@@ -79,5 +79,10 @@
         {
             return Formulae.Motion.Parabola.SpeedForRadius (_mu, r);
         }
+
+        public override double SpeedForTrueAnomaly (double trueAnomaly)
+        {
+            return Formulae.Motion.Parabola.SpeedForTrueAnomaly (_mu, _p, trueAnomaly);
+        }
     }
 }

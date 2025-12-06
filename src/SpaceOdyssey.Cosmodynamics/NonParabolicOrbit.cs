@@ -103,5 +103,10 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             return Formulae.Motion.NonParabola.SpeedForRadius (_mu, r, _a);
         }
+
+        public sealed override double SpeedForTrueAnomaly (double trueAnomaly)
+        {
+            return Formulae.Motion.NonParabola.SpeedForTrueAnomaly (_mu, _e, _p, trueAnomaly);
+        }
     }
 }

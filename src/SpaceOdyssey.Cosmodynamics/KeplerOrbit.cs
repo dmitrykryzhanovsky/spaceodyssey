@@ -161,6 +161,8 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </summary>
         public abstract double SpeedForRadius (double r);
 
+        //public abstract double SpeedForTrueAnomaly (double trueAnomaly);
+
         protected static class Checkers
         {
             /// <summary>

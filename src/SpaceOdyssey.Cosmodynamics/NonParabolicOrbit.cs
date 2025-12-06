@@ -101,7 +101,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         public sealed override double SpeedForRadius (double r)
         {
-            return Formulae.Motion.NonParabola.Speed (_mu, r, _a);
+            return Formulae.Motion.NonParabola.SpeedForRadius (_mu, r, _a);
         }
     }
 }

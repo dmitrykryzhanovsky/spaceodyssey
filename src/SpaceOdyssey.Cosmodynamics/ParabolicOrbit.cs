@@ -60,7 +60,7 @@
             _p  = 2.0 * _rp;
             _h  = 0.0;
             _n  = double.Sqrt (_mu / _p) / _rp;
-            _vp = Formulae.Motion.Parabola.Speed (_mu, _rp);
+            _vp = Formulae.Motion.Parabola.SpeedForRadius (_mu, _rp);
         }
 
         #endregion
@@ -77,7 +77,7 @@
 
         public override double SpeedForRadius (double r)
         {
-            return Formulae.Motion.Parabola.Speed (_mu, r);
+            return Formulae.Motion.Parabola.SpeedForRadius (_mu, r);
         }
     }
 }

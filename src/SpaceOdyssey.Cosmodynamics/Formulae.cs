@@ -102,9 +102,20 @@ namespace SpaceOdyssey.Cosmodynamics
                 /// </summary>
                 /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
                 /// <param name="a">Большая полуось орбиты: положительная для эллипса, отрицательная для гиперболы.</param>
-                public static double Speed (double mu, double r, double a)
+                public static double SpeedForRadius (double mu, double r, double a)
                 {
                     return double.Sqrt (mu * (2.0 / r - 1.0 / a));
+                }
+
+                /// <summary>
+                /// Возвращает скорость на непараболической орбите для истинной аномалии trueAnomaly.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <param name="e">Эксцентриситет орбиты.</param>
+                /// <param name="p">Фокальный параметр.</param>
+                public static double SpeedForTrueAnomaly (double mu, double e, double p, double trueAnomaly)
+                {
+                    return double.Sqrt ((mu / p) * (1.0 + 2.0 * e * double.Cos (trueAnomaly) + e * e));
                 }
             }
 
@@ -137,7 +148,7 @@ namespace SpaceOdyssey.Cosmodynamics
                 /// </summary>
                 /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
                 /// <remarks>Фактически это 1-я космическая скорость.</remarks>
-                public static double Speed (double mu, double r)
+                public static double SpeedForRadius (double mu, double r)
                 {
                     return double.Sqrt (mu / r);
                 }
@@ -150,9 +161,20 @@ namespace SpaceOdyssey.Cosmodynamics
                 /// </summary>
                 /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
                 /// <remarks>Фактически это 2-я космическая скорость.</remarks>
-                public static double Speed (double mu, double r)
+                public static double SpeedForRadius (double mu, double r)
                 {
                     return double.Sqrt (mu * 2.0 / r);
+                }
+
+                /// <summary>
+                /// Возвращает скорость на параболической орбите для истинной аномалии trueAnomaly.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <param name="p">Фокальный параметр.</param>
+                /// <remarks>Фактически это 2-я космическая скорость.</remarks>
+                public static double SpeedForTrueAnomaly (double mu, double p, double trueAnomaly)
+                {
+                    return double.Sqrt ((mu / p) * 2.0 * (1.0 + double.Cos (trueAnomaly)));
                 }
             }
         }

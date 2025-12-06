@@ -138,7 +138,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <returns>Одному и тому же значению r соответствуют два значения истинной аномалии: x и -x. Данный метод возвращает 
         /// неотрицательное значение из двух корректных.</returns>
         /// <param name="r">Должно быть положительным и соответствовать ограничениям, накладываемым на расстояние формой орбиты.</param>
-        public virtual double TrueAnomaly (double r)
+        public double TrueAnomaly (double r)
         {
             CheckR (r);
 
@@ -156,6 +156,9 @@ namespace SpaceOdyssey.Cosmodynamics
 
         protected abstract double ConicSectionInverseEquation (double r);
 
+        /// <summary>
+        /// Скорость на орбите на расстоянии r.
+        /// </summary>
         public abstract double SpeedForRadius (double r);
 
         protected static class Checkers

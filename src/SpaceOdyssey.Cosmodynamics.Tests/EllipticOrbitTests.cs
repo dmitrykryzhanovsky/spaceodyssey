@@ -571,5 +571,23 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.IsTrue (argumentOutOfRangeException);
         }
+
+        [TestMethod ()]
+        public void SpeedForRadiusTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.5;
+            double a        = 4.0;
+
+            double r        = 5.0;
+            double expected = 1.00057233621562814e-5;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            double actual = orbit.SpeedForRadius (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
     }
 }

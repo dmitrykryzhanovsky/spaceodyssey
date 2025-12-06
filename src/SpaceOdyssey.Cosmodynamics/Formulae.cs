@@ -132,6 +132,11 @@ namespace SpaceOdyssey.Cosmodynamics
 
             public static class Circle
             {
+                /// <summary>
+                /// Возвращает скорость на круговой орбите на расстоянии r.
+                /// </summary>
+                /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <remarks>Фактически это 1-я космическая скорость.</remarks>
                 public static double Speed (double mu, double r)
                 {
                     return double.Sqrt (mu / r);
@@ -144,6 +149,7 @@ namespace SpaceOdyssey.Cosmodynamics
                 /// Возвращает скорость на параболической орбите на расстоянии r.
                 /// </summary>
                 /// <param name="mu">Локальная гравитационная постоянная для данной орбиты.</param>
+                /// <remarks>Фактически это 2-я космическая скорость.</remarks>
                 public static double Speed (double mu, double r)
                 {
                     return double.Sqrt (mu * 2.0 / r);

@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="_obsolete.txt" />
+    <None Remove="_obsolete.txt.bak" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\SpaceOdyssey.Core\SpaceOdyssey.Core.csproj" />
   </ItemGroup>
 

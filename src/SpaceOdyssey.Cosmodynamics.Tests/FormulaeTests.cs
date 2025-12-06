@@ -128,13 +128,29 @@ namespace SpaceOdyssey.Cosmodynamics
         [TestMethod ()]
         public void Motion_NonParabola_SpeedTest_Ellipse ()
         {
-            
+            double mu = 6.6743e-10;
+            double r  = 1.38;
+            double a  = 3.0;
+
+            double expected = 2.72912657897320164e-5;
+
+            double actual = Formulae.Motion.NonParabola.Speed (mu, r, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
         }
 
         [TestMethod ()]
         public void Motion_NonParabola_SpeedTest_Hyperbola ()
         {
+            double mu =  6.6743e-10;
+            double r  =  1.38;
+            double a  = -3.0;
 
+            double expected = 3.44929923569865193e-5;
+
+            double actual = Formulae.Motion.NonParabola.Speed (mu, r, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
         }
 
         #endregion
@@ -164,6 +180,23 @@ namespace SpaceOdyssey.Cosmodynamics
             double expected = 1.52677357618512e-5;
 
             double actual = Formulae.Motion.Ellipse.SpeedMean (a, sqrt1me2, T);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        #endregion
+
+        #region Circle
+
+        [TestMethod ()]
+        public void Motion_Circle_SpeedTest ()
+        {
+            double mu = 6.6743e-10;
+            double r  = 1.38;
+
+            double expected = 2.19919286906863147e-5;
+
+            double actual = Formulae.Motion.Circle.Speed (mu, r);
 
             Assert.AreEqual (expected, actual, 1.0e-19);
         }

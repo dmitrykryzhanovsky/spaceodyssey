@@ -125,6 +125,49 @@ namespace SpaceOdyssey.Cosmodynamics
             Assert.AreEqual (expected, actual, 1.0e-19);
         }
 
+        [TestMethod ()]
+        public void Motion_NonParabola_SpeedForRadiusTest_Ellipse ()
+        {
+            double mu = 6.6743e-10;
+            double r  = 1.38;
+            double a  = 3.0;
+
+            double expected = 2.72912657897320164e-5;
+
+            double actual = Formulae.Motion.NonParabola.SpeedForRadius (mu, r, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        [TestMethod ()]
+        public void Motion_NonParabola_SpeedForRadiusTest_Hyperbola ()
+        {
+            double mu =  6.6743e-10;
+            double r  =  1.38;
+            double a  = -3.0;
+
+            double expected = 3.44929923569865193e-5;
+
+            double actual = Formulae.Motion.NonParabola.SpeedForRadius (mu, r, a);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        [TestMethod ()]
+        public void Motion_NonParabola_SpeedForTrueAnomalyTest ()
+        {
+            double mu          = 6.6743e-10;
+            double e           = 0.6;
+            double p           = 1.38;
+            double trueAnomaly = double.Pi / 6.0;
+
+            double expected = 3.40642870736891881e-5;
+
+            double actual = Formulae.Motion.NonParabola.SpeedForTrueAnomaly (mu, e, p, trueAnomaly);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
         #endregion
 
         #region Ellipse
@@ -158,17 +201,48 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        #region Circle
+
+        [TestMethod ()]
+        public void Motion_Circle_SpeedForRadiusTest ()
+        {
+            double mu = 6.6743e-10;
+            double r  = 1.38;
+
+            double expected = 2.19919286906863147e-5;
+
+            double actual = Formulae.Motion.Circle.SpeedForRadius (mu, r);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        #endregion
+
         #region Parabola
 
         [TestMethod ()]
-        public void Motion_Parabola_SpeedTest ()
+        public void Motion_Parabola_SpeedForRadiusTest ()
         {
             double mu = 6.6743e-10;
             double r  = 1.38;
 
             double expected = 3.11012838171106e-5;
 
-            double actual = Formulae.Motion.Parabola.Speed (mu, r);
+            double actual = Formulae.Motion.Parabola.SpeedForRadius (mu, r);
+
+            Assert.AreEqual (expected, actual, 1.0e-19);
+        }
+
+        [TestMethod ()]
+        public void Motion_Parabola_SpeedForTrueAnomalyTest ()
+        {
+            double mu          = 6.6743e-10;
+            double p           = 1.38;
+            double trueAnomaly = double.Pi / 6.0;
+
+            double expected = 4.24851437844828924e-5;
+
+            double actual = Formulae.Motion.Parabola.SpeedForTrueAnomaly (mu, p, trueAnomaly);
 
             Assert.AreEqual (expected, actual, 1.0e-19);
         }

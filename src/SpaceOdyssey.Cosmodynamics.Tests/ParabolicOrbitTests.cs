@@ -165,5 +165,39 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.IsTrue (argumentOutOfRangeException);
         }
+
+        [TestMethod ()]
+        public void SpeedForRadiusTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double rp       = 2.0;
+
+            double r        = 4.0;
+            double expected = 1.82678679653647596e-5;
+
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
+
+            double actual = orbit.SpeedForRadius (r);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
+
+        [TestMethod ()]
+        public void SpeedForTrueAnomalyTest ()
+        {
+            Mass   center   = Mass.CreateByMass (10.0);
+            Mass   orbiting = Mass.ZeroMass;
+            double rp       = 2.0;
+
+            double trueAnomaly = double.Pi / 6.0;
+            double expected    = 2.49543717136682073e-5;
+
+            ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
+
+            double actual = orbit.SpeedForTrueAnomaly (trueAnomaly);
+
+            Assert.AreEqual (expected, actual, 1.0e-15);
+        }
     }
 }

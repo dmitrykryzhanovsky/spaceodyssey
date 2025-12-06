@@ -145,28 +145,5 @@ namespace SpaceOdyssey.Cosmodynamics
         #endregion
 
         #endregion
-
-        /// <summary>
-        /// Возвращает расстояние от фокуса (радиус) для истинной аномалии trueAnomaly.
-        /// </summary>
-        /// <returns>В случае круговой орбиты одно и то же для всех значений истинной аномалии и равно большой полуоси (радиусу) 
-        /// орбиты.</returns>
-        public override double Radius (double trueAnomaly)
-        {
-            return _a;
-        }
-
-        /// <summary>
-        /// Истинная аномалия при расстоянии до центра тяготения r.
-        /// </summary>
-        /// <param name="r">Так как для круговой орбиты расстояние до центра остаётся неизменным при изменении истинной аномалии, по её 
-        /// значение определить расстояние нельзя. Поэтому в том случае, если r = a (большой полуоси орбиты), метод возвращает NaN. 
-        /// Если же r ≠ a, генерируется исключение, так как для данной круговой орбиты такое расстояние некорректно.</param>
-        public override double TrueAnomaly (double r)
-        {
-            if (r == _a) return double.NaN;
-
-            else throw new ArgumentOutOfRangeException ();
-        }
     }
 }

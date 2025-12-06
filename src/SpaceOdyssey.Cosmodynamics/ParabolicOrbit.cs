@@ -60,7 +60,7 @@
             _p  = 2.0 * _rp;
             _h  = 0.0;
             _n  = double.Sqrt (_mu / _p) / _rp;
-            _vp = Formulae.Motion.Parabola.Speed (_mu, _rp);
+            _vp = Formulae.Motion.Parabola.SpeedForRadius (_mu, _rp);
         }
 
         #endregion
@@ -73,6 +73,16 @@
         protected override double ConicSectionInverseEquation (double r)
         {
             return Formulae.Shape.Parabola.ConicSectionInverseEquation (_p, r);
+        }
+
+        public override double SpeedForRadius (double r)
+        {
+            return Formulae.Motion.Parabola.SpeedForRadius (_mu, r);
+        }
+
+        public override double SpeedForTrueAnomaly (double trueAnomaly)
+        {
+            return Formulae.Motion.Parabola.SpeedForTrueAnomaly (_mu, _p, trueAnomaly);
         }
     }
 }

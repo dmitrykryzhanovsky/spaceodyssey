@@ -89,7 +89,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
-        public override double Radius (double trueAnomaly)
+        public sealed override double Radius (double trueAnomaly)
         {
             return Formulae.Shape.NonParabola.ConicSectionEquation (_p, _e, trueAnomaly);
         }
@@ -97,6 +97,16 @@ namespace SpaceOdyssey.Cosmodynamics
         protected override double ConicSectionInverseEquation (double r)
         {
             return Formulae.Shape.NonParabola.ConicSectionInverseEquation (_p, _e, r);
+        }
+
+        public sealed override double SpeedForRadius (double r)
+        {
+            return Formulae.Motion.NonParabola.SpeedForRadius (_mu, r, _a);
+        }
+
+        public sealed override double SpeedForTrueAnomaly (double trueAnomaly)
+        {
+            return Formulae.Motion.NonParabola.SpeedForTrueAnomaly (_mu, _e, _p, trueAnomaly);
         }
     }
 }

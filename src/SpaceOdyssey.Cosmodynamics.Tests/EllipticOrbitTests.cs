@@ -607,5 +607,59 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (expected, actual, 1.0e-15);
         }
+
+        [TestMethod ()]
+        public void ComputePositionTest_E0 ()
+        {
+            Mass   center   = Mass.CreateBySqrtGM (Astrodata.Sun.GaussianSqrtGM);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.0;
+            double a        = 2.0;
+            double t0       = 2460670.5;
+            double t        = 2461016.5;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+            orbit.SetPeriapsisTime (t0);
+
+            OrbitalPosition position = orbit.ComputePosition (t);
+
+            Assert.AreEqual (2461016.5, position.T);
+            Assert.AreEqual (2.10432370154635, position.M, 1.0e-14);
+            Assert.AreEqual (2.10432370154635, position.E, 1.0e-14);
+            Assert.AreEqual (-1.01714726751128, position.Planar.Coordinates.X, 1.0e-14);
+            Assert.AreEqual (1.72203700198177, position.Planar.Coordinates.Y, 1.0e-14);
+            Assert.AreEqual (2.0, position.Planar.Coordinates.R);
+            Assert.AreEqual (2.10432370154635, position.Planar.Coordinates.TrueAnomaly, 1.0e-14);
+            Assert.AreEqual (0.010473188665347, position.Planar.Velocity.VX, 1.0e-16);
+            Assert.AreEqual (-0.00618614769649445, position.Planar.Velocity.VY, 1.0e-17);
+            Assert.AreEqual (0.012163720818187, position.Planar.Velocity.Speed, 1.0e-16);
+        }
+
+        [TestMethod ()]
+        public void ComputePositionTest_E05 ()
+        {
+            Mass   center   = Mass.CreateBySqrtGM (Astrodata.Sun.GaussianSqrtGM);
+            Mass   orbiting = Mass.ZeroMass;
+            double e        = 0.5;
+            double a        = 2.0;
+            double t0       = 2460670.5;
+            double t        = 2461016.5;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+            orbit.SetPeriapsisTime (t0);
+
+            OrbitalPosition position = orbit.ComputePosition (t);
+
+            Assert.AreEqual (2461016.5, position.T);
+            Assert.AreEqual (2.10432370154635, position.M, 1.0e-14);
+            Assert.AreEqual (2.43061219975285, position.E, 1.0e-14);
+            Assert.AreEqual (-2.51544483733668, position.Planar.Coordinates.X, 1.0e-14);
+            Assert.AreEqual (1.13029651363800, position.Planar.Coordinates.Y, 1.0e-14);
+            Assert.AreEqual (2.75772241866834, position.Planar.Coordinates.R, 1.0e-14);
+            Assert.AreEqual (2.71928555953323, position.Planar.Coordinates.TrueAnomaly, 1.0e-14);
+            Assert.AreEqual (0.00575675372039197, position.Planar.Velocity.VX, 1.0e-17);
+            Assert.AreEqual (-0.00578877484809761, position.Planar.Velocity.VY, 1.0e-17);
+            Assert.AreEqual (0.00816395294200146, position.Planar.Velocity.Speed, 1.0e-17);
+        }
     }
 }

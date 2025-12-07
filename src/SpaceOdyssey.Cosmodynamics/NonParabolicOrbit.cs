@@ -61,7 +61,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Integrals
 
-        protected void ComputeIntegrals ()
+        protected virtual void ComputeIntegrals ()
         {
             _h        = Formulae.Integrals.NonParabola.EnergyIntegral (_mu, _a);
             _auxsqrth = double.Sqrt (double.Abs (_h));
@@ -107,11 +107,6 @@ namespace SpaceOdyssey.Cosmodynamics
         public sealed override double SpeedForTrueAnomaly (double trueAnomaly)
         {
             return Formulae.Motion.NonParabola.SpeedForTrueAnomaly (_mu, _e, _p, trueAnomaly);
-        }
-
-        public override OrbitalPosition ComputePosition (double t)
-        {
-            throw new NotImplementedException ();
-        }
+        }        
     }
 }

@@ -9,7 +9,6 @@ namespace SpaceOdyssey.Cosmodynamics
     {
         private readonly double _t;
 
-        private readonly double _path;
         private readonly double _M;
         private readonly double _E;
 
@@ -129,7 +128,7 @@ namespace SpaceOdyssey.Cosmodynamics
                 /// </summary>
                 public double Y
                 {
-                    get => _cartesian.X;
+                    get => _cartesian.Y;
                 }
 
                 /// <summary>
@@ -228,11 +227,10 @@ namespace SpaceOdyssey.Cosmodynamics
                                 double x, double y, double r, double trueAnomaly, 
                                 double vx, double vy)
         {
-            _t    = t;
+            _t = t;
 
-            _path = M;
-            _M    = M;
-            _E    = E;
+            _M = M;
+            _E = E;
 
             _planar.Coordinates = new PlanarPosition.PlanarCoordinates (x, y, r, trueAnomaly);
             _planar.Velocity    = new PlanarPosition.PlanarVelocity (vx, vy);

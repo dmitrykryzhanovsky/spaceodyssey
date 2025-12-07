@@ -166,6 +166,9 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </summary>
         public abstract double SpeedForTrueAnomaly (double trueAnomaly);
 
+        /// <summary>
+        /// Вычисляет положение на орбите для момента времени t.
+        /// </summary>
         public abstract OrbitalPosition ComputePosition (double t);
 
         //public abstract OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly);

@@ -253,6 +253,8 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #region Planar velocity
 
+        #region Parabola
+
         [TestMethod ()]
         public void PlanarVelocity_Parabola_VelocityAngleTest_YminusP ()
         {
@@ -292,7 +294,57 @@ namespace SpaceOdyssey.Cosmodynamics
             Assert.AreEqual (expected, actual);
         }
 
+        #endregion
+
+        #endregion
+
+        #region Kepler equation
+
+        #region Ellipse
+
+        [TestMethod ()]
+        public void KeplerEquation_Ellipse_SolveTest ()
+        {
+            double [,] M = new double [,]
+            {
+              { -double.Pi / 2.0,   -0.1,                  0.0, 0.1,                  double.Pi / 2.0,   3.0,              double.Pi,        3.2 },
+              { -1.0707963267949,   -0.0500832916765859,   0.0, 0.0500832916765859,   1.0707963267949,   2.92943999597007, 3.14159265358979, 3.22918707171379 },
+              { -0.770796326794897, -0.0201332666825375,   0.0, 0.0201332666825375,   0.770796326794897, 2.88710399355211, 3.14159265358979, 3.24669931474206 },
+              { -0.670796326794897, -0.0101499250178547,   0.0, 0.0101499250178547,   0.670796326794897, 2.87299199274612, 3.14159265358979, 3.25253672908482 },
+              { -0.580796326794897, -0.00116491751964014,  0.0, 0.00116491751964014,  0.580796326794897, 2.86029119202073, 3.14159265358979, 3.25779040199330 },
+              { -0.571796326794897, -0.000266416769818673, 0.0, 0.000266416769818673, 0.571796326794897, 2.85902111194819, 3.14159265358979, 3.25831576928415 }
+            };
+
+            double [] e = new double [] { 0.0, 0.5, 0.8, 0.9, 0.99, 0.999 };
+
+            double [] expected = new double [] { -double.Pi / 2.0, -0.1, 0.0, 0.1, double.Pi / 2.0, 3.0, double.Pi, 3.2 };
+
+            for (int i = 0; i < e.Length; i++)
+            {
+                for (int j = 0; j < expected.Length; j++)
+                {
+                    double actual = Formulae.KeplerEquation.Ellipse.Solve (M [i, j], e [i]);
+
+                    Assert.AreEqual (expected [j], actual, 1.0e-14);
+                }
+            }
+        }
+
+        #endregion
+
         #region Parabola
+
+        [TestMethod ()]
+        public void KeplerEquation_Parabola_SolveBarkerEquationTest ()
+        {
+            double M = 4.08248290463863333;
+
+            double expected = 1.87726052751656;
+
+            double actual = Formulae.KeplerEquation.Parabola.SolveBarkerEquation (M);
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
+        }
 
         #endregion
 

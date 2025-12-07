@@ -92,18 +92,20 @@ namespace SpaceOdyssey.Cosmodynamics
             double M     = MeanAnomalyForTime (t);
             double tgv2  = Formulae.KeplerEquation.Parabola.SolveBarkerEquation (M);
 
+            // Вычисление положения в плоскости орбиты.
             double trueAnomaly = 2.0 * double.Atan (tgv2);
             double r           = Radius (trueAnomaly);
             double x           = _rp * (1.0 - tgv2 * tgv2);
             double y           = _p * tgv2;
 
+            // Вычисление скорости в плоскости орбиты.
             double beta  = Formulae.PlanarVelocity.Parabola.VelocityAngle (_p, y);
             double speed = SpeedForRadius (r);
 
-            (double sin, double cos) = double.SinCos (beta);
+            (double sinBeta, double cosBeta) = double.SinCos (beta);
 
-            double vx    = speed * cos;
-            double vy    = speed * sin;
+            double vx    = speed * cosBeta;
+            double vy    = speed * sinBeta;
 
             return new OrbitalPosition (t, M, tgv2, x, y, r, trueAnomaly, vx, vy);
         }

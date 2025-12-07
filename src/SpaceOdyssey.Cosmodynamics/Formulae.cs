@@ -1,4 +1,5 @@
 ﻿using Archimedes;
+using Archimedes.Numerical;
 
 namespace SpaceOdyssey.Cosmodynamics
 {
@@ -197,8 +198,36 @@ namespace SpaceOdyssey.Cosmodynamics
 
         public static class KeplerEquation
         {
+            public static class Ellipse
+            {
+                /// <summary>
+                /// Решает уравнение Кеплера для эллипса.
+                /// </summary>
+                /// <param name="M">Средняя аномалия в радианах.</param>
+                /// <param name="e">Эксцентриситет орбиты.</param>
+                /// <returns>Возвращает эксцентрическую аномалию в радианах с точностью 1e-14.</returns>
+                public static double Solve (double M, double e)
+                {
+                    return Equation.Newton (KeplerEquation, KeplerDerivative, 
+                        ComputingSettings.NumericalHalfEpsilon, M, e, M);
+                }
+
+                private static double KeplerEquation (double x, params double [] a)
+                {
+                    return x - a [0] * double.Sin (x) - a [1];
+                }
+
+                private static double KeplerDerivative (double x, params double [] a)
+                {
+                    return 1.0 - a [0] * double.Cos (x);
+                }
+            }
+
             public static class Parabola
             {
+                /// <summary>
+                /// Решает уравнение Баркера для параболы относительно средней аномалии M.
+                /// </summary>
                 public static double SolveBarkerEquation (double M)
                 {
                     double A = 1.5 * M;

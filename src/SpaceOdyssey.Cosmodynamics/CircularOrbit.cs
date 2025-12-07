@@ -145,5 +145,21 @@ namespace SpaceOdyssey.Cosmodynamics
         #endregion
 
         #endregion
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, t - _t0);
+
+            // Вычисление положения в плоскости орбиты.
+            (double sinV, double cosV) = double.SinCos (M);
+            double x = _a * cosV;
+            double y = _a * sinV;
+
+            // Вычисление скорости в плоскости орбиты.
+            double vx = _auxsqrth * sinV;
+            double vy = _auxsqrth * cosV;
+
+            return new OrbitalPosition (t, M, M, x, y, _a, M, vx, vy);
+        }
     }
 }

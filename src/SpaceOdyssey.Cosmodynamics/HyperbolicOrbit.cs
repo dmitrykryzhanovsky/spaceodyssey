@@ -67,5 +67,10 @@
         }
 
         #endregion
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            throw new NotImplementedException ();
+        }
     }
 }

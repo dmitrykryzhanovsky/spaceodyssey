@@ -250,5 +250,52 @@ namespace SpaceOdyssey.Cosmodynamics
         #endregion
 
         #endregion
+
+        #region Planar velocity
+
+        [TestMethod ()]
+        public void PlanarVelocity_Parabola_VelocityAngleTest_YminusP ()
+        {
+            double p =  2.0;
+            double y = -2.0; ;
+
+            double expected = double.Pi / 4.0;
+
+            double actual = Formulae.PlanarVelocity.Parabola.VelocityAngle (p, y);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void PlanarVelocity_Parabola_VelocityAngleTest_Y0 ()
+        {
+            double p = 2.0;
+            double y = 0.0; ;
+
+            double expected = double.Pi / 2.0;
+
+            double actual = Formulae.PlanarVelocity.Parabola.VelocityAngle (p, y);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void PlanarVelocity_Parabola_VelocityAngleTest_YplusP ()
+        {
+            double p = 2.0;
+            double y = 2.0; ;
+
+            double expected = double.Pi * 3.0 / 4.0;
+
+            double actual = Formulae.PlanarVelocity.Parabola.VelocityAngle (p, y);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        #region Parabola
+
+        #endregion
+
+        #endregion
     }
 }

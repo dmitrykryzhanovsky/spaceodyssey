@@ -108,5 +108,10 @@ namespace SpaceOdyssey.Cosmodynamics
         {
             return Formulae.Motion.NonParabola.SpeedForTrueAnomaly (_mu, _e, _p, trueAnomaly);
         }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            throw new NotImplementedException ();
+        }
     }
 }

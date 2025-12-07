@@ -176,6 +176,36 @@ namespace SpaceOdyssey.Cosmodynamics
                 {
                     return double.Sqrt ((mu / p) * 2.0 * (1.0 + double.Cos (trueAnomaly)));
                 }
+            }            
+        }
+
+        public static class PlanarVelocity
+        {
+            public static class Parabola
+            {
+                /// <summary>
+                /// Возвращает угол, под которым наклонена касательная (и вектор скорости) к параболе в точке с ординатой y.
+                /// </summary>
+                /// <param name="p">Фокальный параметр параболы.</param>
+                /// <remarks>Оси OX направлена вдоль оси симметрии параболы, начало координат в фокусе параболы.</remarks>
+                public static double VelocityAngle (double p, double y)
+                {
+                    return double.Atan2 (p, -y);
+                }
+            }
+        }
+
+        public static class KeplerEquation
+        {
+            public static class Parabola
+            {
+                public static double SolveBarkerEquation (double M)
+                {
+                    double A = 1.5 * M;
+                    double B = double.Cbrt (A + double.Sqrt (A * A + 1.0));
+
+                    return B - 1.0 / B;
+                }
             }
         }
     }

@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey.Cosmodynamics
+﻿using static SpaceOdyssey.Cosmodynamics.Formulae;
+
+namespace SpaceOdyssey.Cosmodynamics
 {
     public class ParabolicOrbit : KeplerOrbit
     {
@@ -83,6 +85,27 @@
         public override double SpeedForTrueAnomaly (double trueAnomaly)
         {
             return Formulae.Motion.Parabola.SpeedForTrueAnomaly (_mu, _p, trueAnomaly);
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M     = MeanAnomalyForTime (t);
+            double tgv2  = Formulae.KeplerEquation.Parabola.SolveBarkerEquation (M);
+
+            double trueAnomaly = 2.0 * double.Atan (tgv2);
+            double r           = Radius (trueAnomaly);
+            double x           = _rp * (1.0 - tgv2 * tgv2);
+            double y           = _p * tgv2;
+
+            double beta  = Formulae.PlanarVelocity.Parabola.VelocityAngle (_p, y);
+            double speed = SpeedForRadius (r);
+
+            (double sin, double cos) = double.SinCos (beta);
+
+            double vx    = speed * cos;
+            double vy    = speed * sin;
+
+            return new OrbitalPosition (t, M, tgv2, x, y, r, trueAnomaly, vx, vy);
         }
     }
 }

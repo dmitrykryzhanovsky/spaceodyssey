@@ -1,6 +1,4 @@
-﻿using Archimedes;
-
-namespace SpaceOdyssey.Cosmodynamics
+﻿namespace SpaceOdyssey.Cosmodynamics
 {
     public class EllipticOrbit : NonParabolicOrbit
     {
@@ -196,11 +194,11 @@ namespace SpaceOdyssey.Cosmodynamics
             _ra = ra;            
         }
 
-        public override void SetPeriapsisTime (double t0)
+        public override void SetPeriapsisTimeInJD (double t0)
         {
-            base.SetPeriapsisTime (t0);
+            base.SetPeriapsisTimeInJD (t0);
 
-            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, _t0 - Time.J2000);
+            _M0 = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, Time.J2000 - _t0);
         }
 
         public void SetMeanAnomalyForJ2000 (double M0)

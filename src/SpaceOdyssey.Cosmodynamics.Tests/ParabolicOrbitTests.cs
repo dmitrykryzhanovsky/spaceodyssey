@@ -14,7 +14,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t0       = 0.42;
 
             ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             Assert.AreEqual (1.0, orbit.E);
             Assert.AreEqual (2.76, orbit.P);
@@ -210,7 +210,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t        = 2461016.5;
 
             ParabolicOrbit orbit = ParabolicOrbit.CreateByPeriapsis (center, orbiting, rp);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             OrbitalPosition position = orbit.ComputePosition (t);
 

@@ -47,5 +47,10 @@
             /// </summary>
             public const double JULIAN_CENTURIES = 36525.0;
         }
+
+        /// <summary>
+        /// Астрономическая единица, в метрах.
+        /// </summary>
+        public const double AU = 149597870700.0;
     }
 }

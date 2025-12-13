@@ -14,7 +14,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t0       = 0.42;
 
             CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (1.89041095890411, orbit.P);
@@ -33,7 +33,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (1.87899121099980e-5, orbit.VA, 1.0e-19);
             Assert.AreEqual (1.87899121099980e-5, orbit.VMean, 1.0e-19);
             Assert.AreEqual (0.42, orbit.T0);
-            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
+            Assert.AreEqual (-0.765390322836009, orbit.M0, 1.0e-13);
         }
        
         [TestMethod ()]
@@ -89,7 +89,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t0       = 0.42;
 
             CircularOrbit orbit = CircularOrbit.CreateByOrbitingPeriod (center, orbiting, T);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (1.89041095890411, orbit.P, 1.0e-14);
@@ -108,7 +108,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (1.87899121099980e-5, orbit.VA, 1.0e-19);
             Assert.AreEqual (1.87899121099980e-5, orbit.VMean, 1.0e-19);
             Assert.AreEqual (0.42, orbit.T0);
-            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
+            Assert.AreEqual (-0.765390322836009, orbit.M0, 1.0e-13);
         }
 
         [TestMethod ()]
@@ -180,7 +180,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t        = 2461016.5;
 
             CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             OrbitalPosition position = orbit.ComputePosition (t);
 

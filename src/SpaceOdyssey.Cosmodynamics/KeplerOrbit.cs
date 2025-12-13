@@ -118,7 +118,7 @@ namespace SpaceOdyssey.Cosmodynamics
             _rp = rp;
         }
 
-        public virtual void SetPeriapsisTime (double t0)
+        public virtual void SetPeriapsisTimeInJD (double t0)
         {
             _t0 = t0;
         }
@@ -169,9 +169,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Вычисляет положение на орбите для момента времени t.
         /// </summary>
-        public abstract OrbitalPosition ComputePosition (double t);
-
-        public abstract OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly);
+        public abstract OrbitalPosition ComputePosition (double t);        
 
         /// <summary>
         /// Возвращает среднюю аномалию для заданного момента времени t.

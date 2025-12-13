@@ -15,7 +15,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t0       = 0.42;
 
             EllipticOrbit orbit = EllipticOrbit.CreateByPeriapsis (center, orbiting, e, rp);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             Assert.AreEqual (0.27, orbit.E);
             Assert.AreEqual (1.7526, orbit.P);
@@ -34,7 +34,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (1.42457171871557e-5, orbit.VA, 1.0e-19);
             Assert.AreEqual (1.84426370289652e-5, orbit.VMean, 1.0e-19);            
             Assert.AreEqual (0.42, orbit.T0);
-            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-14);
+            Assert.AreEqual (-0.765390322836009, orbit.M0, 1.0e-14);
         }
 
         [TestMethod ()]
@@ -162,7 +162,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t0       = 0.42;
 
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             Assert.AreEqual (0.27, orbit.E);
             Assert.AreEqual (1.7526, orbit.P, 1.0e-15);
@@ -181,7 +181,35 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (1.42457171871557e-5, orbit.VA, 1.0e-19);
             Assert.AreEqual (1.84426370289652e-5, orbit.VMean, 1.0e-19);
             Assert.AreEqual (0.42, orbit.T0);
-            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
+            Assert.AreEqual (-0.765390322836009, orbit.M0, 1.0e-13);
+        }
+
+        [TestMethod ()]
+        public void CreateBySemiMajorAxisTest_Earth ()
+        {
+            Mass   center   = Mass.CreateByGM (Astrodata.Sun.GM_SI);
+            Mass   orbiting = Mass.CreateByGM (Astrodata.Earth.GM_SI);
+            double e        = 0.01671123;
+            double a        = 149598261000.0;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+
+            Assert.AreEqual (0.01671123, orbit.E);
+            Assert.AreEqual (0.999723343057640, orbit.P / AstroConst.AU, 1.0e-15);
+            Assert.AreEqual (1.00000261, orbit.A / AstroConst.AU, 1.0e-8);
+            Assert.AreEqual (0.999862966275978, orbit.B / AstroConst.AU, 1.0e-15);
+            Assert.AreEqual (0.98329134, orbit.RP / AstroConst.AU, 1.0e-8);
+            Assert.AreEqual (1.01671388, orbit.RA / AstroConst.AU, 1.0e-8);
+            Assert.AreEqual (1.03399048277547, orbit.RatioAP, 1.0e-14);
+            Assert.AreEqual (1.01671123, orbit.RatioAMean, 1.0e-14);
+            Assert.AreEqual (1.01699524138774, orbit.RatioMeanP, 1.0e-14);
+            Assert.AreEqual (-8.87128217476016e+8, orbit.EnergyIntegral, 1.0e-6);
+            Assert.AreEqual (-4.43564108738008e+8, orbit.W, 1.0e-6);
+            Assert.AreEqual (0.985605291482164, orbit.N * 86400.0 * 180.0 / double.Pi, 1.0e-14);
+            Assert.AreEqual (365.256363004, orbit.T / 86400.0, 2.0e-3);
+            Assert.AreEqual (30287, orbit.VP, 1.0e+0);
+            Assert.AreEqual (29291, orbit.VA, 1.0e+0);
+            Assert.AreEqual (29783, orbit.VMean, 1.0e+0);
         }
 
         [TestMethod ()]
@@ -309,7 +337,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t0       = 0.42;
 
             EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             Assert.AreEqual (0.27, orbit.E, 1.0e-15);
             Assert.AreEqual (1.7526, orbit.P, 1.0e-15);
@@ -328,7 +356,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (1.42457171871557e-5, orbit.VA, 1.0e-19);
             Assert.AreEqual (1.84426370289652e-5, orbit.VMean, 1.0e-19);
             Assert.AreEqual (0.42, orbit.T0);
-            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
+            Assert.AreEqual (-0.765390322836009, orbit.M0, 1.0e-13);
         }
 
         [TestMethod ()]
@@ -341,7 +369,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t0       = 0.42;
 
             EllipticOrbit orbit = EllipticOrbit.CreateByApsides (center, orbiting, rp, ra);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             Assert.AreEqual (0.0, orbit.E);
             Assert.AreEqual (1.89041095890411, orbit.P);
@@ -360,7 +388,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (1.87899121099980e-5, orbit.VA, 1.0e-19);
             Assert.AreEqual (1.87899121099980e-5, orbit.VMean, 1.0e-19);
             Assert.AreEqual (0.42, orbit.T0);
-            Assert.AreEqual (0.765390322836009, orbit.M0, 1.0e-13);
+            Assert.AreEqual (-0.765390322836009, orbit.M0, 1.0e-13);
         }
 
         [TestMethod ()]
@@ -446,6 +474,22 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (2374540.79446364426, orbit.T0);
             Assert.AreEqual (0.765390322836009, orbit.M0);
+        }
+
+        [TestMethod ()]
+        public void SetMeanAnomalyForJ2000Test_Earth ()
+        {
+            Mass   center   = Mass.CreateByGM (Astrodata.Sun.GM_SI * 86400.0 * 86400.0);
+            Mass   orbiting = Mass.CreateByGM (Astrodata.Earth.GM_SI * 86400.0 * 86400.0);
+            double e        = 0.01671123;
+            double a        = 149598261000.0;
+            double M0       = -0.0433337328002166;
+
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+            orbit.SetMeanAnomalyForJ2000 (M0);
+
+            Assert.AreEqual (2451548, orbit.T0, 1.0e+0);
+            Assert.AreEqual (-0.0433337328002166, orbit.M0);
         }
 
         [TestMethod ()]
@@ -619,7 +663,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t        = 2461016.5;
 
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             OrbitalPosition position = orbit.ComputePosition (t);
 
@@ -646,7 +690,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             double t        = 2461016.5;
 
             EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
-            orbit.SetPeriapsisTime (t0);
+            orbit.SetPeriapsisTimeInJD (t0);
 
             OrbitalPosition position = orbit.ComputePosition (t);
 

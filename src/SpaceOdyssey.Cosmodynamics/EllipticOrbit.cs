@@ -4,8 +4,9 @@ namespace SpaceOdyssey.Cosmodynamics
 {
     public class EllipticOrbit : NonParabolicOrbit
     {
-        protected double _aux1me2;     // Вспомогательная величина 1 - e^2.
-        protected double _auxsqrt1me2; // Вспомогательная величина sqrt (1 - e^2).
+        protected double _aux1me2;        // Вспомогательная величина 1 - e^2.
+        protected double _auxsqrt1me2;    // Вспомогательная величина sqrt (1 - e^2).
+        protected double _auxsqrtmu1me2a; // Вспомогательная величина sqrt (μ * (1 - e^2) / a).
 
         protected double _b;
         protected double _ra;
@@ -217,12 +218,12 @@ namespace SpaceOdyssey.Cosmodynamics
             base.ComputeAuxiliariesByEccentricity ();
 
             _aux1me2     = 1.0 - _e * _e;
-            _auxsqrt1me2 = double.Sqrt (_aux1me2);
+            _auxsqrt1me2 = double.Sqrt (_aux1me2);            
         }
 
         private void ComputeAuxiliariesByApsides (out double plus)
         {
-            plus  = _ra + _rp;
+            plus = _ra + _rp;
 
             _aux1pe      = 2.0 * _ra / plus;
             _aux1me      = 2.0 * _rp / plus;
@@ -271,6 +272,17 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
+        #region Integrals
+
+        protected override void ComputeIntegrals ()
+        {
+            base.ComputeIntegrals ();
+
+            _auxsqrtmu1me2a = _auxsqrth * _auxsqrt1me2;
+        }
+
+        #endregion
+
         #region Velocity
 
         protected override void ComputeVelocityByPeriapsis ()
@@ -308,6 +320,27 @@ namespace SpaceOdyssey.Cosmodynamics
         protected override void CheckR (double r)
         {
             Checkers.CheckRBetweenPeriapsisAndApoapsis (r, _rp, _ra);
+        }
+
+        public override OrbitalPosition ComputePosition (double t)
+        {
+            double M = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, t - _t0);
+            double E = Formulae.KeplerEquation.Ellipse.Solve (M, _e);
+
+            // Вычисление положения в плоскости орбиты.
+            (double sinE, double cosE) = double.SinCos (E);
+            double eccentric = 1.0 - _e * cosE;
+            
+            double x = _a * (cosE - _e);
+            double y = _a * _auxsqrt1me2 * sinE;
+            double r = _a * eccentric;
+            double trueAnomaly = double.Atan2 (y, x);
+
+            // Вычисление скорости в плоскости орбиты.
+            double vx = -_auxsqrth * sinE / eccentric;
+            double vy =  _auxsqrtmu1me2a * cosE / eccentric;
+
+            return new OrbitalPosition (t, M, E, x, y, r, trueAnomaly, vx, vy);
         }
     }
 }

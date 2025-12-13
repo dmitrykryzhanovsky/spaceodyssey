@@ -168,6 +168,32 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
 
             Assert.AreEqual (2374540.79446364426, orbit.T0);
             Assert.AreEqual (0.765390322836009, orbit.M0);
-        }        
+        }
+
+        [TestMethod ()]
+        public void ComputePositionTest ()
+        {
+            Mass   center   = Mass.CreateBySqrtGM (Astrodata.Sun.GaussianSqrtGM);
+            Mass   orbiting = Mass.ZeroMass;
+            double a        = 2.0;
+            double t0       = 2460670.5;
+            double t        = 2461016.5;
+
+            CircularOrbit orbit = CircularOrbit.CreateBySemiMajorAxis (center, orbiting, a);
+            orbit.SetPeriapsisTime (t0);
+
+            OrbitalPosition position = orbit.ComputePosition (t);
+
+            Assert.AreEqual (2461016.5, position.T);
+            Assert.AreEqual (2.10432370154635, position.M, 1.0e-14);
+            Assert.AreEqual (2.10432370154635, position.E, 1.0e-14);
+            Assert.AreEqual (-1.01714726751128, position.Planar.Coordinates.X, 1.0e-14);
+            Assert.AreEqual (1.72203700198177, position.Planar.Coordinates.Y, 1.0e-14);
+            Assert.AreEqual (2.0, position.Planar.Coordinates.R);
+            Assert.AreEqual (2.10432370154635, position.Planar.Coordinates.TrueAnomaly, 1.0e-14);
+            Assert.AreEqual (-0.010473188665347, position.Planar.Velocity.VX, 1.0e-16);
+            Assert.AreEqual (-0.00618614769649445, position.Planar.Velocity.VY, 1.0e-17);
+            Assert.AreEqual (0.012163720818187, position.Planar.Velocity.Speed, 1.0e-16);
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Archimedes;
+using Archimedes.Numerical;
 
 namespace SpaceOdyssey.Cosmodynamics
 {
@@ -175,6 +176,89 @@ namespace SpaceOdyssey.Cosmodynamics
                 public static double SpeedForTrueAnomaly (double mu, double p, double trueAnomaly)
                 {
                     return double.Sqrt ((mu / p) * 2.0 * (1.0 + double.Cos (trueAnomaly)));
+                }
+            }            
+        }
+
+        public static class PlanarVelocity
+        {
+            public static class Parabola
+            {
+                /// <summary>
+                /// Возвращает угол, под которым наклонена касательная (и вектор скорости) к параболе в точке с ординатой y.
+                /// </summary>
+                /// <param name="p">Фокальный параметр параболы.</param>
+                /// <remarks>Оси OX направлена вдоль оси симметрии параболы, начало координат в фокусе параболы.</remarks>
+                public static double VelocityAngle (double p, double y)
+                {
+                    return double.Atan2 (p, -y);
+                }
+            }
+        }
+
+        public static class KeplerEquation
+        {
+            public static class Ellipse
+            {
+                /// <summary>
+                /// Решает уравнение Кеплера для эллипса.
+                /// </summary>
+                /// <param name="M">Средняя аномалия в радианах.</param>
+                /// <param name="e">Эксцентриситет орбиты.</param>
+                /// <returns>Возвращает эксцентрическую аномалию в радианах с точностью 1e-14.</returns>
+                public static double Solve (double M, double e)
+                {
+                    return Equation.Newton (KeplerEquation, KeplerDerivative, 
+                        ComputingSettings.NumericalHalfEpsilon, M, e, M);
+                }
+
+                private static double KeplerEquation (double x, params double [] a)
+                {
+                    return x - a [0] * double.Sin (x) - a [1];
+                }
+
+                private static double KeplerDerivative (double x, params double [] a)
+                {
+                    return 1.0 - a [0] * double.Cos (x);
+                }
+            }
+
+            public static class Hyperbola
+            {
+                /// <summary>
+                /// Решает уравнение Кеплера для гиперболы.
+                /// </summary>
+                /// <param name="H">Средняя аномалия в радианах.</param>
+                /// <param name="e">Эксцентриситет орбиты.</param>
+                /// <returns>Возвращает эксцентрическую аномалию в радианах с точностью 1e-14.</returns>
+                public static double Solve (double H, double e)
+                {
+                    return Equation.Newton (KeplerEquation, KeplerDerivative, 
+                        ComputingSettings.NumericalHalfEpsilon, H, e, H);
+                }
+
+                private static double KeplerEquation (double x, params double [] a)
+                {
+                    return a [0] * double.Sinh (x) - x - a [1];
+                }
+
+                private static double KeplerDerivative (double x, params double [] a)
+                {
+                    return a [0] * double.Cosh (x) - 1.0;
+                }
+            }
+
+            public static class Parabola
+            {
+                /// <summary>
+                /// Решает уравнение Баркера для параболы относительно средней аномалии M.
+                /// </summary>
+                public static double SolveBarkerEquation (double M)
+                {
+                    double A = 1.5 * M;
+                    double B = double.Cbrt (A + double.Sqrt (A * A + 1.0));
+
+                    return B - 1.0 / B;
                 }
             }
         }

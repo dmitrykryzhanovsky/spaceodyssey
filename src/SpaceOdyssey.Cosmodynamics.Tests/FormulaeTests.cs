@@ -250,5 +250,135 @@ namespace SpaceOdyssey.Cosmodynamics
         #endregion
 
         #endregion
+
+        #region Planar velocity
+
+        #region Parabola
+
+        [TestMethod ()]
+        public void PlanarVelocity_Parabola_VelocityAngleTest_YminusP ()
+        {
+            double p =  2.0;
+            double y = -2.0; ;
+
+            double expected = double.Pi / 4.0;
+
+            double actual = Formulae.PlanarVelocity.Parabola.VelocityAngle (p, y);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void PlanarVelocity_Parabola_VelocityAngleTest_Y0 ()
+        {
+            double p = 2.0;
+            double y = 0.0; ;
+
+            double expected = double.Pi / 2.0;
+
+            double actual = Formulae.PlanarVelocity.Parabola.VelocityAngle (p, y);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void PlanarVelocity_Parabola_VelocityAngleTest_YplusP ()
+        {
+            double p = 2.0;
+            double y = 2.0; ;
+
+            double expected = double.Pi * 3.0 / 4.0;
+
+            double actual = Formulae.PlanarVelocity.Parabola.VelocityAngle (p, y);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        #endregion
+
+        #endregion
+
+        #region Kepler equation
+
+        #region Ellipse
+
+        [TestMethod ()]
+        public void KeplerEquation_Ellipse_SolveTest ()
+        {
+            double [,] M = new double [,]
+            {
+              { -double.Pi / 2.0,   -0.1,                  0.0, 0.1,                  double.Pi / 2.0,   3.0,              double.Pi,        3.2 },
+              { -1.0707963267949,   -0.0500832916765859,   0.0, 0.0500832916765859,   1.0707963267949,   2.92943999597007, 3.14159265358979, 3.22918707171379 },
+              { -0.770796326794897, -0.0201332666825375,   0.0, 0.0201332666825375,   0.770796326794897, 2.88710399355211, 3.14159265358979, 3.24669931474206 },
+              { -0.670796326794897, -0.0101499250178547,   0.0, 0.0101499250178547,   0.670796326794897, 2.87299199274612, 3.14159265358979, 3.25253672908482 },
+              { -0.580796326794897, -0.00116491751964014,  0.0, 0.00116491751964014,  0.580796326794897, 2.86029119202073, 3.14159265358979, 3.25779040199330 },
+              { -0.571796326794897, -0.000266416769818673, 0.0, 0.000266416769818673, 0.571796326794897, 2.85902111194819, 3.14159265358979, 3.25831576928415 }
+            };
+
+            double [] e = new double [] { 0.0, 0.5, 0.8, 0.9, 0.99, 0.999 };
+
+            double [] expected = new double [] { -double.Pi / 2.0, -0.1, 0.0, 0.1, double.Pi / 2.0, 3.0, double.Pi, 3.2 };
+
+            for (int i = 0; i < e.Length; i++)
+            {
+                for (int j = 0; j < expected.Length; j++)
+                {
+                    double actual = Formulae.KeplerEquation.Ellipse.Solve (M [i, j], e [i]);
+
+                    Assert.AreEqual (expected [j], actual, 1.0e-14);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Hyperbola
+
+        [TestMethod ()]
+        public void KeplerEquationSolveForHyperbolaTest ()
+        {
+            double [,] M = new double [,]
+            {
+              { -1.881152026666050, -0.050250125029766000, 0.0, 0.050250125029766000, 1.881152026666050, 12.02681239111490, 14.18151638229680, 15.16882599484820 },
+              { -1.190762355973860, -0.020200100023812800, 0.0, 0.020200100023812800, 1.190762355973860,  9.02144991289188, 10.71689457511950, 11.49506079587860 },
+              { -0.960632465743128, -0.010183425021828400, 0.0, 0.010183425021828400, 0.960632465743128,  8.01966242015089,  9.56202063939373, 10.27047239622200 },
+              { -0.753515564535471, -0.001168417520042460, 0.0, 0.001168417520042460, 0.753515564535471,  7.11805367668400,  8.52263409724053,  9.16834283653115 },
+              { -0.732803874414705, -0.000266916769863859, 0.0, 0.000266916769863859, 0.732803874414705,  7.02789280233731,  8.41869544302521,  9.05812988056206 }
+            };
+
+            double [] e = new double [] { 1.5, 1.2, 1.1, 1.01, 1.001 };
+
+            double [] expected = new double [] { -double.Pi / 2.0, -0.1, 0.0, 0.1, double.Pi / 2.0, 3.0, double.Pi, 3.2 };
+
+            for (int i = 0; i < e.Length; i++)
+            {
+                for (int j = 0; j < expected.Length; j++)
+                {
+                    double actual = Formulae.KeplerEquation.Hyperbola.Solve (M [i, j], e [i]);
+
+                    Assert.AreEqual (expected [j], actual, 1.0e-14);
+                }
+            }
+        }
+
+        #endregion
+
+        #region Parabola
+
+        [TestMethod ()]
+        public void KeplerEquation_Parabola_SolveBarkerEquationTest ()
+        {
+            double M = 4.08248290463863333;
+
+            double expected = 1.87726052751656;
+
+            double actual = Formulae.KeplerEquation.Parabola.SolveBarkerEquation (M);
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
+        }
+
+        #endregion
+
+        #endregion
     }
 }

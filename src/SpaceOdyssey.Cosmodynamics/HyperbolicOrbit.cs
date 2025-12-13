@@ -2,6 +2,10 @@
 {
     public class HyperbolicOrbit : NonParabolicOrbit
     {
+        protected double _auxe2m1;        // Вспомогательная величина e^2 - 1.
+        protected double _auxsqrte2m1;    // Вспомогательная величина sqrt (e^2 - 1).
+        protected double _auxsqrtmue2m1a; // Вспомогательная величина sqrt (μ * (e^2 - 1) / a).
+
         private double _asymptote;
         private double _vinfinity;
 
@@ -66,11 +70,51 @@
             _vinfinity = _auxsqrth;
         }
 
+        #region Auxiliaries
+
+        protected override void ComputeAuxiliariesByEccentricity ()
+        {
+            base.ComputeAuxiliariesByEccentricity ();
+
+            _auxe2m1     = _e * _e - 1.0;
+            _auxsqrte2m1 = double.Sqrt (_auxe2m1);
+        }
+
+        #endregion
+
+        #region Integrals
+
+        protected override void ComputeIntegrals ()
+        {
+            base.ComputeIntegrals ();
+
+            _auxsqrtmue2m1a = _auxsqrth * _auxsqrte2m1;
+        }
+
+        #endregion
+
         #endregion
 
         public override OrbitalPosition ComputePosition (double t)
         {
-            throw new NotImplementedException ();
+            double M = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, t - _t0);
+            double H = Formulae.KeplerEquation.Hyperbola.Solve (M, _e);
+
+            // Вычисление положения в плоскости орбиты.
+            double shH       = double.Sinh (H);
+            double chH       = double.Cosh (H);
+            double eccentric = _e * chH - 1.0;
+
+            double x = -_a * (_e - chH);
+            double y = -_a * _auxsqrte2m1 * shH;
+            double r = -_a * eccentric;
+            double trueAnomaly = double.Atan2 (y, x);
+
+            // Вычисление скорости в плоскости орбиты.
+            double vx = -_auxsqrth * shH / eccentric;
+            double vy =  _auxsqrtmue2m1a * chH / eccentric;
+
+            return new OrbitalPosition (t, M, H, x, y, r, trueAnomaly, vx, vy);
         }
     }
 }

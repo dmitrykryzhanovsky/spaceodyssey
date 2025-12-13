@@ -171,7 +171,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </summary>
         public abstract OrbitalPosition ComputePosition (double t);
 
-        //public abstract OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly);
+        public abstract OrbitalPosition.PlanarPosition ComputePlanarPosition (double trueAnomaly);
 
         /// <summary>
         /// Возвращает среднюю аномалию для заданного момента времени t.

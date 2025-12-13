@@ -337,8 +337,8 @@ namespace SpaceOdyssey.Cosmodynamics
             double trueAnomaly = double.Atan2 (y, x);
 
             // Вычисление скорости в плоскости орбиты.
-            double vx = _auxsqrth * sinE / eccentric;
-            double vy = _auxsqrtmu1me2a * cosE / eccentric;
+            double vx = -_auxsqrth * sinE / eccentric;
+            double vy =  _auxsqrtmu1me2a * cosE / eccentric;
 
             return new OrbitalPosition (t, M, E, x, y, r, trueAnomaly, vx, vy);
         }

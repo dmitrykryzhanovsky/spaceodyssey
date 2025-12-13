@@ -156,8 +156,8 @@ namespace SpaceOdyssey.Cosmodynamics
             double y = _a * sinV;
 
             // Вычисление скорости в плоскости орбиты.
-            double vx = _auxsqrth * sinV;
-            double vy = _auxsqrth * cosV;
+            double vx = -_auxsqrth * sinV;
+            double vy =  _auxsqrth * cosV;
 
             return new OrbitalPosition (t, M, M, x, y, _a, M, vx, vy);
         }

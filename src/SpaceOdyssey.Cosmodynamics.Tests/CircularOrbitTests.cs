@@ -191,7 +191,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             Assert.AreEqual (1.72203700198177, position.Planar.Coordinates.Y, 1.0e-14);
             Assert.AreEqual (2.0, position.Planar.Coordinates.R);
             Assert.AreEqual (2.10432370154635, position.Planar.Coordinates.TrueAnomaly, 1.0e-14);
-            Assert.AreEqual (0.010473188665347, position.Planar.Velocity.VX, 1.0e-16);
+            Assert.AreEqual (-0.010473188665347, position.Planar.Velocity.VX, 1.0e-16);
             Assert.AreEqual (-0.00618614769649445, position.Planar.Velocity.VY, 1.0e-17);
             Assert.AreEqual (0.012163720818187, position.Planar.Velocity.Speed, 1.0e-16);
         }

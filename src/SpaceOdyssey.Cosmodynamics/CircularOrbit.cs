@@ -159,7 +159,7 @@ namespace SpaceOdyssey.Cosmodynamics
             double vx = -_auxsqrth * sinV;
             double vy =  _auxsqrth * cosV;
 
-            return new OrbitalPosition (t, M, M, x, y, _a, M, vx, vy);
+            return new OrbitalPosition (t, M, M, x, y, _a, M, vx, vy, this);
         }
     }
 }

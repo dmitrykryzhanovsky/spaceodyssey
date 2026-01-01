@@ -22,6 +22,22 @@
             /// Локальная гравитационная постоянная, связанная с Землёй, в единицах системы СИ.
             /// </summary>
             public const double GM_SI = 3.986004418e+14;
-        }        
+        }
+
+        public static class Mars
+        {
+            /// <summary>
+            /// Локальная гравитационная постоянная, связанная с Марсом, в единицах системы СИ.
+            /// </summary>
+            public const double GM_SI = 4.282837e+13;
+        }
+
+        /// <summary>
+        /// Преобразование значения из системы СИ в систему (метр – сутки).
+        /// </summary>
+        public static double ConvertSIToMetreDay (double x)
+        {
+            return x * AstroConst.Time.SEC_IN_DAY_SQR;
+        }
     }
 }

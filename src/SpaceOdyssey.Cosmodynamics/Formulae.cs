@@ -261,6 +261,42 @@ namespace SpaceOdyssey.Cosmodynamics
                     return B - 1.0 / B;
                 }
             }
+
+            //public static class NearParabolic
+            //{
+            //    public static double Solve (double M, double e, double aux1me)
+            //    {
+            //        double E1 = 0.0;
+            //        double A  = 1.5 * double.Sqrt (e) * M;
+            //        double B  = double.Cbrt (A + double.Sqrt (A * A + 1.0));
+            //        double U  = B - 1.0 / B;
+            //        double E2 = U * double.Sqrt ((2.0 / e) - 2.0);
+
+            //        while (double.Abs (E2 - E1) >= ComputingSettings.NumericalHalfEpsilon)
+            //        {
+            //            E1 = E2;
+                        
+            //            double c3   = 1.0 / 6.0;
+            //            double sqrE = E1 * E1;
+            //            double term = c3;
+            //            double n    = 3.0;
+
+            //            while (n < 15)
+            //            {
+            //                term *= -sqrE;
+            //                term /=  ++n;
+            //                term /=  ++n;
+            //            }
+
+            //            A  = 1.5 * double.Sqrt (6.0 * e * c3) * M;
+            //            B  = double.Cbrt (A + double.Sqrt (A * A + 1.0));
+            //            U  = B - 1.0 / B;
+            //            E2 = U * double.Sqrt (aux1me / (3.0 * e * c3));
+            //        }
+
+            //        return E2;
+            //    }
+            //}
         }
     }
 }

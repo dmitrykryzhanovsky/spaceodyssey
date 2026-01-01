@@ -28,6 +28,11 @@
             public const double SEC_IN_DAY = 86400.0;
 
             /// <summary>
+            /// Количество секунд в сутках в квадрате.
+            /// </summary>
+            public const double SEC_IN_DAY_SQR = SEC_IN_DAY * SEC_IN_DAY;
+
+            /// <summary>
             /// Количество секунд в 1 периоде вращения Земли вокруг своей оси = 23 ч 56 мин 4,091 с.
             /// </summary>
             public const double SEC_IN_EARTHROTATION = 86164.091;

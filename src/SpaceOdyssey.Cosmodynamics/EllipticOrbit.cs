@@ -338,7 +338,43 @@
             double vx = -_auxsqrth * sinE / eccentric;
             double vy =  _auxsqrtmu1me2a * cosE / eccentric;
 
-            return new OrbitalPosition (t, M, E, x, y, r, trueAnomaly, vx, vy);
+            return new OrbitalPosition (t, M, E, x, y, r, trueAnomaly, vx, vy, this);
         }
+
+        //public OrbitalPosition ComputePositionNearParabolic (double t)
+        //{
+        //    double M = Formulae.Motion.Ellipse.NormalizeMeanAnomaly (_n, t - _t0);
+        //    double E = Formulae.KeplerEquation.NearParabolic.Solve (M, _e, _aux1me);
+
+        //    double c1   = 0.0, c2 = 0.0, c3 = 0.0;
+        //    double n    = 1.0, sqrE = E * E;
+        //    double term = 1.0;
+
+        //    for (int i = 0; i < 7; i++)
+        //    {
+        //        c1   += term;
+        //        term /= ++n;
+        //        c2   += term;
+        //        term /= ++n;
+        //        c3   += term;
+
+        //        term *= -sqrE;
+        //    }
+
+        //    // Вычисление положения в плоскости орбиты.
+        //    (double sinE, double cosE) = double.SinCos (E);
+        //    double eccentric = 1.0 - _e * cosE;
+
+        //    double x = _a * (cosE - _e);
+        //    double y = _a * _auxsqrt1me2 * sinE;
+        //    double r = _a * eccentric;
+        //    double trueAnomaly = double.Atan2 (y, x);
+
+        //    // Вычисление скорости в плоскости орбиты.
+        //    double vx = -_auxsqrth * sinE / eccentric;
+        //    double vy = _auxsqrtmu1me2a * cosE / eccentric;
+
+        //    return new OrbitalPosition (t, M, E, x, y, r, trueAnomaly, vx, vy);
+        //}
     }
 }

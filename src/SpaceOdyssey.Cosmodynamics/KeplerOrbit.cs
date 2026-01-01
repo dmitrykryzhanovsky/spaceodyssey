@@ -2,6 +2,12 @@
 
 namespace SpaceOdyssey.Cosmodynamics
 {
+    /// <summary>
+    /// Базовый тип для кеплеровых орбит.
+    /// </summary>
+    /// <remarks>В качестве единицы времени используются сутки, так как в астрономии для счёта времени используются юлианские даты, 
+    /// единицей измерения которых служат сутки. Поэтому все константы и значения параметров (в первую очередь, гравитационные 
+    /// параметры) должны быть приведены к суткам, а не к секундам.</remarks>
     public abstract class KeplerOrbit
     {
         /// <summary>
@@ -30,6 +36,11 @@ namespace SpaceOdyssey.Cosmodynamics
         protected double _vp;
 
         protected double _t0;
+
+        private double  _inclination;
+        private double  _ascendingNode;
+        private double  _periapsisArgument;
+        private Matrix3 _pqr;
 
         /// <summary>
         /// Эксцентриситет.
@@ -72,7 +83,7 @@ namespace SpaceOdyssey.Cosmodynamics
         }
 
         /// <summary>
-        /// Среднее движение, угол / единица времени.
+        /// Среднее движение, радианы / сутки.
         /// </summary>
         public double N
         {
@@ -95,6 +106,41 @@ namespace SpaceOdyssey.Cosmodynamics
             get => _t0;
         }
 
+        /// <summary>
+        /// Наклонение между плоскостью эклиптики и плоскостью орбиты.
+        /// </summary>
+        /// <remarks>Если движение тела осуществляется по часовой стрелке (обратное движение), наклонение > +90°.</remarks>
+        public double Inclination
+        {
+            get => _inclination;
+        }
+
+        /// <summary>
+        /// Долгота восходящего узла – угол между направлением на точку весеннего равноденствия и направлением на восходящий узел 
+        /// орбиты.
+        /// </summary>
+        public double AscendingNode
+        {
+            get => _ascendingNode;
+        }
+
+        /// <summary>
+        /// Аргумент перигелия (периапсиса) – угол в плоскости орбиты между восходящим узлом и периапсисом.
+        /// </summary>
+        public double PeriapsisArgument
+        {
+            get => _periapsisArgument;
+        }
+
+        /// <summary>
+        /// Матрица поворота для преобразования координат из плоскости орбиты (перифокальная система) к эклиптической системе 
+        /// координат.
+        /// </summary>
+        public Matrix3 PQR
+        {
+            get => _pqr;
+        }
+
         #region Constructors
 
         protected KeplerOrbit (Mass center, Mass orbiting)
@@ -104,6 +150,11 @@ namespace SpaceOdyssey.Cosmodynamics
 
             _mu       = _center.GM + _orbiting.GM;
             _sqrtmu   = double.Sqrt (_mu);
+
+            _inclination       = 0.0;
+            _ascendingNode     = 0.0;
+            _periapsisArgument = 0.0;
+            _pqr               = new Matrix3 (0, 0, 0, 0, 0, 0, 0, 0, 0);
         }
 
         #endregion
@@ -121,6 +172,15 @@ namespace SpaceOdyssey.Cosmodynamics
         public virtual void SetPeriapsisTimeInJD (double t0)
         {
             _t0 = t0;
+        }
+
+        public void SetOrientation (double inclination, double ascendingNode, double periapsisArgument)
+        {
+            _inclination       = inclination;
+            _ascendingNode     = ascendingNode;
+            _periapsisArgument = periapsisArgument;
+
+            _pqr = Rotation3.GetRotationMatrix.Passive.EulerAngles.GetMatrix (-_periapsisArgument, -_inclination, -_ascendingNode);
         }
 
         #endregion
@@ -169,7 +229,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Вычисляет положение на орбите для момента времени t.
         /// </summary>
-        public abstract OrbitalPosition ComputePosition (double t);        
+        public abstract OrbitalPosition ComputePosition (double t);
 
         /// <summary>
         /// Возвращает среднюю аномалию для заданного момента времени t.

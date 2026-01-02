@@ -76,5 +76,10 @@ namespace SpaceOdyssey
         /// Астрономическая единица, в метрах.
         /// </summary>
         public const double AU = 149597870700.0;
+
+        /// <summary>
+        /// Скорость света в метрах / сутки.
+        /// </summary>
+        public const double LightSpeed_MD = PhysConst.LightSpeed * AstroConst.Time.SecInDay;
     }
 }

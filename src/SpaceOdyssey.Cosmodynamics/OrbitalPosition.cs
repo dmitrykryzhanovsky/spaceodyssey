@@ -7,8 +7,9 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public partial struct OrbitalPosition
     {
-        private readonly double _t;
+        private readonly KeplerOrbit _orbit;
 
+        private readonly double _t;
         private readonly double _M;
         private readonly double _E;
 
@@ -17,8 +18,6 @@ namespace SpaceOdyssey.Cosmodynamics
         private Vector3 _positionCartesian;
         private Polar3  _positionPolar;
         private Vector3 _velocity;
-
-        private KeplerOrbit _orbit;
 
         /// <summary>
         /// Момент времени, соответствующий данному положению на орбите.
@@ -60,12 +59,7 @@ namespace SpaceOdyssey.Cosmodynamics
         /// </summary>
         public Vector3 PositionCartesian
         {
-            get
-            {
-                if (_positionCartesian == null) ComputePositionCartesian ();
-
-                return _positionCartesian;
-            }
+            get => _positionCartesian;
         }
 
         /// <summary>
@@ -258,27 +252,26 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
-        public OrbitalPosition (double t, double M, double E,
-                                double x, double y, double r, double trueAnomaly,
-                                double vx, double vy,
-                                KeplerOrbit orbit)
+        public OrbitalPosition (KeplerOrbit orbit, 
+                                double t,  double M, double E,
+                                double x,  double y, double r, double trueAnomaly,
+                                double vx, double vy)
         {
-            _t = t;
+            _orbit = orbit;
 
-            _M = M;
-            _E = E;
+            _t     = t;
+            _M     = M;
+            _E     = E;
 
             _planar.Coordinates = new PlanarPosition.PlanarCoordinates (x, y, r, trueAnomaly);
             _planar.Velocity    = new PlanarPosition.PlanarVelocity (vx, vy);
 
             _positionCartesian  = null;
             _positionPolar      = null;
-            _velocity           = null;
-
-            _orbit = orbit;
+            _velocity           = null;            
         }
 
-        private void ComputePositionCartesian ()
+        public void ComputePositionCartesian ()
         {
             _positionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.X,
                                                                                   _planar.Coordinates.Y, 

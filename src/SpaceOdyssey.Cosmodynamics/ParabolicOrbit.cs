@@ -107,7 +107,7 @@ namespace SpaceOdyssey.Cosmodynamics
             double vx    = speed * cosBeta;
             double vy    = speed * sinBeta;
 
-            return new OrbitalPosition (t, M, tgv2, x, y, r, trueAnomaly, vx, vy, this);
+            return new OrbitalPosition (this, t, M, tgv2, x, y, r, trueAnomaly, vx, vy);
         }
     }
 }

@@ -338,7 +338,7 @@
             double vx = -_auxsqrth * sinE / eccentric;
             double vy =  _auxsqrtmu1me2a * cosE / eccentric;
 
-            return new OrbitalPosition (t, M, E, x, y, r, trueAnomaly, vx, vy, this);
+            return new OrbitalPosition (this, t, M, E, x, y, r, trueAnomaly, vx, vy);
         }
 
         //public OrbitalPosition ComputePositionNearParabolic (double t)

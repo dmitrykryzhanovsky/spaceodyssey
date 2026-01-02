@@ -284,6 +284,13 @@
             return jdn + dayFraction - 0.5;
         }
 
+        public static double GetJD (DateTime dateTime)
+        {
+            return GetJD (dateTime.Year, dateTime.Month, dateTime.Day, 
+                          dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond);
+            //TODO: добавить тесты и часовые пояса
+        }
+
         #endregion
 
         #region Юлианская дата → Календарная дата и момент времени в сутках

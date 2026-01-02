@@ -1,4 +1,6 @@
-﻿namespace SpaceOdyssey
+﻿using Archimedes;
+
+namespace SpaceOdyssey
 {
     /// <summary>
     /// Астрономические константы.
@@ -8,49 +10,66 @@
         public static class Time
         {
             /// <summary>
+            /// Количество часов в сутках.
+            /// </summary>
+            public const int HourInDay = 24;
+
+            /// <summary>
             /// Количество минут в часе.
             /// </summary>
-            public const int MIN_IN_HOUR = 60;
+            public const int MinInHour = MathConst.AngularTimeConversions.MinInUnit;
 
             /// <summary>
             /// Количество секунд в минуте.
             /// </summary>
-            public const int SEC_IN_MIN = 60;
+            public const int SecInMin = MathConst.AngularTimeConversions.SecInMin;
 
             /// <summary>
-            /// Количество миллисекунд в секунде.
+            /// Количество секунд в часе.
             /// </summary>
-            public const int MILLISEC_IN_SEC = 1000;
+            public const int SecInHour = MathConst.AngularTimeConversions.SecInUnit;
 
             /// <summary>
             /// Количество секунд в сутках.
             /// </summary>
-            public const double SEC_IN_DAY = 86400.0;
+            public const double SecInDay = SecInMin * MinInHour * HourInDay;
 
             /// <summary>
             /// Количество секунд в сутках в квадрате.
             /// </summary>
-            public const double SEC_IN_DAY_SQR = SEC_IN_DAY * SEC_IN_DAY;
+            public const double SecInDaySquare = SecInDay * SecInDay;
 
             /// <summary>
-            /// Количество секунд в 1 периоде вращения Земли вокруг своей оси = 23 ч 56 мин 4,091 с.
+            /// Количество миллисекунд в секунде.
             /// </summary>
-            public const double SEC_IN_EARTHROTATION = 86164.091;
-
-            /// <summary>
-            /// Количество оборотов Земли вокруг своей оси в 1 сутках.
-            /// </summary>
-            public const double EARTHROTATION_IN_DAY = SEC_IN_DAY / SEC_IN_EARTHROTATION;
+            public const int MillisecInSec = MathConst.AngularTimeConversions.MillisecInSec;
 
             /// <summary>
             /// Количество миллисекунд в сутках.
             /// </summary>
-            public const double MILLISEC_IN_DAY = 86400000.0;
+            public const double MillisecInDay = MillisecInSec * SecInDay;
+
+            /// <summary>
+            /// Период вращения Земли вокруг своей оси = 23 ч 56 мин 4,091 с.
+            /// </summary>
+            private static readonly double [] EarthRotationPeriodComponents = new double [] { 23.0, 56.0, 4.091 };
+
+            /// <summary>
+            /// Количество секунд в 1 периоде вращения Земли вокруг своей оси = 23 ч 56 мин 4,091 с.
+            /// </summary>
+            public static readonly double SecInEarthRotation = EarthRotationPeriodComponents [0] * SecInHour + 
+                                                               EarthRotationPeriodComponents [1] * SecInMin + 
+                                                               EarthRotationPeriodComponents [2];
+
+            /// <summary>
+            /// Количество оборотов Земли вокруг своей оси в 1 сутках.
+            /// </summary>
+            public static readonly double EarthRotationInDay = SecInDay / SecInEarthRotation;
 
             /// <summary>
             /// Количество суток в юлианском столетии.
             /// </summary>
-            public const double JULIAN_CENTURIES = 36525.0;
+            public const double JulianCentury = 36525.0;
         }
 
         /// <summary>

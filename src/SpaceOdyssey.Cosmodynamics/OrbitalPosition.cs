@@ -14,8 +14,9 @@ namespace SpaceOdyssey.Cosmodynamics
 
         private readonly PlanarPosition _planar;
 
-        private Vector3 _spatialPositionCartesian;
-        private Polar3  _spatialPositionPolar;
+        private Vector3 _positionCartesian;
+        private Polar3  _positionPolar;
+        private Vector3 _velocity;
 
         private KeplerOrbit _orbit;
 
@@ -57,17 +58,30 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Положение небесного тела в пространстве (декартовы координаты).
         /// </summary>
-        public Vector3 SpatialPositionCartesian
+        public Vector3 PositionCartesian
         {
-            get => _spatialPositionCartesian;
+            get
+            {
+                if (_positionCartesian == null) ComputePositionCartesian ();
+
+                return _positionCartesian;
+            }
         }
 
         /// <summary>
         /// Положение небесного тела в пространстве (полярные координаты).
         /// </summary>
-        public Polar3 SpatialPositionPolar
+        public Polar3 PositionPolar
         {
-            get => _spatialPositionPolar;
+            get => _positionPolar;
+        }
+
+        /// <summary>
+        /// Вектор скорости небесного тела в пространстве.
+        /// </summary>
+        public Vector3 Velocity
+        {
+            get => _velocity;
         }
 
         #region Nested types
@@ -257,21 +271,32 @@ namespace SpaceOdyssey.Cosmodynamics
             _planar.Coordinates = new PlanarPosition.PlanarCoordinates (x, y, r, trueAnomaly);
             _planar.Velocity    = new PlanarPosition.PlanarVelocity (vx, vy);
 
-            _spatialPositionCartesian = null;
-            _spatialPositionPolar     = null;
+            _positionCartesian  = null;
+            _positionPolar      = null;
+            _velocity           = null;
 
             _orbit = orbit;
         }
 
-        /// <summary>
-        /// Вычисление пространственного положения по известным элементам орбиты и положению в плоскости орбиты.
-        /// </summary>
-        public void ComputeSpatialPosition ()
+        private void ComputePositionCartesian ()
         {
-            _spatialPositionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.Cartesian.X, 
-                                                                                         _planar.Coordinates.Cartesian.Y, 
-                                                                                         0.0));
-            _spatialPositionPolar     = _spatialPositionCartesian.GetPolar ();
+            _positionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.X,
+                                                                                  _planar.Coordinates.Y, 
+                                                                                  0.0));
         }
+
+        ///// <summary>
+        ///// Вычисление пространственного положения по известным элементам орбиты и положению в плоскости орбиты.
+        ///// </summary>
+        //public void ComputeSpatialPosition ()
+        //{
+        //    _positionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.X, 
+        //                                                                          _planar.Coordinates.Y, 
+        //                                                                          0.0));
+        //    _positionPolar     = _positionCartesian.GetPolar ();
+        //    _velocity          = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Velocity.VX,
+        //                                                                          _planar.Velocity.VY,
+        //                                                                          0.0));
+        //}
     }
 }

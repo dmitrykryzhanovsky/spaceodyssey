@@ -13,7 +13,7 @@
             /// Гауссова гравитационная постоянная.
             /// </summary>
             /// <remarks>Квадратный корень локальной гравитационной постоянной, связанной с Солнцем, выраженный в единицах (а.е., сутки))</remarks>
-            public const double GaussianSqrtGM = 0.01720209895;
+            public const double SqrtGM_Gaussian = 0.01720209895;
         }
 
         public static class Earth
@@ -37,7 +37,7 @@
         /// </summary>
         public static double ConvertSIToMetreDay (double x)
         {
-            return x * AstroConst.Time.SEC_IN_DAY_SQR;
+            return x * AstroConst.Time.SecInDaySquare;
         }
     }
 }

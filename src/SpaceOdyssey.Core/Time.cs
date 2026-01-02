@@ -189,7 +189,7 @@
         /// </summary>
         public static double GetDayFraction (int hour, int min, double sec)
         {
-            return (sec + AstroConst.Time.SEC_IN_MIN * (min + AstroConst.Time.MIN_IN_HOUR * hour)) / AstroConst.Time.SEC_IN_DAY;
+            return (sec + AstroConst.Time.SecInMin * (min + AstroConst.Time.MinInHour * hour)) / AstroConst.Time.SecInDay;
         }
 
         /// <summary>
@@ -197,9 +197,9 @@
         /// </summary>
         public static double GetDayFraction (int hour, int min, int sec, int millisec)
         {
-            return (double)(millisec + AstroConst.Time.MILLISEC_IN_SEC * 
-                            (sec + AstroConst.Time.SEC_IN_MIN * 
-                             (min + AstroConst.Time.MIN_IN_HOUR * hour))) / AstroConst.Time.MILLISEC_IN_DAY;
+            return (double)(millisec + AstroConst.Time.MillisecInSec * 
+                            (sec + AstroConst.Time.SecInMin * 
+                             (min + AstroConst.Time.MinInHour * hour))) / AstroConst.Time.MillisecInDay;
         }
 
         #endregion
@@ -212,11 +212,11 @@
         /// </summary>
         public static (int hour, int min, double sec) GetTimeComponents (double dayFraction)
         {
-            double totalSecF   = dayFraction * AstroConst.Time.SEC_IN_DAY;
+            double totalSecF   = dayFraction * AstroConst.Time.SecInDay;
             int    totalSecInt = (int)totalSecF;
 
-            (int totalMin, int secInt) = int.DivRem (totalSecInt, AstroConst.Time.SEC_IN_MIN);
-            (int hour, int min) = int.DivRem (totalMin, AstroConst.Time.MIN_IN_HOUR);
+            (int totalMin, int secInt) = int.DivRem (totalSecInt, AstroConst.Time.SecInMin);
+            (int hour, int min) = int.DivRem (totalMin, AstroConst.Time.MinInHour);
 
             double sec = secInt + (totalSecF - totalSecInt);
 
@@ -364,7 +364,7 @@
         /// </remarks>
         public static double GetJulianCentirues (double t, double t0 = Time.J2000)
         {
-            return (t - t0) / AstroConst.Time.JULIAN_CENTURIES;
+            return (t - t0) / AstroConst.Time.JulianCentury;
         }
     }
 }

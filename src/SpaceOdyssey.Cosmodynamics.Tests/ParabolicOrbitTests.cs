@@ -203,7 +203,7 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void ComputePositionTest ()
         {
-            Mass   center   = Mass.CreateBySqrtGM (Astrodata.Sun.GaussianSqrtGM);
+            Mass   center   = Mass.CreateBySqrtGM (Astrodata.Sun.SqrtGM_Gaussian);
             Mass   orbiting = Mass.ZeroMass;
             double rp       = 1.38;
             double t0       = 2460670.5;

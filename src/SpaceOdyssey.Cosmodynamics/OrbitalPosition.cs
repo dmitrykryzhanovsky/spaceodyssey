@@ -15,9 +15,9 @@ namespace SpaceOdyssey.Cosmodynamics
 
         private readonly PlanarPosition _planar;
 
-        private Vector3 _positionCartesian;
-        private Polar3  _positionPolar;
-        private Vector3 _velocity;
+        private Vector3 _spatialPositionCartesian;
+        private Polar3  _spatialPositionPolar;
+        private Vector3 _spatialVelocity;
 
         /// <summary>
         /// Момент времени, соответствующий данному положению на орбите.
@@ -57,25 +57,25 @@ namespace SpaceOdyssey.Cosmodynamics
         /// <summary>
         /// Положение небесного тела в пространстве (декартовы координаты).
         /// </summary>
-        public Vector3 PositionCartesian
+        public Vector3 SpatialPositionCartesian
         {
-            get => _positionCartesian;
+            get => _spatialPositionCartesian;
         }
 
         /// <summary>
         /// Положение небесного тела в пространстве (полярные координаты).
         /// </summary>
-        public Polar3 PositionPolar
+        public Polar3 SpatialPositionPolar
         {
-            get => _positionPolar;
+            get => _spatialPositionPolar;
         }
 
         /// <summary>
         /// Вектор скорости небесного тела в пространстве.
         /// </summary>
-        public Vector3 Velocity
+        public Vector3 SpatialVelocity
         {
-            get => _velocity;
+            get => _spatialVelocity;
         }
 
         #region Nested types
@@ -266,30 +266,28 @@ namespace SpaceOdyssey.Cosmodynamics
             _planar.Coordinates = new PlanarPosition.PlanarCoordinates (x, y, r, trueAnomaly);
             _planar.Velocity    = new PlanarPosition.PlanarVelocity (vx, vy);
 
-            _positionCartesian  = null;
-            _positionPolar      = null;
-            _velocity           = null;            
+            _spatialPositionCartesian  = null;
+            _spatialPositionPolar      = null;
+            _spatialVelocity           = null;            
         }
 
-        public void ComputePositionCartesian ()
+        public void ComputeSpatialPositionCartesian ()
         {
-            _positionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.X,
-                                                                                  _planar.Coordinates.Y, 
-                                                                                  0.0));
+            _spatialPositionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.X,
+                                                                                         _planar.Coordinates.Y, 
+                                                                                         0.0));
         }
 
-        ///// <summary>
-        ///// Вычисление пространственного положения по известным элементам орбиты и положению в плоскости орбиты.
-        ///// </summary>
-        //public void ComputeSpatialPosition ()
-        //{
-        //    _positionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.X, 
-        //                                                                          _planar.Coordinates.Y, 
-        //                                                                          0.0));
-        //    _positionPolar     = _positionCartesian.GetPolar ();
-        //    _velocity          = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Velocity.VX,
-        //                                                                          _planar.Velocity.VY,
-        //                                                                          0.0));
-        //}
+        public void ComputePositionPolar ()
+        {
+            _spatialPositionPolar = _spatialPositionCartesian.GetPolar ();
+        }
+
+        public void ComputeSpatialVelocity ()
+        {
+            _spatialVelocity = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Velocity.VX,
+                                                                                _planar.Velocity.VY,
+                                                                                0.0));
+        }
     }
 }

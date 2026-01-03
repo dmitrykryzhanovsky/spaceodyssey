@@ -9,10 +9,10 @@ namespace SpaceOdyssey.Cosmodynamics
             OrbitalPosition oBgein = observer.ComputePosition (t0);
             OrbitalPosition sBegin = sattelite.ComputePosition (t0);
             
-            oBgein.ComputePositionCartesian ();
-            sBegin.ComputePositionCartesian ();
+            oBgein.ComputeSpatialPositionCartesian ();
+            sBegin.ComputeSpatialPositionCartesian ();
 
-            double dBegin = Space3.Distance (oBgein.PositionCartesian, sBegin.PositionCartesian);
+            double dBegin = Space3.Distance (oBgein.SpatialPositionCartesian, sBegin.SpatialPositionCartesian);
             double e      = 2.0 * dBegin / AstroConst.LightSpeed_MD;
             double t1     = t0 - e;            
 
@@ -22,10 +22,10 @@ namespace SpaceOdyssey.Cosmodynamics
                 OrbitalPosition o = observer.ComputePosition (t);
                 OrbitalPosition s = sattelite.ComputePosition (t);
 
-                o.ComputePositionCartesian ();
-                s.ComputePositionCartesian ();
+                o.ComputeSpatialPositionCartesian ();
+                s.ComputeSpatialPositionCartesian ();
 
-                double d = Space3.Distance (o.PositionCartesian, s.PositionCartesian);
+                double d = Space3.Distance (o.SpatialPositionCartesian, s.SpatialPositionCartesian);
                 double f = AstroConst.LightSpeed_MD * (t0 - t) - d;
 
                 if (f > 0.0) t1 = t;

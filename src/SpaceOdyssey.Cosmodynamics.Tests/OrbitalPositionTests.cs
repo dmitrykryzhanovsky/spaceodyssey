@@ -7,33 +7,40 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
     [TestClass ()]
     public class OrbitalPositionTests
     {
-        //TODO: довести тест до ума, когда доделаю матрицы поворота. Предвычислить его вручную.
-        //[TestMethod ()]
-        //public void ComputeSpatialPositionTest_Mars_2026Jan01_1745UTCp3 ()
-        //{
-        //    double JD = Time.GetJD (2026, 1, 1, 14, 45, 0, 0);
+        [TestMethod ()]
+        public void ComputeSpatialTest ()
+        {
+            Mass   center   = Mass.CreateByGM (Astrodata.ConvertSIToMetreDay (Astrodata.Sun.GM_SI));
+            Mass   orbiting = Mass.CreateByGM (Astrodata.ConvertSIToMetreDay (Astrodata.Mars.GM_SI));
+            double e        = 0.09341233;
+            double a        = 227936637242;
 
-        //    Mass   center   = Mass.CreateByGM (Astrodata.ConvertSIToMetreDay (Astrodata.Sun.GM_SI));
-        //    Mass   orbiting = Mass.CreateByGM (Astrodata.ConvertSIToMetreDay (Astrodata.Mars.GM_SI));
-        //    double e        = 0.09341233;
-        //    double a        = 227936637242;
+            EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
 
-        //    EllipticOrbit orbit = EllipticOrbit.CreateBySemiMajorAxis (center, orbiting, e, a);
+            orbit.SetMeanAnomalyForJ2000 (19.41248 * MathConst.AngularTimeConversions.DegToRad);
+            orbit.SetOrientation (  1.85061 * MathConst.AngularTimeConversions.DegToRad,
+                                   49.57854 * MathConst.AngularTimeConversions.DegToRad,
+                                  286.46230 * MathConst.AngularTimeConversions.DegToRad);
 
-        //    orbit.SetMeanAnomalyForJ2000 (19.41248 * MathConst.AngularTimeConversions.DegToRad);
-        //    orbit.SetOrientation (  1.85061 * MathConst.AngularTimeConversions.DegToRad,
-        //                           49.57854 * MathConst.AngularTimeConversions.DegToRad,
-        //                          286.46230 * MathConst.AngularTimeConversions.DegToRad);
+            OrbitalPosition o = new OrbitalPosition (orbit, orbit.T0, 0.0, 0.0, orbit.RP, 0.0, orbit.RP, 0.0, 0.0, orbit.VP);
+                
+            o.ComputeSpatialPositionCartesian ();
+            o.ComputeSpatialPositionPolar ();
+            o.ComputeSpatialVelocity ();
 
-        //    OrbitalPosition o = orbit.ComputePosition (JD);
-        //    o.ComputeSpatialPosition ();
+            Vector3 r = o.SpatialPositionCartesian;
+            Polar3  p = o.SpatialPositionPolar;
+            Vector3 v = o.SpatialVelocity;
 
-        //    Vector3 v = o.PositionCartesian;
-        //    Polar3  p = o.PositionPolar;
-
-        //    Assert.AreEqual (213633000000, p.R, 1.0e+9);
-        //    Assert.AreEqual (-0.8894, p.Lat * MathConst.AngularTimeConversions.RadToDeg, 1.0e-1);
-        //    Assert.AreEqual (282.8142, p.Long * MathConst.AngularTimeConversions.RadToDeg, 2.0);
-        //}
+            Assert.AreEqual (188760358218.843, r.X, 1.0e-3);
+            Assert.AreEqual (-83848306113.064, r.Y, 1.0e-3);
+            Assert.AreEqual ( -6399738234.4366, r.Z, 1.0e-3);
+            Assert.AreEqual (206644544864.86, p.R, 1.0e-3);            
+            Assert.AreEqual (-0.0309747431675642, p.Lat, 1.0e-16);
+            Assert.AreEqual (-0.418024412872058, p.Long, 1.0e-15);
+            Assert.AreEqual (930009339.234916, v.X, 1.0e-5);
+            Assert.AreEqual (2092049459.77599, v.Y, 1.0e-5);
+            Assert.AreEqual (20952812.2827448, v.Z, 1.0e-7);
+        }
     }
 }

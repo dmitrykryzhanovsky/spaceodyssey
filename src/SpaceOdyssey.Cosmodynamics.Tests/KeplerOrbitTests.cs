@@ -21,9 +21,9 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
             orbit.SetOrientation (-double.Pi / 3.0, -2.0 * double.Pi / 3.0, -double.Pi / 6.0);
 
             double  t = double.Sqrt (3.0);
-            Matrix3 expectedPQR = new Matrix3 (-0.375 * t,  0.625,     0.25 * t,
-                                               -0.125,     -0.375 * t, 0.75,
-                                                0.75,       0.25 * t,  0.5);
+            Matrix3 expectedPQR = new Matrix3 (-0.375 * t,  0.125,      0.75,
+                                               -0.625,     -0.375 * t, -0.25 * t,
+                                                0.25 * t,  -0.75,       0.5);
 
             Assert.AreEqual (-double.Pi / 3.0, orbit.Inclination);
             Assert.AreEqual (-2.0 * double.Pi / 3.0, orbit.AscendingNode);

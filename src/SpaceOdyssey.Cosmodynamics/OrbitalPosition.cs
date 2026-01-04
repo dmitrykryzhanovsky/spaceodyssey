@@ -271,6 +271,9 @@ namespace SpaceOdyssey.Cosmodynamics
             _spatialVelocity           = null;            
         }
 
+        /// <summary>
+        /// Рассчитать положение небесного тела в пространстве (декартовы координаты).
+        /// </summary>
         public void ComputeSpatialPositionCartesian ()
         {
             _spatialPositionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.X,
@@ -278,11 +281,19 @@ namespace SpaceOdyssey.Cosmodynamics
                                                                                          0.0));
         }
 
-        public void ComputePositionPolar ()
+        /// <summary>
+        /// Рассчитать положение небесного тела в пространстве (полярные координаты).
+        /// </summary>
+        /// <remarks>Этот метод можно вызывать только если ранее был вызван метод <see cref="ComputeSpatialPositionCartesian"/>, 
+        /// так как вычисление полярных координат реализовано через преобразование ранее вычисленных декартовых координат.</remarks>
+        public void ComputeSpatialPositionPolar ()
         {
             _spatialPositionPolar = _spatialPositionCartesian.GetPolar ();
         }
 
+        /// <summary>
+        /// Рассчитать вектор скорости небесного тела в пространстве.
+        /// </summary>
         public void ComputeSpatialVelocity ()
         {
             _spatialVelocity = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Velocity.VX,

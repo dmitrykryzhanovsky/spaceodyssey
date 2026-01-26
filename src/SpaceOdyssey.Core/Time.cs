@@ -284,11 +284,16 @@
             return jdn + dayFraction - 0.5;
         }
 
+        /// <summary>
+        /// Возвращает юлианскую дату для момента времени, заданного типом DateTime, с учётом установленного в объекте dateTime 
+        /// часового пояса.
+        /// </summary>
         public static double GetJD (DateTime dateTime)
         {
-            return GetJD (dateTime.Year, dateTime.Month, dateTime.Day, 
-                          dateTime.Hour, dateTime.Minute, dateTime.Second, dateTime.Millisecond);
-            //TODO: добавить тесты и часовые пояса
+            DateTime utc = dateTime.ToUniversalTime ();
+
+            return GetJD (utc.Year, utc.Month, utc.Day, 
+                          utc.Hour, utc.Minute, utc.Second, utc.Millisecond);
         }
 
         #endregion

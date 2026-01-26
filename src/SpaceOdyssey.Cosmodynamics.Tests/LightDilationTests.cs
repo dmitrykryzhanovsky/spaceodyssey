@@ -25,10 +25,10 @@ namespace SpaceOdyssey.Cosmodynamics.Tests
         [TestMethod ()]
         public void ComputeDilatedPositionTest ()
         {
-            Polar3 marsP = new Polar3 (r: 360322000000,
+            Polar3 marsP   = new Polar3 (r: 360322000000,
                                          latitude: Trigonometry.DegToRad (-0.91033333333333333),
                                          longitude: Trigonometry.DegToRad (285.04088888888888889));
-            Vector3 marsC = marsP.GetCartesian ();
+            Vector3 marsC  = marsP.GetCartesian ();
             Vector3 earthC = Vector3.Origin;
 
             double actual = LightDilation.ComputeLightDilation (earthC, marsC, PhysConst.LightSpeed);

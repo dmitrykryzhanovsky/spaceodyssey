@@ -916,6 +916,18 @@ namespace SpaceOdyssey.Tests
         }
 
         [TestMethod ()]
+        public void GetJDTest_DateTime_UTC3 ()
+        {
+            DateTime dateTime = new DateTime (2026, 1, 26, 14, 0, 0);
+
+            double expected = 2461066.9583333335;
+
+            double actual = Time.GetJD (dateTime);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
         public void GetDateComponentsTest_General_LastPregregorianDayInJulian_Midnight ()
         {
             double jd = 2299159.5;

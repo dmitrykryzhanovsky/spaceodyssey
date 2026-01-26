@@ -114,7 +114,7 @@
             double vx = -_auxsqrth * shH / eccentric;
             double vy =  _auxsqrtmue2m1a * chH / eccentric;
 
-            return new OrbitalPosition (t, M, H, x, y, r, trueAnomaly, vx, vy, this);
+            return new OrbitalPosition (this, t, M, H, x, y, r, trueAnomaly, vx, vy);
         }
     }
 }

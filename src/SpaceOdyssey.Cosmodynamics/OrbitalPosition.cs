@@ -7,8 +7,9 @@ namespace SpaceOdyssey.Cosmodynamics
     /// </summary>
     public partial struct OrbitalPosition
     {
-        private readonly double _t;
+        private readonly KeplerOrbit _orbit;
 
+        private readonly double _t;
         private readonly double _M;
         private readonly double _E;
 
@@ -16,8 +17,7 @@ namespace SpaceOdyssey.Cosmodynamics
 
         private Vector3 _spatialPositionCartesian;
         private Polar3  _spatialPositionPolar;
-
-        private KeplerOrbit _orbit;
+        private Vector3 _spatialVelocity;
 
         /// <summary>
         /// Момент времени, соответствующий данному положению на орбите.
@@ -68,6 +68,14 @@ namespace SpaceOdyssey.Cosmodynamics
         public Polar3 SpatialPositionPolar
         {
             get => _spatialPositionPolar;
+        }
+
+        /// <summary>
+        /// Вектор скорости небесного тела в пространстве.
+        /// </summary>
+        public Vector3 SpatialVelocity
+        {
+            get => _spatialVelocity;
         }
 
         #region Nested types
@@ -244,34 +252,53 @@ namespace SpaceOdyssey.Cosmodynamics
 
         #endregion
 
-        public OrbitalPosition (double t, double M, double E,
-                                double x, double y, double r, double trueAnomaly,
-                                double vx, double vy,
-                                KeplerOrbit orbit)
+        public OrbitalPosition (KeplerOrbit orbit, 
+                                double t,  double M, double E,
+                                double x,  double y, double r, double trueAnomaly,
+                                double vx, double vy)
         {
-            _t = t;
+            _orbit = orbit;
 
-            _M = M;
-            _E = E;
+            _t     = t;
+            _M     = M;
+            _E     = E;
 
             _planar.Coordinates = new PlanarPosition.PlanarCoordinates (x, y, r, trueAnomaly);
             _planar.Velocity    = new PlanarPosition.PlanarVelocity (vx, vy);
 
-            _spatialPositionCartesian = null;
-            _spatialPositionPolar     = null;
-
-            _orbit = orbit;
+            _spatialPositionCartesian  = null;
+            _spatialPositionPolar      = null;
+            _spatialVelocity           = null;            
         }
 
         /// <summary>
-        /// Вычисление пространственного положения по известным элементам орбиты и положению в плоскости орбиты.
+        /// Рассчитать положение небесного тела в пространстве (декартовы координаты).
         /// </summary>
-        public void ComputeSpatialPosition ()
+        public void ComputeSpatialPositionCartesian ()
         {
-            _spatialPositionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.Cartesian.X, 
-                                                                                         _planar.Coordinates.Cartesian.Y, 
+            _spatialPositionCartesian = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Coordinates.X,
+                                                                                         _planar.Coordinates.Y, 
                                                                                          0.0));
-            _spatialPositionPolar     = _spatialPositionCartesian.GetPolar ();
+        }
+
+        /// <summary>
+        /// Рассчитать положение небесного тела в пространстве (полярные координаты).
+        /// </summary>
+        /// <remarks>Этот метод можно вызывать только если ранее был вызван метод <see cref="ComputeSpatialPositionCartesian"/>, 
+        /// так как вычисление полярных координат реализовано через преобразование ранее вычисленных декартовых координат.</remarks>
+        public void ComputeSpatialPositionPolar ()
+        {
+            _spatialPositionPolar = _spatialPositionCartesian.GetPolar ();
+        }
+
+        /// <summary>
+        /// Рассчитать вектор скорости небесного тела в пространстве.
+        /// </summary>
+        public void ComputeSpatialVelocity ()
+        {
+            _spatialVelocity = Rotation3.Apply.Rotate (_orbit.PQR, new Vector3 (_planar.Velocity.VX,
+                                                                                _planar.Velocity.VY,
+                                                                                0.0));
         }
     }
 }

@@ -20,7 +20,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="EarthAxialTilt.cs" />
     <Compile Remove="EarthPrecession.cs" />
     <Compile Remove="Location.cs" />
     <Compile Remove="SiderealTime.cs" />

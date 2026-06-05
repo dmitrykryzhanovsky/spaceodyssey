@@ -78,12 +78,12 @@ namespace SpaceOdyssey
             {
                 public static double VernalEquinox (double T0, double dT)
                 {
-                    return Function.Series_13 (T0, dT, ArcsecondSeriesForPrecession_VernalEquinox);
+                    return Series.SeriesXY13 (T0, dT, ArcsecondSeriesForPrecession_VernalEquinox);
                 }
 
                 public static double Nutation (double T0, double dT)
                 {
-                    return Function.Series_13 (T0, dT, ArcsecondSeriesForPrecession_Nutation);
+                    return Series.SeriesXY13 (T0, dT, ArcsecondSeriesForPrecession_Nutation);
                 }
 
                 public static double InLongitude (double T0, double dT)
@@ -137,13 +137,6 @@ namespace SpaceOdyssey
                 (double declination, double rightAscension) = ComputeNewAngles (p, eulerAngles);
 
                 return Polar3.InitDirect (p.R, declination, rightAscension);
-            }
-
-            public static UnitPolar3 UpdateCoordinates (UnitPolar3 p, EulerAngles eulerAngles)
-            {
-                (double declination, double rightAscension) = ComputeNewAngles (p, eulerAngles);
-
-                return UnitPolar3.InitDirect (declination, rightAscension);
             }
 
             private static (double declination, double rightAscension) ComputeNewAngles (Polar3 p, EulerAngles eulerAngles)

@@ -21,7 +21,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Remove="EarthPrecessionTests.cs" />
     <Compile Remove="SiderealTimeTests.cs" />
   </ItemGroup>
 

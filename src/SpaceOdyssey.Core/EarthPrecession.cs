@@ -18,9 +18,9 @@ namespace SpaceOdyssey
     ///     в результате прецессии.
     /// </para>
     /// <para>
-    ///     Методы VernalEquinox, Nutation и InLongitude в подклассе ReferenceAnglesInArcsec вычисляют углы, на которые сместилась 
+    ///     Методы VernalEquinox, Nutation и InLongitude в подклассе ComputeEulerAnglesInArcsec вычисляют углы, на которые сместилась 
     ///     система небесных координат в результате прецессии с момента времени T0 до момента времени T0 + dT. Подкласс 
-    ///     ReferenceAnglesJ2000InArcsec – это их аналоги для случая, когда T0 = 0, то есть соответствует моменту времени J2000. T0 
+    ///     ComputeEulerAnglesInArcsecJ2000 – это их аналоги для случая, когда T0 = 0, то есть соответствует моменту времени J2000. T0 
     ///     задаётся в юлианских столетиях от момента времени J2000, dT – тоже в юлианских столетиях от момента времени T0. 
     ///     Все эти шесть методов возвращают углы, выраженные в секундах.
     /// </para>
@@ -37,15 +37,15 @@ namespace SpaceOdyssey
     ///     углы применять нельзя.
     /// </para>
     /// <para>
-    ///     Методы EulerAnglesForPrecession и EulerAnglesForPrecessionJ2000 возвращают углы, вычисляемые на основе смещений системы 
-    ///     координат, которые уже непосредственно используются для определения новых координат. В случае эклиптических координат 
-    ///     (класс <see cref="Ecliptic"/>) это углы Эйлера, задающие поворот системы координат. Данные методы возвращают углы в 
-    ///     радианах.
+    ///     Методы GetEulerAnglesForPrecession и GetEulerAnglesForPrecessionJ2000 возвращают углы, вычисляемые на основе смещений 
+    ///     системы координат, которые уже непосредственно используются для определения новых координат. В случае эклиптических 
+    ///     координат (класс <see cref="Ecliptic"/>) это углы Эйлера, задающие поворот системы координат. Данные методы возвращают 
+    ///     углы в радианах.
     /// </para>
     /// <para>
     ///     Для вычисления новых координат нужно воспользоваться методом UpdateCoordinates. Вместо вычислений через углы Эйлера здесь 
     ///     используются прямые формулы, взятые из [Jean Meeuse. Astronomical algorithms. 2nd ed. Chapter 21]. Параметр eulerAngles – 
-    ///     это углы, возвращаемые методом EulerAnglesForPrecession. И входные параметры, и выходные результаты метода 
+    ///     это углы, возвращаемые методом GetEulerAnglesForPrecession. И входные параметры, и выходные результаты метода 
     ///     UpdateCoordinates выражены в радианах.
     /// </para>
     /// </remarks>
@@ -74,7 +74,7 @@ namespace SpaceOdyssey
                                                                                                               0.000411,
                                                                                                               0.000205 };
 
-            public static class ReferenceAnglesInArcsec
+            public static class ComputeEulerAnglesInArcsec
             {
                 public static double VernalEquinox (double T0, double dT)
                 {
@@ -93,7 +93,7 @@ namespace SpaceOdyssey
                 }
             }
 
-            public static class ReferenceAnglesJ2000InArcsec
+            public static class ComputeEulerAnglesInArcsecJ2000
             {
                 public static double VernalEquinox (double dT)
                 {
@@ -114,43 +114,44 @@ namespace SpaceOdyssey
                 }
             }
 
-            public static EulerAngles EulerAnglesForPrecession (double T0, double dT)
+            public static (double alpha, double beta, double gamma) GetEulerAnglesForPrecession (double T0, double dT)
             {
-                double vernalEquinox = ReferenceAnglesInArcsec.VernalEquinox (T0, dT);
+                double vernalEquinox = ComputeEulerAnglesInArcsec.VernalEquinox (T0, dT);
 
-                return new EulerAngles (alpha: Trigonometry.SecToRad (vernalEquinox), 
-                                        beta:  Trigonometry.SecToRad (ReferenceAnglesInArcsec.Nutation (T0, dT)), 
-                                        gamma: Trigonometry.SecToRad (vernalEquinox + ReferenceAnglesInArcsec.InLongitude (T0, dT)));
+                return (alpha: Trigonometry.SecToRad (vernalEquinox), 
+                        beta:  Trigonometry.SecToRad (ComputeEulerAnglesInArcsec.Nutation (T0, dT)), 
+                        gamma: Trigonometry.SecToRad (vernalEquinox + ComputeEulerAnglesInArcsec.InLongitude (T0, dT)));
             }
 
-            public static EulerAngles EulerAnglesForPrecessionJ2000 (double dT)
+            public static (double alpha, double beta, double gamma) GetEulerAnglesForPrecessionJ2000 (double dT)
             {
-                double vernalEquinox = ReferenceAnglesJ2000InArcsec.VernalEquinox (dT);
+                double vernalEquinox = ComputeEulerAnglesInArcsecJ2000.VernalEquinox (dT);
 
-                return new EulerAngles (alpha: Trigonometry.SecToRad (vernalEquinox), 
-                                        beta:  Trigonometry.SecToRad (ReferenceAnglesJ2000InArcsec.Nutation (dT)), 
-                                        gamma: Trigonometry.SecToRad (vernalEquinox + ReferenceAnglesJ2000InArcsec.InLongitude (dT)));
+                return (alpha: Trigonometry.SecToRad (vernalEquinox), 
+                        beta:  Trigonometry.SecToRad (ComputeEulerAnglesInArcsecJ2000.Nutation (dT)), 
+                        gamma: Trigonometry.SecToRad (vernalEquinox + ComputeEulerAnglesInArcsecJ2000.InLongitude (dT)));
             }
 
-            public static Polar3 UpdateCoordinates (Polar3 p, EulerAngles eulerAngles)
+            public static Polar3 UpdateCoordinates (Polar3 p, double alpha, double beta, double gamma)
             {
-                (double declination, double rightAscension) = ComputeNewAngles (p, eulerAngles);
+                (double declination, double rightAscension) = ComputeNewAngles (p, alpha, beta, gamma);
 
-                return Polar3.InitDirect (p.R, declination, rightAscension);
+                return Polar3.CreateUnsafe (p.R, declination, rightAscension);
             }
 
-            private static (double declination, double rightAscension) ComputeNewAngles (Polar3 p, EulerAngles eulerAngles)
+            private static (double declination, double rightAscension) ComputeNewAngles (Polar3 p, 
+                double alpha, double beta, double gamma)
             {
-                (double sinAlpha, double cosAlpha) = double.SinCos (p.Longitude + eulerAngles.Alpha);
-                (double sinBeta,  double cosBeta)  = double.SinCos (eulerAngles.Beta);
-                (double sinLat,   double cosLat)   = double.SinCos (p.Latitude);
+                (double sinAlpha, double cosAlpha) = double.SinCos (p.Long + alpha);
+                (double sinBeta,  double cosBeta)  = double.SinCos (beta);
+                (double sinLat,   double cosLat)   = double.SinCos (p.Lat);
 
                 double A = cosLat  * sinAlpha;
                 double B = cosBeta * cosLat * cosAlpha - sinBeta * sinLat;
                 double C = sinBeta * cosLat * cosAlpha + cosBeta * sinLat;
 
-                return (declination:    Trigonometry.AsinSmall (C),
-                        rightAscension: Trigonometry.Atan2Small (A, B) + eulerAngles.Gamma);
+                return (declination:    Trigonometry.AsinEpsilon (C),
+                        rightAscension: Trigonometry.Atan2Epsilon (A, B) + gamma);
             }
         }
 
@@ -180,25 +181,25 @@ namespace SpaceOdyssey
                                                                                                                -0.000042,
                                                                                                                -0.000006 };
 
-            public static class ReferenceAnglesInArcsec
+            public static class ComputeEulerAnglesInArcsec
             {
                 public static double VernalEquinox (double T0, double dT)
                 {
-                    return Function.Series_02 (T0, dT, ArcsecondSeriesForPrecession_VernalEquinox);
+                    return Series.SeriesXY02 (T0, dT, ArcsecondSeriesForPrecession_VernalEquinox);
                 }
 
                 public static double Nutation (double T0, double dT)
                 {
-                    return Function.Series_13 (T0, dT, ArcsecondSeriesForPrecession_Nutation);
+                    return Series.SeriesXY13 (T0, dT, ArcsecondSeriesForPrecession_Nutation);
                 }
 
                 public static double InLongitude (double T0, double dT)
                 {
-                    return Function.Series_13 (T0, dT, ArcsecondSeriesForPrecession_InLongitude);
+                    return Series.SeriesXY13 (T0, dT, ArcsecondSeriesForPrecession_InLongitude);
                 }
             }
 
-            public static class ReferenceAnglesJ2000InArcsec
+            public static class ComputeEulerAnglesInArcsecJ2000
             {
                 public static double VernalEquinox (double dT)
                 {
@@ -219,50 +220,43 @@ namespace SpaceOdyssey
                 }
             }
 
-            public static EulerAngles EulerAnglesForPrecession (double T0, double dT)
+            public static (double alpha, double beta, double gamma) GetEulerAnglesForPrecession (double T0, double dT)
             {
-                double vernalEquinox = ReferenceAnglesInArcsec.VernalEquinox (T0, dT);
+                double vernalEquinox = ComputeEulerAnglesInArcsec.VernalEquinox (T0, dT);
 
-                return new EulerAngles (alpha: Trigonometry.SecToRad (vernalEquinox),
-                                        beta:  Trigonometry.SecToRad (ReferenceAnglesInArcsec.Nutation (T0, dT)),
-                                        gamma: Trigonometry.SecToRad (-vernalEquinox - ReferenceAnglesInArcsec.InLongitude (T0, dT)));
+                return (alpha: Trigonometry.SecToRad (vernalEquinox),
+                        beta:  Trigonometry.SecToRad (ComputeEulerAnglesInArcsec.Nutation (T0, dT)),
+                        gamma: Trigonometry.SecToRad (-vernalEquinox - ComputeEulerAnglesInArcsec.InLongitude (T0, dT)));
             }
 
-            public static EulerAngles EulerAnglesForPrecessionJ2000 (double dT)
+            public static (double alpha, double beta, double gamma) GetEulerAnglesForPrecessionJ2000 (double dT)
             {
-                double vernalEquinox = ReferenceAnglesJ2000InArcsec.VernalEquinox (dT);
+                double vernalEquinox = ComputeEulerAnglesInArcsecJ2000.VernalEquinox (dT);
 
-                return new EulerAngles (alpha: Trigonometry.SecToRad (vernalEquinox),
-                                        beta:  Trigonometry.SecToRad (ReferenceAnglesJ2000InArcsec.Nutation (dT)),
-                                        gamma: Trigonometry.SecToRad (-vernalEquinox - ReferenceAnglesJ2000InArcsec.InLongitude (dT)));
+                return (alpha: Trigonometry.SecToRad (vernalEquinox),
+                        beta:  Trigonometry.SecToRad (ComputeEulerAnglesInArcsecJ2000.Nutation (dT)),
+                        gamma: Trigonometry.SecToRad (-vernalEquinox - ComputeEulerAnglesInArcsecJ2000.InLongitude (dT)));
             }
 
-            public static Polar3 UpdateCoordinates (Polar3 p, EulerAngles eulerAngles)
+            public static Polar3 UpdateCoordinates (Polar3 p, double alpha, double beta, double gamma)
             {
-                (double declination, double rightAscension) = ComputeNewAngles (p, eulerAngles);
+                (double latitude, double longitude) = ComputeNewAngles (p, alpha, beta, gamma);
 
-                return Polar3.InitDirect (p.R, declination, rightAscension);
+                return Polar3.CreateUnsafe (p.R, latitude, longitude);
             }
 
-            public static UnitPolar3 UpdateCoordinates (UnitPolar3 p, EulerAngles eulerAngles)
+            private static (double latitude, double longitude) ComputeNewAngles (Polar3 p, double alpha, double beta, double gamma)
             {
-                (double declination, double rightAscension) = ComputeNewAngles (p, eulerAngles);
-
-                return UnitPolar3.InitDirect (declination, rightAscension);
-            }
-
-            public static (double latitude, double longitude) ComputeNewAngles (Polar3 p, EulerAngles eulerAngles)
-            {
-                (double sinAlpha, double cosAlpha) = double.SinCos (eulerAngles.Alpha - p.Longitude);
-                (double sinBeta,  double cosBeta)  = double.SinCos (eulerAngles.Beta);
-                (double sinLat,   double cosLat)   = double.SinCos (p.Latitude);
+                (double sinAlpha, double cosAlpha) = double.SinCos (alpha - p.Long);
+                (double sinBeta,  double cosBeta)  = double.SinCos (beta);
+                (double sinLat,   double cosLat)   = double.SinCos (p.Lat);
 
                 double A = cosBeta * cosLat * sinAlpha - sinBeta * sinLat;                
                 double B = cosLat  * cosAlpha;
                 double C = sinBeta * cosLat * sinAlpha + cosBeta * sinLat;
 
-                return (latitude:   Trigonometry.AsinSmall (C),
-                        longitude: -eulerAngles.Gamma - Trigonometry.Atan2Small (A, B));
+                return (latitude:   Trigonometry.AsinEpsilon (C),
+                        longitude: -gamma - Trigonometry.Atan2Epsilon (A, B));
             }
         }
     }

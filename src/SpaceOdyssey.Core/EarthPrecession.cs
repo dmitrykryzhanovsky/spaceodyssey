@@ -160,12 +160,12 @@ namespace SpaceOdyssey
         /// </summary>
         public static class Ecliptic
         {
-            private static readonly double [] ArcsecondSeriesForPrecession_VernalEquinox = new double [] { 629554.982000,
-                                                                                                             3289.4789,
-                                                                                                                0.60622,
-                                                                                                             -869.8089,
-                                                                                                               -0.50491,
-                                                                                                                0.03536 };
+            private static readonly double [] ArcsecondSeriesForPrecession_VernalEquinox = new double [] {   5029.0966,
+                                                                                                                2.22226,
+                                                                                                               -0.000042,
+                                                                                                                1.11113,
+                                                                                                               -0.000042,
+                                                                                                               -0.000006 };            
 
             private static readonly double [] ArcsecondSeriesForPrecession_Nutation      = new double [] {     47.0029,
                                                                                                                -0.06603,
@@ -174,18 +174,18 @@ namespace SpaceOdyssey
                                                                                                                 0.000598,
                                                                                                                 0.00006 };
 
-            private static readonly double [] ArcsecondSeriesForPrecession_InLongitude   = new double [] {   5029.0966,
-                                                                                                                2.22226,
-                                                                                                               -0.000042,
-                                                                                                                1.11113,
-                                                                                                               -0.000042,
-                                                                                                               -0.000006 };
+            private static readonly double [] ArcsecondSeriesForPrecession_InLongitude   = new double [] { 629554.982000,
+                                                                                                             3289.4789,
+                                                                                                                0.60622,
+                                                                                                             -869.8089,
+                                                                                                               -0.50491,
+                                                                                                                0.03536 };
 
             public static class ComputeEulerAnglesInArcsec
             {
                 public static double VernalEquinox (double T0, double dT)
                 {
-                    return Series.SeriesXY02 (T0, dT, ArcsecondSeriesForPrecession_VernalEquinox);
+                    return Series.SeriesXY13 (T0, dT, ArcsecondSeriesForPrecession_VernalEquinox);
                 }
 
                 public static double Nutation (double T0, double dT)
@@ -195,7 +195,7 @@ namespace SpaceOdyssey
 
                 public static double InLongitude (double T0, double dT)
                 {
-                    return Series.SeriesXY13 (T0, dT, ArcsecondSeriesForPrecession_InLongitude);
+                    return Series.SeriesXY02 (T0, dT, ArcsecondSeriesForPrecession_InLongitude);
                 }
             }
 
@@ -203,8 +203,8 @@ namespace SpaceOdyssey
             {
                 public static double VernalEquinox (double dT)
                 {
-                    return dT * (dT * ArcsecondSeriesForPrecession_VernalEquinox [5] + ArcsecondSeriesForPrecession_VernalEquinox [3]) +
-                                 ArcsecondSeriesForPrecession_VernalEquinox [0];
+                    return dT * (dT * (dT * ArcsecondSeriesForPrecession_VernalEquinox [5] + ArcsecondSeriesForPrecession_VernalEquinox [3]) +
+                                 ArcsecondSeriesForPrecession_VernalEquinox [0]);
                 }
 
                 public static double Nutation (double dT)

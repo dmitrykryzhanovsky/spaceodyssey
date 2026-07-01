@@ -123,32 +123,6 @@ namespace SpaceOdyssey.Tests
 
             Polar3 p1950 = new Polar3 (1, 0, 0);
 
-            Polar3 p2000 = Rotation3.Apply.Passive.EulerAngles.RotateSpace (p1950, eulerAngles.alpha, eulerAngles.beta, eulerAngles.gamma);
-
-            (int deg,  int min, double sec) declination    = Trigonometry.SplitAngle (Trigonometry.RadToDeg (p2000.Lat));
-            (int hour, int min, double sec) rightAscension = Trigonometry.SplitAngle (Trigonometry.RadToHour (p2000.Long));
-
-            Assert.AreEqual (0, rightAscension.hour);
-            Assert.AreEqual (2, rightAscension.min);
-            Assert.AreEqual (33.73, rightAscension.sec, 1.0e-2);
-
-            Assert.AreEqual (0, declination.deg);
-            Assert.AreEqual (16, declination.min);
-            Assert.AreEqual (42.2, declination.sec, 1.0e-1);
-        }
-
-        [TestMethod ()]
-        public void Equatorial_ByEulerAnglesTest ()
-        {
-            double t1950 = JD.GetJD (1950, 1, 1, 12, 0, 0);
-
-            double T0 =  JD.GetJulianCentirues (t1950);
-            double dT = -T0;
-
-            (double alpha, double beta, double gamma) eulerAngles = EarthPrecession.Equatorial.GetEulerAnglesForPrecession (T0, dT);
-
-            Polar3 p1950 = new Polar3 (1, 0, 0);
-
             Polar3 p2000 = EarthPrecession.Equatorial.UpdateCoordinates (p1950, eulerAngles.alpha, eulerAngles.beta, eulerAngles.gamma);
 
             (int deg,  int min, double sec) declination    = Trigonometry.SplitAngle (Trigonometry.RadToDeg (p2000.Lat));

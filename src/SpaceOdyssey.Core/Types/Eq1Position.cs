@@ -7,40 +7,40 @@ namespace SpaceOdyssey
     /// </summary>
     /// <remarks>Проверка на корректность значений при инициализации не производится. Зачем нужна эта структура и про особенности 
     /// преобразования в сферические координаты см. https://github.com/dmitrykryzhanovsky/spaceodyssey/wiki/Чтобы-не-запутаться-в-координатах</remarks>
-    public struct EqHALocalPosition
+    public struct Eq1Position
     {
         /// <summary>
         /// Склонение.
         /// </summary>
-        public double Dec;
+        public double Declination;
 
         /// <summary>
         /// Часовой угол.
         /// </summary>
         /// <remarks>Отсчитывается от точки юга S по часовой стрелке.</remarks>
-        public double HA;
+        public double HourAngle;
 
-        public EqHALocalPosition(double declination, double hourAngle)
+        public Eq1Position(double declination, double hourAngle)
         {
-            Dec = declination;
-            HA  = hourAngle;
+            Declination = declination;
+            HourAngle   = hourAngle;
         }
 
         /// <summary>
-        /// Преобразование сферических координат типа <see cref="Polar3"/> в структуру <see cref="EqHALocalPosition"/>.
+        /// Преобразование сферических координат типа <see cref="Polar3"/> в структуру <see cref="Eq1Position"/>.
         /// </summary>
-        public EqHALocalPosition(Polar3 p)
+        public Eq1Position (Polar3 p)
         {
-            Dec =  p.Latitude;
-            HA  = -p.Longitude;
+            Declination =  p.Lat;
+            HourAngle   = -p.Long;
         }
 
         /// <summary>
         /// Преобразование экваториальных-1 координат в сферические типа <see cref="Polar3"/>.
         /// </summary>
-        public UnitPolar3 ToPolar3()
+        public Polar3 ToPolar3 ()
         {
-            return new UnitPolar3(Dec, -HA);
+            return new Polar3 (1.0, Declination, -HourAngle);
         }
     }
 }

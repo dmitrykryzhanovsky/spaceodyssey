@@ -22,7 +22,6 @@
 
   <ItemGroup>
     <Compile Remove="SiderealTimeTests.cs" />
-    <Compile Remove="Types\EqHAPositionTests.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,10 +39,6 @@
     <Reference Include="Archimedes.Core">
       <HintPath>..\..\..\archimedes\src\Archimedes.Core\bin\Release\net7.0\Archimedes.Core.dll</HintPath>
     </Reference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Types\" />
   </ItemGroup>
 
 </Project>

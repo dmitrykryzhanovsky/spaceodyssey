@@ -3,7 +3,7 @@
 namespace SpaceOdyssey
 {
     /// <summary>
-    /// Структура для хранения небесных координат в первой горизонтальной системе (склонение – часовой угол).
+    /// Структура для хранения небесных координат в первой экваториальной системе (склонение – часовой угол).
     /// </summary>
     /// <remarks>Проверка на корректность значений при инициализации не производится. Зачем нужна эта структура и про особенности 
     /// преобразования в сферические координаты см. https://github.com/dmitrykryzhanovsky/spaceodyssey/wiki/Чтобы-не-запутаться-в-координатах</remarks>
@@ -20,7 +20,7 @@ namespace SpaceOdyssey
         /// <remarks>Отсчитывается от точки юга S по часовой стрелке.</remarks>
         public double HourAngle;
 
-        public Eq1Position(double declination, double hourAngle)
+        public Eq1Position (double declination, double hourAngle)
         {
             Declination = declination;
             HourAngle   = hourAngle;

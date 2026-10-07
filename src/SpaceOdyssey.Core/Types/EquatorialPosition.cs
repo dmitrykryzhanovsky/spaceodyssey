@@ -27,7 +27,7 @@ namespace SpaceOdyssey
         }
 
         /// <summary>
-        /// Преобразование сферических координат типа <see cref="Polar3"/> в структуру <see cref="Eq1Position"/>.
+        /// Преобразование сферических координат типа <see cref="Polar3"/> в структуру <see cref="EquatorialPosition"/>.
         /// </summary>
         public EquatorialPosition (Polar3 p)
         {

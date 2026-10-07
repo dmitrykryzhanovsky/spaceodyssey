@@ -17,7 +17,7 @@ namespace SpaceOdyssey.Tests
             EquatorialPosition actual = new EquatorialPosition (p);
 
             Assert.AreEqual (expected.Declination, actual.Declination);
-            Assert.AreEqual (expected.RightAscension,  actual.RightAscension);
+            Assert.AreEqual (expected.RightAscension, actual.RightAscension);
         }
 
         [TestMethod ()]
@@ -30,7 +30,7 @@ namespace SpaceOdyssey.Tests
             EquatorialPosition actual = new EquatorialPosition (p);
 
             Assert.AreEqual (expected.Declination, actual.Declination);
-            Assert.AreEqual (expected.RightAscension,  actual.RightAscension);
+            Assert.AreEqual (expected.RightAscension, actual.RightAscension);
         }
 
         [TestMethod ()]
@@ -43,7 +43,7 @@ namespace SpaceOdyssey.Tests
             EquatorialPosition actual = new EquatorialPosition (p);
 
             Assert.AreEqual (expected.Declination, actual.Declination);
-            Assert.AreEqual (expected.RightAscension,  actual.RightAscension);
+            Assert.AreEqual (expected.RightAscension, actual.RightAscension);
         }
 
         [TestMethod ()]
@@ -56,7 +56,7 @@ namespace SpaceOdyssey.Tests
             EquatorialPosition actual = new EquatorialPosition (p);
 
             Assert.AreEqual (expected.Declination, actual.Declination);
-            Assert.AreEqual (expected.RightAscension,  actual.RightAscension);
+            Assert.AreEqual (expected.RightAscension, actual.RightAscension);
         }
 
         [TestMethod ()]

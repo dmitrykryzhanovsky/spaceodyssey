@@ -17,7 +17,7 @@ namespace SpaceOdyssey.Tests
             Eq1Position actual = new Eq1Position (p);
 
             Assert.AreEqual (expected.Declination, actual.Declination);
-            Assert.AreEqual (expected.HourAngle,  actual.HourAngle);
+            Assert.AreEqual (expected.HourAngle, actual.HourAngle);
         }
 
         [TestMethod ()]
@@ -30,7 +30,7 @@ namespace SpaceOdyssey.Tests
             Eq1Position actual = new Eq1Position (p);
 
             Assert.AreEqual (expected.Declination, actual.Declination);
-            Assert.AreEqual (expected.HourAngle,  actual.HourAngle);
+            Assert.AreEqual (expected.HourAngle, actual.HourAngle);
         }
 
         [TestMethod ()]
@@ -43,7 +43,7 @@ namespace SpaceOdyssey.Tests
             Eq1Position actual = new Eq1Position (p);
 
             Assert.AreEqual (expected.Declination, actual.Declination);
-            Assert.AreEqual (expected.HourAngle,  actual.HourAngle);
+            Assert.AreEqual (expected.HourAngle, actual.HourAngle);
         }
 
         [TestMethod ()]
@@ -56,7 +56,7 @@ namespace SpaceOdyssey.Tests
             Eq1Position actual = new Eq1Position (p);
 
             Assert.AreEqual (expected.Declination, actual.Declination);
-            Assert.AreEqual (expected.HourAngle,  actual.HourAngle);
+            Assert.AreEqual (expected.HourAngle, actual.HourAngle);
         }
 
         [TestMethod ()]

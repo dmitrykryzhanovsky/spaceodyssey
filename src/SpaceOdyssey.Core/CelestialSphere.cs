@@ -11,5 +11,23 @@ namespace SpaceOdyssey
 
             return new Eq1Position (dec, tau);
         }
+
+        /// <summary>
+        /// Преобразует экваториальные координаты в эклиптические. Угол наклона экватора к эклиптике задаётся своими синусом 
+        /// <paramref name="sinEpsilon"/> и косинусом <paramref name="cosEpsilon"/>.
+        /// </summary>
+        public static EclipticPosition EquatorialToEcliptic (EquatorialPosition equatorial, double sinEpsilon, double cosEpsilon)
+        {
+            return new EclipticPosition (Rotation3.Apply.Passive.AroundOX.RotateSpace (equatorial.ToPolar3 (), sinEpsilon, cosEpsilon));
+        }
+
+        /// <summary>
+        /// Преобразует эклиптические координаты в экваториальные. Угол наклона экватора к эклиптике задаётся своими синусом 
+        /// <paramref name="sinEpsilon"/> и косинусом <paramref name="cosEpsilon"/>.
+        /// </summary>
+        public static EquatorialPosition EclipticToEquatorial (EclipticPosition ecliptic, double sinEpsilon, double cosEpsilon)
+        {
+            return new EquatorialPosition (Rotation3.Apply.Passive.AroundOX.RotateSpace (ecliptic.ToPolar3 (), -sinEpsilon, cosEpsilon));
+        }
     }
 }

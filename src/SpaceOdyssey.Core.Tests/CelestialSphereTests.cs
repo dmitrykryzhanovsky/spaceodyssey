@@ -14,10 +14,11 @@ namespace SpaceOdyssey.Tests
 
             (double sinPhi, double cosPhi) = double.SinCos (phi);
 
+            // Тест для точек {север, восток, юг, запад, зенит, надир, Северный полюс мира, Южный полюс мира}.
             double [] H   = new double [] { 0, 0, 0, 0, double.Pi / 2.0, -double.Pi / 2.0, phi, -phi };
-            double [] A   = new double [] { 0, double.Pi / 2.0, double.Pi, 3.0 * double.Pi / 2.0, 0, 0, 0, double.Pi };
-            double [] Dec = new double [] { phi, 0, -phi, 0, double.Pi / 2.0 - phi, phi - double.Pi / 2.0, double.Pi / 2.0, -double.Pi / 2.0 };
-            double [] Tau = new double [] { double.Pi, 3.0 * double.Pi / 2.0, 0, double.Pi, 0, double.Pi, 0, 0 };
+            double [] A   = new double [] { 0, double.Pi / 2.0, double.Pi, -double.Pi / 2.0, 0, 0, 0, double.Pi };
+            double [] Dec = new double [] { double.Pi / 2.0 - phi, 0, phi - double.Pi / 2.0, 0, phi, -phi, double.Pi / 2.0, -double.Pi / 2.0 };
+            double [] Tau = new double [] { double.Pi, -double.Pi / 2.0, 0, double.Pi / 2.0, 0, double.Pi, 0, 0 };
 
             for (int i = 0; i < 8; i++)
             {
@@ -26,8 +27,33 @@ namespace SpaceOdyssey.Tests
 
                 (double dec, double tau) actual = CelestialSphere.HorizontalToEq1 (sinH, cosH, sinA, cosA, sinPhi, cosPhi);
 
-                Assert.AreEqual (Dec [i], actual.dec);
-                Assert.AreEqual (Tau [i], actual.tau);
+                Assert.AreEqual (Dec [i], actual.dec, 1.0e-15);
+                Assert.AreEqual (Tau [i], actual.tau, 1.0e-15);
+            }
+        }
+
+        [TestMethod ()]
+        public void Eq1ToHorizontalTest ()
+        {
+            double phi = Trigonometry.DegToRad (48.7);
+
+            (double sinPhi, double cosPhi) = double.SinCos (phi);
+
+            // Тест для точек {север, восток, юг, запад, зенит, надир, Северный полюс мира, Южный полюс мира}.
+            double [] Dec = new double [] { double.Pi / 2.0 - phi, 0, phi - double.Pi / 2.0, 0, phi, -phi, double.Pi / 2.0, -double.Pi / 2.0 };
+            double [] Tau = new double [] { double.Pi, -double.Pi / 2.0, 0, double.Pi / 2.0, 0, double.Pi, 0, 0 };
+            double [] H   = new double [] { 0, 0, 0, 0, double.Pi / 2.0, -double.Pi / 2.0, phi, -phi };
+            double [] A   = new double [] { 0, double.Pi / 2.0, double.Pi, -double.Pi / 2.0, double.Pi, 0, 0, double.Pi };
+
+            for (int i = 0; i < 8; i++)
+            {
+                (double sinDec, double cosDec) = double.SinCos (Dec [i]);
+                (double sinTau, double cosTau) = double.SinCos (Tau [i]);
+
+                (double h, double a) actual = CelestialSphere.Eq1ToHorizontal (sinDec, cosDec, sinTau, cosTau, sinPhi, cosPhi);
+
+                Assert.AreEqual (H [i], actual.h, 1.0e-15);
+                Assert.AreEqual (A [i], actual.a, 1.0e-15);
             }
         }
 

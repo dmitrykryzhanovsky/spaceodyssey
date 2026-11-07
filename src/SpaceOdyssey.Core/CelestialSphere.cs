@@ -16,17 +16,28 @@ namespace SpaceOdyssey
         public static (double declination, double hourAngle) HorizontalToEq1 (double sinH, double cosH, double sinA, double cosA, 
             double sinPhi, double cosPhi)
         {
+            // Не забывать, что в книге [Монтенбрук, Пфлегер] в формулах азимут отсчитывается от юга.
             double declination = Trigonometry.AsinEpsilon  (               cosH * cosA * cosPhi + sinH * sinPhi, ComputingSettings.ZeroAngleEpsilon);
             double hourAngle   = Trigonometry.Atan2Epsilon (-cosH * sinA, -cosH * cosA * sinPhi + sinH * cosPhi, ComputingSettings.ZeroAngleEpsilon);
 
             return (declination, hourAngle);
         }
 
+        /// <summary>
+        /// Преобразование 1-экваториальных координат в горизонтальные.
+        /// </summary>
+        /// <remarks><list type="bullet">
+        ///     <item>Склонение задаётся sinDec и cosDec.</item>
+        ///     <item>Часовой угол (от точки юга по часовой стрелке) задаётся sinTau и cosTau.</item>
+        ///     <item>Широта места наблюдения задаётся sinPhi и cosPhi.</item>
+        /// </list></remarks>
+        /// <returns>altitude – высота над горизонтом, azimuth – азимут (от точки севера по часовой стрелке).</returns>
         public static (double altitude, double azimuth) Eq1ToHorizontal (double sinDec, double cosDec, double sinTau, double cosTau,
             double sinPhi, double cosPhi)
         {
+            // Не забывать, что в книге [Монтенбрук, Пфлегер] в формулах азимут отсчитывается от юга.
             double altitude = Trigonometry.AsinEpsilon  (                   cosDec * cosTau * cosPhi + sinDec * sinPhi, ComputingSettings.ZeroAngleEpsilon);
-            double azimuth  = Trigonometry.Atan2Epsilon (-cosDec * sinTau, -cosDec * cosTau * sinPhi - sinDec * cosPhi, ComputingSettings.ZeroAngleEpsilon);
+            double azimuth  = Trigonometry.Atan2Epsilon (-cosDec * sinTau, -cosDec * cosTau * sinPhi + sinDec * cosPhi, ComputingSettings.ZeroAngleEpsilon);
 
             return (altitude, azimuth);
         }

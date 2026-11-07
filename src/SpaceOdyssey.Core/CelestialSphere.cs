@@ -77,5 +77,36 @@ namespace SpaceOdyssey
         {
             return Rotation3.Apply.Passive.AroundOX.RotateSpace (ecliptic, -sinEpsilon, cosEpsilon);
         }
+
+        /// <summary>
+        /// Вычисляет косинус часового угла восхода / захода светила.
+        /// </summary>
+        /// <remarks>
+        /// <list type="bullet">
+        ///     <item>Широта места наблюдения задаётся sinPhi и cosPhi.</item>
+        ///     <item>Склонение задаётся sinDec и cosDec.</item>
+        /// </list>
+        /// Если cosPhi = 0 (место наблюдения – на полюсе) или cosDec = 0 (светило в полюсе мира), то будет сгенерировано 
+        /// исключение. И в том, и в другом случае ситуация будет описывать либо незаходящие, либо невосходящие светила.
+        /// </remarks>
+        public static double CosRiseHourAngle (double sinPhi, double cosPhi, double sinDec, double cosDec)
+        {
+            return -sinPhi * sinDec / (cosPhi * cosDec);
+        }
+
+        /// <summary>
+        /// По косинусу часового угла восхода / захода светила, возвращает тип светила по восходу над горизонтом.
+        /// </summary>
+        /// <returns><list type="bullet">
+        ///     <item>cosRiseHourAngle < -1 – светило незаходящее</item>
+        ///     <item>-1 <= cosRiseHourAngle <= + 1 (допустимое значение для косинуса) – светило восходит, и заходит</item>
+        ///     <item>cosRiseHourAngle > +1 – светило невосходящее</item>
+        /// </list></returns>
+        public static ERiseType GetRiseType (double cosRiseHourAngle)
+        {
+            if (cosRiseHourAngle < -1.0) return ERiseType.NotSet;
+            else if (cosRiseHourAngle <= 1.0) return ERiseType.Usual;
+            else return ERiseType.NotRise;
+        }
     }
 }

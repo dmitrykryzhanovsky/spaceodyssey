@@ -1,4 +1,5 @@
-﻿using Archimedes;
+﻿using SpaceOdyssey;
+using Archimedes;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -63,7 +64,7 @@ namespace SpaceOdyssey.Tests
             double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
             double dt      = JD.GetJulianCentirues (jd);
             double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
-            
+
             (double sin, double cos) = double.SinCos (epsilon);
 
             double dec = Trigonometry.DegToRad (Trigonometry.AssemblyAngle (0, 16, 42.2));
@@ -100,7 +101,7 @@ namespace SpaceOdyssey.Tests
 
             Polar3 ecliptic = CelestialSphere.EquatorialToEcliptic (equatorial, sin, cos);
 
-            (int, int, double) latitude = Trigonometry.SplitAngle (Trigonometry.RadToDeg (ecliptic.Lat));
+            (int, int, double) latitude  = Trigonometry.SplitAngle (Trigonometry.RadToDeg (ecliptic.Lat));
             (int, int, double) longidude = Trigonometry.SplitAngle (Trigonometry.RadToDeg (ecliptic.Long));
 
             Assert.AreEqual ( 0,    latitude.Item1);
@@ -163,6 +164,102 @@ namespace SpaceOdyssey.Tests
             Assert.AreEqual ( 3,    ra.Item1);
             Assert.AreEqual (10,    ra.Item2);
             Assert.AreEqual (44.07, ra.Item3, 1.0e+0);
+        }
+
+        [TestMethod ()]
+        public void CosRiseHourAngleTest_NotSet ()
+        {
+            double phi = Trigonometry.DegToRad (48.7);
+            double dec = Trigonometry.DegToRad (60.0);
+
+            (double sinPhi, double cosPhi) = double.SinCos (phi);
+            (double sinDec, double cosDec) = double.SinCos (dec);
+
+            double actual =  CelestialSphere.CosRiseHourAngle (sinPhi, cosPhi, sinDec, cosDec);
+
+            double expected = -1.97155206160677;
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
+        }
+
+        [TestMethod ()]
+        public void CosRiseHourAngleTest_Usual ()
+        {
+            double phi = Trigonometry.DegToRad (48.7);
+            double dec = Trigonometry.DegToRad (40.0);
+
+            (double sinPhi, double cosPhi) = double.SinCos (phi);
+            (double sinDec, double cosDec) = double.SinCos (dec);
+
+            double actual = CelestialSphere.CosRiseHourAngle (sinPhi, cosPhi, sinDec, cosDec);
+
+            double expected = -0.95512706700739;
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
+        }
+
+        [TestMethod ()]
+        public void CosRiseHourAngleTest_NotRise ()
+        {
+            double phi = Trigonometry.DegToRad ( 48.7);
+            double dec = Trigonometry.DegToRad (-60.0);
+
+            (double sinPhi, double cosPhi) = double.SinCos (phi);
+            (double sinDec, double cosDec) = double.SinCos (dec);
+
+            double actual = CelestialSphere.CosRiseHourAngle (sinPhi, cosPhi, sinDec, cosDec);
+
+            double expected = 1.97155206160677;
+
+            Assert.AreEqual (expected, actual, 1.0e-14);
+        }
+
+        [TestMethod ()]
+        public void GetRiseTypeTest_NotSet ()
+        {
+            double cosRiseHourAngle = -1.000000000000001;
+
+            ERiseType expected = ERiseType.NotSet;
+
+            ERiseType actual = CelestialSphere.GetRiseType (cosRiseHourAngle);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetRiseTypeTest_Usualm1 ()
+        {
+            double cosRiseHourAngle = -1.0;
+
+            ERiseType expected = ERiseType.Usual;
+
+            ERiseType actual = CelestialSphere.GetRiseType (cosRiseHourAngle);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetRiseTypeTest_Usualp1 ()
+        {
+            double cosRiseHourAngle = 1.0;
+
+            ERiseType expected = ERiseType.Usual;
+
+            ERiseType actual = CelestialSphere.GetRiseType (cosRiseHourAngle);
+
+            Assert.AreEqual (expected, actual);
+        }
+
+        [TestMethod ()]
+        public void GetRiseTypeTest_NotRise ()
+        {
+            double cosRiseHourAngle = 1.000000000000001;
+
+            ERiseType expected = ERiseType.NotRise;
+
+            ERiseType actual = CelestialSphere.GetRiseType (cosRiseHourAngle);
+
+            Assert.AreEqual (expected, actual);
         }
     }
 }

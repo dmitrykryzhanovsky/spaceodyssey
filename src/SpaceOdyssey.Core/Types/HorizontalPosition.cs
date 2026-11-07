@@ -20,7 +20,7 @@ namespace SpaceOdyssey
         /// <remarks>Отсчитывается от точки севера N по часовой стрелке.</remarks>
         public double A;
 
-        public HorizontalPosition(double altitude, double azimuth)
+        public HorizontalPosition (double altitude, double azimuth)
         {
             H = altitude;
             A = azimuth;

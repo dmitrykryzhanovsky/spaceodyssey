@@ -1,0 +1,168 @@
+﻿using Archimedes;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
+namespace SpaceOdyssey.Tests
+{
+    [TestClass ()]
+    public class CelestialSphereTests
+    {
+        [TestMethod ()]
+        public void HorizontalToEq1Test ()
+        {
+            double phi = Trigonometry.DegToRad (48.7);
+
+            (double sinPhi, double cosPhi) = double.SinCos (phi);
+
+            // Тест для точек {Север, Восток, Юг, Запад, Зенит, Надир, Северный полюс мира, Южный полюс мира}.
+            double [] H   = new double [] { 0, 0, 0, 0, double.Pi / 2.0, -double.Pi / 2.0, phi, -phi };
+            double [] A   = new double [] { 0, double.Pi / 2.0, double.Pi, -double.Pi / 2.0, 0, 0, 0, double.Pi };
+            double [] Dec = new double [] { double.Pi / 2.0 - phi, 0, phi - double.Pi / 2.0, 0, phi, -phi, double.Pi / 2.0, -double.Pi / 2.0 };
+            double [] Tau = new double [] { double.Pi, -double.Pi / 2.0, 0, double.Pi / 2.0, 0, double.Pi, 0, 0 };
+
+            for (int i = 0; i < 8; i++)
+            {
+                (double sinH, double cosH) = double.SinCos (H [i]);
+                (double sinA, double cosA) = double.SinCos (A [i]);
+
+                (double dec, double tau) actual = CelestialSphere.HorizontalToEq1 (sinH, cosH, sinA, cosA, sinPhi, cosPhi);
+
+                Assert.AreEqual (Dec [i], actual.dec, 1.0e-15);
+                Assert.AreEqual (Tau [i], actual.tau, 1.0e-15);
+            }
+        }
+
+        [TestMethod ()]
+        public void Eq1ToHorizontalTest ()
+        {
+            double phi = Trigonometry.DegToRad (48.7);
+
+            (double sinPhi, double cosPhi) = double.SinCos (phi);
+
+            // Тест для точек {Север, Восток, Юг, Запад, Зенит, Надир, Северный полюс мира, Южный полюс мира}.
+            double [] Dec = new double [] { double.Pi / 2.0 - phi, 0, phi - double.Pi / 2.0, 0, phi, -phi, double.Pi / 2.0, -double.Pi / 2.0 };
+            double [] Tau = new double [] { double.Pi, -double.Pi / 2.0, 0, double.Pi / 2.0, 0, double.Pi, 0, 0 };
+            double [] H   = new double [] { 0, 0, 0, 0, double.Pi / 2.0, -double.Pi / 2.0, phi, -phi };
+            double [] A   = new double [] { 0, double.Pi / 2.0, double.Pi, -double.Pi / 2.0, 0, 0, 0, double.Pi };
+
+            for (int i = 0; i < 8; i++)
+            {
+                (double sinDec, double cosDec) = double.SinCos (Dec [i]);
+                (double sinTau, double cosTau) = double.SinCos (Tau [i]);
+
+                (double h, double a) actual = CelestialSphere.Eq1ToHorizontal (sinDec, cosDec, sinTau, cosTau, sinPhi, cosPhi);
+
+                Assert.AreEqual (H [i], actual.h, 1.0e-15);
+                Assert.AreEqual (A [i], actual.a, 1.0e-15);
+            }
+        }
+
+        [TestMethod ()]
+        public void EquatorialToEclipticTest_EquatorialPosition ()
+        {
+            double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
+            double dt      = JD.GetJulianCentirues (jd);
+            double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
+            
+            (double sin, double cos) = double.SinCos (epsilon);
+
+            double dec = Trigonometry.DegToRad (Trigonometry.AssemblyAngle (0, 16, 42.2));
+            double ra  = Trigonometry.HourToRad (Trigonometry.AssemblyAngle (0, 2, 33.73));
+
+            EquatorialPosition equatorial = new EquatorialPosition (dec, ra);
+
+            EclipticPosition ecliptic = CelestialSphere.EquatorialToEcliptic (equatorial, sin, cos);
+
+            (int, int, double) latitude  = Trigonometry.SplitAngle (Trigonometry.RadToDeg (ecliptic.B));
+            (int, int, double) longidude = Trigonometry.SplitAngle (Trigonometry.RadToDeg (ecliptic.L));
+
+            Assert.AreEqual ( 0,    latitude.Item1);
+            Assert.AreEqual ( 0,    latitude.Item2);
+            Assert.AreEqual ( 2.3,  latitude.Item3, 1.0e+0);
+            Assert.AreEqual ( 0,    longidude.Item1);
+            Assert.AreEqual (41,    longidude.Item2);
+            Assert.AreEqual (54.27, longidude.Item3, 1.0e-1);
+        }
+
+        [TestMethod ()]
+        public void EquatorialToEclipticTest_Polar3 ()
+        {
+            double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
+            double dt      = JD.GetJulianCentirues (jd);
+            double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
+
+            (double sin, double cos) = double.SinCos (epsilon);
+
+            double dec = Trigonometry.DegToRad (Trigonometry.AssemblyAngle (0, 16, 42.2));
+            double ra  = Trigonometry.HourToRad (Trigonometry.AssemblyAngle (0, 2, 33.73));
+
+            Polar3 equatorial = new Polar3 (1.0, dec, ra);
+
+            Polar3 ecliptic = CelestialSphere.EquatorialToEcliptic (equatorial, sin, cos);
+
+            (int, int, double) latitude = Trigonometry.SplitAngle (Trigonometry.RadToDeg (ecliptic.Lat));
+            (int, int, double) longidude = Trigonometry.SplitAngle (Trigonometry.RadToDeg (ecliptic.Long));
+
+            Assert.AreEqual ( 0,    latitude.Item1);
+            Assert.AreEqual ( 0,    latitude.Item2);
+            Assert.AreEqual ( 2.3,  latitude.Item3, 1.0e+0);
+            Assert.AreEqual ( 0,    longidude.Item1);
+            Assert.AreEqual (41,    longidude.Item2);
+            Assert.AreEqual (54.27, longidude.Item3, 1.0e-1);
+        }
+
+        [TestMethod ()]
+        public void EclipticToEquatorialTest_EclipticPosition ()
+        {
+            double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
+            double dt      = JD.GetJulianCentirues (jd);
+            double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
+
+            (double sin, double cos) = double.SinCos (epsilon);
+
+            double b = Trigonometry.DegToRad (Trigonometry.AssemblyAngle (0, 0, 5.8));
+            double l = Trigonometry.DegToRad (Trigonometry.AssemblyAngle (50, 7, 39.50));
+
+            EclipticPosition ecliptic = new EclipticPosition (b, l);
+
+            EquatorialPosition equatorial = CelestialSphere.EclipticToEquatorial (ecliptic, sin, cos);
+
+            (int, int, double) dec = Trigonometry.SplitAngle (Trigonometry.RadToDeg (equatorial.Declination));
+            (int, int, double) ra  = Trigonometry.SplitAngle (Trigonometry.RadToHour (equatorial.RightAscension));
+
+            Assert.AreEqual (17,    dec.Item1);
+            Assert.AreEqual (46,    dec.Item2);
+            Assert.AreEqual (43.5,  dec.Item3, 1.0e+0);
+            Assert.AreEqual ( 3,    ra.Item1);
+            Assert.AreEqual (10,    ra.Item2);
+            Assert.AreEqual (44.07, ra.Item3, 1.0e+0);
+        }
+
+        [TestMethod ()]
+        public void EclipticToEquatorialTest_Polar3 ()
+        {
+            double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
+            double dt      = JD.GetJulianCentirues (jd);
+            double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
+
+            (double sin, double cos) = double.SinCos (epsilon);
+
+            double b = Trigonometry.DegToRad (Trigonometry.AssemblyAngle (0, 0, 5.8));
+            double l = Trigonometry.DegToRad (Trigonometry.AssemblyAngle (50, 7, 39.50));
+
+            Polar3 ecliptic = new Polar3 (1.0, b, l);
+
+            Polar3 equatorial = CelestialSphere.EclipticToEquatorial (ecliptic, sin, cos);
+
+            (int, int, double) dec = Trigonometry.SplitAngle (Trigonometry.RadToDeg (equatorial.Lat));
+            (int, int, double) ra  = Trigonometry.SplitAngle (Trigonometry.RadToHour (equatorial.Long));
+
+            Assert.AreEqual (17,    dec.Item1);
+            Assert.AreEqual (46,    dec.Item2);
+            Assert.AreEqual (43.5,  dec.Item3, 1.0e+0);
+            Assert.AreEqual ( 3,    ra.Item1);
+            Assert.AreEqual (10,    ra.Item2);
+            Assert.AreEqual (44.07, ra.Item3, 1.0e+0);
+        }
+    }
+}

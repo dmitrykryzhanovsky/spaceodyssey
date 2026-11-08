@@ -364,7 +364,7 @@
         ///     эпохой.
         /// </para>
         /// </remarks>
-        public static double GetJulianCentirues (double t, double t0 = Epochs.J2000)
+        public static double GetJulianCenturies (double t, double t0 = Epochs.J2000)
         {
             return (t - t0) / TimeUnits.JulianCentury;
         }

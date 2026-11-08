@@ -116,7 +116,7 @@ namespace SpaceOdyssey.Tests
         {
             double t1950 = JD.GetJD (1950, 1, 1, 12, 0, 0);
 
-            double T0 =  JD.GetJulianCentirues (t1950);
+            double T0 =  JD.GetJulianCenturies (t1950);
             double dT = -T0;
 
             (double alpha, double beta, double gamma) eulerAngles = EarthPrecession.Equatorial.GetEulerAnglesForPrecession (T0, dT);
@@ -246,7 +246,7 @@ namespace SpaceOdyssey.Tests
         {
             double t1950 = JD.GetJD (1950, 1, 1, 12, 0, 0);
 
-            double T0 =  JD.GetJulianCentirues (t1950);
+            double T0 =  JD.GetJulianCenturies (t1950);
             double dT = -T0;
 
             (double alpha, double beta, double gamma) eulerAngles = EarthPrecession.Ecliptic.GetEulerAnglesForPrecession (T0, dT);
@@ -272,7 +272,7 @@ namespace SpaceOdyssey.Tests
         {
             double t1950 = JD.GetJD (1950, 1, 1, 12, 0, 0);
 
-            double T0 =  JD.GetJulianCentirues (t1950);
+            double T0 =  JD.GetJulianCenturies (t1950);
             double dT = -T0;
 
             (double alpha, double beta, double gamma) eulerAngles = EarthPrecession.Ecliptic.GetEulerAnglesForPrecession (T0, dT);

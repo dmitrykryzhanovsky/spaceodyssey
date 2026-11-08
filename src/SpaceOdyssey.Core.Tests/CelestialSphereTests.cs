@@ -62,7 +62,7 @@ namespace SpaceOdyssey.Tests
         public void EquatorialToEclipticTest_EquatorialPosition ()
         {
             double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
-            double dt      = JD.GetJulianCentirues (jd);
+            double dt      = JD.GetJulianCenturies (jd);
             double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
 
             (double sin, double cos) = double.SinCos (epsilon);
@@ -89,7 +89,7 @@ namespace SpaceOdyssey.Tests
         public void EquatorialToEclipticTest_Polar3 ()
         {
             double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
-            double dt      = JD.GetJulianCentirues (jd);
+            double dt      = JD.GetJulianCenturies (jd);
             double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
 
             (double sin, double cos) = double.SinCos (epsilon);
@@ -116,7 +116,7 @@ namespace SpaceOdyssey.Tests
         public void EclipticToEquatorialTest_EclipticPosition ()
         {
             double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
-            double dt      = JD.GetJulianCentirues (jd);
+            double dt      = JD.GetJulianCenturies (jd);
             double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
 
             (double sin, double cos) = double.SinCos (epsilon);
@@ -143,7 +143,7 @@ namespace SpaceOdyssey.Tests
         public void EclipticToEquatorialTest_Polar3 ()
         {
             double jd      = JD.GetJD (1980, 1, 1, 0, 0, 0);
-            double dt      = JD.GetJulianCentirues (jd);
+            double dt      = JD.GetJulianCenturies (jd);
             double epsilon = Trigonometry.SecToRad (EarthAxialTilt.ComputeDE200InArcsec (dt));
 
             (double sin, double cos) = double.SinCos (epsilon);
